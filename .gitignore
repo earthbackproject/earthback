@@ -16,13 +16,22 @@ node_modules/
 .env.local
 .env.production
 
-# Large reference/design assets (keep locally, not in repo)
+# Large reference/design archive (keep locally, not in repo)
+reference/
 external_reference_docs/
+branding/
+governance/
+imported images/
+org-test1/
 *.psd
 *.ai
 *.sketch
 
-# Large root-level images (design mockups)
+# Setup reference files (replaced by QUICKSTART.md)
+Earthback_Setup_Reference.docx
+Earthback_Setup_Reference.html
+
+# Large root-level images (legacy, moved to branding/)
 /Earthback branding*.png
 /Earthback page mock-up*.png
 /earthback styles*.png

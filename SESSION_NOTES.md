@@ -4,7 +4,206 @@
 ---
 
 ## Last Updated
-2026-02-20 — Session 10 with Nicco via Cowork
+2026-02-20 — Session 14 with Nicco via Cowork
+
+---
+
+## What Was Done in Session 14 (2026-02-20)
+
+*Folder reorganization, Flux images, git workflow walkthrough.*
+
+### Folder reorganization — executed MIGRATION_MAP.md from org-test1
+- SQL files (SEED_POSTS, SCHEMA_V2/V3/V4, PROFILE_MIGRATION, SUPABASE_SETUP.md) → `db/`
+- Brand assets (PNGs, PDFs, style HTML) → `branding/`
+- Governance docs (constitution, framework, UX spec) → `governance/`
+- Archive (old mockups, early designs, v8/v9/v10 reference) → `reference/` (renamed from reference/)
+- Created `db/README.md` — migration order & status table
+- Created `QUICKSTART.md` — replaces Earthback_Setup_Reference.docx/.html as the go-to orientation file
+- Updated `.gitignore` — excludes reference/, branding/, governance/, imported images/, org-test1/
+- Updated path references in TRACKER.md and SESSION_NOTES.md
+
+### Flux AI images added to site
+- 8 AI-generated images from `imported images/` → `site/assets/img/posts/*.jpg`
+- Converted from PNG (18MB total) → optimized JPG (~300KB total)
+- SCHEMA_V4 updated to use `/assets/img/posts/*.jpg` paths instead of picsum placeholders
+- Images: hempcrete-mix, utah-hemp-wall, greywater-system, solar-coop, food-forest, tiny-cabin, salvage-fir, lora-mesh
+
+### Manual cleanup needed (Cowork sandbox can't delete)
+- [ ] Delete `reference/` folder (contents copied to reference/)
+- [ ] Delete `org-test1/` folder (was the test skeleton + MIGRATION_MAP.md)
+- [ ] Delete `imported images/` folder (JPGs already in site/assets/img/posts/)
+- [ ] Delete `Earthback_Setup_Reference.docx` and `.html` (replaced by QUICKSTART.md)
+- [ ] Delete original PNGs from `site/assets/img/posts/` (the .png versions — keep the .jpg versions)
+
+### Git workflow walkthrough
+- Covered: status, diff, add, commit, push, pull, log
+- Explained: working directory → staging area → local repo → remote (GitHub) → Netlify auto-deploy
+- See QUICKSTART.md for the command reference
+
+### SQL migrations — all still pending
+- PROFILE_MIGRATION.sql — not yet run
+- SCHEMA_V3_messages.sql — not yet run (conversations + messages tables)
+- SCHEMA_V4_post_images.sql — not yet run (image_url column + demo image paths)
+- All files now in `db/` folder with run order documented in `db/README.md`
+
+### Immediate next
+- [ ] Manual cleanup of old folders (see list above)
+- [ ] Run the 3 pending SQL migrations in Supabase SQL Editor
+- [ ] Git commit + push all session 13-14 changes
+- [ ] Test compose post form end-to-end
+- [ ] Continue building: media import pipeline, settings page
+
+---
+
+## What Was Done in Sessions 11-13 (2026-02-20)
+
+*Sessions 11-12 built the core app features. Session 13 (this one) continued with compose form, images, and documentation.*
+
+### Navigation overhaul — green topbar on all app pages
+- Added consistent topbar nav across all 7 app pages (feed, profile, projects, project, create-project, messages, circles)
+- Nav links: Home, Projects, Media, Marketplace (grayed/coming soon), Circles
+- Messages icon (💬) added to topbar-right before avatar on all pages
+- Mobile hamburger menu with all links including Messages on all pages
+- "Join Earthback" changed to "Join / Sign In" across 10+ files
+
+### "explore.html" → "circles.html" migration
+- All links across 6+ files updated from explore.html to circles.html via sed
+- explore.html kept as legacy (still accessible but not linked in nav)
+
+### Pre-launch banner — all 7 app pages
+- Fixed-bottom green gradient bar: "🌿 Pre-Launch Preview — You're seeing an early build..."
+- Includes feedback mailto link to earthbackproject@gmail.com
+
+### create-project.html — NEW (5-step wizard, ~1025 lines)
+- Step 1: Name + Type selector (project/company/org/campaign) with visual grid
+- Step 2: Location with Nominatim geocoding (forward + reverse + GPS)
+- Step 3: Tagline (140 char) + Description (2000 char) + Category multi-select pills + Cover color picker
+- Step 4: Up to 8 need rows with type selector (Skill/Resource/People/Place/Funding), urgency toggle
+- Step 5: Live preview card + "next steps" list
+- Inserts into `projects` table then `project_needs`, handles slug uniqueness, redirects to project.html
+- Auth-gated: redirects to join.html if not logged in
+- **Workaround:** `project_needs` table has no `type` column, so type emojis are prefixed onto the description string
+- "Start a Project" buttons on projects.html wired to this page
+
+### messages.html — NEW (~668 lines)
+- Split-pane messaging inbox: thread list (320px) + chat panel
+- 4 demo conversation threads with realistic multi-message dialogues
+- Real Supabase integration: `loadConversations()`, `openConversation()`, `sendMessage()`
+- URL params: `?conv=` for deep-link, `?new=1&project_id=&need_id=&need_desc=&owner_id=` for "I can help" flow
+- Mobile-responsive: stacked layout with back button (768px breakpoint)
+- **Requires SCHEMA_V3_messages.sql** to be run for real data
+
+### SCHEMA_V3_messages.sql — NEW (~120 lines)
+- `conversations` table: id, project_id, need_id, subject, conv_type (direct/project_help/project_team/system)
+- `conversation_participants` table: conversation_id, profile_id, joined_at, last_read_at, is_muted
+- `messages` table: conversation_id, sender_id, body, message_type (text/system/offer/media)
+- RLS: Users can only see conversations they participate in
+- Trigger: auto-updates `last_message_at` on new message insert
+- **STATUS: NOT YET RUN** — needs to be executed in Supabase SQL Editor
+
+### circles.html — NEW (~455 lines)
+- 5 geographic circles: Southwest US, Pacific Northwest, Appalachia, Front Range, Great Lakes
+- 8 thematic circles: Natural Building, Solar, Hemp, Permaculture, Water, Tiny Homes, Education, Indigenous Practices
+- Filter tabs: All / Geographic / Thematic / Your Circles
+- Join/view buttons with visual state toggle
+- Color typos fixed: `'#6aa a5a'` → `'#6aaa5a'`, `'#a a7a4a'` → `'#aa7a4a'`
+
+### "I can help" buttons wired on project.html
+- Changed `onclick="window.location.href='join.html'"` to `onclick="offerHelp(this)"`
+- `offerHelp()` checks auth and redirects to `messages.html?new=1&need_desc=...`
+
+### project.html — major enhancement (company/business variant)
+- `loadProject()` now detects `project_type === 'company'` and renders differently:
+  - Square avatar (12px radius) for companies vs round for projects
+  - "Services & Needs" board label vs "The Puzzle"
+  - Hidden phase bar for companies/orgs
+  - Dynamic stats: Services/Team/Followers for companies
+- Loads real `project_needs(*)` and `project_members(*, profiles(...))` via Supabase joins
+- Dynamic team members panel, links panel, cover band color
+- Added `lightenHex()` helper function
+
+### Compose post form — feed.html (Session 13)
+- Compose card sits between welcome banner and "Community Activity"
+- Collapsed state: avatar + "Share an update, resource, or question…" prompt
+- Expanded state: title input, body textarea, post type selector (Resource/Milestone/Need/Question/Coordination), circle selector (all 12 circles), image upload (file picker or paste URL), Post/Cancel buttons
+- Submits to Supabase `posts` table via `sb.from('posts').insert()`
+- New post appears at top of feed immediately (local array + re-render)
+- "post an update" text at bottom of feed now opens the composer
+- Image upload attempts Supabase Storage (`public-assets` bucket), falls back to URL-only
+
+### Post images — feed.html (Session 13)
+- Added `image_url` field to `mapPostRow()` and `buildPostHTML()`
+- Posts with `image_url` show a full-width image between body text and footer
+- Lazy loading + onerror fallback (hides broken images)
+- `.post-image` CSS class: 100% width, max-height 400px, object-fit cover, rounded corners
+
+### SCHEMA_V4_post_images.sql — NEW (Session 13)
+- Adds `image_url` TEXT column to posts table
+- Adds `is_demo` BOOLEAN column to posts table
+- Marks all existing seed posts as demo
+- Updates 8 of 14 demo posts with picsum.photos placeholder images
+- **Each UPDATE has an AI image generation prompt as a comment** — Nicco generating real images from these
+- **STATUS: NOT YET RUN** — needs to be executed in Supabase SQL Editor
+
+### Earthback_Setup_Reference.docx — NEW (Session 13)
+- 9-page reference document covering all services, credentials, schema, file structure, session setup
+- Generated with docx-js, validated, Earthback brand colors
+
+### Earthback_Setup_Reference.html — NEW (Session 13)
+- Local HTML version with clickable links to all dashboards and services
+- **Reboot Startup Sequence** — numbered 1-6 steps in click order: GitHub → Netlify → Supabase → Live site → Sign in → Start Claude
+- **Supabase Quick Access** — deep links to Table Editor, SQL Editor, Auth Users, Storage, URL Config, API Keys
+- **Site Pages** — all app and public pages as clickable cards
+- Full reference: credentials, schema, migrations, APIs, brand tokens, key concepts
+
+### earthback-start.sh — NEW (Session 13)
+- Startup script: opens 5 browser tabs in sequence, checks git, pings site, prints Claude handoff prompt
+- Works on macOS, Linux, WSL
+- Same 1-2-3-4-5 sequence as the HTML reference page
+
+### Git setup (Session 13, separate chat)
+- Nicco set up git in a separate session for incremental Netlify deploys
+- Repo: https://github.com/earthbackproject/earthback.git
+- Config: `Nicco <nicco.macintyre@gmail.com>`, branch `main`
+
+### Consistency pass — all 7 checks passed, 0 issues
+1. No explore.html links remaining (all → circles.html)
+2. Matching Supabase credentials across all files
+3. Pre-launch banners on all 7 app pages
+4. handleSignOut() functions present
+5. Messages links in all mobile menus
+6. No duplicate Messages links
+7. HTML tag balance verified
+
+### Immediate next
+- [ ] **Run SCHEMA_V3_messages.sql** — messaging tables (conversations, messages, participants)
+- [ ] **Run SCHEMA_V4_post_images.sql** — image_url column + demo post placeholder images
+- [ ] **Replace placeholder images** — Nicco generating AI images from the prompts in V4 SQL; UPDATE the image_url values with real URLs
+- [ ] **Deploy via git push** — push to main, Netlify auto-deploys
+- [ ] **Test compose post form** — sign in and create a real post
+- [ ] **Test create-project flow** — create a project end-to-end
+- [ ] **Media import pipeline** — still pending from session 10
+- [ ] **Settings page** — still pending from session 10
+
+### Real-world project updates (from Nicco)
+- Earthback has received a donated semi-truck load of solar panels
+- Helped outfit a mobile homeless shelter/bus with solar panels
+- The platform is catching up to real-world work already happening
+- Nicco has 6 monitors, ~1000 tabs open — reducing to only what's needed for building
+- Payment/hosting situation being resolved with federal bank fraud score issue
+
+---
+
+## Account References
+
+| Service | Account / Org | URL / Identifier |
+|---|---|---|
+| **GitHub** | earthbackproject | https://github.com/earthbackproject |
+| **GitHub Repo** | earthbackproject/earthback | https://github.com/earthbackproject/earthback |
+| **Supabase** | the_earthback_project | https://supabase.com/dashboard/project/yptktmzagctusbeqdaty |
+| **Netlify** | TBD — connecting next | — |
+| **Domain** | earthbackproject.org | Currently live via Netlify (to be connected to GitHub repo) |
+| **Git local config** | Nicco / nicco.macintyre@gmail.com | Set in repo .git/config |
 
 ---
 
@@ -305,9 +504,9 @@ A community platform for people doing green building and construction — hempcr
 
 ## Reference Files Worth Reading
 
-- `/Earthback/external_reference_docs/v10-pre-launch-db etc/docs/earthback_platform_spec_v1.md` — full technical spec
-- `/Earthback/external_reference_docs/v10-pre-launch-db etc/docs/decision log_v1/06_launch/v1_scope_freeze.md` — what's in/out of v1
-- `/Earthback/external_reference_docs/v10-pre-launch-db etc/docs/decision log_v1/06_launch/launch_checklist.md` — all unchecked
+- `/Earthback/reference/v10-pre-launch-db etc/docs/earthback_platform_spec_v1.md` — full technical spec
+- `/Earthback/reference/v10-pre-launch-db etc/docs/decision log_v1/06_launch/v1_scope_freeze.md` — what's in/out of v1
+- `/Earthback/reference/v10-pre-launch-db etc/docs/decision log_v1/06_launch/launch_checklist.md` — all unchecked
 - `/Earthback/Earthback Core Constitution.pdf` — governance and mission document
 
 ---

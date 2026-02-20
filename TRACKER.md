@@ -3,7 +3,7 @@
 *To resume: "Read TRACKER.md and SESSION_NOTES.md and pick up where we left off."*
 *Visual version: `/tracker/index.html` — open in browser for the full dashboard.*
 
-**Last updated:** 2026-02-20 (session 10 — Google OAuth, profile editing, avatar upload, UI polish)
+**Last updated:** 2026-02-20 (session 14 — folder reorganization, .gitignore update, QUICKSTART.md, post images from Flux, git workflow)
 
 ---
 
@@ -11,11 +11,15 @@
 
 | Workstream | Status | Blocking? |
 |---|---|---|
-| Marketing Site (HTML) | 🟢 Live | earthbackproject.org · signups capturing · explore.html added |
-| Platform / App | 🟡 In progress | Auth live (magic link + Google OAuth) · profiles editable · avatar upload · feed wired to Supabase |
+| Marketing Site (HTML) | 🟢 Live | earthbackproject.org · all pages deployed |
+| Platform / App | 🟡 In progress | Auth live · feed with compose · projects hub · create-project wizard · messaging (demo) · circles hub · company profiles · post images |
+| Database Migrations | 🟡 Pending | PROFILE_MIGRATION, SCHEMA_V3 (messages), V4 (post images) — all in `db/` folder |
+| Source Control | 🟢 Set up | GitHub repo connected, git push → Netlify auto-deploy |
+| Folder Organization | 🟢 Done | SQL→db/, brand assets→branding/, governance→governance/, archive→reference/, QUICKSTART.md at root |
 | Org, Legal & Naming | 🟡 In progress | Trademark research still pending |
-| Branding | 🟡 In progress | Typography done · logo + og:image still needed |
-| Hosting & Launch | 🟢 Live | earthbackproject.org is live on Netlify |
+| Branding | 🟡 In progress | Typography done · logo still needed · og:image + favicons done |
+| Hosting & Launch | 🟢 Live | earthbackproject.org on Netlify · git-based deploys |
+| Documentation | 🟢 Done | Setup reference (HTML + DOCX), startup script, session notes, tracker |
 
 ---
 
@@ -75,7 +79,7 @@ Per v1 scope freeze (2026-02-18): everything below is required for v1.
 ### Stack (per platform spec v1)
 - Identity/Data: AT Protocol (Earthback-hosted PDS)
 - App framework: Next.js
-- Database: Supabase Postgres (scaffold exists at `/external_reference_docs/v10-pre-launch-db etc/db/supabase_ops_scaffold_v1.sql`)
+- Database: Supabase Postgres (scaffold exists at `/reference/v10-pre-launch-db etc/db/supabase_ops_scaffold_v1.sql`)
 - Automation: n8n
 - Email: Postmark or Resend
 - AI: OpenAI API (structured JSON, no autonomous writes)
@@ -189,7 +193,7 @@ Per v1 scope freeze (2026-02-18): everything below is required for v1.
 
 - [x] Color palette — established (forest green, parchment, clay/gold, moss)
 - [x] Typography — Cormorant Garamond (serif/display) + Inter (body)
-- [x] Brand standards documented (`/external_reference_docs/Earthback_Brand_Standards_v1.0_Expanded_Feb2026.pdf`)
+- [x] Brand standards documented (`/reference/Earthback_Brand_Standards_v1.0_Expanded_Feb2026.pdf`)
 - [x] Brand wordmark treatment — `ᵗʰᵉ EARTHBACK PROJECT` typographic system applied to all 8 site pages (`.brand-the` / `.brand-back` / `.brand-project` CSS classes)
 - [ ] Logo — finalized vector/raster version needed for favicon, og:image, app
 - [ ] Favicon — 32×32 / 180×180 versions for browser tab + iOS home screen
