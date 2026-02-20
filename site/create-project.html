@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start a Project — the Earthback Project</title>
+  <meta name="description" content="Create your project on Earthback — document your build, list what you need, attract collaborators.">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:      #1F3A2E;
+      --green2:     #2d5a27;
+      --green-mid:  #2C4F3B;
+      --green-soft: #4A7C5E;
+      --sage:       #5a7d52;
+      --moss:       #7a9e6c;
+      --clay:       #C2A56C;
+      --clay2:      #b8784a;
+      --parchment:  #F2EFE6;
+      --parchment2: #EAE3D3;
+      --paper-warm: #ece7da;
+      --card:       #faf8f3;
+      --pale-green: #e4eddf;
+      --ink:        #1a2218;
+      --text:       #3b4a3a;
+      --text-muted: #6b7a63;
+      --border:     #d0c4a8;
+      --border-lt:  #e0d8c4;
+      --shadow:     rgba(30,55,40,0.08);
+      --shadow-d:   rgba(30,55,40,0.16);
+      --white:      #fff;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max:        680px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--parchment); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    /* ── APP TOPBAR ── */
+    .topbar {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
+      color: white; padding: 0 24px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-weight: 500; box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      position: sticky; top: 0; z-index: 1000;
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: white; font-weight: 600; }
+    .topbar-brand-mark { font-size: 1.2rem; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; }
+    .topbar-brand-name { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 500; letter-spacing: -0.5px; }
+    .topbar-the { font-size: 0.65em; opacity: 0.85; font-weight: 400; }
+    .brand-sub { display: block; font-size: 0.65em; opacity: 0.8; }
+    .topbar-nav { display: flex; align-items: center; gap: 4px; }
+    .topbar-nav-link {
+      color: rgba(255,255,255,0.7); text-decoration: none;
+      font-size: 0.84rem; font-weight: 500; font-family: var(--font-sans);
+      padding: 6px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap;
+    }
+    .topbar-nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
+    .topbar-nav-link.active { color: white; background: rgba(255,255,255,0.15); font-weight: 600; }
+    .topbar-nav-link.coming-soon { opacity: 0.45; cursor: default; }
+    .topbar-nav-link.coming-soon:hover { background: none; color: rgba(255,255,255,0.7); }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    .topbar-hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s; }
+    .topbar-hamburger:hover { background: rgba(255,255,255,0.1); }
+    .topbar-hamburger span { display: block; width: 20px; height: 2px; background: white; border-radius: 2px; transition: all 0.25s; }
+    .topbar-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px,4px); }
+    .topbar-hamburger.open span:nth-child(2) { opacity: 0; }
+    .topbar-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px,-4px); }
+    .topbar-mobile-menu {
+      display: none; position: absolute; top: 60px; left: 0; right: 0;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
+      padding: 8px 16px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 999; flex-direction: column; gap: 2px;
+    }
+    .topbar-mobile-menu.open { display: flex; }
+    .topbar-mobile-menu a {
+      color: rgba(255,255,255,0.8); text-decoration: none;
+      font-size: 0.92rem; font-weight: 500; padding: 10px 12px;
+      border-radius: 8px; transition: background 0.2s;
+    }
+    .topbar-mobile-menu a:hover, .topbar-mobile-menu a.active { background: rgba(255,255,255,0.12); color: white; }
+
+    /* ── PAGE LAYOUT ── */
+    .page-wrap { max-width: var(--max); margin: 0 auto; padding: 32px 24px 80px; }
+
+    /* ── STEPPER ── */
+    .stepper {
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      margin-bottom: 36px;
+    }
+    .step-indicator {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      font-size: 0.82rem; font-weight: 700; font-family: var(--font-sans);
+      background: var(--parchment2); color: var(--text-muted);
+      border: 2px solid var(--border); transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .step-indicator.active { background: var(--green); color: white; border-color: var(--green); }
+    .step-indicator.done { background: var(--sage); color: white; border-color: var(--sage); }
+    .step-connector {
+      width: 40px; height: 2px; background: var(--border); flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .step-connector.done { background: var(--sage); }
+    .step-labels {
+      display: flex; justify-content: space-between; margin-top: 8px; margin-bottom: 24px;
+      padding: 0 8px;
+    }
+    .step-label-text {
+      font-size: 0.68rem; font-weight: 500; color: var(--text-muted);
+      text-align: center; width: 72px; transition: color 0.3s;
+    }
+    .step-label-text.active { color: var(--green); font-weight: 600; }
+
+    /* ── FORM PANELS ── */
+    .form-panel { display: none; animation: fadeUp 0.35s ease-out; }
+    .form-panel.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    .panel-title {
+      font-family: var(--font-serif); font-size: 1.5rem; font-weight: 600;
+      color: var(--ink); margin-bottom: 6px; line-height: 1.3;
+    }
+    .panel-subtitle {
+      font-size: 0.88rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5;
+    }
+
+    /* ── FORM ELEMENTS ── */
+    .form-group { margin-bottom: 20px; }
+    .form-label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--text); margin-bottom: 6px; letter-spacing: 0.02em;
+    }
+    .form-label .optional { font-weight: 400; color: var(--text-muted); }
+    .form-input, .form-textarea, .form-select {
+      width: 100%; padding: 12px 16px;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--card); color: var(--text);
+      font-family: var(--font-sans); font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--sage); box-shadow: 0 0 0 3px rgba(90,125,82,0.12);
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+    .form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    .form-select { cursor: pointer; -webkit-appearance: none; -moz-appearance: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7a63' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px;
+    }
+    .form-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .char-count { font-size: 0.72rem; color: var(--text-muted); text-align: right; margin-top: 2px; }
+
+    /* ── TYPE SELECTOR ── */
+    .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .type-option {
+      padding: 16px; border: 2px solid var(--border-lt); border-radius: 12px;
+      background: var(--card); cursor: pointer; transition: all 0.2s; text-align: center;
+    }
+    .type-option:hover { border-color: var(--sage); background: var(--pale-green); }
+    .type-option.selected { border-color: var(--green); background: var(--pale-green); box-shadow: 0 0 0 3px rgba(31,58,46,0.1); }
+    .type-icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .type-name { font-size: 0.85rem; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+    .type-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* ── LOCATION ── */
+    .location-shortcut {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; color: var(--sage); cursor: pointer;
+      padding: 6px 0; font-weight: 500; transition: color 0.2s;
+    }
+    .location-shortcut:hover { color: var(--green); }
+    .geocode-status { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .geocode-status.success { color: var(--sage); }
+    .geocode-status.error { color: var(--clay2); }
+
+    /* ── CATEGORY PILLS ── */
+    .cat-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cat-option {
+      padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px;
+      background: var(--card); color: var(--text-muted); cursor: pointer;
+      font-size: 0.82rem; font-weight: 500; transition: all 0.2s;
+    }
+    .cat-option:hover { border-color: var(--sage); color: var(--green); }
+    .cat-option.selected { background: var(--green); color: white; border-color: var(--green); }
+
+    /* ── NEEDS ── */
+    .needs-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .need-row {
+      display: grid; grid-template-columns: 1fr auto auto auto; gap: 8px;
+      align-items: center; padding: 12px 14px;
+      background: var(--card); border: 1px solid var(--border-lt); border-radius: 10px;
+    }
+    .need-row input { border: none; background: none; font-family: var(--font-sans); font-size: 0.88rem; color: var(--text); outline: none; min-width: 0; }
+    .need-row input::placeholder { color: var(--text-muted); opacity: 0.7; }
+    .need-type-select {
+      padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--parchment); color: var(--text); font-size: 0.75rem;
+      font-family: var(--font-sans); cursor: pointer; outline: none;
+    }
+    .urgency-toggle {
+      display: flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 6px; cursor: pointer;
+      font-size: 0.72rem; font-weight: 500;
+      background: var(--parchment2); color: var(--text-muted); border: 1px solid var(--border-lt);
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .urgency-toggle.urgent { background: #fef3e2; color: #8a5a1a; border-color: rgba(194,165,108,0.4); }
+    .need-remove {
+      background: none; border: none; font-size: 1rem; cursor: pointer;
+      color: var(--text-muted); padding: 0 4px; opacity: 0.5; transition: opacity 0.2s;
+    }
+    .need-remove:hover { opacity: 1; color: #c44; }
+    .add-need-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.84rem; font-weight: 500; color: var(--sage);
+      cursor: pointer; padding: 8px 0; transition: color 0.2s;
+      background: none; border: none; font-family: var(--font-sans);
+    }
+    .add-need-btn:hover { color: var(--green); }
+
+    /* ── CONFIRMATION PREVIEW ── */
+    .preview-card {
+      background: var(--card); border: 1px solid var(--border-lt);
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 2px 16px var(--shadow); margin-bottom: 24px;
+    }
+    .preview-visual {
+      height: 140px; position: relative; overflow: hidden;
+    }
+    .preview-visual-bg {
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; color: rgba(255,255,255,0.15);
+    }
+    .preview-badge-row {
+      position: absolute; top: 10px; left: 10px; display: flex; gap: 6px;
+    }
+    .preview-badge {
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 3px 10px; border-radius: 20px;
+      background: rgba(45,90,39,0.85); backdrop-filter: blur(6px); color: white;
+    }
+    .preview-body { padding: 18px 22px; }
+    .preview-type { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--sage); margin-bottom: 2px; }
+    .preview-name { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 4px; }
+    .preview-tagline { font-size: 0.84rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 10px; }
+    .preview-meta { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; }
+    .preview-needs { display: flex; flex-wrap: wrap; gap: 5px; }
+    .preview-need {
+      font-size: 0.72rem; font-weight: 500; padding: 3px 10px; border-radius: 14px;
+      background: var(--pale-green); color: var(--green-mid);
+    }
+    .preview-need.urgent { background: #fef3e2; color: #8a5a1a; }
+
+    .next-steps {
+      background: var(--pale-green); border: 1px solid rgba(90,125,82,0.2);
+      border-radius: 12px; padding: 18px 22px; margin-top: 16px;
+    }
+    .next-steps-title { font-size: 0.82rem; font-weight: 600; color: var(--green-mid); margin-bottom: 8px; }
+    .next-steps-list { font-size: 0.82rem; color: var(--text); line-height: 1.8; padding-left: 18px; }
+
+    /* ── BUTTONS ── */
+    .btn-row { display: flex; gap: 10px; margin-top: 28px; }
+    .btn {
+      font-size: 0.88rem; font-weight: 600; font-family: var(--font-sans);
+      padding: 12px 28px; border-radius: 10px; cursor: pointer; border: none;
+      transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--green), var(--green2)); color: white; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 14px var(--shadow-d); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-secondary { background: var(--parchment2); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--sage); }
+    .btn-success { background: linear-gradient(135deg, var(--sage), var(--moss)); color: white; }
+    .btn-success:hover { transform: translateY(-1px); box-shadow: 0 4px 14px var(--shadow-d); }
+
+    .saving-spinner { display: none; align-items: center; gap: 8px; font-size: 0.88rem; color: var(--text-muted); }
+    .saving-spinner.active { display: inline-flex; }
+
+    /* ── ERROR ── */
+    .form-error { color: #c44; font-size: 0.8rem; margin-top: 4px; display: none; }
+    .form-error.show { display: block; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .topbar { padding: 0 16px; }
+      .topbar-brand-name { font-size: 0.95rem; }
+      .topbar-nav { display: none; }
+      .topbar-hamburger { display: flex; }
+      .page-wrap { padding: 24px 16px 64px; }
+      .type-grid { grid-template-columns: 1fr; }
+      .need-row { grid-template-columns: 1fr; gap: 6px; }
+      .step-connector { width: 24px; }
+      .btn-row { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── APP TOPBAR ── -->
+<nav class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <span class="topbar-brand-mark">🌿</span>
+    <span class="topbar-brand-name"><span class="topbar-the">the</span> Earthback <span class="brand-sub">Project</span></span>
+  </a>
+  <div class="topbar-nav">
+    <a href="feed.html" class="topbar-nav-link">Home</a>
+    <a href="projects.html" class="topbar-nav-link active">Projects</a>
+    <a href="profile.html#media" class="topbar-nav-link">Media</a>
+    <a href="#" class="topbar-nav-link coming-soon" title="Coming soon">Marketplace</a>
+    <a href="circles.html" class="topbar-nav-link">Circles</a>
+  </div>
+  <div class="topbar-right">
+    <a href="messages.html" title="Messages" style="color:rgba(255,255,255,0.7);font-size:1rem;text-decoration:none;padding:4px 8px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.background='none'">💬</a>
+    <a href="profile.html" title="View your profile" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sage));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:none;" id="header-avatar">?</a>
+    <button onclick="handleSignOut()" title="Sign out" style="background:none; border:1px solid rgba(255,255,255,0.25); border-radius:8px; padding:7px 14px; color:rgba(255,255,255,0.7); font-size:0.8rem; font-weight:500; font-family:var(--font-sans); cursor:pointer; white-space:nowrap; transition:all 0.2s;" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.25)'">Sign Out</button>
+    <div class="topbar-hamburger" onclick="this.classList.toggle('open'); document.querySelector('.topbar-mobile-menu').classList.toggle('open');">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="topbar-mobile-menu">
+  <a href="feed.html">Home</a>
+  <a href="projects.html" class="active">Projects</a>
+  <a href="profile.html#media">Media</a>
+  <a href="#">Marketplace (Coming Soon)</a>
+  <a href="circles.html">Circles</a>
+  <a href="messages.html">Messages</a>
+  <a href="profile.html">My Profile</a>
+</div>
+
+<div class="page-wrap">
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- STEPPER                                                 -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="stepper" id="stepper">
+    <div class="step-indicator active" data-step="1">1</div>
+    <div class="step-connector" data-after="1"></div>
+    <div class="step-indicator" data-step="2">2</div>
+    <div class="step-connector" data-after="2"></div>
+    <div class="step-indicator" data-step="3">3</div>
+    <div class="step-connector" data-after="3"></div>
+    <div class="step-indicator" data-step="4">4</div>
+    <div class="step-connector" data-after="4"></div>
+    <div class="step-indicator" data-step="5">5</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- STEP 1: NAME + TYPE                                     -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="form-panel active" id="step-1">
+    <div class="panel-title">Name Your Project</div>
+    <div class="panel-subtitle">Every project is a puzzle. Start by giving it a name and telling us what kind of project it is.</div>
+
+    <div class="form-group">
+      <label class="form-label">Project Name</label>
+      <input class="form-input" type="text" id="project-name" placeholder="e.g. Taos ADU Hempcrete Build" maxlength="80" oninput="updateSlugPreview(); validateStep1();">
+      <div class="form-hint" id="slug-preview"></div>
+      <div class="form-error" id="name-error">Please enter a project name.</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">What kind of project is this?</label>
+      <div class="type-grid">
+        <div class="type-option selected" data-type="project" onclick="selectType(this)">
+          <div class="type-icon">🏗️</div>
+          <div class="type-name">Project</div>
+          <div class="type-desc">A build, restoration, installation, or any tangible effort</div>
+        </div>
+        <div class="type-option" data-type="company" onclick="selectType(this)">
+          <div class="type-icon">🏢</div>
+          <div class="type-name">Company</div>
+          <div class="type-desc">A business offering products or services in the green space</div>
+        </div>
+        <div class="type-option" data-type="organization" onclick="selectType(this)">
+          <div class="type-icon">🤝</div>
+          <div class="type-name">Organization</div>
+          <div class="type-desc">A co-op, nonprofit, collective, or community group</div>
+        </div>
+        <div class="type-option" data-type="campaign" onclick="selectType(this)">
+          <div class="type-icon">📣</div>
+          <div class="type-name">Campaign</div>
+          <div class="type-desc">A fundraiser, awareness push, or time-limited effort</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="window.location.href='projects.html'">Cancel</button>
+      <button class="btn btn-primary" id="btn-next-1" onclick="goStep(2)">Next: Location →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- STEP 2: LOCATION                                        -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="form-panel" id="step-2">
+    <div class="panel-title">Where Is It?</div>
+    <div class="panel-subtitle">Location helps people nearby find your project and connect. You can always update this later.</div>
+
+    <div class="form-group">
+      <label class="form-label">Location</label>
+      <input class="form-input" type="text" id="project-location" placeholder="e.g. Taos, New Mexico" oninput="clearGeocode()">
+      <div class="geocode-status" id="geocode-status"></div>
+    </div>
+
+    <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px;">
+      <span class="location-shortcut" id="use-profile-location" onclick="useProfileLocation()">📍 Use my profile location</span>
+      <span class="location-shortcut" onclick="useGPSLocation()">🛰️ Use my current GPS</span>
+    </div>
+
+    <div class="form-group" style="display:flex; gap:12px;">
+      <div style="flex:1;">
+        <label class="form-label">Latitude <span class="optional">(auto-filled)</span></label>
+        <input class="form-input" type="text" id="project-lat" placeholder="—" readonly style="background:var(--parchment2); font-size:0.82rem;">
+      </div>
+      <div style="flex:1;">
+        <label class="form-label">Longitude <span class="optional">(auto-filled)</span></label>
+        <input class="form-input" type="text" id="project-lng" placeholder="—" readonly style="background:var(--parchment2); font-size:0.82rem;">
+      </div>
+    </div>
+    <div class="form-hint">Coordinates are looked up automatically when you type a location and click "Look Up." They enable the distance search feature.</div>
+
+    <div style="margin-top:12px;">
+      <button class="btn btn-secondary" onclick="geocodeLocation()" id="geocode-btn" style="font-size:0.82rem; padding:8px 18px;">🔍 Look Up Coordinates</button>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(3)">Next: Details →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- STEP 3: TAGLINE + DESCRIPTION + CATEGORY                -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="form-panel" id="step-3">
+    <div class="panel-title">Tell the Story</div>
+    <div class="panel-subtitle">A short tagline and a longer description help people understand what you're building and why it matters.</div>
+
+    <div class="form-group">
+      <label class="form-label">Tagline</label>
+      <input class="form-input" type="text" id="project-tagline" placeholder="e.g. Building affordable hempcrete homes across the Southwest" maxlength="140" oninput="updateCharCount('project-tagline', 'tagline-count', 140)">
+      <div class="char-count" id="tagline-count">0 / 140</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Description <span class="optional">(optional — can add later)</span></label>
+      <textarea class="form-textarea" id="project-description" placeholder="What's the project about? What are you trying to accomplish? What makes it unique?" rows="5" maxlength="2000" oninput="updateCharCount('project-description', 'desc-count', 2000)"></textarea>
+      <div class="char-count" id="desc-count">0 / 2000</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Category <span class="optional">(helps with search &amp; discovery)</span></label>
+      <div class="cat-grid">
+        <span class="cat-option" data-cat="housing" onclick="toggleCategory(this)">Housing / Shelter</span>
+        <span class="cat-option" data-cat="agriculture" onclick="toggleCategory(this)">Agriculture / Food</span>
+        <span class="cat-option" data-cat="water" onclick="toggleCategory(this)">Water Systems</span>
+        <span class="cat-option" data-cat="energy" onclick="toggleCategory(this)">Energy / Solar</span>
+        <span class="cat-option" data-cat="land" onclick="toggleCategory(this)">Land Restoration</span>
+        <span class="cat-option" data-cat="community" onclick="toggleCategory(this)">Community</span>
+        <span class="cat-option" data-cat="hemp" onclick="toggleCategory(this)">Hemp Processing</span>
+        <span class="cat-option" data-cat="education" onclick="toggleCategory(this)">Education / Training</span>
+        <span class="cat-option" data-cat="other" onclick="toggleCategory(this)">Other</span>
+      </div>
+      <div class="form-hint">Pick one or more. Categories are stored as a tag in the project's circle affiliation.</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Cover Color <span class="optional">(fallback when no image)</span></label>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <input type="color" id="cover-color" value="#1F3A2E" style="width:42px; height:36px; border:1px solid var(--border); border-radius:8px; cursor:pointer; padding:2px;">
+        <span style="font-size:0.82rem; color:var(--text-muted);">Used as your project card gradient until you add an image.</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(4)">Next: Add Needs →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- STEP 4: NEEDS                                           -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="form-panel" id="step-4">
+    <div class="panel-title">What Does Your Project Need?</div>
+    <div class="panel-subtitle">Every project is a puzzle with missing pieces. List what you need — this is how people find you and offer to help. You can always add more later.</div>
+
+    <div class="needs-list" id="needs-list">
+      <!-- JS adds need rows here -->
+    </div>
+    <button class="add-need-btn" onclick="addNeedRow()" id="add-need-btn">+ Add a Need</button>
+
+    <div class="form-hint" style="margin-top:12px;">Tip: Be specific! "Licensed electrician for 200A service panel" is better than "electrician." Types help the matching engine surface your needs to the right people.</div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goStep(3)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(5)">Review & Create →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- STEP 5: CONFIRMATION                                    -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="form-panel" id="step-5">
+    <div class="panel-title">Looking Good!</div>
+    <div class="panel-subtitle">Here's how your project will appear. You can go back and edit anything, or create it now.</div>
+
+    <div class="preview-card" id="preview-card">
+      <!-- JS renders preview here -->
+    </div>
+
+    <div class="next-steps">
+      <div class="next-steps-title">After creating your project, you can:</div>
+      <ol class="next-steps-list">
+        <li>Upload a cover image and photos</li>
+        <li>Add team members and collaborators</li>
+        <li>Link media (YouTube, articles, tutorials)</li>
+        <li>Share it to the feed so others discover your puzzle</li>
+      </ol>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goStep(4)">← Back</button>
+      <button class="btn btn-success" id="btn-create" onclick="createProject()">Create Project</button>
+      <span class="saving-spinner" id="saving-spinner">⏳ Saving...</span>
+    </div>
+    <div class="form-error" id="create-error" style="margin-top:8px;"></div>
+  </div>
+
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentStep = 1;
+let selectedType = 'project';
+let selectedCategories = [];
+let profileLocation = null;
+let geocodedLat = null;
+let geocodedLng = null;
+
+// ── Auth check — redirect to join if not logged in ──
+(async function() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    window.location.href = 'join.html';
+    return;
+  }
+
+  // Populate header avatar
+  const { data: prof } = await sb.from('profiles').select('display_name, avatar_url, location, latitude, longitude').eq('id', session.user.id).single();
+  const el = document.getElementById('header-avatar');
+  if (el && prof) {
+    if (prof.avatar_url) {
+      el.innerHTML = '';
+      el.style.background = 'url(' + prof.avatar_url + ') center/cover';
+    } else if (prof.display_name) {
+      el.textContent = prof.display_name.charAt(0).toUpperCase();
+    }
+  }
+
+  // Store profile location for "use my profile location" shortcut
+  if (prof) {
+    profileLocation = {
+      location: prof.location || '',
+      latitude: prof.latitude || null,
+      longitude: prof.longitude || null
+    };
+  }
+})();
+
+async function handleSignOut() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+// ══════════════════════════════════════════════════
+// STEPPER NAVIGATION
+// ══════════════════════════════════════════════════
+
+function goStep(step) {
+  // Validate before advancing
+  if (step > currentStep) {
+    if (currentStep === 1 && !validateStep1()) return;
+  }
+
+  currentStep = step;
+
+  // Update panels
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step-' + step).classList.add('active');
+
+  // Update stepper indicators
+  document.querySelectorAll('.step-indicator').forEach(ind => {
+    const s = parseInt(ind.dataset.step);
+    ind.classList.remove('active', 'done');
+    if (s === step) ind.classList.add('active');
+    else if (s < step) { ind.classList.add('done'); ind.textContent = '✓'; }
+    else ind.textContent = s;
+  });
+
+  // Update connectors
+  document.querySelectorAll('.step-connector').forEach(c => {
+    const after = parseInt(c.dataset.after);
+    c.classList.toggle('done', after < step);
+  });
+
+  // If step 4, ensure at least one need row
+  if (step === 4 && document.querySelectorAll('.need-row').length === 0) {
+    addNeedRow();
+  }
+
+  // If step 5, render preview
+  if (step === 5) renderPreview();
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════════════
+// STEP 1: NAME + TYPE
+// ══════════════════════════════════════════════════
+
+function selectType(el) {
+  document.querySelectorAll('.type-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedType = el.dataset.type;
+}
+
+function slugify(str) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 60);
+}
+
+function updateSlugPreview() {
+  const name = document.getElementById('project-name').value.trim();
+  const preview = document.getElementById('slug-preview');
+  if (name.length > 0) {
+    preview.textContent = 'URL slug: ' + slugify(name);
+  } else {
+    preview.textContent = '';
+  }
+}
+
+function validateStep1() {
+  const name = document.getElementById('project-name').value.trim();
+  const err = document.getElementById('name-error');
+  if (!name) {
+    err.classList.add('show');
+    document.getElementById('project-name').focus();
+    return false;
+  }
+  err.classList.remove('show');
+  return true;
+}
+
+// ══════════════════════════════════════════════════
+// STEP 2: LOCATION + GEOCODING
+// ══════════════════════════════════════════════════
+
+function useProfileLocation() {
+  if (!profileLocation || !profileLocation.location) {
+    document.getElementById('geocode-status').textContent = 'No location set on your profile yet.';
+    document.getElementById('geocode-status').className = 'geocode-status error';
+    return;
+  }
+  document.getElementById('project-location').value = profileLocation.location;
+  if (profileLocation.latitude) {
+    geocodedLat = profileLocation.latitude;
+    geocodedLng = profileLocation.longitude;
+    document.getElementById('project-lat').value = profileLocation.latitude;
+    document.getElementById('project-lng').value = profileLocation.longitude;
+    document.getElementById('geocode-status').textContent = '✓ Using your profile location and coordinates.';
+    document.getElementById('geocode-status').className = 'geocode-status success';
+  }
+}
+
+function useGPSLocation() {
+  if (!navigator.geolocation) {
+    document.getElementById('geocode-status').textContent = 'Geolocation is not supported by your browser.';
+    document.getElementById('geocode-status').className = 'geocode-status error';
+    return;
+  }
+  document.getElementById('geocode-status').textContent = 'Getting GPS location...';
+  document.getElementById('geocode-status').className = 'geocode-status';
+  navigator.geolocation.getCurrentPosition(pos => {
+    geocodedLat = pos.coords.latitude;
+    geocodedLng = pos.coords.longitude;
+    document.getElementById('project-lat').value = geocodedLat.toFixed(5);
+    document.getElementById('project-lng').value = geocodedLng.toFixed(5);
+    document.getElementById('geocode-status').textContent = '✓ GPS coordinates captured. Enter a place name above for display.';
+    document.getElementById('geocode-status').className = 'geocode-status success';
+
+    // Reverse geocode to fill location text
+    reverseGeocode(geocodedLat, geocodedLng);
+  }, () => {
+    document.getElementById('geocode-status').textContent = 'Unable to get GPS location. Try typing it manually.';
+    document.getElementById('geocode-status').className = 'geocode-status error';
+  });
+}
+
+async function reverseGeocode(lat, lng) {
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`, {
+      headers: { 'User-Agent': 'EarthbackProject/1.0' }
+    });
+    const data = await res.json();
+    if (data && data.address) {
+      const parts = [];
+      if (data.address.city || data.address.town || data.address.village) {
+        parts.push(data.address.city || data.address.town || data.address.village);
+      }
+      if (data.address.state) parts.push(data.address.state);
+      if (parts.length > 0) {
+        document.getElementById('project-location').value = parts.join(', ');
+      }
+    }
+  } catch (e) { /* silently fail — user can type manually */ }
+}
+
+async function geocodeLocation() {
+  const loc = document.getElementById('project-location').value.trim();
+  if (!loc) {
+    document.getElementById('geocode-status').textContent = 'Enter a location first.';
+    document.getElementById('geocode-status').className = 'geocode-status error';
+    return;
+  }
+  document.getElementById('geocode-status').textContent = 'Looking up coordinates...';
+  document.getElementById('geocode-status').className = 'geocode-status';
+  document.getElementById('geocode-btn').disabled = true;
+
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(loc)}&format=json&limit=1`, {
+      headers: { 'User-Agent': 'EarthbackProject/1.0' }
+    });
+    const data = await res.json();
+    if (data && data.length > 0) {
+      geocodedLat = parseFloat(data[0].lat);
+      geocodedLng = parseFloat(data[0].lon);
+      document.getElementById('project-lat').value = geocodedLat.toFixed(5);
+      document.getElementById('project-lng').value = geocodedLng.toFixed(5);
+      document.getElementById('geocode-status').textContent = `✓ Found: ${data[0].display_name.split(',').slice(0, 3).join(',')}`;
+      document.getElementById('geocode-status').className = 'geocode-status success';
+    } else {
+      document.getElementById('geocode-status').textContent = 'Could not find coordinates for that location. Try being more specific.';
+      document.getElementById('geocode-status').className = 'geocode-status error';
+    }
+  } catch (e) {
+    document.getElementById('geocode-status').textContent = 'Lookup failed. Check your connection and try again.';
+    document.getElementById('geocode-status').className = 'geocode-status error';
+  }
+  document.getElementById('geocode-btn').disabled = false;
+}
+
+function clearGeocode() {
+  geocodedLat = null;
+  geocodedLng = null;
+  document.getElementById('project-lat').value = '';
+  document.getElementById('project-lng').value = '';
+  document.getElementById('geocode-status').textContent = '';
+}
+
+// ══════════════════════════════════════════════════
+// STEP 3: DETAILS
+// ══════════════════════════════════════════════════
+
+function updateCharCount(inputId, countId, max) {
+  const len = document.getElementById(inputId).value.length;
+  document.getElementById(countId).textContent = len + ' / ' + max;
+}
+
+function toggleCategory(el) {
+  el.classList.toggle('selected');
+  selectedCategories = Array.from(document.querySelectorAll('.cat-option.selected')).map(c => c.dataset.cat);
+}
+
+// ══════════════════════════════════════════════════
+// STEP 4: NEEDS
+// ══════════════════════════════════════════════════
+
+let needCount = 0;
+
+function addNeedRow() {
+  if (document.querySelectorAll('.need-row').length >= 8) return;
+  needCount++;
+  const id = needCount;
+  const row = document.createElement('div');
+  row.className = 'need-row';
+  row.dataset.id = id;
+  row.innerHTML = `
+    <input type="text" placeholder="What do you need? (e.g. Licensed electrician)" data-field="desc" maxlength="120">
+    <select class="need-type-select" data-field="type">
+      <option value="skill">🛠 Skill</option>
+      <option value="resource">📦 Resource</option>
+      <option value="people">👤 People</option>
+      <option value="place">📍 Place</option>
+      <option value="funding">💰 Funding</option>
+    </select>
+    <div class="urgency-toggle" onclick="this.classList.toggle('urgent')" data-field="urgent">
+      ⚡ Urgent
+    </div>
+    <button class="need-remove" onclick="this.parentElement.remove()">✕</button>
+  `;
+  document.getElementById('needs-list').appendChild(row);
+  row.querySelector('input').focus();
+
+  if (document.querySelectorAll('.need-row').length >= 8) {
+    document.getElementById('add-need-btn').style.display = 'none';
+  }
+}
+
+function collectNeeds() {
+  const typeIcons = { skill: '🛠', resource: '📦', people: '👤', place: '📍', funding: '💰' };
+  const rows = document.querySelectorAll('.need-row');
+  const needs = [];
+  rows.forEach(row => {
+    const desc = row.querySelector('[data-field="desc"]').value.trim();
+    if (!desc) return;
+    const type = row.querySelector('[data-field="type"]').value;
+    const urgent = row.querySelector('[data-field="urgent"]').classList.contains('urgent');
+    // Prefix with type icon for display (project_needs table has description + is_urgent only)
+    const prefixedDesc = (typeIcons[type] || '') + ' ' + desc;
+    needs.push({ description: prefixedDesc, type, is_urgent: urgent });
+  });
+  return needs;
+}
+
+// ══════════════════════════════════════════════════
+// STEP 5: PREVIEW + CREATE
+// ══════════════════════════════════════════════════
+
+function renderPreview() {
+  const name = document.getElementById('project-name').value.trim();
+  const tagline = document.getElementById('project-tagline').value.trim();
+  const location = document.getElementById('project-location').value.trim();
+  const color = document.getElementById('cover-color').value;
+  const needs = collectNeeds();
+  const typeLabels = { project: 'Project', company: 'Company', organization: 'Organization', campaign: 'Campaign' };
+
+  const needsHTML = needs.map(n =>
+    `<span class="preview-need${n.is_urgent ? ' urgent' : ''}">${n.description}</span>`
+  ).join('');
+
+  document.getElementById('preview-card').innerHTML = `
+    <div class="preview-visual" style="background: linear-gradient(135deg, ${color}, ${adjustColor(color, 30)});">
+      <div class="preview-visual-bg">${name.charAt(0).toUpperCase()}</div>
+      <div class="preview-badge-row">
+        <span class="preview-badge">${typeLabels[selectedType] || selectedType}</span>
+      </div>
+    </div>
+    <div class="preview-body">
+      <div class="preview-type">${typeLabels[selectedType] || selectedType}</div>
+      <div class="preview-name">${escHTML(name)}</div>
+      ${tagline ? `<div class="preview-tagline">${escHTML(tagline)}</div>` : ''}
+      ${location ? `<div class="preview-meta">📍 ${escHTML(location)}</div>` : ''}
+      ${needsHTML ? `<div class="preview-needs">${needsHTML}</div>` : '<div style="font-size:0.82rem;color:var(--text-muted);font-style:italic;">No needs added yet — you can add them later from your project page.</div>'}
+    </div>
+  `;
+}
+
+function adjustColor(hex, amount) {
+  // Lighten a hex color slightly
+  let r = parseInt(hex.slice(1, 3), 16);
+  let g = parseInt(hex.slice(3, 5), 16);
+  let b = parseInt(hex.slice(5, 7), 16);
+  r = Math.min(255, r + amount);
+  g = Math.min(255, g + amount);
+  b = Math.min(255, b + amount);
+  return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('');
+}
+
+function escHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+async function createProject() {
+  const btn = document.getElementById('btn-create');
+  const spinner = document.getElementById('saving-spinner');
+  const errEl = document.getElementById('create-error');
+  errEl.classList.remove('show');
+  btn.disabled = true;
+  spinner.classList.add('active');
+
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) {
+      errEl.textContent = 'You must be signed in to create a project.';
+      errEl.classList.add('show');
+      btn.disabled = false;
+      spinner.classList.remove('active');
+      return;
+    }
+
+    const name = document.getElementById('project-name').value.trim();
+    const slug = slugify(name);
+    const tagline = document.getElementById('project-tagline').value.trim() || null;
+    const description = document.getElementById('project-description').value.trim() || null;
+    const location = document.getElementById('project-location').value.trim() || null;
+    const color = document.getElementById('cover-color').value;
+    const circleSlug = selectedCategories.length > 0 ? selectedCategories[0] : null;
+    const circleLabel = circleSlug ? circleSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : null;
+
+    // Check slug uniqueness
+    const { data: existing } = await sb.from('projects').select('id').eq('slug', slug).limit(1);
+    let finalSlug = slug;
+    if (existing && existing.length > 0) {
+      finalSlug = slug + '-' + Date.now().toString(36);
+    }
+
+    // Insert project
+    const { data: project, error: projErr } = await sb.from('projects').insert({
+      owner_id: session.user.id,
+      name: name,
+      slug: finalSlug,
+      tagline: tagline,
+      description: description,
+      cover_color: color,
+      project_type: selectedType,
+      status: 'forming',
+      location: location,
+      latitude: geocodedLat,
+      longitude: geocodedLng,
+      circle_slug: circleSlug,
+      circle_label: circleLabel,
+      is_public: true,
+      is_verified: false,
+      is_demo: false
+    }).select().single();
+
+    if (projErr) {
+      errEl.textContent = 'Error creating project: ' + projErr.message;
+      errEl.classList.add('show');
+      btn.disabled = false;
+      spinner.classList.remove('active');
+      return;
+    }
+
+    // Insert needs
+    const needs = collectNeeds();
+    if (needs.length > 0) {
+      const needRows = needs.map(n => ({
+        project_id: project.id,
+        description: n.description,
+        is_urgent: n.is_urgent,
+        is_filled: false
+      }));
+      const { error: needsErr } = await sb.from('project_needs').insert(needRows);
+      if (needsErr) {
+        console.warn('Needs insert error:', needsErr.message);
+        // Non-fatal — project still created
+      }
+    }
+
+    // Success — redirect to the new project page
+    spinner.classList.remove('active');
+    window.location.href = 'project.html?slug=' + finalSlug;
+
+  } catch (e) {
+    errEl.textContent = 'Something went wrong: ' + e.message;
+    errEl.classList.add('show');
+    btn.disabled = false;
+    spinner.classList.remove('active');
+  }
+}
+</script>
+
+<!--
+═══════════════════════════════════════════════════════════════
+IMAGE GENERATION PROMPTS — for Flux, Midjourney, or DALL-E
+═══════════════════════════════════════════════════════════════
+
+STEP ILLUSTRATIONS (optional decorative visuals, 400x200):
+
+1. "Name Your Project" step background
+   Prompt: Overhead flat-lay of a reclaimed wood desk with a blank kraft paper
+   journal open to a fresh page, a pencil, a sprig of hemp leaves, a small
+   potted succulent, and a tape measure — soft warm window light, minimal
+   editorial photography, earthy tones, no text
+
+2. "Where Is It?" step background
+   Prompt: Satellite-view map texture of the American Southwest rendered in
+   muted earth tones and sage green overlays, topographic contour lines
+   visible, small glowing pin marker in New Mexico, cartographic art style,
+   no text labels
+
+3. "Tell the Story" step background
+   Prompt: Close-up of weathered hands holding a hemp fiber sample over an
+   architectural blueprint, shallow depth of field, golden afternoon light,
+   documentary photography, warm earth palette, no text
+
+4. "Add Needs" step background
+   Prompt: Abstract puzzle pieces in earthy greens and warm clay tones,
+   some connected and some floating apart, soft textured paper background,
+   geometric illustration style, muted natural color palette, no text
+
+5. "Confirmation" step background
+   Prompt: Celebration moment — small team of diverse builders raising a
+   hempcrete wall panel into place on a sunny construction site, motion
+   blur on lifting arms, documentary photography style, triumphant feeling,
+   earth tones with bright sky, no people's faces clearly visible
+-->
+
+<!-- Pre-launch Banner -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+  <span style="font-weight:600">🌿 Pre-Launch Preview</span>
+  <span style="opacity:0.7">—</span>
+  <span>You're seeing an early build of the Earthback Project. Features are in active development. Data may reset.</span>
+  <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Send feedback →</a>
+</div>
+
+</body>
+</html>

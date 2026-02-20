@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Earthback</title>
+<meta name="description" content="Earthback Privacy Policy. What we collect, what we don't, and why.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:      #1F3A2E;
+  --clay:       #C2A56C;
+  --clay-rust:  #A05E3A;
+  --moss:       #7e9b73;
+  --parchment:  #F2EFE6;
+  --parchment2: #EAE3D3;
+  --ink:        #2B2E30;
+  --ink-soft:   #555A5C;
+  --border:     rgba(43,46,48,0.1);
+  --max:        1280px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', system-ui, sans-serif; background: var(--parchment); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(20,38,28,0.97); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(194,165,108,0.12); }
+.nav-inner { max-width: var(--max); margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+.nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--parchment); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; }
+.nav-logo .brand-back { color: var(--clay); }
+/* ── Brand name treatment: "the Earthback Project" ── */
+.brand-the {
+    font-size: 0.5em;
+    font-weight: 300;
+    color: rgba(242,239,230,0.52);
+    text-transform: lowercase;
+    letter-spacing: 0.03em;
+    vertical-align: 0.22em;
+    margin-right: 0.18em;
+}
+.brand-back { color: var(--clay); }
+.brand-project {
+    font-size: 0.46em;
+    font-weight: 400;
+    color: rgba(242,239,230,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    vertical-align: 0.24em;
+}
+nav ul { display: flex; gap: 1.75rem; list-style: none; align-items: center; }
+nav a { color: rgba(242,239,230,0.78); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+nav a:hover { color: var(--clay); }
+.nav-join { background: var(--clay); color: var(--green) !important; padding: 0.55rem 1.35rem; border-radius: 3px; font-weight: 700 !important; }
+
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--parchment); border-radius: 2px; transition: all 0.25s; }
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-nav-overlay { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(9,18,13,0.98); z-index: 999; flex-direction: column; padding: 2rem; gap: 0; }
+.mobile-nav-overlay.open { display: flex; }
+.mobile-nav-overlay a { font-size: 1.4rem; color: rgba(242,239,230,0.8); text-decoration: none; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-family: 'Cormorant Garamond', serif; font-weight: 600; }
+.mobile-nav-overlay a.join-mobile { margin-top: 1.5rem; border: none; background: var(--clay); color: var(--green) !important; text-align: center; border-radius: 3px; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; padding: 1rem; }
+@media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
+
+.page-hero { padding: 9rem 2rem 4rem; background: linear-gradient(158deg, #0b1a12 0%, var(--green) 60%); text-align: center; }
+.eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--clay); margin-bottom: 1rem; }
+.page-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 600; color: var(--parchment); line-height: 1.1; }
+.page-hero h1 em { font-style: italic; color: var(--clay); }
+.hero-meta { margin-top: 1.25rem; font-size: 0.84rem; color: rgba(242,239,230,0.45); }
+
+.doc-body { max-width: 760px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+
+.plain-note { background: rgba(126,155,115,0.12); border-left: 3px solid var(--moss); border-radius: 0 8px 8px 0; padding: 1.1rem 1.4rem; margin-bottom: 3rem; font-size: 0.9rem; color: var(--ink-soft); line-height: 1.7; }
+.plain-note strong { color: var(--green); }
+
+.no-list {
+  display: flex; flex-direction: column; gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+.no-item {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6;
+}
+.no-item::before { content: '✗'; color: rgba(160,94,58,0.6); flex-shrink: 0; margin-top: 2px; }
+
+.yes-item { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; margin-bottom: 0.6rem; }
+.yes-item::before { content: '✓'; color: var(--moss); flex-shrink: 0; margin-top: 2px; }
+
+.doc-section { margin-bottom: 2.75rem; }
+.doc-section h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--green); margin-bottom: 0.85rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--parchment2); }
+.doc-section p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0.85rem; line-height: 1.8; }
+.doc-section ul { margin: 0.5rem 0 0.85rem 1.4rem; }
+.doc-section li { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0.4rem; line-height: 1.7; }
+.doc-section a { color: var(--green); }
+
+footer { background: #171c19; padding: 2.5rem 2rem; text-align: center; }
+.footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--parchment); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; display: inline-block; margin-bottom: 1rem; }
+.footer-logo .brand-back { color: var(--clay); }
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1.5rem; list-style: none; }
+.footer-links a { font-size: 0.82rem; color: rgba(242,239,230,0.4); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--clay); }
+.footer-copy { font-size: 0.74rem; color: rgba(242,239,230,0.2); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+    <ul>
+      <li><a href="how-it-works.html">How it works</a></li>
+      <li><a href="use-cases.html">Use cases</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="safety.html">Safety</a></li>
+                  <li><a href="login.html" style="opacity:0.75;">Sign In</a></li>
+            <li><a href="join.html" class="nav-join">Join / Sign In</a></li>
+    </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Legal</div>
+  <h1>Privacy <em>Policy</em></h1>
+  <p class="hero-meta">Effective date: February 19, 2026 · Earthback</p>
+</div>
+
+<div class="doc-body">
+
+  <div class="plain-note">
+    <strong>The short version:</strong> We collect what we need to run the community. We don't sell it, share it with advertisers, or use it for anything you haven't consented to. Your data belongs to you and you can take it with you. Questions: <a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a>.
+  </div>
+
+  <div class="doc-section">
+    <h2>What we collect</h2>
+    <p>When you create an account, we collect:</p>
+    <ul>
+      <li>Your name (or nickname — you choose how you're known)</li>
+      <li>Your email address</li>
+      <li>Your general location (city or region, not precise coordinates)</li>
+      <li>What you bring and what you're looking for (the text you enter on signup)</li>
+      <li>The type of member you are (individual, organization, community, etc.)</li>
+    </ul>
+    <p>When you use the platform, we also collect:</p>
+    <ul>
+      <li>Content you post (project updates, technique shares, resource listings)</li>
+      <li>Commitments you make to projects</li>
+      <li>Basic usage logs (when you logged in, what features you used) for security and debugging</li>
+    </ul>
+    <p>If you use the AI profile builder and paste a URL, we fetch and process that page to generate your profile draft. You review everything before it's saved — nothing from that scan becomes part of your profile without your approval.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>What we don't collect</h2>
+    <div class="no-list">
+      <div class="no-item">Precise location data or GPS coordinates</div>
+      <div class="no-item">Browsing history outside of Earthback</div>
+      <div class="no-item">Financial information (we don't currently process payments)</div>
+      <div class="no-item">Device microphone or camera access</div>
+      <div class="no-item">Data from other apps on your device</div>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <h2>What we never do with your data</h2>
+    <div class="no-list">
+      <div class="no-item">Sell it to anyone, ever</div>
+      <div class="no-item">Share it with advertisers</div>
+      <div class="no-item">Use it to train AI models for third parties</div>
+      <div class="no-item">Show it to other members without your consent</div>
+      <div class="no-item">Use it for any purpose beyond running and improving Earthback</div>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <h2>How we use what we collect</h2>
+    <div class="yes-item">To create and maintain your account</div>
+    <div class="yes-item">To show your profile and posts within the community</div>
+    <div class="yes-item">To send you transactional emails (login links, project notifications you've opted into)</div>
+    <div class="yes-item">To keep the platform secure and prevent abuse</div>
+    <div class="yes-item">To improve how Earthback works, using aggregate and anonymized patterns</div>
+  </div>
+
+  <div class="doc-section">
+    <h2>Email</h2>
+    <p>We use your email address to send you login links (magic link auth — no password required). You'll only receive emails related to your account and the communities you're part of. There's no marketing list. You can opt out of any non-essential emails from your profile settings.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Data storage and security</h2>
+    <p>Your data is stored on servers in the United States. We use industry-standard encryption in transit (HTTPS) and at rest. We limit access to your data to the people who need it to operate the platform.</p>
+    <p>We're built on AT Protocol, which means your core profile data is stored in a way that's portable and user-controlled by design — not locked in a proprietary silo.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Your rights</h2>
+    <p>You can, at any time:</p>
+    <ul>
+      <li><strong>Access</strong> all data we hold about you — email us and we'll send you a full export</li>
+      <li><strong>Correct</strong> inaccurate information in your profile</li>
+      <li><strong>Delete</strong> your account and all associated data</li>
+      <li><strong>Export</strong> your content and profile in a portable format</li>
+      <li><strong>Opt out</strong> of non-essential communications</li>
+    </ul>
+    <p>To exercise any of these rights, email <a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a>.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Cookies</h2>
+    <p>We use a minimal number of cookies — just what's needed to keep you logged in and remember your session preferences. We don't use advertising cookies or tracking pixels. We don't use third-party analytics that track you across the web.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Third-party services</h2>
+    <p>We use a small number of third-party services to operate the platform:</p>
+    <ul>
+      <li><strong>Email delivery</strong> (Postmark or Resend) — to send you login links and notifications</li>
+      <li><strong>Infrastructure</strong> (cloud hosting providers) — to store and serve the platform</li>
+    </ul>
+    <p>These services are given only the data they need to perform their function. We don't use any advertising networks, social tracking pixels, or behavioral analytics platforms.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Children's privacy</h2>
+    <p>Earthback is not directed at children under 16. We don't knowingly collect data from anyone under 16. If you believe a minor has created an account, email us and we'll remove it promptly.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Changes to this policy</h2>
+    <p>If we make meaningful changes to this policy, we'll notify members by email and update the effective date above. We'll never make changes that significantly reduce your privacy rights without giving you the opportunity to delete your account first.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Contact</h2>
+    <p>Privacy questions, data requests, or concerns: <a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a>. We read every email and respond.</p>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+  <ul class="footer-links">
+    <li><a href="how-it-works.html">How it works</a></li>
+    <li><a href="use-cases.html">Use cases</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="safety.html">Safety</a></li>
+    <li><a href="terms.html">Terms</a></li>
+    <li><a href="privacy.html" style="color:rgba(242,239,230,0.6)">Privacy</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Earthback. All rights reserved.</div>
+</footer>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay">
+  <a href="how-it-works.html">How It Works</a>
+  <a href="use-cases.html">Use Cases</a>
+  <a href="about.html">About</a>
+  <a href="safety.html">Safety</a>
+  <a href="join.html" class="join-mobile">Join / Sign In &rarr;</a>
+</div>
+<script>
+function toggleMobileNav() {
+  var btn = document.getElementById('nav-hamburger');
+  var overlay = document.getElementById('mobile-nav-overlay');
+  btn.classList.toggle('open');
+  overlay.classList.toggle('open');
+  document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('.mobile-nav-overlay a').forEach(function(a) {
+  a.addEventListener('click', function() {
+    document.getElementById('nav-hamburger').classList.remove('open');
+    document.getElementById('mobile-nav-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+</script>
+</body>
+</html>

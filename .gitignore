@@ -1,0 +1,28 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Node (if added later)
+node_modules/
+.env
+.env.local
+.env.production
+
+# Large reference/design assets (keep locally, not in repo)
+external_reference_docs/
+*.psd
+*.ai
+*.sketch
+
+# Large root-level images (design mockups)
+/Earthback branding*.png
+/Earthback page mock-up*.png
+/earthback styles*.png

@@ -1,0 +1,3 @@
+# Netlify redirects
+# /community serves the dashboard (feed.html) — join.html is onboarding only
+/community    /feed.html    200

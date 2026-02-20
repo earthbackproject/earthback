@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — the Earthback Project</title>
+  <meta name="description" content="Browse regenerative building projects, find what's happening near you, and discover where you fit in.">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:      #1F3A2E;
+      --green2:     #2d5a27;
+      --green-mid:  #2C4F3B;
+      --green-soft: #4A7C5E;
+      --sage:       #5a7d52;
+      --moss:       #7a9e6c;
+      --clay:       #C2A56C;
+      --clay2:      #b8784a;
+      --parchment:  #F2EFE6;
+      --parchment2: #EAE3D3;
+      --paper-warm: #ece7da;
+      --card:       #faf8f3;
+      --pale-green: #e4eddf;
+      --ink:        #1a2218;
+      --text:       #3b4a3a;
+      --text-muted: #6b7a63;
+      --border:     #d0c4a8;
+      --border-lt:  #e0d8c4;
+      --shadow:     rgba(30,55,40,0.08);
+      --shadow-d:   rgba(30,55,40,0.16);
+      --white:      #fff;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max:        1100px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--parchment); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    /* ── APP TOPBAR ── */
+    .topbar {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
+      color: white; padding: 0 24px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-weight: 500; box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      position: sticky; top: 0; z-index: 1000;
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: white; font-weight: 600; }
+    .topbar-brand-mark { font-size: 1.2rem; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; }
+    .topbar-brand-name { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 500; letter-spacing: -0.5px; }
+    .topbar-the { font-size: 0.65em; opacity: 0.85; font-weight: 400; }
+    .brand-sub { display: block; font-size: 0.65em; opacity: 0.8; }
+    .topbar-nav { display: flex; align-items: center; gap: 4px; }
+    .topbar-nav-link {
+      color: rgba(255,255,255,0.7); text-decoration: none;
+      font-size: 0.84rem; font-weight: 500; font-family: var(--font-sans);
+      padding: 6px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap;
+    }
+    .topbar-nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
+    .topbar-nav-link.active { color: white; background: rgba(255,255,255,0.15); font-weight: 600; }
+    .topbar-nav-link.coming-soon { opacity: 0.45; cursor: default; }
+    .topbar-nav-link.coming-soon:hover { background: none; color: rgba(255,255,255,0.7); }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    .topbar-hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s; }
+    .topbar-hamburger:hover { background: rgba(255,255,255,0.1); }
+    .topbar-hamburger span { display: block; width: 20px; height: 2px; background: white; border-radius: 2px; transition: all 0.25s; }
+    .topbar-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px,4px); }
+    .topbar-hamburger.open span:nth-child(2) { opacity: 0; }
+    .topbar-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px,-4px); }
+    .topbar-mobile-menu {
+      display: none; position: absolute; top: 60px; left: 0; right: 0;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
+      padding: 8px 16px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 999; flex-direction: column; gap: 2px;
+    }
+    .topbar-mobile-menu.open { display: flex; }
+    .topbar-mobile-menu a {
+      color: rgba(255,255,255,0.8); text-decoration: none;
+      font-size: 0.92rem; font-weight: 500; padding: 10px 12px;
+      border-radius: 8px; transition: background 0.2s;
+    }
+    .topbar-mobile-menu a:hover, .topbar-mobile-menu a.active { background: rgba(255,255,255,0.12); color: white; }
+
+    /* ── PAGE LAYOUT ── */
+    .page-wrap { max-width: var(--max); margin: 0 auto; padding: 28px 24px 64px; }
+
+    /* ── YOUR PROJECT HERO ── */
+    .your-project-section { margin-bottom: 36px; }
+    .section-label {
+      font-family: var(--font-sans); font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .your-project-card {
+      background: var(--card); border: 1px solid var(--border-lt);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 2px 16px var(--shadow);
+      display: grid; grid-template-columns: 340px 1fr; min-height: 220px;
+    }
+    .yp-visual {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--green) 0%, #2d5a27 60%, var(--green-soft) 100%);
+    }
+    .yp-visual-img {
+      width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.85;
+    }
+    .yp-visual-placeholder {
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.2); font-size: 4rem;
+    }
+    .yp-status-badge {
+      position: absolute; top: 14px; left: 14px;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+      color: white; font-size: 0.72rem; font-weight: 600;
+      padding: 4px 12px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .yp-body { padding: 24px 28px; display: flex; flex-direction: column; justify-content: center; }
+    .yp-type { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--sage); margin-bottom: 4px; }
+    .yp-name { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 600; color: var(--ink); line-height: 1.25; margin-bottom: 6px; }
+    .yp-tagline { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px; }
+    .yp-stats { display: flex; gap: 20px; margin-bottom: 16px; }
+    .yp-stat { text-align: center; }
+    .yp-stat-num { display: block; font-size: 1.1rem; font-weight: 700; color: var(--ink); }
+    .yp-stat-label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .yp-needs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .yp-need-pill {
+      font-size: 0.72rem; font-weight: 500; padding: 4px 12px; border-radius: 20px;
+      background: var(--pale-green); color: var(--green-mid); border: 1px solid rgba(74,124,94,0.15);
+    }
+    .yp-need-pill.urgent { background: #fef3e2; color: #8a5a1a; border-color: rgba(194,165,108,0.3); }
+    .yp-actions { display: flex; gap: 10px; }
+    .yp-btn {
+      font-size: 0.82rem; font-weight: 600; font-family: var(--font-sans);
+      padding: 8px 20px; border-radius: 9px; cursor: pointer; border: none; transition: all 0.2s;
+    }
+    .yp-btn-primary { background: linear-gradient(135deg, var(--green), #2d5a27); color: white; }
+    .yp-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--shadow-d); }
+    .yp-btn-secondary { background: var(--parchment2); color: var(--text); border: 1px solid var(--border); }
+
+    /* ── CONNECTED PROJECTS ── */
+    .connected-section { margin-bottom: 36px; }
+    .connected-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; }
+    .connected-card {
+      flex-shrink: 0; width: 200px; background: var(--card);
+      border: 1px solid var(--border-lt); border-radius: 12px;
+      overflow: hidden; cursor: pointer; transition: all 0.2s; text-decoration: none; color: inherit;
+    }
+    .connected-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px var(--shadow-d); }
+    .cc-visual { height: 90px; background: linear-gradient(135deg, var(--sage), var(--green-soft)); position: relative; }
+    .cc-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .cc-body { padding: 12px 14px; }
+    .cc-name { font-size: 0.82rem; font-weight: 600; color: var(--ink); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cc-meta { font-size: 0.7rem; color: var(--text-muted); }
+    .cc-role { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--sage); margin-top: 4px; }
+
+    /* ── SEARCH / BROWSE ── */
+    .browse-section { margin-bottom: 36px; }
+    .browse-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+    .browse-search {
+      flex: 1; min-width: 240px; display: flex; align-items: center; gap: 8px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 16px;
+    }
+    .browse-search input {
+      border: none; background: none; font-family: var(--font-sans);
+      font-size: 0.88rem; flex: 1; outline: none; color: var(--text);
+    }
+    .browse-search input::placeholder { color: var(--text-muted); }
+    .browse-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .browse-filter {
+      font-size: 0.78rem; font-weight: 500; font-family: var(--font-sans);
+      padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--card); color: var(--text); cursor: pointer; transition: all 0.2s;
+    }
+    .browse-filter:hover { border-color: var(--sage); color: var(--green); }
+    .browse-filter.active { background: var(--green); color: white; border-color: var(--green); }
+    .browse-filter select {
+      border: none; background: none; font: inherit; color: inherit; cursor: pointer; outline: none;
+      -webkit-appearance: none; -moz-appearance: none; appearance: none;
+    }
+
+    .distance-control {
+      display: flex; align-items: center; gap: 8px; font-size: 0.78rem;
+      color: var(--text); padding: 7px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--card);
+    }
+    .distance-control select {
+      border: none; background: none; font: inherit; color: var(--green);
+      font-weight: 600; cursor: pointer; outline: none;
+      -webkit-appearance: none; -moz-appearance: none; appearance: none;
+    }
+    .distance-control .gps-btn {
+      background: none; border: none; cursor: pointer; font-size: 0.9rem;
+      padding: 0 4px; opacity: 0.6; transition: opacity 0.2s;
+    }
+    .distance-control .gps-btn:hover { opacity: 1; }
+
+    /* ── PROJECT GRID ── */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+    }
+    .project-card {
+      background: var(--card); border: 1px solid var(--border-lt);
+      border-radius: 14px; overflow: hidden; transition: all 0.2s;
+      cursor: pointer; text-decoration: none; color: inherit;
+    }
+    .project-card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px var(--shadow-d); }
+    .pc-visual { height: 140px; position: relative; overflow: hidden; background: linear-gradient(135deg, var(--green-mid), var(--green-soft)); }
+    .pc-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .pc-badge-row { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
+    .pc-badge {
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 3px 10px; border-radius: 20px;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); color: white;
+    }
+    .pc-badge.status-active { background: rgba(45,90,39,0.85); }
+    .pc-badge.status-forming { background: rgba(194,165,108,0.85); color: var(--green); }
+    .pc-badge.status-complete { background: rgba(90,125,82,0.85); }
+    .pc-distance {
+      position: absolute; top: 10px; right: 10px;
+      font-size: 0.68rem; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+      background: rgba(255,255,255,0.9); color: var(--green); backdrop-filter: blur(6px);
+    }
+    .pc-body { padding: 16px 18px; }
+    .pc-type { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--sage); margin-bottom: 2px; }
+    .pc-name { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 4px; }
+    .pc-tagline { font-size: 0.8rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pc-meta-row { display: flex; align-items: center; gap: 12px; font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px; }
+    .pc-needs { display: flex; flex-wrap: wrap; gap: 4px; }
+    .pc-need {
+      font-size: 0.66rem; font-weight: 500; padding: 3px 9px; border-radius: 14px;
+      background: var(--pale-green); color: var(--green-mid);
+    }
+    .pc-need.urgent { background: #fef3e2; color: #8a5a1a; }
+
+    /* ── START A PROJECT CTA ── */
+    .start-project-card {
+      background: var(--card); border: 2px dashed var(--border);
+      border-radius: 16px; padding: 40px 28px; text-align: center;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .start-project-card:hover { border-color: var(--sage); background: var(--pale-green); }
+    .sp-icon { font-size: 2.4rem; margin-bottom: 12px; opacity: 0.5; }
+    .sp-title { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+    .sp-desc { font-size: 0.84rem; color: var(--text-muted); max-width: 400px; margin: 0 auto; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center; padding: 60px 20px; color: var(--text-muted);
+    }
+    .empty-state-icon { font-size: 2.4rem; opacity: 0.3; margin-bottom: 12px; }
+    .empty-state-msg { font-size: 0.92rem; }
+
+    /* ── CATEGORY PILLS ── */
+    .category-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+    .cat-pill {
+      font-size: 0.75rem; font-weight: 500; font-family: var(--font-sans);
+      padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+      background: var(--card); color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .cat-pill:hover { border-color: var(--sage); color: var(--green); }
+    .cat-pill.active { background: var(--green); color: white; border-color: var(--green); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .topbar { padding: 0 16px; }
+      .topbar-brand-name { font-size: 0.95rem; }
+      .topbar-nav { display: none; }
+      .topbar-hamburger { display: flex; }
+      .your-project-card { grid-template-columns: 1fr; }
+      .yp-visual { height: 160px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .browse-header { flex-direction: column; }
+      .browse-search { min-width: 100%; }
+    }
+
+    /* ── FADE ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp 0.4s ease-out; }
+    .fade-up-2 { animation: fadeUp 0.4s ease-out 0.08s both; }
+    .fade-up-3 { animation: fadeUp 0.4s ease-out 0.16s both; }
+  </style>
+</head>
+<body>
+
+<!-- ── APP TOPBAR ── -->
+<nav class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <span class="topbar-brand-mark">🌿</span>
+    <span class="topbar-brand-name"><span class="topbar-the">the</span> Earthback <span class="brand-sub">Project</span></span>
+  </a>
+  <div class="topbar-nav">
+    <a href="feed.html" class="topbar-nav-link">Home</a>
+    <a href="projects.html" class="topbar-nav-link active">Projects</a>
+    <a href="profile.html#media" class="topbar-nav-link">Media</a>
+    <a href="#" class="topbar-nav-link coming-soon" title="Coming soon">Marketplace</a>
+    <a href="circles.html" class="topbar-nav-link">Circles</a>
+  </div>
+  <div class="topbar-right">
+    <a href="messages.html" title="Messages" style="color:rgba(255,255,255,0.7);font-size:1rem;text-decoration:none;padding:4px 8px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.background='none'">💬</a>
+    <a href="profile.html" title="View your profile" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sage));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:none;" id="header-avatar">?</a>
+    <button onclick="handleSignOut()" title="Sign out" style="background:none; border:1px solid rgba(255,255,255,0.25); border-radius:8px; padding:7px 14px; color:rgba(255,255,255,0.7); font-size:0.8rem; font-weight:500; font-family:var(--font-sans); cursor:pointer; white-space:nowrap; transition:all 0.2s;" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.25)'">Sign Out</button>
+    <div class="topbar-hamburger" onclick="this.classList.toggle('open'); document.querySelector('.topbar-mobile-menu').classList.toggle('open');">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="topbar-mobile-menu">
+  <a href="feed.html">Home</a>
+  <a href="projects.html" class="active">Projects</a>
+  <a href="profile.html#media">Media</a>
+  <a href="#">Marketplace (Coming Soon)</a>
+  <a href="circles.html">Circles</a>
+  <a href="messages.html">Messages</a>
+  <a href="profile.html">My Profile</a>
+</div>
+
+<div class="page-wrap">
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- YOUR PROJECT                                           -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="your-project-section fade-up" id="your-project-section">
+    <div class="section-label">Your Project</div>
+
+    <!-- Populated by JS — if user has a project, show the hero card -->
+    <!-- If no project, show the "Start a Project" CTA -->
+    <div id="your-project-container">
+      <!-- JS fills this -->
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- CONNECTED PROJECTS                                     -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="connected-section fade-up-2" id="connected-section" style="display:none;">
+    <div class="section-label">Projects You're Connected To</div>
+    <div class="connected-scroll" id="connected-scroll">
+      <!-- JS fills this -->
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- BROWSE ALL PROJECTS                                    -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="browse-section fade-up-3">
+    <div class="section-label">Browse Projects</div>
+
+    <div class="browse-header">
+      <div class="browse-search">
+        <span style="opacity:0.5;">🔍</span>
+        <input type="text" id="search-input" placeholder="Search projects, skills needed, locations…" oninput="debounceSearch()">
+      </div>
+      <div class="distance-control">
+        <span>Within</span>
+        <select id="distance-select" onchange="loadBrowseProjects()">
+          <option value="0">Any distance</option>
+          <option value="25">25 mi</option>
+          <option value="50">50 mi</option>
+          <option value="100">100 mi</option>
+          <option value="250">250 mi</option>
+          <option value="500">500 mi</option>
+        </select>
+        <button class="gps-btn" onclick="useGPS()" title="Use my precise location">📍</button>
+      </div>
+    </div>
+
+    <div class="category-bar" id="category-bar">
+      <button class="cat-pill active" onclick="setCategory('all', this)">All</button>
+      <button class="cat-pill" onclick="setCategory('housing', this)">Housing / Shelter</button>
+      <button class="cat-pill" onclick="setCategory('agriculture', this)">Agriculture / Food</button>
+      <button class="cat-pill" onclick="setCategory('water', this)">Water Systems</button>
+      <button class="cat-pill" onclick="setCategory('energy', this)">Energy / Solar</button>
+      <button class="cat-pill" onclick="setCategory('land', this)">Land Restoration</button>
+      <button class="cat-pill" onclick="setCategory('community', this)">Community</button>
+      <button class="cat-pill" onclick="setCategory('hemp', this)">Hemp Processing</button>
+      <button class="cat-pill" onclick="setCategory('education', this)">Education / Training</button>
+      <button class="cat-pill" onclick="setCategory('company', this)">Companies</button>
+    </div>
+
+    <div class="browse-filters" style="margin-bottom: 18px;">
+      <button class="browse-filter active" onclick="setStatus('all', this)">All Stages</button>
+      <button class="browse-filter" onclick="setStatus('forming', this)">Forming</button>
+      <button class="browse-filter" onclick="setStatus('active', this)">Active</button>
+      <button class="browse-filter" onclick="setStatus('complete', this)">Complete</button>
+      <button class="browse-filter" onclick="setStatus('needs', this)">Has Open Needs</button>
+    </div>
+
+    <div class="projects-grid" id="projects-grid">
+      <!-- JS fills this -->
+    </div>
+
+    <div class="empty-state" id="empty-state" style="display:none;">
+      <div class="empty-state-icon">🔍</div>
+      <div class="empty-state-msg">No projects found matching your filters. Try broadening your search.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function handleSignOut() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+// ── Populate header avatar ──
+(async function() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const { data: prof } = await sb.from('profiles').select('display_name, avatar_url').eq('id', session.user.id).single();
+  const el = document.getElementById('header-avatar');
+  if (!el) return;
+  if (prof && prof.avatar_url) {
+    el.innerHTML = '';
+    el.style.background = 'url(' + prof.avatar_url + ') center/cover';
+  } else if (prof && prof.display_name) {
+    el.textContent = prof.display_name.charAt(0).toUpperCase();
+  }
+})();
+
+// ── State ──
+let currentCategory = 'all';
+let currentStatus = 'all';
+let currentSearch = '';
+let userLat = null;
+let userLng = null;
+let searchTimer = null;
+
+// ── Haversine distance (miles) ──
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 3959;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function debounceSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    currentSearch = document.getElementById('search-input').value.trim().toLowerCase();
+    loadBrowseProjects();
+  }, 300);
+}
+
+function setCategory(cat, btn) {
+  currentCategory = cat;
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  loadBrowseProjects();
+}
+
+function setStatus(status, btn) {
+  currentStatus = status;
+  document.querySelectorAll('.browse-filter').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  loadBrowseProjects();
+}
+
+function useGPS() {
+  if (!navigator.geolocation) return alert('Geolocation is not supported by your browser.');
+  navigator.geolocation.getCurrentPosition(pos => {
+    userLat = pos.coords.latitude;
+    userLng = pos.coords.longitude;
+    document.querySelector('.gps-btn').style.opacity = '1';
+    document.querySelector('.gps-btn').title = 'Using your GPS location';
+    loadBrowseProjects();
+  }, () => alert('Unable to get your location. Distance will use your profile location.'));
+}
+
+// ── Placeholder image SVGs ──
+function projectPlaceholder(name, hue) {
+  const colors = [
+    ['#1F3A2E','#2d5a27'],['#2C4F3B','#4A7C5E'],['#5a7d52','#7a9e6c'],
+    ['#3a5a4a','#5a8a6a'],['#4a6a3a','#6a9a5a'],['#2a4a3a','#4a7a5a']
+  ];
+  const idx = (name || 'P').charCodeAt(0) % colors.length;
+  const [c1, c2] = colors[idx];
+  return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs><rect fill="url(%23g)" width="400" height="200"/><text x="200" y="110" text-anchor="middle" fill="rgba(255,255,255,0.12)" font-family="Georgia" font-size="72" font-weight="700">${(name||'P').charAt(0).toUpperCase()}</text></svg>`)}`;
+}
+
+// ── Build project card HTML ──
+function buildProjectCard(p, distance) {
+  const statusLabel = { forming: 'Forming', active: 'Active', paused: 'Paused', complete: 'Complete', archived: 'Archived' };
+  const statusClass = { forming: 'status-forming', active: 'status-active', complete: 'status-complete' };
+  const typeLabel = { project: 'Project', company: 'Company', organization: 'Organization', campaign: 'Campaign' };
+  const imgSrc = projectPlaceholder(p.name);
+
+  const needsHTML = (p.project_needs || []).filter(n => !n.is_filled).slice(0, 3).map(n =>
+    `<span class="pc-need${n.is_urgent ? ' urgent' : ''}">${n.description}</span>`
+  ).join('');
+
+  const distHTML = distance !== null ? `<span class="pc-distance">${Math.round(distance)} mi</span>` : '';
+
+  return `
+    <a href="project.html?slug=${p.slug}" class="project-card">
+      <div class="pc-visual">
+        <img src="${imgSrc}" alt="${p.name}">
+        <div class="pc-badge-row">
+          <span class="pc-badge ${statusClass[p.status] || ''}">${statusLabel[p.status] || p.status}</span>
+          ${p.is_demo ? '<span class="pc-badge">Sample</span>' : ''}
+        </div>
+        ${distHTML}
+      </div>
+      <div class="pc-body">
+        <div class="pc-type">${typeLabel[p.project_type] || p.project_type}</div>
+        <div class="pc-name">${p.name}</div>
+        <div class="pc-tagline">${p.tagline || ''}</div>
+        <div class="pc-meta-row">
+          ${p.location ? `<span>📍 ${p.location}</span>` : ''}
+          ${p.member_count ? `<span>👥 ${p.member_count} members</span>` : ''}
+        </div>
+        ${needsHTML ? `<div class="pc-needs">${needsHTML}</div>` : ''}
+      </div>
+    </a>
+  `;
+}
+
+// ── Load Your Project ──
+async function loadYourProject() {
+  const container = document.getElementById('your-project-container');
+  const { data: { session } } = await sb.auth.getSession();
+
+  if (!session) {
+    container.innerHTML = `
+      <div class="start-project-card" onclick="window.location.href='join.html'">
+        <div class="sp-icon">+</div>
+        <div class="sp-title">Start Your Project</div>
+        <div class="sp-desc">Document your build, list what you need, attract collaborators. Every project is a puzzle — show the world what you're putting together.</div>
+      </div>`;
+    return;
+  }
+
+  // Get user's profile location for distance
+  const { data: myProfile } = await sb.from('profiles').select('latitude, longitude, location').eq('id', session.user.id).single();
+  if (myProfile && myProfile.latitude && !userLat) {
+    userLat = myProfile.latitude;
+    userLng = myProfile.longitude;
+  }
+
+  // Get user's owned project
+  const { data: myProjects } = await sb.from('projects').select('*, project_needs(*)').eq('owner_id', session.user.id).order('created_at', { ascending: false }).limit(1);
+
+  if (!myProjects || myProjects.length === 0) {
+    container.innerHTML = `
+      <div class="start-project-card" onclick="window.location.href='create-project.html'">
+        <div class="sp-icon">+</div>
+        <div class="sp-title">Start Your Project</div>
+        <div class="sp-desc">Document your build, list what you need, attract collaborators. Every project is a puzzle — show the world what you're putting together.</div>
+      </div>`;
+    return;
+  }
+
+  const p = myProjects[0];
+  const openNeeds = (p.project_needs || []).filter(n => !n.is_filled);
+  const urgentNeeds = openNeeds.filter(n => n.is_urgent);
+  const imgSrc = projectPlaceholder(p.name);
+  const statusLabel = { forming: 'Forming', active: 'Active', paused: 'Paused', complete: 'Complete' };
+
+  container.innerHTML = `
+    <div class="your-project-card">
+      <div class="yp-visual">
+        <img class="yp-visual-img" src="${imgSrc}" alt="${p.name}">
+        <div class="yp-status-badge">${statusLabel[p.status] || p.status}</div>
+      </div>
+      <div class="yp-body">
+        <div class="yp-type">${p.project_type}</div>
+        <div class="yp-name">${p.name}</div>
+        <div class="yp-tagline">${p.tagline || ''}</div>
+        <div class="yp-stats">
+          <div class="yp-stat"><span class="yp-stat-num">${p.member_count || 0}</span><span class="yp-stat-label">Members</span></div>
+          <div class="yp-stat"><span class="yp-stat-num">${p.follower_count || 0}</span><span class="yp-stat-label">Followers</span></div>
+          <div class="yp-stat"><span class="yp-stat-num">${openNeeds.length}</span><span class="yp-stat-label">Open Needs</span></div>
+        </div>
+        ${openNeeds.length > 0 ? `
+          <div class="yp-needs">
+            ${openNeeds.slice(0, 4).map(n => `<span class="yp-need-pill${n.is_urgent ? ' urgent' : ''}">${n.description}</span>`).join('')}
+          </div>` : ''}
+        <div class="yp-actions">
+          <button class="yp-btn yp-btn-primary" onclick="window.location.href='project.html?slug=${p.slug}'">View Project</button>
+          <button class="yp-btn yp-btn-secondary" onclick="window.location.href='create-project.html?edit=${p.slug}'">Edit</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── Load Connected Projects ──
+async function loadConnectedProjects() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+
+  const { data: memberships } = await sb.from('project_members')
+    .select('role, projects(id, name, slug, tagline, status, project_type, location)')
+    .eq('profile_id', session.user.id);
+
+  if (!memberships || memberships.length === 0) return;
+
+  const section = document.getElementById('connected-section');
+  const scroll = document.getElementById('connected-scroll');
+  section.style.display = 'block';
+
+  scroll.innerHTML = memberships.map(m => {
+    const p = m.projects;
+    if (!p) return '';
+    const imgSrc = projectPlaceholder(p.name);
+    return `
+      <a href="project.html?slug=${p.slug}" class="connected-card">
+        <div class="cc-visual"><img src="${imgSrc}" alt="${p.name}"></div>
+        <div class="cc-body">
+          <div class="cc-name">${p.name}</div>
+          <div class="cc-meta">${p.location || p.project_type}</div>
+          <div class="cc-role">${m.role}</div>
+        </div>
+      </a>`;
+  }).join('');
+}
+
+// ── Load Browse Projects ──
+async function loadBrowseProjects() {
+  const grid = document.getElementById('projects-grid');
+  const emptyState = document.getElementById('empty-state');
+
+  let query = sb.from('projects').select('*, project_needs(*)').eq('is_public', true).order('created_at', { ascending: false }).limit(50);
+
+  if (currentStatus === 'needs') {
+    // Filter handled client-side after fetch
+  } else if (currentStatus !== 'all') {
+    query = query.eq('status', currentStatus);
+  }
+
+  if (currentCategory === 'company') {
+    query = query.eq('project_type', 'company');
+  }
+
+  const { data: projects, error } = await query;
+  if (error || !projects) { grid.innerHTML = ''; emptyState.style.display = 'block'; return; }
+
+  let filtered = projects;
+
+  // Category filter (using tagline/description keywords as proxy until we add a category column)
+  if (currentCategory !== 'all' && currentCategory !== 'company') {
+    const keywords = {
+      housing: ['housing','shelter','home','hempcrete','build','construction','house','tiny home','adu'],
+      agriculture: ['agriculture','farm','food','garden','permaculture','soil','crop','grow'],
+      water: ['water','greywater','rainwater','irrigation','well','aquifer'],
+      energy: ['energy','solar','wind','off-grid','battery','power','microgrid'],
+      land: ['land','restoration','reforest','erosion','regenerat','terrain','soil'],
+      community: ['community','co-op','cooperative','village','neighborhood','circle'],
+      hemp: ['hemp','hempcrete','hurd','fiber','processing'],
+      education: ['education','training','workshop','course','teach','learn','certif']
+    };
+    const kw = keywords[currentCategory] || [];
+    filtered = filtered.filter(p => {
+      const blob = ((p.name || '') + ' ' + (p.tagline || '') + ' ' + (p.description || '')).toLowerCase();
+      return kw.some(k => blob.includes(k));
+    });
+  }
+
+  // Search filter
+  if (currentSearch) {
+    filtered = filtered.filter(p => {
+      const blob = ((p.name || '') + ' ' + (p.tagline || '') + ' ' + (p.description || '') + ' ' + (p.location || '')).toLowerCase();
+      const needsBlob = (p.project_needs || []).map(n => n.description).join(' ').toLowerCase();
+      return blob.includes(currentSearch) || needsBlob.includes(currentSearch);
+    });
+  }
+
+  // Needs filter
+  if (currentStatus === 'needs') {
+    filtered = filtered.filter(p => (p.project_needs || []).some(n => !n.is_filled));
+  }
+
+  // Distance filter
+  const maxDist = parseInt(document.getElementById('distance-select').value) || 0;
+  let withDistance = filtered.map(p => {
+    let dist = null;
+    if (userLat && p.latitude && p.longitude) {
+      dist = haversine(userLat, userLng, p.latitude, p.longitude);
+    }
+    return { ...p, _distance: dist };
+  });
+
+  if (maxDist > 0) {
+    withDistance = withDistance.filter(p => p._distance !== null && p._distance <= maxDist);
+  }
+
+  // Sort: distance first if available, then recency
+  withDistance.sort((a, b) => {
+    if (a._distance !== null && b._distance !== null) return a._distance - b._distance;
+    if (a._distance !== null) return -1;
+    if (b._distance !== null) return 1;
+    return 0;
+  });
+
+  if (withDistance.length === 0) {
+    grid.innerHTML = '';
+    emptyState.style.display = 'block';
+    return;
+  }
+
+  emptyState.style.display = 'none';
+  grid.innerHTML = withDistance.map(p => buildProjectCard(p, p._distance)).join('');
+}
+
+// ── DEMO DATA (shown until real projects exist) ──
+function loadDemoProjects() {
+  const grid = document.getElementById('projects-grid');
+  const demos = [
+    {
+      name: 'Desert Sun Hemp Homes', slug: 'desert-sun-hemp', project_type: 'company', status: 'active',
+      tagline: 'Building affordable hempcrete homes across the Southwest — one community at a time.',
+      location: 'Tucson, Arizona', member_count: 12, is_demo: true,
+      latitude: 32.2226, longitude: -110.9747,
+      project_needs: [
+        { description: 'Licensed electrician', is_urgent: true, is_filled: false },
+        { description: 'Lime plaster crew', is_urgent: true, is_filled: false },
+        { description: 'Videography volunteer', is_urgent: false, is_filled: false }
+      ]
+    },
+    {
+      name: 'Taos ADU Hempcrete Build', slug: 'taos-adu', project_type: 'project', status: 'active',
+      tagline: 'Owner-builder hempcrete accessory dwelling unit — documenting every step for the community.',
+      location: 'Taos, New Mexico', member_count: 4, is_demo: true,
+      latitude: 36.4072, longitude: -105.5734,
+      project_needs: [
+        { description: 'Greywater plumber', is_urgent: true, is_filled: false },
+        { description: '200 hemp bales', is_urgent: false, is_filled: false }
+      ]
+    },
+    {
+      name: 'Navajo Nation Pilot Village', slug: 'navajo-pilot', project_type: 'project', status: 'forming',
+      tagline: 'First Earthback Alliance deployment — 12 homes, community center, solar microgrid.',
+      location: 'Chinle, Arizona', member_count: 8, is_demo: true,
+      latitude: 36.1544, longitude: -109.5522,
+      project_needs: [
+        { description: 'Foundation contractor', is_urgent: true, is_filled: false },
+        { description: 'Solar installation partner', is_urgent: false, is_filled: false },
+        { description: 'Cultural liaison', is_urgent: false, is_filled: false }
+      ]
+    },
+    {
+      name: 'Front Range Hemp Co-op', slug: 'front-range-hemp', project_type: 'organization', status: 'active',
+      tagline: 'Cooperative hemp farming and processing serving builders across Colorado.',
+      location: 'Fort Collins, Colorado', member_count: 23, is_demo: true,
+      latitude: 40.5853, longitude: -105.0844,
+      project_needs: [
+        { description: 'Processing equipment', is_urgent: false, is_filled: false }
+      ]
+    },
+    {
+      name: 'SolTerra Energy Systems', slug: 'solterra', project_type: 'company', status: 'active',
+      tagline: 'Solar shingle integration and microgrid design for regenerative communities.',
+      location: 'Albuquerque, New Mexico', member_count: 6, is_demo: true,
+      latitude: 35.0844, longitude: -106.6504,
+      project_needs: []
+    },
+    {
+      name: 'Ozark Tiny Home Village', slug: 'ozark-village', project_type: 'project', status: 'forming',
+      tagline: 'Rapid-deploy tiny home community for transitional housing — hempcrete shell, solar roof.',
+      location: 'Eureka Springs, Arkansas', member_count: 5, is_demo: true,
+      latitude: 36.4012, longitude: -93.738,
+      project_needs: [
+        { description: 'Land access / lease', is_urgent: true, is_filled: false },
+        { description: 'Tiny home designer', is_urgent: false, is_filled: false },
+        { description: 'Grant writer', is_urgent: false, is_filled: false }
+      ]
+    },
+    {
+      name: 'Great Basin Restoration', slug: 'great-basin', project_type: 'project', status: 'active',
+      tagline: 'Hemp-based soil restoration and erosion control across degraded rangeland.',
+      location: 'Elko, Nevada', member_count: 3, is_demo: true,
+      latitude: 40.8324, longitude: -115.7631,
+      project_needs: [
+        { description: 'Soil scientist', is_urgent: false, is_filled: false },
+        { description: 'Drone operator', is_urgent: false, is_filled: false }
+      ]
+    },
+    {
+      name: 'Appalachian Build School', slug: 'appalachian-build', project_type: 'organization', status: 'active',
+      tagline: 'Hands-on hempcrete construction training for Appalachian communities.',
+      location: 'Asheville, North Carolina', member_count: 15, is_demo: true,
+      latitude: 35.5951, longitude: -82.5515,
+      project_needs: [
+        { description: 'Curriculum developer', is_urgent: false, is_filled: false },
+        { description: 'Insurance partner', is_urgent: true, is_filled: false }
+      ]
+    }
+  ];
+
+  grid.innerHTML = demos.map(p => buildProjectCard(p, null)).join('');
+}
+
+// ── INIT ──
+async function init() {
+  await loadYourProject();
+  await loadConnectedProjects();
+
+  // Try loading real projects; fall back to demo
+  const { data: realProjects } = await sb.from('projects').select('id').limit(1);
+  if (realProjects && realProjects.length > 0) {
+    await loadBrowseProjects();
+  } else {
+    loadDemoProjects();
+  }
+}
+
+init();
+</script>
+
+<!--
+═══════════════════════════════════════════════════════════════
+IMAGE GENERATION PROMPTS — for Flux, Midjourney, or DALL-E
+Replace the SVG placeholders with generated images.
+═══════════════════════════════════════════════════════════════
+
+PROJECT CARD THUMBNAILS (400x200, landscape):
+
+1. "Desert Sun Hemp Homes"
+   Prompt: Warm golden-hour photograph of a partially-built hempcrete house in the
+   Arizona desert, exposed thick earth-toned walls with a modern metal roof frame,
+   saguaro cacti in background, construction materials neatly staged, clear sky,
+   documentary photography style, no text, no people, muted earth palette
+
+2. "Taos ADU Hempcrete Build"
+   Prompt: Overhead three-quarter view of a small accessory dwelling unit under
+   construction in northern New Mexico, adobe and hempcrete walls partially
+   rendered, Sangre de Cristo mountains in background, pine trees, morning light,
+   tools and hemp bales visible, architectural photography, warm natural tones
+
+3. "Navajo Nation Pilot Village"
+   Prompt: Wide establishing shot of high desert plateau at dawn, red mesa
+   formations in distance, cleared building site with foundation forms laid out
+   in a community cluster pattern, ceremonial space at center, sparse juniper
+   trees, cinematic composition, respectful documentary style, earth and sky
+
+4. "Front Range Hemp Co-op"
+   Prompt: Aerial view of hemp field in late summer with Rocky Mountain foothills
+   behind, mature hemp plants at full height, small processing building with
+   metal roof at field edge, golden hour light, agricultural documentary style,
+   green and gold color palette
+
+5. "SolTerra Energy Systems"
+   Prompt: Close-up detail of solar shingles being installed on a standing-seam
+   metal roof, hempcrete wall visible below, hands of installer in work gloves,
+   bright New Mexico sunlight, shallow depth of field, technical/trade photography
+
+6. "Ozark Tiny Home Village"
+   Prompt: Concept rendering of a small cluster of hempcrete tiny homes in a
+   wooded Ozark hillside clearing, each roughly 400 sq ft with metal roofs and
+   solar panels, gravel paths connecting them, communal fire pit area, autumn
+   foliage, soft overcast light, architectural visualization style
+
+7. "Great Basin Restoration"
+   Prompt: Landscape photograph of high desert rangeland showing contrast between
+   degraded soil on one side and young hemp plants establishing on the other,
+   distant Basin and Range mountains, dramatic cloud formations, environmental
+   documentary photography, sage greens and dusty browns
+
+8. "Appalachian Build School"
+   Prompt: Interior of a large workshop barn with exposed timber frame, group of
+   diverse adults learning hempcrete wall construction on a practice form, natural
+   light from high windows, hemp bales stacked along wall, chalkboard with
+   construction diagrams, warm educational atmosphere, documentary style
+
+HERO IMAGE for "Your Project" card (680x440):
+   Prompt: Beautifully composed still life of project planning materials on a
+   reclaimed wood table: rolled hemp fiber samples, a site plan drawing, soil
+   sample jars, a worn leather notebook, pencils, a tape measure, small hemp
+   plant cutting in water — morning window light, shallow depth of field,
+   editorial/lifestyle photography, earthy warm tones, no text overlays
+-->
+
+<!-- Pre-launch Banner -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+  <span style="font-weight:600">🌿 Pre-Launch Preview</span>
+  <span style="opacity:0.7">—</span>
+  <span>You're seeing an early build of the Earthback Project. Features are in active development. Data may reset.</span>
+  <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Send feedback →</a>
+</div>
+
+</body>
+</html>

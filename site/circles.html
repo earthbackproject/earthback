@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circles — the Earthback Project</title>
+  <meta name="description" content="Join geographic and thematic circles to connect with builders, growers, and makers in your area and around shared interests.">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:#1F3A2E;--green2:#2d5a27;--green-mid:#2C4F3B;--green-soft:#4A7C5E;
+      --sage:#5a7d52;--moss:#7a9e6c;--clay:#C2A56C;--clay2:#b8784a;
+      --parchment:#F2EFE6;--parchment2:#EAE3D3;--paper-warm:#ece7da;
+      --card:#faf8f3;--pale-green:#e4eddf;--ink:#1a2218;--text:#3b4a3a;
+      --text-muted:#6b7a63;--border:#d0c4a8;--border-lt:#e0d8c4;
+      --shadow:rgba(30,55,40,0.08);--shadow-d:rgba(30,55,40,0.16);--white:#fff;
+      --font-serif:'Cormorant Garamond',Georgia,serif;
+      --font-sans:'Inter',system-ui,sans-serif;--max:1100px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-sans);background:var(--parchment);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+
+    /* ── TOPBAR ── */
+    .topbar{background:linear-gradient(135deg,var(--green) 0%,var(--green2) 100%);color:white;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.12);position:sticky;top:0;z-index:1000}
+    .topbar-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:white;font-weight:600}
+    .topbar-brand-mark{font-size:1.2rem;display:flex;align-items:center;justify-content:center;width:28px;height:28px}
+    .topbar-brand-name{font-family:var(--font-serif);font-size:1.1rem;font-weight:500;letter-spacing:-0.5px}
+    .topbar-the{font-size:0.65em;opacity:0.85;font-weight:400}
+    .brand-sub{display:block;font-size:0.65em;opacity:0.8}
+    .topbar-nav{display:flex;align-items:center;gap:4px}
+    .topbar-nav-link{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.84rem;font-weight:500;font-family:var(--font-sans);padding:6px 14px;border-radius:8px;transition:all 0.2s;white-space:nowrap}
+    .topbar-nav-link:hover{color:white;background:rgba(255,255,255,0.1)}
+    .topbar-nav-link.active{color:white;background:rgba(255,255,255,0.15);font-weight:600}
+    .topbar-nav-link.coming-soon{opacity:0.45;cursor:default}
+    .topbar-right{display:flex;align-items:center;gap:8px}
+    .topbar-hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;border-radius:6px;transition:background 0.2s}
+    .topbar-hamburger:hover{background:rgba(255,255,255,0.1)}
+    .topbar-hamburger span{display:block;width:20px;height:2px;background:white;border-radius:2px;transition:all 0.25s}
+    .topbar-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+    .topbar-hamburger.open span:nth-child(2){opacity:0}
+    .topbar-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+    .topbar-mobile-menu{display:none;position:absolute;top:60px;left:0;right:0;background:linear-gradient(135deg,var(--green) 0%,var(--green2) 100%);padding:8px 16px 14px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:999;flex-direction:column;gap:2px}
+    .topbar-mobile-menu.open{display:flex}
+    .topbar-mobile-menu a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.92rem;font-weight:500;padding:10px 12px;border-radius:8px;transition:background 0.2s}
+    .topbar-mobile-menu a:hover,.topbar-mobile-menu a.active{background:rgba(255,255,255,0.12);color:white}
+
+    /* ── PAGE ── */
+    .page-wrap{max-width:var(--max);margin:0 auto;padding:28px 24px 64px}
+    .page-title{font-family:var(--font-serif);font-size:1.8rem;font-weight:600;color:var(--ink);margin-bottom:6px}
+    .page-subtitle{font-size:0.92rem;color:var(--text-muted);margin-bottom:28px;max-width:60ch;line-height:1.6}
+
+    /* ── SECTION ── */
+    .section-label{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:14px}
+    .section-desc{font-size:0.85rem;color:var(--text-muted);margin-bottom:18px;line-height:1.5}
+
+    /* ── CIRCLE CARDS ── */
+    .circles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:40px}
+    .circle-card{background:var(--card);border:1px solid var(--border-lt);border-radius:14px;overflow:hidden;transition:all 0.2s;cursor:pointer;text-decoration:none;color:inherit}
+    .circle-card:hover{transform:translateY(-3px);box-shadow:0 6px 24px var(--shadow-d)}
+    .circle-banner{height:80px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .circle-banner-icon{font-size:2.2rem;position:relative;z-index:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
+    .circle-body{padding:16px 18px}
+    .circle-type{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px}
+    .circle-type.geo{color:var(--sage)}
+    .circle-type.thematic{color:var(--clay2)}
+    .circle-name{font-family:var(--font-serif);font-size:1.1rem;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:4px}
+    .circle-desc{font-size:0.8rem;color:var(--text-muted);line-height:1.45;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .circle-stats{display:flex;gap:14px;font-size:0.75rem;color:var(--text-muted);margin-bottom:12px}
+    .circle-stat{display:flex;align-items:center;gap:4px}
+    .circle-actions{display:flex;gap:8px}
+    .circle-btn{font-size:0.78rem;font-weight:600;font-family:var(--font-sans);padding:7px 16px;border-radius:8px;border:none;cursor:pointer;transition:all 0.2s}
+    .circle-btn-join{background:linear-gradient(135deg,var(--green),var(--green2));color:white}
+    .circle-btn-join:hover{transform:translateY(-1px);box-shadow:0 3px 10px var(--shadow-d)}
+    .circle-btn-joined{background:var(--pale-green);color:var(--sage);border:1px solid rgba(90,125,82,0.2)}
+    .circle-btn-view{background:var(--parchment2);color:var(--text);border:1px solid var(--border)}
+    .circle-btn-view:hover{border-color:var(--sage)}
+
+    /* ── TABS ── */
+    .circle-tabs{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+    .circle-tab{font-size:0.82rem;font-weight:500;font-family:var(--font-sans);padding:8px 18px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--text-muted);cursor:pointer;transition:all 0.2s}
+    .circle-tab:hover{border-color:var(--sage);color:var(--green)}
+    .circle-tab.active{background:var(--green);color:white;border-color:var(--green)}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px){
+      .topbar{padding:0 16px}
+      .topbar-brand-name{font-size:0.95rem}
+      .topbar-nav{display:none}
+      .topbar-hamburger{display:flex}
+      .circles-grid{grid-template-columns:1fr}
+    }
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .fade-up{animation:fadeUp 0.4s ease-out}
+    .fade-up-2{animation:fadeUp 0.4s ease-out 0.08s both}
+    .fade-up-3{animation:fadeUp 0.4s ease-out 0.16s both}
+  </style>
+</head>
+<body>
+
+<!-- ── TOPBAR ── -->
+<nav class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <span class="topbar-brand-mark">🌿</span>
+    <span class="topbar-brand-name"><span class="topbar-the">the</span> Earthback <span class="brand-sub">Project</span></span>
+  </a>
+  <div class="topbar-nav">
+    <a href="feed.html" class="topbar-nav-link">Home</a>
+    <a href="projects.html" class="topbar-nav-link">Projects</a>
+    <a href="profile.html#media" class="topbar-nav-link">Media</a>
+    <a href="#" class="topbar-nav-link coming-soon" title="Coming soon">Marketplace</a>
+    <a href="circles.html" class="topbar-nav-link active">Circles</a>
+  </div>
+  <div class="topbar-right">
+    <a href="messages.html" title="Messages" style="color:rgba(255,255,255,0.7);font-size:1rem;text-decoration:none;padding:4px 8px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.background='none'">💬</a>
+    <a href="profile.html" title="View your profile" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sage));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:none;" id="header-avatar">?</a>
+    <button onclick="handleSignOut()" title="Sign out" style="background:none;border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:7px 14px;color:rgba(255,255,255,0.7);font-size:0.8rem;font-weight:500;font-family:var(--font-sans);cursor:pointer;white-space:nowrap;transition:all 0.2s" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.25)'">Sign Out</button>
+    <div class="topbar-hamburger" onclick="this.classList.toggle('open');document.querySelector('.topbar-mobile-menu').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="topbar-mobile-menu">
+  <a href="feed.html">Home</a>
+  <a href="projects.html">Projects</a>
+  <a href="profile.html#media">Media</a>
+  <a href="#">Marketplace (Coming Soon)</a>
+  <a href="circles.html" class="active">Circles</a>
+  <a href="messages.html">Messages</a>
+  <a href="profile.html">My Profile</a>
+</div>
+
+<div class="page-wrap">
+
+  <h1 class="page-title fade-up">Circles</h1>
+  <p class="page-subtitle fade-up">Circles are how Earthback organizes community — by where you are and what you care about. Geographic circles connect you with nearby builders. Thematic circles unite people around shared skills and interests.</p>
+
+  <!-- ── TABS ── -->
+  <div class="circle-tabs fade-up">
+    <button class="circle-tab active" onclick="filterCircles('all', this)">All Circles</button>
+    <button class="circle-tab" onclick="filterCircles('geo', this)">📍 Geographic</button>
+    <button class="circle-tab" onclick="filterCircles('thematic', this)">🎯 Thematic</button>
+    <button class="circle-tab" onclick="filterCircles('yours', this)">Your Circles</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- GEOGRAPHIC CIRCLES                                      -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="circle-section" id="section-geo">
+    <div class="section-label fade-up-2">📍 Geographic Circles</div>
+    <div class="section-desc fade-up-2">Auto-suggested by member density. As more people in an area join Earthback, geographic circles form naturally.</div>
+    <div class="circles-grid fade-up-2" id="geo-grid">
+      <!-- JS fills -->
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- THEMATIC CIRCLES                                        -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="circle-section" id="section-thematic">
+    <div class="section-label fade-up-3">🎯 Thematic Circles</div>
+    <div class="section-desc fade-up-3">Interest-based circles that unite people around shared skills, building methods, and goals — no matter where you are.</div>
+    <div class="circles-grid fade-up-3" id="thematic-grid">
+      <!-- JS fills -->
+    </div>
+  </div>
+
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function handleSignOut() { await sb.auth.signOut(); window.location.href = 'index.html'; }
+
+// ── Populate header avatar ──
+(async function() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const { data: prof } = await sb.from('profiles').select('display_name, avatar_url').eq('id', session.user.id).single();
+  const el = document.getElementById('header-avatar');
+  if (!el || !prof) return;
+  if (prof.avatar_url) { el.innerHTML = ''; el.style.background = 'url(' + prof.avatar_url + ') center/cover'; }
+  else if (prof.display_name) el.textContent = prof.display_name.charAt(0).toUpperCase();
+})();
+
+// ══════════════════════════════════════════════════
+// CIRCLE DATA
+// ══════════════════════════════════════════════════
+
+const geoCircles = [
+  {
+    slug: 'southwest-us', name: 'Southwest US', icon: '🏜️',
+    desc: 'Builders across Arizona, New Mexico, Nevada, and southern Utah. Hot, dry climates ideal for hempcrete and passive solar.',
+    members: 87, projects: 12, color: ['#8a5a3a','#c4956c'],
+    region: 'AZ · NM · NV · UT'
+  },
+  {
+    slug: 'pacific-northwest', name: 'Pacific Northwest', icon: '🌲',
+    desc: 'Oregon, Washington, and northern California. Wet-climate building, timber framing, and rain-harvest systems.',
+    members: 62, projects: 8, color: ['#2a5a3a','#4a8a5a'],
+    region: 'OR · WA · N. CA'
+  },
+  {
+    slug: 'appalachia', name: 'Appalachian Region', icon: '⛰️',
+    desc: 'Virginia, West Virginia, North Carolina, Tennessee, and Kentucky. Timber-rich and community-driven.',
+    members: 45, projects: 6, color: ['#3a5a6a','#5a8a9a'],
+    region: 'VA · WV · NC · TN · KY'
+  },
+  {
+    slug: 'front-range', name: 'Front Range Colorado', icon: '🏔️',
+    desc: 'Denver to Fort Collins corridor. Hemp farming, high-altitude building, and a strong co-op culture.',
+    members: 38, projects: 5, color: ['#4a6a3a','#6a9a5a'],
+    region: 'CO Front Range'
+  },
+  {
+    slug: 'great-lakes', name: 'Great Lakes', icon: '🌊',
+    desc: 'Michigan, Wisconsin, Minnesota, and northern Illinois. Cold-climate building, insulation innovation, and community resilience.',
+    members: 29, projects: 3, color: ['#3a4a6a','#5a6a9a'],
+    region: 'MI · WI · MN · IL'
+  }
+];
+
+const thematicCircles = [
+  {
+    slug: 'natural-building', name: 'Natural Building', icon: '🛖',
+    desc: 'Hempcrete, cob, rammed earth, straw bale, and all things natural building. Share techniques, troubleshoot builds, and find materials.',
+    members: 234, projects: 28, color: ['#5a4a3a','#8a7a5a']
+  },
+  {
+    slug: 'solar-offgrid', name: 'Solar & Off-Grid', icon: '☀️',
+    desc: 'Solar design, battery storage, microgrids, and off-grid living systems. From rooftop panels to community-scale installations.',
+    members: 156, projects: 14, color: ['#6a5a1a','#9a8a3a']
+  },
+  {
+    slug: 'hemp-processing', name: 'Hemp Processing', icon: '🌿',
+    desc: 'Growing, harvesting, and processing hemp for building materials. Hurd, fiber, oil, and everything between field and construction site.',
+    members: 98, projects: 9, color: ['#3a6a3a','#5a9a5a']
+  },
+  {
+    slug: 'permaculture-food', name: 'Permaculture & Food Systems', icon: '🌱',
+    desc: 'Food forests, companion planting, aquaponics, soil regeneration, and community food sovereignty.',
+    members: 178, projects: 16, color: ['#4a7a3a','#6aaa5a']
+  },
+  {
+    slug: 'water-systems', name: 'Water Systems', icon: '💧',
+    desc: 'Rainwater harvesting, greywater recycling, well systems, and water-wise building. Every drop matters.',
+    members: 72, projects: 7, color: ['#2a4a6a','#4a7a9a']
+  },
+  {
+    slug: 'tiny-homes-adu', name: 'Tiny Homes & ADUs', icon: '🏠',
+    desc: 'Accessory dwelling units, tiny homes, container builds, and small-footprint living. Zoning, design, and build strategies.',
+    members: 145, projects: 11, color: ['#5a5a3a','#8a8a5a']
+  },
+  {
+    slug: 'education-training', name: 'Education & Training', icon: '📚',
+    desc: 'Teaching and learning regenerative building. Workshops, certifications, apprenticeships, and curriculum development.',
+    members: 89, projects: 5, color: ['#6a3a5a','#9a5a8a']
+  },
+  {
+    slug: 'indigenous-builds', name: 'Indigenous Building Practices', icon: '🪶',
+    desc: 'Honoring and integrating traditional building knowledge with modern sustainable practices. Cultural liaison and respectful collaboration.',
+    members: 34, projects: 4, color: ['#7a4a2a','#aa7a4a']
+  }
+];
+
+// ══════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════
+
+function buildCircleCard(c, type) {
+  const gradient = `linear-gradient(135deg, ${c.color[0]}, ${c.color[1]})`;
+  const typeClass = type === 'geo' ? 'geo' : 'thematic';
+  const typeLabel = type === 'geo' ? 'Geographic' : 'Thematic';
+  const regionLine = c.region ? `<span class="circle-stat">📍 ${c.region}</span>` : '';
+
+  return `
+    <div class="circle-card" data-type="${type}" data-slug="${c.slug}">
+      <div class="circle-banner" style="background:${gradient}">
+        <span class="circle-banner-icon">${c.icon}</span>
+      </div>
+      <div class="circle-body">
+        <div class="circle-type ${typeClass}">${typeLabel}</div>
+        <div class="circle-name">${c.name}</div>
+        <div class="circle-desc">${c.desc}</div>
+        <div class="circle-stats">
+          <span class="circle-stat">👥 ${c.members} members</span>
+          <span class="circle-stat">📋 ${c.projects} projects</span>
+          ${regionLine}
+        </div>
+        <div class="circle-actions">
+          <button class="circle-btn circle-btn-join" onclick="joinCircle('${c.slug}', this)">Join Circle</button>
+          <button class="circle-btn circle-btn-view" onclick="viewCircle('${c.slug}')">View</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderCircles() {
+  document.getElementById('geo-grid').innerHTML = geoCircles.map(c => buildCircleCard(c, 'geo')).join('');
+  document.getElementById('thematic-grid').innerHTML = thematicCircles.map(c => buildCircleCard(c, 'thematic')).join('');
+}
+
+function filterCircles(filter, btn) {
+  document.querySelectorAll('.circle-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+
+  const geoSection = document.getElementById('section-geo');
+  const thematicSection = document.getElementById('section-thematic');
+
+  if (filter === 'all') {
+    geoSection.style.display = 'block';
+    thematicSection.style.display = 'block';
+    document.querySelectorAll('.circle-card').forEach(c => c.style.display = 'block');
+  } else if (filter === 'geo') {
+    geoSection.style.display = 'block';
+    thematicSection.style.display = 'none';
+  } else if (filter === 'thematic') {
+    geoSection.style.display = 'none';
+    thematicSection.style.display = 'block';
+  } else if (filter === 'yours') {
+    // Show only joined circles (for now, show all with a note)
+    geoSection.style.display = 'block';
+    thematicSection.style.display = 'block';
+    document.querySelectorAll('.circle-card').forEach(c => c.style.display = 'none');
+    document.querySelectorAll('.circle-card .circle-btn-joined').forEach(btn => {
+      btn.closest('.circle-card').style.display = 'block';
+    });
+  }
+}
+
+function joinCircle(slug, btn) {
+  // Toggle join state (demo — in production would call Supabase)
+  if (btn.classList.contains('circle-btn-joined')) {
+    btn.classList.remove('circle-btn-joined');
+    btn.classList.add('circle-btn-join');
+    btn.textContent = 'Join Circle';
+  } else {
+    btn.classList.remove('circle-btn-join');
+    btn.classList.add('circle-btn-joined');
+    btn.textContent = '✓ Joined';
+    // Increment member count visually
+    const stats = btn.closest('.circle-body').querySelector('.circle-stats');
+    const memberStat = stats.querySelector('.circle-stat');
+    const count = parseInt(memberStat.textContent.match(/\d+/)[0]);
+    memberStat.innerHTML = `👥 ${count + 1} members`;
+  }
+}
+
+function viewCircle(slug) {
+  // Future: navigate to circle detail page
+  // For now, show the circle's projects via the projects page filter
+  window.location.href = 'projects.html?circle=' + slug;
+}
+
+// ── INIT ──
+renderCircles();
+</script>
+
+<!--
+═══════════════════════════════════════════════════════════════
+IMAGE GENERATION PROMPTS — for Flux, Midjourney, or DALL-E
+Circle banner images (600x160, wide landscape):
+═══════════════════════════════════════════════════════════════
+
+GEOGRAPHIC:
+
+1. "Southwest US"
+   Prompt: Wide panoramic of Sonoran desert at golden hour, saguaro cacti
+   silhouetted against warm sky, a distant hempcrete structure barely visible,
+   dramatic cloud formations, earth tones dominating, cinematic landscape
+   photography, no text
+
+2. "Pacific Northwest"
+   Prompt: Misty Oregon forest with tall Douglas fir trees, a timber-frame
+   structure partially visible through the morning fog, mossy rocks in
+   foreground, green and grey color palette, atmospheric nature photography
+
+3. "Appalachian Region"
+   Prompt: Blue Ridge Mountain vista at sunrise, layered mountain ridges
+   fading into blue distance, a small workshop structure on a hillside,
+   autumn foliage beginning, warm golds and cool blues, landscape photography
+
+4. "Front Range Colorado"
+   Prompt: Rocky Mountain front range with snow-capped peaks behind a golden
+   hemp field in autumn, Fort Collins area landscape, bright morning sun,
+   green foothills transitioning to golden plains, wide-angle landscape
+
+5. "Great Lakes"
+   Prompt: Lake Michigan shoreline at dawn, calm water reflecting pink sky,
+   weathered wooden dock, distant treeline, peaceful morning atmosphere,
+   cool blue and warm pink tones, contemplative landscape photography
+
+THEMATIC:
+
+6. "Natural Building"
+   Prompt: Close-up texture collage of natural building materials — hempcrete
+   wall surface, rammed earth layers, straw bale cross-section, cob texture,
+   all arranged in a grid pattern, warm earth tones, material photography
+
+7. "Solar & Off-Grid"
+   Prompt: Array of solar panels on a hempcrete roof catching afternoon sun,
+   warm golden light, deep blue sky, battery storage visible in background,
+   clean energy installation photography, optimistic mood
+
+8. "Hemp Processing"
+   Prompt: Overhead view of hemp hurd in various processing stages — raw stalks,
+   chopped hurd, fine fiber, finished building material — arranged in a
+   progression on a wooden surface, botanical/industrial photography
+
+9. "Permaculture & Food Systems"
+   Prompt: Lush food forest garden with fruit trees, companion planted beds,
+   a small greenhouse with hempcrete knee wall, morning dew visible,
+   abundant green growth, permaculture documentary photography
+
+10. "Water Systems"
+    Prompt: Closeup of rainwater flowing into a copper collection system on a
+    green roof, water droplets visible, plants around the edge, clean blue
+    water in a stone cistern below, sustainable water photography
+
+11. "Tiny Homes & ADUs"
+    Prompt: Charming small hempcrete tiny home with a metal roof, potted plants
+    on a wooden porch, warm interior light glowing through windows at dusk,
+    garden path leading to it, cozy architectural photography
+
+12. "Education & Training"
+    Prompt: Hands-on workshop scene in an open-air barn — a group gathered
+    around a hempcrete form wall being built, instructor demonstrating
+    technique, educational materials on tables, warm collaborative atmosphere
+
+13. "Indigenous Building Practices"
+    Prompt: Respectful wide shot of traditional adobe structure alongside a
+    modern hempcrete building, desert landscape, morning light, showing
+    continuity between ancient and contemporary building traditions,
+    documentary photography, muted earth tones
+-->
+
+<!-- Pre-launch Banner -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+  <span style="font-weight:600">🌿 Pre-Launch Preview</span>
+  <span style="opacity:0.7">—</span>
+  <span>You're seeing an early build of the Earthback Project. Features are in active development. Data may reset.</span>
+  <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Send feedback →</a>
+</div>
+
+</body>
+</html>

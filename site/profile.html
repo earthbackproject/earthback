@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maya Redhawk — the Earthback Project</title>
+  <meta name="description" content="Maya Redhawk — Natural builder, hempcrete specialist, community organizer in Taos, New Mexico. Member of the Earthback Project.">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:      #1F3A2E;
+      --green-mid:  #2C4F3B;
+      --green-soft: #4A7C5E;
+      --sage:       #5a7d52;
+      --moss:       #7a9e6c;
+      --clay:       #C2A56C;
+      --clay2:      #b8784a;
+      --parchment:  #F2EFE6;
+      --parchment2: #EAE3D3;
+      --paper-warm: #ece7da;
+      --card:       #faf8f3;
+      --pale-green: #e4eddf;
+      --ink:        #1a2218;
+      --text:       #3b4a3a;
+      --text-muted: #6b7a63;
+      --border:     #d0c4a8;
+      --border-lt:  #e0d8c4;
+      --shadow:     rgba(30,55,40,0.08);
+      --shadow-d:   rgba(30,55,40,0.16);
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max:        1100px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--parchment); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    /* ── APP TOPBAR ── */
+    .topbar {
+      background: linear-gradient(135deg, var(--green) 0%, #2d5a27 100%);
+      color: white;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .topbar-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: white; font-weight: 600;
+    }
+    .topbar-brand-mark { font-size: 1.2rem; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; }
+    .topbar-brand-name { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 500; letter-spacing: -0.5px; }
+    .topbar-the { font-size: 0.65em; opacity: 0.85; font-weight: 400; }
+    .brand-sub { display: block; font-size: 0.65em; opacity: 0.8; }
+    .topbar-nav { display: flex; align-items: center; gap: 4px; }
+    .topbar-nav-link {
+      color: rgba(255,255,255,0.7); text-decoration: none;
+      font-size: 0.84rem; font-weight: 500; font-family: var(--font-sans);
+      padding: 6px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap;
+    }
+    .topbar-nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
+    .topbar-nav-link.active { color: white; background: rgba(255,255,255,0.15); font-weight: 600; }
+    .topbar-nav-link.coming-soon { opacity: 0.45; cursor: default; }
+    .topbar-nav-link.coming-soon:hover { background: none; color: rgba(255,255,255,0.7); }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    .topbar-hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s; }
+    .topbar-hamburger:hover { background: rgba(255,255,255,0.1); }
+    .topbar-hamburger span { display: block; width: 20px; height: 2px; background: white; border-radius: 2px; transition: all 0.25s; }
+    .topbar-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px,4px); }
+    .topbar-hamburger.open span:nth-child(2) { opacity: 0; }
+    .topbar-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px,-4px); }
+    .topbar-mobile-menu {
+      display: none; position: absolute; top: 60px; left: 0; right: 0;
+      background: linear-gradient(135deg, var(--green) 0%, #2d5a27 100%);
+      padding: 8px 16px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 999; flex-direction: column; gap: 2px;
+    }
+    .topbar-mobile-menu.open { display: flex; }
+    .topbar-mobile-menu a {
+      color: rgba(255,255,255,0.8); text-decoration: none;
+      font-size: 0.92rem; font-weight: 500; padding: 10px 12px;
+      border-radius: 8px; transition: background 0.2s;
+    }
+    .topbar-mobile-menu a:hover, .topbar-mobile-menu a.active { background: rgba(255,255,255,0.12); color: white; }
+    @media (max-width: 768px) {
+      .topbar { padding: 0 16px; }
+      .topbar-brand-name { font-size: 0.95rem; }
+      .topbar-nav { display: none; }
+      .topbar-hamburger { display: flex; }
+    }
+
+    /* ── LAYOUT ── */
+    .page-wrap { max-width: var(--max); margin: 0 auto; padding: 24px 24px 64px; }
+
+    /* ── PROFILE HEADER ── */
+    .profile-header {
+      background: var(--card);
+      border: 1px solid var(--border-lt);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px var(--shadow);
+      margin-bottom: 28px;
+    }
+    .cover-band {
+      height: 56px;
+      background: linear-gradient(135deg, var(--green) 0%, #2d5a27 50%, #3a7a4a 100%);
+      position: relative;
+    }
+    .cover-band::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .profile-body { padding: 0 28px 28px; }
+    .avatar-row { display: flex; align-items: flex-end; justify-content: space-between; margin-top: -60px; margin-bottom: 14px; gap: 16px; flex-wrap: wrap; position: relative; z-index: 2; }
+    .profile-avatar {
+      width: 128px; height: 128px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--sage), var(--green-soft));
+      border: 4px solid var(--card);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 1.7rem;
+      font-family: var(--font-serif); flex-shrink: 0;
+      box-shadow: 0 2px 12px var(--shadow-d);
+    }
+    .avatar-actions { display: flex; gap: 10px; padding-bottom: 4px; flex-wrap: wrap; }
+    .btn-collab {
+      background: linear-gradient(135deg, var(--green), #2d5a27);
+      color: white; border: none; border-radius: 9px;
+      padding: 9px 20px; font-size: 0.88rem; font-weight: 600;
+      font-family: var(--font-sans); cursor: pointer;
+      box-shadow: 0 3px 12px rgba(31,58,46,0.28);
+      transition: all 0.2s;
+    }
+    .btn-collab:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(31,58,46,0.36); }
+    .btn-follow {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border); border-radius: 9px;
+      padding: 9px 18px; font-size: 0.88rem; font-weight: 500;
+      font-family: var(--font-sans); cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-follow:hover { border-color: var(--sage); color: var(--sage); }
+
+    .profile-name { font-family: var(--font-serif); font-size: 2rem; font-weight: 600; color: var(--ink); line-height: 1.1; margin-bottom: 4px; }
+    .profile-tagline { font-size: 0.97rem; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-bottom: 14px; }
+    .profile-meta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 18px; }
+    .pmeta-item { display: flex; align-items: center; gap: 5px; font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+
+    .verified-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 11px; border-radius: 20px;
+      font-size: 0.74rem; font-weight: 700;
+      background: rgba(90,125,82,0.12); color: var(--sage);
+      border: 1px solid rgba(90,125,82,0.25);
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .member-type-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 11px; border-radius: 20px;
+      font-size: 0.74rem; font-weight: 600;
+      background: rgba(194,165,108,0.12); color: var(--clay2);
+      border: 1px solid rgba(194,165,108,0.25);
+    }
+
+    .profile-bio { font-size: 0.95rem; color: var(--text); line-height: 1.7; max-width: 70ch; margin-bottom: 20px; }
+
+    .profile-stats { display: flex; gap: 24px; flex-wrap: wrap; padding: 16px 0; border-top: 1px solid var(--border-lt); border-bottom: 1px solid var(--border-lt); margin-bottom: 0; }
+    .stat-item { text-align: center; }
+    .stat-num { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 600; color: var(--ink); line-height: 1; display: block; }
+    .stat-label { font-size: 0.73rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; display: block; margin-top: 3px; }
+
+    /* ── MAIN GRID ── */
+    .profile-grid { display: grid; grid-template-columns: 310px 1fr; gap: 24px; align-items: start; }
+    @media (max-width: 768px) { .profile-grid { grid-template-columns: 1fr; } }
+
+    /* ── SIDEBAR PANELS ── */
+    .sidebar-panel {
+      background: var(--card); border: 1px solid var(--border-lt);
+      border-radius: 14px; padding: 20px;
+      box-shadow: 0 1px 8px var(--shadow); margin-bottom: 18px;
+    }
+    .panel-title { font-size: 0.73rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+
+    /* Skills */
+    .skills-group { margin-bottom: 14px; }
+    .skills-group-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .skills-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .skill-pill { padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 500; }
+    .skill-lead { background: rgba(31,58,46,0.1); color: var(--green); border: 1px solid rgba(31,58,46,0.18); }
+    .skill-exp  { background: rgba(90,125,82,0.1); color: var(--sage); border: 1px solid rgba(90,125,82,0.2); }
+    .skill-learn { background: rgba(194,165,108,0.1); color: var(--clay2); border: 1px solid rgba(194,165,108,0.2); }
+
+    /* Circles */
+    .circle-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 9px; margin-bottom: 4px; transition: background 0.15s; cursor: pointer; text-decoration: none; }
+    .circle-item:hover { background: var(--pale-green); }
+    .circle-icon { font-size: 1rem; flex-shrink: 0; }
+    .circle-info { flex: 1; min-width: 0; }
+    .circle-name { font-size: 0.85rem; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .circle-size { font-size: 0.72rem; color: var(--text-muted); }
+    .circle-role { font-size: 0.7rem; font-weight: 600; padding: 2px 7px; border-radius: 5px; background: rgba(90,125,82,0.1); color: var(--sage); }
+
+    /* Location / contact */
+    .contact-item { display: flex; align-items: flex-start; gap: 9px; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; }
+    .contact-icon { font-size: 0.95rem; flex-shrink: 0; margin-top: 1px; }
+    .contact-item a { color: var(--sage); text-decoration: none; }
+    .contact-item a:hover { text-decoration: underline; }
+
+    /* ── MAIN CONTENT TABS ── */
+    .content-tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--card); border: 1px solid var(--border-lt); border-radius: 11px; padding: 4px; }
+    .tab-btn { flex: 1; padding: 9px 16px; border-radius: 8px; font-size: 0.84rem; font-weight: 600; border: none; cursor: pointer; font-family: var(--font-sans); color: var(--text-muted); background: transparent; transition: all 0.2s; }
+    .tab-btn.active { background: var(--green); color: white; box-shadow: 0 2px 8px rgba(31,58,46,0.25); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── POST CARDS ── */
+    .activity-card {
+      background: var(--card); border: 1px solid var(--border-lt);
+      border-radius: 12px; padding: 18px; margin-bottom: 12px;
+      box-shadow: 0 1px 6px var(--shadow); transition: all 0.2s;
+    }
+    .activity-card:hover { box-shadow: 0 4px 16px var(--shadow-d); transform: translateY(-1px); }
+    .act-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .act-avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--sage), var(--green-soft));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 0.82rem;
+    }
+    .act-meta { flex: 1; }
+    .act-author { font-weight: 600; font-size: 0.88rem; color: var(--ink); }
+    .act-where { font-size: 0.74rem; color: var(--text-muted); }
+    .act-type-tag {
+      font-size: 0.7rem; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .tag-technique { background: rgba(122,158,108,0.12); color: var(--moss); }
+    .tag-project   { background: rgba(194,165,108,0.12); color: var(--clay2); }
+    .tag-resource  { background: rgba(90,125,82,0.1); color: var(--sage); }
+    .tag-question  { background: rgba(74,107,165,0.1); color: #4a6ba5; }
+    .act-body { font-size: 0.92rem; color: var(--text); line-height: 1.65; margin-bottom: 12px; }
+    .act-body strong { color: var(--ink); }
+    .act-footer { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--border-lt); padding-top: 10px; }
+    .act-action { display: flex; align-items: center; gap: 4px; font-size: 0.78rem; font-weight: 500; color: var(--text-muted); cursor: pointer; padding: 4px 9px; border-radius: 6px; background: transparent; border: none; font-family: var(--font-sans); transition: all 0.15s; }
+    .act-action:hover { background: var(--pale-green); color: var(--sage); }
+    .act-time { margin-left: auto; font-size: 0.73rem; color: var(--text-muted); }
+
+    /* ── PROJECT CARDS ── */
+    .project-card {
+      background: var(--card); border: 1px solid var(--border-lt);
+      border-radius: 14px; padding: 20px; margin-bottom: 14px;
+      box-shadow: 0 1px 8px var(--shadow); transition: all 0.2s;
+    }
+    .project-card:hover { box-shadow: 0 4px 16px var(--shadow-d); transform: translateY(-1px); }
+    .proj-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .proj-title { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 600; color: var(--ink); line-height: 1.2; }
+    .proj-status { font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+    .status-active { background: rgba(90,125,82,0.12); color: var(--sage); border: 1px solid rgba(90,125,82,0.22); }
+    .status-forming { background: rgba(194,165,108,0.12); color: var(--clay2); border: 1px solid rgba(194,165,108,0.22); }
+    .status-complete { background: rgba(31,58,46,0.08); color: var(--green); border: 1px solid rgba(31,58,46,0.15); }
+    .proj-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+    .proj-meta-item { font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+    .proj-desc { font-size: 0.91rem; color: var(--text); line-height: 1.65; margin-bottom: 12px; }
+    .proj-needs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .need-pill { font-size: 0.75rem; font-weight: 500; padding: 4px 10px; border-radius: 6px; background: rgba(31,58,46,0.05); color: var(--text-muted); border: 1px solid var(--border-lt); }
+    .need-pill.active { background: rgba(194,165,108,0.1); color: var(--clay2); border-color: rgba(194,165,108,0.25); }
+    .proj-footer { display: flex; align-items: center; gap: 10px; border-top: 1px solid var(--border-lt); padding-top: 12px; }
+    .proj-members { display: flex; }
+    .proj-member-av { width: 26px; height: 26px; border-radius: 50%; background: var(--pale-green); border: 2px solid var(--card); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; color: var(--sage); margin-left: -6px; }
+    .proj-member-av:first-child { margin-left: 0; }
+    .proj-members-label { font-size: 0.77rem; color: var(--text-muted); margin-left: 10px; }
+    .proj-join-btn { margin-left: auto; background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); cursor: pointer; font-family: var(--font-sans); transition: all 0.15s; }
+    .proj-join-btn:hover { border-color: var(--green); color: var(--green); }
+
+    /* ── CERTIFICATIONS ── */
+    .cert-item { padding: 10px 0; border-bottom: 1px solid var(--border-lt); }
+    .cert-item:last-of-type { border-bottom: none; }
+    .cert-row { display: flex; align-items: flex-start; gap: 10px; }
+    .cert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .cert-info { flex: 1; min-width: 0; }
+    .cert-title { font-size: 0.84rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
+    .cert-org { font-size: 0.76rem; color: var(--text-muted); }
+    .cert-date { font-size: 0.7rem; color: var(--text-muted); opacity: 0.7; }
+    .cert-verified { font-size: 0.68rem; font-weight: 700; color: var(--sage); background: rgba(90,125,82,0.12); border: 1px solid rgba(90,125,82,0.25); border-radius: 10px; padding: 2px 7px; flex-shrink: 0; }
+
+    /* ── PROJECT LINK CARDS (sidebar) ── */
+    .proj-link-card { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 9px; text-decoration: none; transition: background 0.15s; cursor: pointer; margin-bottom: 4px; }
+    .proj-link-card:hover { background: var(--pale-green); }
+    .proj-link-avatar { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.78rem; flex-shrink: 0; }
+    .proj-link-info { flex: 1; min-width: 0; }
+    .proj-link-name { font-size: 0.84rem; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .proj-link-type { font-size: 0.72rem; color: var(--text-muted); }
+    .proj-link-role { font-size: 0.68rem; font-weight: 600; padding: 2px 7px; border-radius: 5px; background: rgba(90,125,82,0.1); color: var(--sage); flex-shrink: 0; }
+
+    /* ── MEDIA ITEMS (sidebar) ── */
+    .media-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-lt); }
+    .media-item:last-of-type { border-bottom: none; }
+    .media-icon { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+    .media-info { flex: 1; min-width: 0; }
+    .media-title { font-size: 0.82rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
+    .media-detail { font-size: 0.72rem; color: var(--text-muted); }
+    .media-thumb-sm { width: 56px; height: 32px; border-radius: 4px; background: linear-gradient(135deg, #2a3a2a, #3a5a3a); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: rgba(255,255,255,0.6); }
+
+    /* ── EARTH SCORE ── */
+    .earth-score-bar { padding: 14px 16px; border-radius: 10px; background: rgba(31,58,46,0.04); border: 1px solid rgba(31,58,46,0.1); }
+    .score-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+    .score-label { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .score-num { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700; color: var(--green); }
+    .progress-track { height: 5px; background: var(--pale-green); border-radius: 4px; overflow: hidden; margin-bottom: 5px; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--moss)); border-radius: 4px; }
+    .score-breakdown { font-size: 0.72rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--green); color: rgba(242,239,230,0.7);
+      padding: 40px 0 24px; margin-top: 60px;
+    }
+    .footer-inner { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
+    .footer-row { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 32px; }
+    .footer-logo { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700; color: var(--parchment); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .footer-logo .brand-back { color: var(--clay); }
+    .footer-tagline { font-size: 0.82rem; color: rgba(242,239,230,0.5); line-height: 1.5; max-width: 26ch; }
+    .footer-col h4 { font-size: 0.73rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(242,239,230,0.5); margin-bottom: 10px; }
+    .footer-col a { display: block; color: rgba(242,239,230,0.7); text-decoration: none; font-size: 0.85rem; margin-bottom: 6px; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--parchment); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 0.78rem; color: rgba(242,239,230,0.4); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp 0.45s ease both; }
+    .fade-up-2 { animation: fadeUp 0.45s 0.08s ease both; }
+    .fade-up-3 { animation: fadeUp 0.45s 0.16s ease both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .profile-body { padding: 0 16px 20px; }
+      .avatar-row { margin-top: -44px; gap: 10px; }
+      .profile-avatar { width: 88px; height: 88px; font-size: 1.3rem; border-width: 3px; }
+      .avatar-actions { gap: 6px; }
+      .avatar-actions .btn-collab,
+      .avatar-actions .btn-follow { padding: 7px 14px; font-size: 0.8rem; }
+      .profile-name { font-size: 1.5rem; }
+      .profile-tagline { font-size: 0.88rem; }
+      .profile-stats { gap: 12px; flex-wrap: wrap; }
+      .stat-box .stat-val { font-size: 1.3rem; }
+      .page-wrap { padding: 80px 14px 48px; }
+      .content-tabs { gap: 2px; }
+      .tab-btn { padding: 8px 10px; font-size: 0.78rem; }
+      .cover-band { height: 44px; }
+    }
+
+    /* ── EDIT MODE ── */
+    .edit-mode .profile-avatar {
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+      overflow: visible;
+    }
+    .edit-mode .profile-avatar:hover {
+      box-shadow: 0 0 0 3px rgba(90,125,82,0.35);
+    }
+    .edit-mode .profile-avatar::after {
+      content: '📷';
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      border: 2px solid var(--card);
+      pointer-events: none;
+    }
+    .edit-mode .profile-avatar:hover::after {
+      background: rgba(90,125,82,0.9);
+    }
+    .edit-input {
+      background: white !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 8px !important;
+      padding: 8px 12px !important;
+      font-family: var(--font-sans) !important;
+      color: var(--text) !important;
+      font-size: 0.95rem !important;
+    }
+    .edit-input:focus {
+      outline: none;
+      border-color: var(--sage) !important;
+      box-shadow: 0 0 0 3px rgba(90,125,82,0.1);
+    }
+    .edit-textarea {
+      background: white !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 8px !important;
+      padding: 8px 12px !important;
+      font-family: var(--font-sans) !important;
+      color: var(--text) !important;
+      font-size: 0.95rem !important;
+      resize: vertical;
+      min-height: 100px;
+    }
+    .edit-textarea:focus {
+      outline: none;
+      border-color: var(--sage) !important;
+      box-shadow: 0 0 0 3px rgba(90,125,82,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── APP TOPBAR ── -->
+<nav class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <span class="topbar-brand-mark">🌿</span>
+    <span class="topbar-brand-name"><span class="topbar-the">the</span> Earthback <span class="brand-sub">Project</span></span>
+  </a>
+  <div class="topbar-nav">
+    <a href="feed.html" class="topbar-nav-link">Home</a>
+    <a href="projects.html" class="topbar-nav-link">Projects</a>
+    <a href="#media" class="topbar-nav-link">Media</a>
+    <a href="#" class="topbar-nav-link coming-soon" title="Coming soon">Marketplace</a>
+    <a href="circles.html" class="topbar-nav-link">Circles</a>
+  </div>
+  <div class="topbar-right">
+    <a href="messages.html" title="Messages" style="color:rgba(255,255,255,0.7);font-size:1rem;text-decoration:none;padding:4px 8px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.background='none'">💬</a>
+    <a href="profile.html" title="View your profile" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sage));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:none;" id="header-avatar">?</a>
+    <button onclick="handleSignOut()" title="Sign out" style="background:none; border:1px solid rgba(255,255,255,0.25); border-radius:8px; padding:7px 14px; color:rgba(255,255,255,0.7); font-size:0.8rem; font-weight:500; font-family:var(--font-sans); cursor:pointer; white-space:nowrap; transition:all 0.2s;" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.25)'">Sign Out</button>
+    <div class="topbar-hamburger" onclick="this.classList.toggle('open'); document.querySelector('.topbar-mobile-menu').classList.toggle('open');">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="topbar-mobile-menu">
+  <a href="feed.html">Home</a>
+  <a href="projects.html">Projects</a>
+  <a href="#media">Media</a>
+  <a href="#">Marketplace (Coming Soon)</a>
+  <a href="circles.html">Circles</a>
+  <a href="messages.html">Messages</a>
+  <a href="profile.html">My Profile</a>
+</div>
+
+<!-- ── PAGE ── -->
+<div class="page-wrap">
+
+  <!-- PROFILE HEADER -->
+  <div class="profile-header fade-up">
+    <div class="cover-band"></div>
+    <div class="profile-body">
+      <div class="avatar-row">
+        <div class="profile-avatar">MR</div>
+        <div class="avatar-actions">
+          <button class="btn-collab" onclick="window.location.href='join.html'">✦ Invite to Collaborate</button>
+          <button class="btn-follow" onclick="window.location.href='join.html'">+ Follow</button>
+        </div>
+      </div>
+
+      <h1 class="profile-name">Maya Redhawk</h1>
+      <p class="profile-tagline">Natural builder · hempcrete specialist · community organizer · learning how to grow food in high desert</p>
+
+      <div class="profile-meta">
+        <span class="pmeta-item">📍 Taos, New Mexico</span>
+        <span class="pmeta-item">🌿 Member since January 2026</span>
+        <span class="verified-badge">✓ Verified Member</span>
+        <span class="member-type-badge">Individual builder</span>
+      </div>
+
+      <p class="profile-bio">I've been building with natural materials for about seven years — mostly hempcrete and adobe, but I'm always learning. Right now I'm working on a small owner-built ADU in Taos using lime-based plasters. I came to Earthback to find people who actually know what they're doing and don't mind sharing. If you've done hempcrete in cold climates, I want to talk.</p>
+
+      <div class="profile-stats">
+        <div class="stat-item"><span class="stat-num">4</span><span class="stat-label">Projects</span></div>
+        <div class="stat-item"><span class="stat-num">23</span><span class="stat-label">Posts</span></div>
+        <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Circles</span></div>
+        <div class="stat-item"><span class="stat-num">142</span><span class="stat-label">Helpful Marks</span></div>
+        <div class="stat-item"><span class="stat-num">87</span><span class="stat-label">Earth Score</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE GRID -->
+  <div class="profile-grid fade-up-2">
+
+    <!-- SIDEBAR -->
+    <div>
+      <!-- Skills -->
+      <div class="sidebar-panel">
+        <div class="panel-title">Skills & Expertise</div>
+        <div class="skills-group">
+          <div class="skills-group-label">I can teach / lead</div>
+          <div class="skills-list">
+            <span class="skill-pill skill-lead">Hempcrete Construction</span>
+            <span class="skill-pill skill-lead">Lime Plastering</span>
+            <span class="skill-pill skill-lead">Adobe Brick</span>
+          </div>
+        </div>
+        <div class="skills-group">
+          <div class="skills-group-label">Experienced</div>
+          <div class="skills-list">
+            <span class="skill-pill skill-exp">Natural Building Design</span>
+            <span class="skill-pill skill-exp">Community Organizing</span>
+            <span class="skill-pill skill-exp">Owner-Build Permitting</span>
+            <span class="skill-pill skill-exp">Bale Construction</span>
+          </div>
+        </div>
+        <div class="skills-group">
+          <div class="skills-group-label">Actively learning</div>
+          <div class="skills-list">
+            <span class="skill-pill skill-learn">High Desert Permaculture</span>
+            <span class="skill-pill skill-learn">Greywater Systems</span>
+            <span class="skill-pill skill-learn">Solar Thermal</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Circles -->
+      <div class="sidebar-panel">
+        <div class="panel-title">Circles</div>
+        <a href="circles.html" class="circle-item">
+          <span class="circle-icon">🛖</span>
+          <div class="circle-info">
+            <div class="circle-name">Natural Building</div>
+            <div class="circle-size">1,240 members</div>
+          </div>
+          <span class="circle-role">Member</span>
+        </a>
+        <a href="circles.html" class="circle-item">
+          <span class="circle-icon">🏘️</span>
+          <div class="circle-info">
+            <div class="circle-name">Community Housing</div>
+            <div class="circle-size">892 members</div>
+          </div>
+          <span class="circle-role">Member</span>
+        </a>
+        <a href="circles.html" class="circle-item">
+          <span class="circle-icon">🌍</span>
+          <div class="circle-info">
+            <div class="circle-name">Land & Soil</div>
+            <div class="circle-size">634 members</div>
+          </div>
+          <span class="circle-role">Moderator</span>
+        </a>
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-lt);">
+          <a href="circles.html" style="font-size:0.8rem; color:var(--sage); font-weight:500; text-decoration:none;">Browse all circles →</a>
+        </div>
+      </div>
+
+      <!-- Earth Score -->
+      <div class="sidebar-panel">
+        <div class="panel-title">Earth Score</div>
+        <div class="earth-score-bar">
+          <div class="score-row">
+            <span class="score-label">Contribution score</span>
+            <span class="score-num">87</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:43%;"></div></div>
+          <div class="score-breakdown">4 projects · 23 posts · 142 helpful marks · 3 resources shared. Next milestone: 100 points → senior member status.</div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="sidebar-panel">
+        <div class="panel-title">Certifications & Credentials</div>
+        <div class="cert-item">
+          <div class="cert-row">
+            <span class="cert-icon">🏅</span>
+            <div class="cert-info">
+              <div class="cert-title">Certified Hempcrete Installer</div>
+              <div class="cert-org">Hemp Building Association</div>
+              <div class="cert-date">Issued March 2024</div>
+            </div>
+            <span class="cert-verified" title="Verified by Earthback">✓</span>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-row">
+            <span class="cert-icon">🏅</span>
+            <div class="cert-info">
+              <div class="cert-title">Natural Building Practitioner</div>
+              <div class="cert-org">Building Biology Institute</div>
+              <div class="cert-date">Issued November 2022</div>
+            </div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-row">
+            <span class="cert-icon">📜</span>
+            <div class="cert-info">
+              <div class="cert-title">Permaculture Design Certificate (PDC)</div>
+              <div class="cert-org">Permaculture Research Institute</div>
+              <div class="cert-date">Issued June 2021</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-lt);">
+          <a href="join.html" style="font-size:0.78rem; color:var(--sage); font-weight:500; text-decoration:none;">+ Add a certification →</a>
+        </div>
+      </div>
+
+      <!-- Projects & Companies -->
+      <div class="sidebar-panel">
+        <div class="panel-title">Projects & Companies</div>
+        <a href="project.html" class="proj-link-card">
+          <div class="proj-link-avatar" style="background:linear-gradient(135deg,#b8902a,#8a6a18);">DS</div>
+          <div class="proj-link-info">
+            <div class="proj-link-name">Desert Sun Hemp Homes</div>
+            <div class="proj-link-type">Company · Tucson, AZ</div>
+          </div>
+          <span class="proj-link-role">Founder</span>
+        </a>
+        <a href="project.html" class="proj-link-card">
+          <div class="proj-link-avatar" style="background:linear-gradient(135deg,var(--green),#2d5a27);">TA</div>
+          <div class="proj-link-info">
+            <div class="proj-link-name">Taos ADU Build</div>
+            <div class="proj-link-type">Project · Taos, NM</div>
+          </div>
+          <span class="proj-link-role">Lead</span>
+        </a>
+        <a href="project.html" class="proj-link-card">
+          <div class="proj-link-avatar" style="background:linear-gradient(135deg,var(--sage),#4a8a6a);">NS</div>
+          <div class="proj-link-info">
+            <div class="proj-link-name">NM Natural Builders Network</div>
+            <div class="proj-link-type">Organization · New Mexico</div>
+          </div>
+          <span class="proj-link-role">Member</span>
+        </a>
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-lt);">
+          <a href="join.html" style="font-size:0.78rem; color:var(--sage); font-weight:500; text-decoration:none;">+ Create a project or company page →</a>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="sidebar-panel">
+        <div class="panel-title">Connect</div>
+        <div class="contact-item"><span class="contact-icon">📍</span><div>Taos, New Mexico (can travel within NM for build days)</div></div>
+        <div class="contact-item"><span class="contact-icon">🌐</span><div><a href="join.html">Send a message through Earthback</a></div></div>
+        <div class="contact-item"><span class="contact-icon">📅</span><div>Available for collaboration — typically responds within 2 days</div></div>
+        <button class="btn-collab" style="width:100%; margin-top:8px;" onclick="window.location.href='join.html'">✦ Invite to Collaborate</button>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="fade-up-3">
+      <div class="content-tabs">
+        <button class="tab-btn active" onclick="showTab('activity', this)">Activity</button>
+        <button class="tab-btn" onclick="showTab('projects', this)">Projects</button>
+        <button class="tab-btn" onclick="showTab('resources', this)">Resources</button>
+        <button class="tab-btn" onclick="showTab('media', this)">Media</button>
+      </div>
+
+      <!-- ACTIVITY TAB -->
+      <div id="tab-activity" class="tab-panel active">
+
+        <div class="activity-card">
+          <div class="act-header">
+            <div class="act-avatar">MR</div>
+            <div class="act-meta">
+              <div class="act-author">Maya Redhawk</div>
+              <div class="act-where">Natural Building Circle</div>
+            </div>
+            <span class="act-type-tag tag-technique">Technique Share</span>
+          </div>
+          <div class="act-body"><strong>What actually worked for curing hempcrete in January.</strong> I was nervous about pouring in cold weather — we had a stretch of lows around 20°F in December. What saved us: renting propane heaters and enclosing the pour with poly sheeting for the first 10 days. Mix was a bit wetter than summer batches. Six weeks later, walls are solid. Happy to share the exact adjustments if anyone's doing a cold-weather build.</div>
+          <div class="act-footer">
+            <button class="act-action">🌿 Helpful <span>34</span></button>
+            <button class="act-action">💬 Comment <span>7</span></button>
+            <button class="act-action">↗ Share</button>
+            <span class="act-time">3 days ago</span>
+          </div>
+        </div>
+
+        <div class="activity-card">
+          <div class="act-header">
+            <div class="act-avatar">MR</div>
+            <div class="act-meta">
+              <div class="act-author">Maya Redhawk</div>
+              <div class="act-where">Land & Soil Circle</div>
+            </div>
+            <span class="act-type-tag tag-question">Question</span>
+          </div>
+          <div class="act-body"><strong>Anyone growing hemp for fiber in northern NM?</strong> I've been sourcing industrial hemp hurd from Colorado but the shipping costs are eating us alive. There's a grower about 90 miles away but I can't find contact info and their website is dead. If you know someone growing fiber hemp in the Rio Grande watershed, please connect us.</div>
+          <div class="act-footer">
+            <button class="act-action">🌿 Helpful <span>12</span></button>
+            <button class="act-action">💬 Comment <span>4</span></button>
+            <button class="act-action">↗ Share</button>
+            <span class="act-time">1 week ago</span>
+          </div>
+        </div>
+
+        <div class="activity-card">
+          <div class="act-header">
+            <div class="act-avatar">MR</div>
+            <div class="act-meta">
+              <div class="act-author">Maya Redhawk</div>
+              <div class="act-where">Community Housing Circle</div>
+            </div>
+            <span class="act-type-tag tag-resource">Resource</span>
+          </div>
+          <div class="act-body"><strong>Sharing the permit drawings for my ADU — free to use and adapt.</strong> It took 14 months to get a hempcrete ADU permitted in Taos County. I'm sharing all drawings, the structural engineer's sign-off, and the correspondence that finally got it approved. If you're doing owner-built ADU work in the Southwest, these might save you months.</div>
+          <div class="act-footer">
+            <button class="act-action">🌿 Helpful <span>67</span></button>
+            <button class="act-action">💬 Comment <span>18</span></button>
+            <button class="act-action">↗ Share</button>
+            <span class="act-time">2 weeks ago</span>
+          </div>
+        </div>
+
+        <div style="text-align:center; padding:18px; color:var(--text-muted); font-size:0.83rem;">
+          <a href="join.html" style="color:var(--sage); font-weight:500; text-decoration:none;">Join Earthback to see Maya's full activity →</a>
+        </div>
+      </div>
+
+      <!-- PROJECTS TAB -->
+      <div id="tab-projects" class="tab-panel">
+
+        <div class="project-card">
+          <div class="proj-header">
+            <div class="proj-title">Taos ADU — Owner-Built Hempcrete</div>
+            <span class="proj-status status-active">🔨 In Progress</span>
+          </div>
+          <div class="proj-meta">
+            <span class="proj-meta-item">📍 Taos, New Mexico</span>
+            <span class="proj-meta-item">🛖 Natural Building</span>
+            <span class="proj-meta-item">📅 Started Nov 2025</span>
+          </div>
+          <p class="proj-desc">400 sq ft hempcrete ADU on a 1/3-acre lot in Taos. Owner-build permit, no contractor. Mix: 4:1:1 hemp/lime/water. Exterior lime plaster. Currently at wall plate height — pouring roof bond beam next month. Full documentation of permit process and build being shared as a public resource.</p>
+          <div style="margin-bottom:10px; font-size:0.8rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em;">Currently needs</div>
+          <div class="proj-needs">
+            <span class="need-pill active">Experienced plasterer for exterior coat</span>
+            <span class="need-pill active">Roof framing help (2 days, Feb)</span>
+            <span class="need-pill">Interior electrical review</span>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-members">
+              <div class="proj-member-av">MR</div>
+              <div class="proj-member-av">TK</div>
+              <div class="proj-member-av">+3</div>
+            </div>
+            <span class="proj-members-label">5 collaborators</span>
+            <button class="proj-join-btn" onclick="window.location.href='join.html'">Offer Help →</button>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="proj-header">
+            <div class="proj-title">Taos Natural Building Skills Share</div>
+            <span class="proj-status status-forming">🌱 Forming</span>
+          </div>
+          <div class="proj-meta">
+            <span class="proj-meta-item">📍 Taos, New Mexico</span>
+            <span class="proj-meta-item">🔧 Skills & Workshops</span>
+            <span class="proj-meta-item">📅 Planning for Spring 2026</span>
+          </div>
+          <p class="proj-desc">A 2-day skills-share gathering focused on natural building techniques for high-desert climates. Hempcrete, adobe, cob, and earthen plasters. Looking for 3 more instructors and a hosting venue with outdoor space (1 acre+).</p>
+          <div class="proj-needs">
+            <span class="need-pill active">Venue (1+ acre, covered workspace)</span>
+            <span class="need-pill active">Instructors: cob, earthen plaster</span>
+            <span class="need-pill">Sponsorship / materials support</span>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-members">
+              <div class="proj-member-av">MR</div>
+              <div class="proj-member-av">SA</div>
+            </div>
+            <span class="proj-members-label">2 organizers so far</span>
+            <button class="proj-join-btn" onclick="window.location.href='join.html'">Join Project →</button>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="proj-header">
+            <div class="proj-title">Arroyo Hondo Adobe Repair — Community Build</div>
+            <span class="proj-status status-complete">✓ Complete</span>
+          </div>
+          <div class="proj-meta">
+            <span class="proj-meta-item">📍 Arroyo Hondo, NM</span>
+            <span class="proj-meta-item">🛖 Natural Building</span>
+            <span class="proj-meta-item">📅 Completed September 2025</span>
+          </div>
+          <p class="proj-desc">Weekend repair of an 80-year-old adobe home belonging to an elder community member. 12 volunteers, 2 days, complete re-plaster of south and west facades. Materials donated by 4 local suppliers. Documentation archived as a community resource.</p>
+          <div class="proj-footer">
+            <div class="proj-members">
+              <div class="proj-member-av">MR</div>
+              <div class="proj-member-av">JB</div>
+              <div class="proj-member-av">+10</div>
+            </div>
+            <span class="proj-members-label">12 participants</span>
+            <button class="proj-join-btn" onclick="window.location.href='join.html'">View Archive →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESOURCES TAB -->
+      <div id="tab-resources" class="tab-panel">
+        <div class="activity-card">
+          <div class="act-header">
+            <div class="act-avatar">MR</div>
+            <div class="act-meta">
+              <div class="act-author">Maya Redhawk</div>
+              <div class="act-where">Shared resource · 67 helpful marks</div>
+            </div>
+            <span class="act-type-tag tag-resource">Resource</span>
+          </div>
+          <div class="act-body"><strong>Taos County ADU permit package — hempcrete, owner-build.</strong> Full permit drawings, structural sign-off, and the correspondence trail from application to approval. Free to download, adapt, and share. Intended for anyone trying to permit natural building in the Southwest.</div>
+          <div class="act-footer">
+            <button class="act-action">🌿 Helpful <span>67</span></button>
+            <button class="act-action" onclick="window.location.href='join.html'">⬇ Download</button>
+            <span class="act-time">2 weeks ago</span>
+          </div>
+        </div>
+        <div class="activity-card">
+          <div class="act-header">
+            <div class="act-avatar">MR</div>
+            <div class="act-meta">
+              <div class="act-author">Maya Redhawk</div>
+              <div class="act-where">Shared resource · 34 helpful marks</div>
+            </div>
+            <span class="act-type-tag tag-resource">Resource</span>
+          </div>
+          <div class="act-body"><strong>Cold-weather hempcrete curing guide — below 30°F.</strong> Notes from two winter builds in northern NM. Includes equipment list, poly enclosure method, mix adjustments for cold temps, and a week-by-week curing log. Formatted as a one-page field guide.</div>
+          <div class="act-footer">
+            <button class="act-action">🌿 Helpful <span>34</span></button>
+            <button class="act-action" onclick="window.location.href='join.html'">⬇ Download</button>
+            <span class="act-time">3 days ago</span>
+          </div>
+        </div>
+        <div style="text-align:center; padding:18px; color:var(--text-muted); font-size:0.83rem;">
+          <a href="join.html" style="color:var(--sage); font-weight:500; text-decoration:none;">Join Earthback to access all resources →</a>
+        </div>
+      </div>
+
+      <!-- MEDIA TAB -->
+      <div id="tab-media" class="tab-panel">
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; margin-bottom:20px;">
+
+          <div style="background:var(--card); border:1px solid var(--border-lt); border-radius:12px; overflow:hidden; box-shadow:0 1px 6px var(--shadow); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+            <div style="height:140px; background:linear-gradient(135deg,#2a3a2a,#3a5a3a); display:flex; align-items:center; justify-content:center; position:relative;">
+              <div style="width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; font-size:1.2rem;">▶</div>
+              <span style="position:absolute; bottom:8px; right:10px; background:rgba(0,0,0,0.6); color:white; font-size:0.68rem; font-weight:600; padding:2px 6px; border-radius:4px;">14:32</span>
+            </div>
+            <div style="padding:14px;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+                <span style="font-size:0.65rem; font-weight:700; padding:2px 6px; border-radius:4px; background:rgba(255,0,0,0.08); color:#c00;">YouTube</span>
+              </div>
+              <div style="font-size:0.88rem; font-weight:600; color:var(--ink); line-height:1.3; margin-bottom:4px;">Cold-weather hempcrete pour — full process walkthrough</div>
+              <div style="font-size:0.74rem; color:var(--text-muted);">6.2K views · 2 months ago</div>
+            </div>
+          </div>
+
+          <div style="background:var(--card); border:1px solid var(--border-lt); border-radius:12px; overflow:hidden; box-shadow:0 1px 6px var(--shadow); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+            <div style="height:140px; background:linear-gradient(135deg,#3a4a2a,#5a7a4a); display:flex; align-items:center; justify-content:center; position:relative;">
+              <div style="width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; font-size:1.2rem;">▶</div>
+              <span style="position:absolute; bottom:8px; right:10px; background:rgba(0,0,0,0.6); color:white; font-size:0.68rem; font-weight:600; padding:2px 6px; border-radius:4px;">22:17</span>
+            </div>
+            <div style="padding:14px;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+                <span style="font-size:0.65rem; font-weight:700; padding:2px 6px; border-radius:4px; background:rgba(255,0,0,0.08); color:#c00;">YouTube</span>
+              </div>
+              <div style="font-size:0.88rem; font-weight:600; color:var(--ink); line-height:1.3; margin-bottom:4px;">ADU permitting in Taos County — what actually happened</div>
+              <div style="font-size:0.74rem; color:var(--text-muted);">3.8K views · 1 month ago</div>
+            </div>
+          </div>
+
+          <div style="background:var(--card); border:1px solid var(--border-lt); border-radius:12px; overflow:hidden; box-shadow:0 1px 6px var(--shadow); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+            <div style="height:140px; background:linear-gradient(135deg,#4a3a2a,#7a5a3a); display:flex; align-items:center; justify-content:center; position:relative;">
+              <div style="width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; font-size:1.2rem;">▶</div>
+              <span style="position:absolute; bottom:8px; right:10px; background:rgba(0,0,0,0.6); color:white; font-size:0.68rem; font-weight:600; padding:2px 6px; border-radius:4px;">8:45</span>
+            </div>
+            <div style="padding:14px;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+                <span style="font-size:0.65rem; font-weight:700; padding:2px 6px; border-radius:4px; background:rgba(255,0,0,0.08); color:#c00;">YouTube</span>
+              </div>
+              <div style="font-size:0.88rem; font-weight:600; color:var(--ink); line-height:1.3; margin-bottom:4px;">Lime plaster finish coat — tools, technique, and mistakes I made</div>
+              <div style="font-size:0.74rem; color:var(--text-muted);">2.1K views · 3 weeks ago</div>
+            </div>
+          </div>
+
+          <div style="background:var(--card); border:1px solid var(--border-lt); border-radius:12px; overflow:hidden; box-shadow:0 1px 6px var(--shadow); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+            <div style="height:140px; background:linear-gradient(135deg,var(--green),#2d5a27); display:flex; align-items:center; justify-content:center;">
+              <span style="font-size:1.8rem;">📄</span>
+            </div>
+            <div style="padding:14px;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+                <span style="font-size:0.65rem; font-weight:700; padding:2px 6px; border-radius:4px; background:rgba(90,125,82,0.1); color:var(--sage);">PDF</span>
+              </div>
+              <div style="font-size:0.88rem; font-weight:600; color:var(--ink); line-height:1.3; margin-bottom:4px;">Taos County ADU permit package — free download</div>
+              <div style="font-size:0.74rem; color:var(--text-muted);">67 downloads · Shared 2 weeks ago</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div id="media-import-box" style="background:var(--card); border:1px dashed var(--border); border-radius:12px; padding:24px; text-align:center;">
+          <div style="font-size:1.3rem; margin-bottom:8px;">🎬</div>
+          <div style="font-size:0.9rem; font-weight:600; color:var(--ink); margin-bottom:4px;">Import your content</div>
+          <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.5; max-width:40ch; margin:0 auto 14px;">Paste a YouTube, Vimeo, Instagram, or article link — we'll pull the title and thumbnail automatically.</div>
+          <div style="display:flex; align-items:center; gap:8px; max-width:400px; margin:0 auto;">
+            <input type="text" id="media-url-input" placeholder="Paste a link…" style="flex:1; padding:9px 14px; border:1px solid var(--border); border-radius:8px; font-size:0.84rem; font-family:var(--font-sans); background:white; outline:none;" onfocus="this.style.borderColor='var(--sage)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter')importMedia()">
+            <button style="padding:9px 18px; background:linear-gradient(135deg,var(--green),#2d5a27); color:white; border:none; border-radius:8px; font-size:0.82rem; font-weight:600; font-family:var(--font-sans); cursor:pointer; white-space:nowrap;" onclick="importMedia()">Import →</button>
+          </div>
+          <div id="media-import-preview" style="display:none;"></div>
+        </div>
+
+        <div style="text-align:center; padding:18px; color:var(--text-muted); font-size:0.83rem;">
+          <a href="join.html" style="color:var(--sage); font-weight:500; text-decoration:none;">Join Earthback to import your content →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-row">
+      <div>
+        <div class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></div>
+        <div class="footer-tagline">A community for anyone building a better world — no algorithm, no ads, no noise.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="circles.html">Explore Circles</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="use-cases.html">Use Cases</a>
+        <a href="join.html">Join / Sign In</a>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <a href="about.html">Our Story</a>
+        <a href="safety.html">Safety & Trust</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 the Earthback Project. All rights reserved.</span>
+      <span>Built for builders, growers, and anyone trying.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+<!-- Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── Sign Out handler ──
+async function handleSignOut() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+// ── Populate header avatar ──
+(async function() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const { data: prof } = await sb.from('profiles').select('display_name, avatar_url').eq('id', session.user.id).single();
+  const el = document.getElementById('header-avatar');
+  if (!el) return;
+  if (prof && prof.avatar_url) {
+    el.innerHTML = '';
+    el.style.backgroundImage = 'url(' + prof.avatar_url + ')';
+    el.style.backgroundSize = 'cover';
+    el.style.backgroundPosition = 'center';
+    el.style.background = 'url(' + prof.avatar_url + ') center/cover';
+  } else if (prof && prof.display_name) {
+    el.textContent = prof.display_name.charAt(0).toUpperCase();
+  }
+})();
+
+// Member type display labels
+const MEMBER_TYPE_LABELS = {
+  individual:  'Individual builder',
+  org:         'Organization',
+  community:   'Community / Co-op',
+  tribal:      'Tribal Nation',
+};
+
+// Color palette for avatar initials
+const AVATAR_COLORS = ['#1F3A2E','#2d5a27','#4a6fa5','#4a8a7a','#6a5a8a','#8a5a3a'];
+
+function initials(name) {
+  return (name || 'EB').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function setAvatarColor(initial) {
+  const idx = (initial || 'A').charCodeAt(0) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[idx];
+}
+
+function relativeTime(dateStr) {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+  const diffWeeks = Math.floor(diffDays / 7);
+  const diffMonths = Math.floor(diffDays / 30);
+
+  if (diffMins < 1) return 'just now';
+  if (diffMins < 60) return diffMins + ' minutes ago';
+  if (diffHours < 24) return diffHours + ' hours ago';
+  if (diffDays < 7) return diffDays + ' days ago';
+  if (diffWeeks < 4) return diffWeeks + ' weeks ago';
+  if (diffMonths < 12) return diffMonths + ' months ago';
+  return Math.floor(diffMonths / 12) + ' years ago';
+}
+
+function avatarHTML(url, name, size = 36) {
+  if (url) {
+    return `<img src="${url}" alt="${name}" style="width:${size}px; height:${size}px; border-radius:50%; object-fit:cover;">`;
+  }
+  const ini = initials(name);
+  const bgColor = setAvatarColor(name ? name[0] : 'E');
+  return `<div style="width:${size}px; height:${size}px; border-radius:50%; background:${bgColor}; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:${size * 0.35}px; flex-shrink:0;">${ini}</div>`;
+}
+
+function buildCertsHTML(certs) {
+  if (!certs || certs.length === 0) {
+    return '<p style="font-size:0.82rem; color:var(--text-muted); padding:10px 0;">No certifications yet.</p>';
+  }
+  return certs.map(cert => `
+    <div class="cert-item">
+      <div class="cert-row">
+        <span class="cert-icon">🏅</span>
+        <div class="cert-info">
+          <div class="cert-title">${cert.title || ''}</div>
+          <div class="cert-org">${cert.issuing_org || ''}</div>
+          <div class="cert-date">Issued ${cert.issued_date ? new Date(cert.issued_date).toLocaleDateString('en-US', { year:'numeric', month:'short' }) : 'N/A'}</div>
+        </div>
+        ${cert.verified ? '<span class="cert-verified" title="Verified by Earthback">✓</span>' : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildProjectsHTML(projects) {
+  if (!projects || projects.length === 0) {
+    return '<p style="font-size:0.82rem; color:var(--text-muted); padding:10px 0;">No projects yet.</p>';
+  }
+  return projects.map(proj => {
+    const bgColor = setAvatarColor(proj.name ? proj.name[0] : 'P');
+    const initials_str = (proj.name || 'P').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    return `
+      <a href="project.html?id=${proj.id}" class="proj-link-card" style="text-decoration:none;color:inherit;">
+        <div class="proj-link-avatar" style="background:${bgColor};">${initials_str}</div>
+        <div class="proj-link-info">
+          <div class="proj-link-name">${proj.name || 'Unnamed Project'}</div>
+          <div class="proj-link-type">${proj.project_type || 'Project'} ${proj.location ? '· ' + proj.location : ''}</div>
+        </div>
+        <span class="proj-link-role">${proj.member_role || 'Member'}</span>
+      </a>
+    `;
+  }).join('');
+}
+
+function buildMediaHTML(mediaLinks) {
+  if (!mediaLinks || mediaLinks.length === 0) {
+    return '<p style="font-size:0.82rem; color:var(--text-muted); padding:10px 0;">No media linked yet.</p>';
+  }
+  return mediaLinks.map(media => {
+    let icon = '📄';
+    if (media.content_type === 'video') icon = '▶';
+    if (media.content_type === 'photo') icon = '🖼';
+    if (media.content_type === 'pdf') icon = '📄';
+
+    return `
+      <div class="media-item" style="cursor:pointer;" onclick="window.open('${media.url}', '_blank')">
+        <span class="media-icon">${icon}</span>
+        <div class="media-info">
+          <div class="media-title">${media.title || 'Untitled'}</div>
+          <div class="media-detail">${media.platform || 'Link'} · ${relativeTime(media.created_at)}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function buildActivityHTML(posts) {
+  if (!posts || posts.length === 0) {
+    return '<p style="font-size:0.82rem; color:var(--text-muted); padding:18px; text-align:center;">No activity yet.</p>';
+  }
+  return posts.map(post => {
+    const postTypeMap = {
+      'technique': 'tag-technique',
+      'question': 'tag-question',
+      'resource': 'tag-resource',
+      'project': 'tag-project'
+    };
+    const tagClass = postTypeMap[post.post_type || 'technique'] || 'tag-technique';
+    const postTypeLabel = (post.post_type || 'technique').charAt(0).toUpperCase() + (post.post_type || 'technique').slice(1);
+
+    return `
+      <div class="activity-card">
+        <div class="act-header">
+          ${avatarHTML('', post.author_name, 36)}
+          <div class="act-meta">
+            <div class="act-author">${post.author_name || 'Member'}</div>
+            <div class="act-where">${post.circle_label || 'Earthback'}</div>
+          </div>
+          <span class="act-type-tag ${tagClass}">${postTypeLabel}</span>
+        </div>
+        <div class="act-body">${(post.title ? '<strong>' + post.title + '.</strong> ' : '') + (post.body || '')}</div>
+        <div class="act-footer">
+          <button class="act-action">🌿 Helpful <span>${post.helpful_count || 0}</span></button>
+          <button class="act-action">💬 Comment</button>
+          <button class="act-action">↗ Share</button>
+          <span class="act-time">${relativeTime(post.created_at)}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ── MEDIA IMPORT UTILITIES ──
+
+const PLATFORM_ICONS = {
+  youtube: '▶', vimeo: '▶', tiktok: '▶',
+  instagram: '📸', podcast: '🎧',
+  article: '📰', website: '🔗', other: '📄'
+};
+
+const PLATFORM_LABELS = {
+  youtube: 'YouTube', vimeo: 'Vimeo', tiktok: 'TikTok',
+  instagram: 'Instagram', podcast: 'Podcast',
+  article: 'Article', website: 'Website', other: 'Link'
+};
+
+function detectPlatform(url) {
+  try {
+    const h = new URL(url).hostname.replace('www.', '');
+    if (h.includes('youtube.com') || h.includes('youtu.be')) return 'youtube';
+    if (h.includes('instagram.com')) return 'instagram';
+    if (h.includes('tiktok.com')) return 'tiktok';
+    if (h.includes('vimeo.com')) return 'vimeo';
+    if (h.includes('spotify.com') || h.includes('anchor.fm') || h.includes('podcasts.apple.com')) return 'podcast';
+    return 'website';
+  } catch { return 'other'; }
+}
+
+function getYouTubeId(url) {
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&?#]+)/);
+  return m ? m[1] : null;
+}
+
+function getContentType(platform) {
+  if (['youtube','vimeo','tiktok'].includes(platform)) return 'video';
+  if (platform === 'podcast') return 'podcast';
+  if (platform === 'instagram') return 'gallery';
+  return 'article';
+}
+
+async function fetchLinkMeta(url) {
+  const platform = detectPlatform(url);
+  const contentType = getContentType(platform);
+  let title = '', thumbnail = '', description = '';
+
+  if (platform === 'youtube') {
+    const vid = getYouTubeId(url);
+    if (vid) {
+      thumbnail = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
+      try {
+        const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
+        const data = await res.json();
+        title = data.title || '';
+      } catch {}
+    }
+  }
+
+  if (platform === 'vimeo') {
+    try {
+      const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      title = data.title || '';
+      thumbnail = data.thumbnail_url || '';
+    } catch {}
+  }
+
+  return { url, platform, contentType, title, thumbnail, description };
+}
+
+async function importMedia() {
+  const input = document.getElementById('media-url-input');
+  const url = (input.value || '').trim();
+  if (!url) return;
+
+  try { new URL(url); } catch { alert('Please paste a valid URL.'); return; }
+
+  const preview = document.getElementById('media-import-preview');
+  const importBox = document.getElementById('media-import-box');
+
+  // Show loading state
+  preview.innerHTML = '<div style="padding:18px; text-align:center; color:var(--text-muted); font-size:0.84rem;">Fetching link info…</div>';
+  preview.style.display = 'block';
+
+  const meta = await fetchLinkMeta(url);
+
+  // Build preview card
+  const thumbHTML = meta.thumbnail
+    ? `<img src="${meta.thumbnail}" style="width:100%;height:120px;object-fit:cover;border-radius:8px 8px 0 0;">`
+    : `<div style="height:80px;background:linear-gradient(135deg,#2a3a2a,#3a5a3a);border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;font-size:2rem;">${PLATFORM_ICONS[meta.platform] || '📄'}</div>`;
+
+  preview.innerHTML = `
+    <div style="background:var(--card);border:1px solid var(--border-lt);border-radius:10px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);max-width:400px;margin:14px auto 0;">
+      ${thumbHTML}
+      <div style="padding:14px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <span style="font-size:0.75rem;background:rgba(90,125,82,0.12);color:var(--green);padding:2px 8px;border-radius:4px;font-weight:600;">${PLATFORM_LABELS[meta.platform] || 'Link'}</span>
+          <span style="font-size:0.75rem;color:var(--text-muted);">${meta.contentType}</span>
+        </div>
+        <input type="text" id="media-title-input" value="${(meta.title || '').replace(/"/g, '&quot;')}" placeholder="Enter a title for this content" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:0.88rem;font-family:var(--font-sans);margin-bottom:10px;background:white;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button onclick="confirmImport(false)" style="flex:1;padding:9px 14px;background:linear-gradient(135deg,var(--green),#2d5a27);color:white;border:none;border-radius:8px;font-size:0.82rem;font-weight:600;font-family:var(--font-sans);cursor:pointer;white-space:nowrap;">Add to Profile</button>
+          <button onclick="confirmImport(true)" style="flex:1;padding:9px 14px;background:var(--clay);color:white;border:none;border-radius:8px;font-size:0.82rem;font-weight:600;font-family:var(--font-sans);cursor:pointer;white-space:nowrap;">Add & Share to Feed</button>
+        </div>
+        <div style="text-align:center;margin-top:8px;">
+          <a href="#" onclick="cancelImport();return false;" style="font-size:0.78rem;color:var(--text-muted);text-decoration:none;">Cancel</a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Store meta for confirm step
+  window._pendingMedia = meta;
+}
+
+function cancelImport() {
+  document.getElementById('media-import-preview').style.display = 'none';
+  document.getElementById('media-import-preview').innerHTML = '';
+  document.getElementById('media-url-input').value = '';
+  window._pendingMedia = null;
+}
+
+async function confirmImport(shareToFeed) {
+  const meta = window._pendingMedia;
+  if (!meta) return;
+
+  // Grab the (possibly edited) title
+  const titleInput = document.getElementById('media-title-input');
+  meta.title = (titleInput ? titleInput.value : meta.title) || 'Untitled';
+
+  const preview = document.getElementById('media-import-preview');
+  preview.innerHTML = '<div style="padding:18px; text-align:center; color:var(--text-muted); font-size:0.84rem;">Saving…</div>';
+
+  const result = await saveMediaLink(meta, shareToFeed);
+  if (result) {
+    cancelImport();
+    window.location.reload();
+  }
+}
+
+async function saveMediaLink(meta, shareToFeed) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return null;
+
+  const { data: mediaLink, error } = await sb.from('media_links').insert({
+    profile_id: session.user.id,
+    url: meta.url,
+    title: meta.title,
+    description: meta.description || '',
+    thumbnail_url: meta.thumbnail || '',
+    platform: meta.platform,
+    content_type: meta.contentType,
+    auto_posted: shareToFeed,
+  }).select().single();
+
+  if (error) {
+    alert('Save failed: ' + error.message);
+    return null;
+  }
+
+  if (shareToFeed) {
+    const profile = window._currentProfile || {};
+    const displayName = profile.display_name || session.user.email.split('@')[0];
+    const { data: post } = await sb.from('posts').insert({
+      author_id: session.user.id,
+      author_name: displayName,
+      author_detail: profile.tagline || '',
+      post_type: 'media',
+      title: meta.title,
+      body: `Shared: ${meta.title}`,
+      circle_slug: 'community-tech',
+      media_url: meta.url,
+      media_thumbnail: meta.thumbnail || '',
+    }).select().single();
+
+    if (post) {
+      await sb.from('media_links').update({ post_id: post.id }).eq('id', mediaLink.id);
+    }
+  }
+
+  return mediaLink;
+}
+
+async function deleteMedia(mediaId) {
+  if (!confirm('Remove this media link?')) return;
+  const { error } = await sb.from('media_links').delete().eq('id', mediaId);
+  if (!error) window.location.reload();
+  else alert('Delete failed: ' + error.message);
+}
+
+async function uploadAvatarToSupabase(file, userId) {
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Image must be under 5 MB.');
+    return null;
+  }
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!['jpg','jpeg','png','gif','webp'].includes(ext)) {
+    alert('Please upload an image file (JPG, PNG, GIF, or WebP).');
+    return null;
+  }
+  const path = `${userId}/avatar.${ext}`;
+
+  const { error: uploadError } = await sb.storage.from('avatars').upload(path, file, {
+    upsert: true,
+    contentType: file.type,
+  });
+  if (uploadError) {
+    alert('Avatar upload failed: ' + uploadError.message);
+    return null;
+  }
+
+  const { data } = sb.storage.from('avatars').getPublicUrl(path);
+  // cache-buster so the browser shows the new image immediately
+  return data.publicUrl + '?t=' + Date.now();
+}
+
+function enableEditMode(profile, session) {
+  const header = document.querySelector('.profile-header');
+  header.classList.add('edit-mode');
+
+  // Avatar upload
+  const avatar = document.querySelector('.profile-avatar');
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*';
+  fileInput.style.display = 'none';
+  fileInput.id = 'avatar-file-input';
+  avatar.appendChild(fileInput);
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      avatar.style.opacity = '0.6';
+      const url = await uploadAvatarToSupabase(file, session.user.id);
+      if (url) {
+        await sb.from('profiles').update({ avatar_url: url }).eq('id', session.user.id);
+        avatar.style.backgroundImage = `url(${url})`;
+        avatar.style.backgroundSize = 'cover';
+        avatar.style.backgroundPosition = 'center';
+        avatar.textContent = '';
+        avatar.appendChild(fileInput);
+      }
+      avatar.style.opacity = '1';
+    }
+  });
+  avatar.addEventListener('click', () => fileInput.click());
+
+  // Make name editable
+  const nameEl = document.querySelector('.profile-name');
+  const originalName = nameEl.textContent;
+  nameEl.outerHTML = `<input type="text" id="edit-name" class="edit-input" value="${originalName}" style="font-family:var(--font-serif);font-size:2rem;font-weight:600;color:var(--ink);width:100%;">`;
+
+  // Make tagline editable
+  const taglineEl = document.querySelector('.profile-tagline');
+  const originalTagline = taglineEl.textContent;
+  taglineEl.outerHTML = `<input type="text" id="edit-tagline" class="edit-input" value="${originalTagline}" style="font-size:0.97rem;color:var(--text-muted);width:100%;margin-bottom:14px;">`;
+
+  // Make bio editable
+  const bioEl = document.querySelector('.profile-bio');
+  const originalBio = bioEl.textContent;
+  bioEl.outerHTML = `<textarea id="edit-bio" class="edit-textarea" style="width:100%;">${originalBio}</textarea>`;
+
+  // Make location editable
+  const locEl = document.querySelectorAll('.pmeta-item')[0];
+  const originalLoc = locEl.textContent.replace('📍 ', '');
+  locEl.outerHTML = `<span class="pmeta-item">📍 <input type="text" id="edit-location" class="edit-input" value="${originalLoc}" placeholder="City, State" style="font-size:0.82rem;display:inline;width:auto;padding:4px 8px;"></span>`;
+
+  // Make skills editable
+  const skillsPanel = document.querySelector('.sidebar-panel');
+  if (skillsPanel) {
+    const currentSkills = profile.skills || [];
+    const skillsHTML = `
+      <div class="panel-title">Skills & Expertise</div>
+      <div style="margin-bottom:10px;">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">I can teach / lead</div>
+        <input type="text" id="edit-skills-lead" class="edit-input" style="width:100%;font-size:0.82rem;margin-bottom:8px;" placeholder="Comma-separated skills"
+          value="${currentSkills.filter(s => s.level === 'lead').map(s => s.name).join(', ')}">
+      </div>
+      <div style="margin-bottom:10px;">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Experienced</div>
+        <input type="text" id="edit-skills-exp" class="edit-input" style="width:100%;font-size:0.82rem;margin-bottom:8px;" placeholder="Comma-separated skills"
+          value="${currentSkills.filter(s => s.level === 'experienced').map(s => s.name).join(', ')}">
+      </div>
+      <div>
+        <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Actively learning</div>
+        <input type="text" id="edit-skills-learn" class="edit-input" style="width:100%;font-size:0.82rem;" placeholder="Comma-separated skills"
+          value="${currentSkills.filter(s => s.level === 'learning').map(s => s.name).join(', ')}">
+      </div>
+    `;
+    skillsPanel.innerHTML = skillsHTML;
+  }
+
+  // Replace action buttons with Save/Cancel
+  const actionDiv = document.querySelector('.avatar-actions');
+  actionDiv.innerHTML = `
+    <button class="btn-collab" onclick="saveProfileChanges()">Save Changes</button>
+    <button class="btn-follow" onclick="cancelEditMode()">Cancel</button>
+  `;
+}
+
+function cancelEditMode() {
+  window.location.reload();
+}
+
+async function saveProfileChanges() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+
+  const nameVal = document.getElementById('edit-name')?.value || '';
+  const taglineVal = document.getElementById('edit-tagline')?.value || '';
+  const bioVal = document.getElementById('edit-bio')?.value || '';
+  const locVal = document.getElementById('edit-location')?.value || '';
+
+  // Collect skills from the 3 input fields
+  const parseSkills = (inputId, level) => {
+    const el = document.getElementById(inputId);
+    if (!el || !el.value.trim()) return [];
+    return el.value.split(',').map(s => s.trim()).filter(Boolean).map(name => ({ name, level }));
+  };
+  const skills = [
+    ...parseSkills('edit-skills-lead', 'lead'),
+    ...parseSkills('edit-skills-exp', 'experienced'),
+    ...parseSkills('edit-skills-learn', 'learning'),
+  ];
+
+  const updates = {
+    display_name: nameVal,
+    tagline: taglineVal,
+    bio: bioVal,
+    location: locVal,
+    skills: skills,
+  };
+
+  const saveBtn = document.querySelector('.btn-collab');
+  if (saveBtn) { saveBtn.textContent = 'Saving…'; saveBtn.disabled = true; }
+
+  const { error } = await sb.from('profiles').update(updates).eq('id', session.user.id);
+  if (error) {
+    alert('Save failed: ' + error.message);
+    if (saveBtn) { saveBtn.textContent = 'Save Changes'; saveBtn.disabled = false; }
+  } else {
+    window.location.reload();
+  }
+}
+
+async function loadProfile() {
+  const params = new URLSearchParams(window.location.search);
+  const userId = params.get('id');
+
+  // No ID param → keep Maya Redhawk demo as-is
+  if (!userId) {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      addSignedInNav(session);
+    }
+    return;
+  }
+
+  // Load real profile from Supabase
+  const { data: profile, error } = await sb
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error || !profile) {
+    document.title = 'Profile not found — the Earthback Project';
+    document.querySelector('.profile-name').textContent = 'Profile not found.';
+    document.querySelector('.profile-tagline').textContent =
+      'This profile may be private or the link may have changed.';
+    return;
+  }
+
+  // Fetch related data
+  const { data: certifications } = await sb
+    .from('certifications')
+    .select('*')
+    .eq('profile_id', userId);
+
+  const { data: mediaLinks } = await sb
+    .from('media_links')
+    .select('*')
+    .eq('profile_id', userId);
+
+  const { data: projects } = await sb
+    .from('projects')
+    .select('*')
+    .eq('owner_id', userId);
+
+  const { data: posts } = await sb
+    .from('posts')
+    .select('*')
+    .eq('author_id', userId)
+    .order('created_at', { ascending: false });
+
+  // ── Populate header ──
+  const name = profile.display_name ||
+    ((profile.first_name || '') + ' ' + (profile.last_name || '')).trim() ||
+    'Earthback Member';
+
+  document.title = name + ' — the Earthback Project';
+
+  // Avatar
+  const av = document.querySelector('.profile-avatar');
+  if (profile.avatar_url) {
+    av.style.backgroundImage = `url(${profile.avatar_url})`;
+    av.style.backgroundSize = 'cover';
+    av.style.backgroundPosition = 'center';
+    av.textContent = '';
+  } else {
+    av.textContent = initials(name);
+    av.style.background = `linear-gradient(135deg, ${setAvatarColor(name[0])}, #5a7d52)`;
+  }
+
+  // Name + tagline + bio
+  document.querySelector('.profile-name').textContent = name;
+  document.querySelector('.profile-tagline').textContent =
+    profile.tagline || 'Member of the Earthback Project';
+  document.querySelector('.profile-bio').textContent =
+    profile.bio || 'This member hasn\'t added a bio yet.';
+
+  // Meta row
+  const metaItems = document.querySelectorAll('.pmeta-item');
+  if (metaItems[0]) metaItems[0].textContent = profile.location ? '📍 ' + profile.location : '📍 Location not set';
+
+  const joined = profile.created_at
+    ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    : '2026';
+  if (metaItems[1]) metaItems[1].textContent = '🌿 Member since ' + joined;
+
+  // Member type badge
+  const typeBadge = document.querySelector('.member-type-badge');
+  if (typeBadge) typeBadge.textContent = MEMBER_TYPE_LABELS[profile.member_type] || 'Member';
+
+  // Earth score
+  const score = profile.earth_score || 0;
+  const scoreNum = document.querySelector('.score-num');
+  if (scoreNum) scoreNum.textContent = score;
+  const fill = document.querySelector('.progress-fill');
+  if (fill) fill.style.width = Math.min(score, 200) / 2 + '%';
+
+  // Connect sidebar location
+  const contactLoc = document.querySelector('.contact-item div');
+  if (contactLoc) contactLoc.textContent = profile.location || 'Location not set';
+
+  // Update stats
+  const statItems = document.querySelectorAll('.stat-item');
+  if (statItems[0]) statItems[0].querySelector('.stat-num').textContent = projects ? projects.length : 0;
+  if (statItems[1]) statItems[1].querySelector('.stat-num').textContent = posts ? posts.length : 0;
+  if (statItems[2]) statItems[2].querySelector('.stat-num').textContent = '0'; // Circles count
+  if (statItems[3]) statItems[3].querySelector('.stat-num').textContent = posts ? posts.reduce((sum, p) => sum + (p.helpful_count || 0), 0) : 0;
+  if (statItems[4]) statItems[4].querySelector('.stat-num').textContent = score;
+
+  // Populate sidebars
+  document.querySelector('.skills-group').innerHTML = profile.skills ? profile.skills.map(skill => {
+    const level = skill.level || 'learning';
+    const levelClass = level === 'lead' ? 'skill-lead' : level === 'experienced' ? 'skill-exp' : 'skill-learn';
+    return `<span class="skill-pill ${levelClass}">${skill.name}</span>`;
+  }).join('') : '<p style="font-size:0.82rem;color:var(--text-muted);">No skills listed.</p>';
+
+  // Certifications panel
+  const certsPanel = document.querySelector('.sidebar-panel:nth-child(4)');
+  if (certsPanel) {
+    const certsContent = certsPanel.querySelector('div:last-child') || certsPanel;
+    certsContent.innerHTML = buildCertsHTML(certifications);
+  }
+
+  // Projects panel
+  const projPanel = document.querySelector('.sidebar-panel:nth-child(5)');
+  if (projPanel) {
+    const projContent = projPanel.querySelector('div:last-child') || projPanel;
+    projContent.innerHTML = buildProjectsHTML(projects);
+  }
+
+  // Store profile for media import
+  window._currentProfile = profile;
+
+  // Media panel (fetch from HTML structure and update)
+  const mediaPanel = document.querySelector('#tab-media');
+  if (mediaPanel && mediaLinks && mediaLinks.length > 0) {
+    const mediaContainer = mediaPanel.querySelector('div[style*="grid"]');
+    if (mediaContainer) {
+      mediaContainer.innerHTML = mediaLinks.map(media => `
+        <div style="background:var(--card); border:1px solid var(--border-lt); border-radius:12px; overflow:hidden; box-shadow:0 1px 6px var(--shadow); transition:all 0.2s; cursor:pointer; position:relative;" onclick="window.open('${media.url}', '_blank')">
+          <div style="height:140px; background:linear-gradient(135deg,#2a3a2a,#3a5a3a); display:flex; align-items:center; justify-content:center;">
+            ${media.thumbnail_url ? `<img src="${media.thumbnail_url}" style="width:100%;height:100%;object-fit:cover;">` : `<span style="font-size:2rem;">${PLATFORM_ICONS[media.platform] || '📄'}</span>`}
+          </div>
+          <div style="padding:14px;">
+            <div style="font-size:0.88rem; font-weight:600; color:var(--ink); line-height:1.3; margin-bottom:4px;">${media.title || 'Untitled'}</div>
+            <div style="font-size:0.74rem; color:var(--text-muted);">${PLATFORM_LABELS[media.platform] || 'Link'}</div>
+          </div>
+          <button class="media-delete-btn" data-media-id="${media.id}" onclick="event.stopPropagation();deleteMedia('${media.id}')" style="display:none;position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,0.6);color:white;border:none;font-size:0.8rem;cursor:pointer;align-items:center;justify-content:center;">×</button>
+        </div>
+      `).join('');
+    }
+  }
+
+  // Activity tab
+  const activityPanel = document.querySelector('#tab-activity');
+  if (activityPanel && posts) {
+    const actContainer = activityPanel.querySelector('div:first-child');
+    if (actContainer) {
+      actContainer.parentNode.innerHTML = buildActivityHTML(posts);
+    }
+  }
+
+  // Check if this is the current user — show "Edit Profile" if so
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    addSignedInNav(session);
+    if (session.user.id === userId) {
+      const btn = document.querySelector('.btn-collab');
+      if (btn) {
+        btn.textContent = '✏️ Edit Profile';
+        btn.onclick = () => { enableEditMode(profile, session); };
+      }
+      const followBtn = document.querySelector('.btn-follow');
+      if (followBtn) followBtn.style.display = 'none';
+
+      // Show media delete buttons on own profile
+      document.querySelectorAll('.media-delete-btn').forEach(b => {
+        b.style.display = 'flex';
+      });
+
+      // Show media import box (hide "join to import" CTA)
+      const importBox = document.getElementById('media-import-box');
+      if (importBox) importBox.style.display = 'block';
+      const joinCTA = importBox?.nextElementSibling;
+      if (joinCTA && joinCTA.querySelector('a[href*="join"]')) joinCTA.style.display = 'none';
+    } else {
+      // Hide import box for other people's profiles
+      const importBox = document.getElementById('media-import-box');
+      if (importBox) importBox.style.display = 'none';
+    }
+  }
+}
+
+function addSignedInNav(session) {
+  // Sign-out and avatar are now handled by the topbar — no-op
+}
+
+loadProfile();
+</script>
+<!-- Pre-launch Banner -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+  <span style="font-weight:600">🌿 Pre-Launch Preview</span>
+  <span style="opacity:0.7">—</span>
+  <span>You're seeing an early build of the Earthback Project. Features are in active development. Data may reset.</span>
+  <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Send feedback →</a>
+</div>
+
+</body>
+</html>

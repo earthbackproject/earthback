@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desert Sun Hemp Homes — the Earthback Project</title>
+  <meta name="description" content="Desert Sun Hemp Homes builds affordable hempcrete homes across the Southwest. A company project of the Earthback Project.">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:      #1F3A2E;
+      --green-mid:  #2C4F3B;
+      --green-soft: #4A7C5E;
+      --sage:       #5a7d52;
+      --moss:       #7a9e6c;
+      --clay:       #C2A56C;
+      --clay2:      #b8784a;
+      --parchment:  #F2EFE6;
+      --parchment2: #EAE3D3;
+      --paper-warm: #ece7da;
+      --card:       #faf8f3;
+      --pale-green: #e4eddf;
+      --ink:        #1a2218;
+      --text:       #3b4a3a;
+      --text-muted: #6b7a63;
+      --border:     #d0c4a8;
+      --border-lt:  #e0d8c4;
+      --shadow:     rgba(30,55,40,0.08);
+      --shadow-d:   rgba(30,55,40,0.16);
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max:        1100px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--parchment); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    /* ── APP TOPBAR ── */
+    .topbar {
+      background: linear-gradient(135deg, var(--green) 0%, #2d5a27 100%);
+      color: white;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .topbar-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: white; font-weight: 600;
+    }
+    .topbar-brand-mark { font-size: 1.2rem; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; }
+    .topbar-brand-name { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 500; letter-spacing: -0.5px; }
+    .topbar-the { font-size: 0.65em; opacity: 0.85; font-weight: 400; }
+    .brand-sub { display: block; font-size: 0.65em; opacity: 0.8; }
+    .topbar-nav { display: flex; align-items: center; gap: 4px; }
+    .topbar-nav-link {
+      color: rgba(255,255,255,0.7); text-decoration: none;
+      font-size: 0.84rem; font-weight: 500; font-family: var(--font-sans);
+      padding: 6px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap;
+    }
+    .topbar-nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
+    .topbar-nav-link.active { color: white; background: rgba(255,255,255,0.15); font-weight: 600; }
+    .topbar-nav-link.coming-soon { opacity: 0.45; cursor: default; }
+    .topbar-nav-link.coming-soon:hover { background: none; color: rgba(255,255,255,0.7); }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    .topbar-hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s; }
+    .topbar-hamburger:hover { background: rgba(255,255,255,0.1); }
+    .topbar-hamburger span { display: block; width: 20px; height: 2px; background: white; border-radius: 2px; transition: all 0.25s; }
+    .topbar-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px,4px); }
+    .topbar-hamburger.open span:nth-child(2) { opacity: 0; }
+    .topbar-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px,-4px); }
+    .topbar-mobile-menu {
+      display: none; position: absolute; top: 60px; left: 0; right: 0;
+      background: linear-gradient(135deg, var(--green) 0%, #2d5a27 100%);
+      padding: 8px 16px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 999; flex-direction: column; gap: 2px;
+    }
+    .topbar-mobile-menu.open { display: flex; }
+    .topbar-mobile-menu a {
+      color: rgba(255,255,255,0.8); text-decoration: none;
+      font-size: 0.92rem; font-weight: 500; padding: 10px 12px;
+      border-radius: 8px; transition: background 0.2s;
+    }
+    .topbar-mobile-menu a:hover, .topbar-mobile-menu a.active { background: rgba(255,255,255,0.12); color: white; }
+    @media (max-width: 768px) {
+      .topbar { padding: 0 16px; }
+      .topbar-brand-name { font-size: 0.95rem; }
+      .topbar-nav { display: none; }
+      .topbar-hamburger { display: flex; }
+    }
+
+    /* ── LAYOUT ── */
+    .page-wrap { max-width: var(--max); margin: 0 auto; padding: 24px 24px 64px; }
+
+    /* ── PROFILE HEADER (adapted for projects) ── */
+    .profile-header {
+      background: var(--card);
+      border: 1px solid var(--border-lt);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px var(--shadow);
+      margin-bottom: 28px;
+    }
+    .cover-band {
+      height: 120px;
+      background: linear-gradient(135deg, var(--green) 0%, #2d5a27 50%, #3a7a4a 100%);
+      position: relative;
+    }
+    .cover-band::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .profile-body { padding: 0 28px 28px; }
+    .avatar-row { display: flex; align-items: flex-end; justify-content: space-between; margin-top: -40px; margin-bottom: 16px; gap: 16px; flex-wrap: wrap; }
+    .profile-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--sage), var(--green-soft));
+      border: 4px solid var(--card);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 1.6rem;
+      font-family: var(--font-serif); flex-shrink: 0;
+      box-shadow: 0 2px 12px var(--shadow-d);
+    }
+    .project-avatar {
+      width: 80px; height: 80px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--clay), var(--clay2));
+      border: 4px solid var(--card);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 1.6rem;
+      font-family: var(--font-serif); flex-shrink: 0;
+      box-shadow: 0 2px 12px var(--shadow-d);
+    }
+    .avatar-actions { display: flex; gap: 10px; padding-bottom: 4px; flex-wrap: wrap; }
+    .btn-collab {
+      background: linear-gradient(135deg, var(--green), #2d5a27);
+      color: white; border: none; border-radius: 9px;
+      padding: 9px 20px; font-size: 0.88rem; font-weight: 600;
+      font-family: var(--font-sans); cursor: pointer;
+      box-shadow: 0 3px 12px rgba(31,58,46,0.28);
+      transition: all 0.2s;
+    }
+    .btn-collab:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(31,58,46,0.36); }
+    .btn-follow {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border); border-radius: 9px;
+      padding: 9px 18px; font-size: 0.88rem; font-weight: 500;
+      font-family: var(--font-sans); cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-follow:hover { border-color: var(--sage); color: var(--sage); }
+
+    .profile-name { font-family: var(--font-serif); font-size: 2rem; font-weight: 600; color: var(--ink); line-height: 1.1; margin-bottom: 4px; }
+    .profile-tagline { font-size: 0.97rem; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-bottom: 14px; }
+    .profile-meta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 18px; }
+    .pmeta-item { display: flex; align-items: center; gap: 5px; font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+
+    .verified-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 11px; border-radius: 20px;
+      font-size: 0.74rem; font-weight: 700;
+      background: rgba(90,125,82,0.12); color: var(--sage);
+      border: 1px solid rgba(90,125,82,0.25);
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .member-type-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 11px; border-radius: 20px;
+      font-size: 0.74rem; font-weight: 600;
+      background: rgba(194,165,108,0.12); color: var(--clay2);
+      border: 1px solid rgba(194,165,108,0.25);
+    }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 11px; border-radius: 20px;
+      font-size: 0.74rem; font-weight: 600;
+      background: rgba(90,125,82,0.12); color: var(--sage);
+      border: 1px solid rgba(90,125,82,0.25);
+    }
+    .demo-badge-sm {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 8px; border-radius: 6px;
+      font-size: 0.65rem; font-weight: 700;
+      background: rgba(194,165,108,0.12); color: var(--clay2);
+      border: 1px solid rgba(194,165,108,0.25);
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+
+    .profile-bio { font-size: 0.95rem; color: var(--text); line-height: 1.7; max-width: 70ch; margin-bottom: 20px; }
+
+    .profile-stats { display: flex; gap: 24px; flex-wrap: wrap; padding: 16px 0; border-top: 1px solid var(--border-lt); border-bottom: 1px solid var(--border-lt); margin-bottom: 0; }
+    .stat-item { text-align: center; }
+    .stat-num { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 600; color: var(--ink); line-height: 1; display: block; }
+    .stat-label { font-size: 0.73rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; display: block; margin-top: 3px; }
+
+    /* ── OWNER LINE ── */
+    .owner-line {
+      font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;
+      font-weight: 500;
+    }
+    .owner-line a {
+      color: var(--sage); text-decoration: none; font-weight: 600;
+    }
+    .owner-line a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── MAIN GRID ── */
+    .profile-grid { display: grid; grid-template-columns: 310px 1fr; gap: 24px; align-items: start; }
+    @media (max-width: 768px) { .profile-grid { grid-template-columns: 1fr; } }
+
+    /* ── SIDEBAR PANELS ── */
+    .sidebar-panel {
+      background: var(--card); border: 1px solid var(--border-lt);
+      border-radius: 14px; padding: 20px;
+      box-shadow: 0 1px 8px var(--shadow); margin-bottom: 18px;
+    }
+    .panel-title { font-size: 0.73rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+
+    /* Team Members */
+    .team-row {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+    }
+    .team-avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--sage), var(--green-soft));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 0.75rem;
+      border: 2px solid var(--card);
+    }
+    .team-label {
+      font-size: 0.82rem; color: var(--text); font-weight: 500;
+    }
+    .view-all-link {
+      display: block; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-lt);
+      font-size: 0.8rem; color: var(--sage); font-weight: 500; text-decoration: none;
+    }
+    .view-all-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Currently Needs */
+    .need-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.75rem; font-weight: 500; padding: 5px 10px; border-radius: 6px;
+      background: rgba(31,58,46,0.05); color: var(--text-muted); border: 1px solid var(--border-lt);
+      margin-bottom: 6px; margin-right: 6px;
+    }
+    .need-pill.urgent {
+      background: rgba(194,165,108,0.1); color: var(--clay2); border-color: rgba(194,165,108,0.25);
+    }
+    .need-pill.filled {
+      background: rgba(90,125,82,0.08); color: var(--sage); border-color: rgba(90,125,82,0.2);
+      text-decoration: line-through; opacity: 0.65;
+    }
+
+    /* ── Phase Progress ── */
+    .phase-bar { display: flex; align-items: center; gap: 0; margin: 18px 0 8px; }
+    .phase-step {
+      flex: 1; text-align: center; position: relative; padding: 0 4px;
+    }
+    .phase-dot {
+      width: 28px; height: 28px; border-radius: 50%; margin: 0 auto 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 700; border: 2px solid var(--border);
+      background: var(--card); color: var(--text-muted); transition: all 0.3s;
+    }
+    .phase-step.done .phase-dot { background: var(--green); border-color: var(--green); color: white; }
+    .phase-step.current .phase-dot { background: var(--clay); border-color: var(--clay); color: white; box-shadow: 0 0 0 4px rgba(194,165,108,0.2); }
+    .phase-label { font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+    .phase-step.done .phase-label { color: var(--green); }
+    .phase-step.current .phase-label { color: var(--clay2); font-weight: 700; }
+    .phase-connector {
+      flex: 0.5; height: 2px; background: var(--border); margin-bottom: 18px;
+    }
+    .phase-connector.done { background: var(--green); }
+
+    /* ── Needs + Has Board ── */
+    .nh-board { margin-bottom: 18px; }
+    .nh-section { margin-bottom: 16px; }
+    .nh-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .nh-title {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .nh-title.needs { color: var(--clay2); }
+    .nh-title.has { color: var(--sage); }
+    .nh-count {
+      font-size: 0.68rem; font-weight: 600; color: var(--text-muted);
+      background: rgba(31,58,46,0.05); padding: 2px 8px; border-radius: 10px;
+    }
+    .nh-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px; border-radius: 8px; margin-bottom: 6px;
+      transition: background 0.15s;
+    }
+    .nh-row:hover { background: rgba(31,58,46,0.03); }
+    .nh-row.need-row { border-left: 3px solid var(--clay); }
+    .nh-row.need-row.urgent-row { border-left: 3px solid #c44; }
+    .nh-row.has-row { border-left: 3px solid var(--sage); }
+    .nh-icon { font-size: 0.85rem; margin-top: 1px; flex-shrink: 0; }
+    .nh-content { flex: 1; min-width: 0; }
+    .nh-desc { font-size: 0.82rem; font-weight: 500; color: var(--ink); line-height: 1.4; }
+    .nh-type { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-top: 2px; }
+    .nh-urgent-tag {
+      font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em; padding: 2px 7px; border-radius: 4px;
+      background: rgba(204,68,68,0.1); color: #c44;
+    }
+    .nh-offer-btn {
+      font-size: 0.72rem; font-weight: 600; font-family: var(--font-sans);
+      padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border);
+      background: var(--card); color: var(--sage); cursor: pointer;
+      transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .nh-offer-btn:hover { background: var(--green); color: white; border-color: var(--green); }
+    .nh-divider { height: 1px; background: var(--border-lt); margin: 14px 0; }
+
+    /* Media Cards Grid */
+    .media-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px;
+    }
+    @media (max-width: 480px) {
+      .media-grid { grid-template-columns: 1fr; }
+    }
+    .media-card {
+      background: var(--card); border: 1px solid var(--border-lt);
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 1px 6px var(--shadow); transition: all 0.2s;
+    }
+    .media-card:hover {
+      box-shadow: 0 3px 12px var(--shadow-d); transform: translateY(-1px);
+    }
+    .media-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #e0d8c4 0%, #d0c4a8 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; color: rgba(31,58,46,0.2); position: relative;
+    }
+    .media-thumb::before {
+      content: '▶'; position: absolute;
+      font-size: 1.8rem; opacity: 0.6;
+    }
+    .media-info {
+      padding: 12px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .media-title {
+      font-size: 0.82rem; font-weight: 500; color: var(--ink); line-height: 1.4;
+    }
+    .media-meta {
+      display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--text-muted);
+    }
+    .media-platform {
+      display: inline-flex; align-items: center; gap: 3px; font-size: 0.65rem; font-weight: 600;
+      color: var(--clay2); text-transform: uppercase; letter-spacing: 0.03em;
+    }
+
+    /* Circles */
+    .circle-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 9px; margin-bottom: 4px; transition: background 0.15s; cursor: pointer; text-decoration: none; }
+    .circle-item:hover { background: var(--pale-green); }
+    .circle-icon { font-size: 1rem; flex-shrink: 0; }
+    .circle-info { flex: 1; min-width: 0; }
+    .circle-name { font-size: 0.85rem; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .circle-size { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* Location / contact */
+    .contact-item { display: flex; align-items: flex-start; gap: 9px; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; }
+    .contact-icon { font-size: 0.95rem; flex-shrink: 0; margin-top: 1px; }
+    .contact-item a { color: var(--sage); text-decoration: none; }
+    .contact-item a:hover { text-decoration: underline; }
+
+    /* ── MAIN CONTENT TABS ── */
+    .content-tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--card); border: 1px solid var(--border-lt); border-radius: 11px; padding: 4px; }
+    .tab-btn { flex: 1; padding: 9px 16px; border-radius: 8px; font-size: 0.84rem; font-weight: 600; border: none; cursor: pointer; font-family: var(--font-sans); color: var(--text-muted); background: transparent; transition: all 0.2s; }
+    .tab-btn.active { background: var(--green); color: white; box-shadow: 0 2px 8px rgba(31,58,46,0.25); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── ACTIVITY CARDS ── */
+    .activity-card {
+      background: var(--card); border: 1px solid var(--border-lt);
+      border-radius: 12px; padding: 18px; margin-bottom: 12px;
+      box-shadow: 0 1px 6px var(--shadow); transition: all 0.2s;
+    }
+    .activity-card:hover { box-shadow: 0 4px 16px var(--shadow-d); transform: translateY(-1px); }
+    .act-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .act-avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--sage), var(--green-soft));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 0.82rem;
+    }
+    .act-meta { flex: 1; }
+    .act-author { font-weight: 600; font-size: 0.88rem; color: var(--ink); }
+    .act-where { font-size: 0.74rem; color: var(--text-muted); }
+    .act-type-tag {
+      font-size: 0.7rem; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .tag-milestone { background: rgba(194,165,108,0.12); color: var(--clay2); }
+    .tag-resource { background: rgba(90,125,82,0.1); color: var(--sage); }
+    .tag-media { background: rgba(122,158,108,0.12); color: var(--moss); }
+    .act-body { font-size: 0.92rem; color: var(--text); line-height: 1.65; margin-bottom: 12px; }
+    .act-body strong { color: var(--ink); }
+    .act-footer { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--border-lt); padding-top: 10px; }
+    .act-action { display: flex; align-items: center; gap: 4px; font-size: 0.78rem; font-weight: 500; color: var(--text-muted); cursor: pointer; padding: 4px 9px; border-radius: 6px; background: transparent; border: none; font-family: var(--font-sans); transition: all 0.15s; }
+    .act-action:hover { background: var(--pale-green); color: var(--sage); }
+    .act-time { margin-left: auto; font-size: 0.73rem; color: var(--text-muted); }
+
+    /* ── PROJECT BUILD CARDS ── */
+    .project-card {
+      background: var(--card); border: 1px solid var(--border-lt);
+      border-radius: 14px; padding: 20px; margin-bottom: 14px;
+      box-shadow: 0 1px 8px var(--shadow); transition: all 0.2s;
+    }
+    .project-card:hover { box-shadow: 0 4px 16px var(--shadow-d); transform: translateY(-1px); }
+    .proj-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .proj-title { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 600; color: var(--ink); line-height: 1.2; }
+    .proj-status { font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+    .status-active { background: rgba(90,125,82,0.12); color: var(--sage); border: 1px solid rgba(90,125,82,0.22); }
+    .status-forming { background: rgba(194,165,108,0.12); color: var(--clay2); border: 1px solid rgba(194,165,108,0.22); }
+    .status-complete { background: rgba(31,58,46,0.08); color: var(--green); border: 1px solid rgba(31,58,46,0.15); }
+    .proj-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+    .proj-meta-item { font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+    .proj-desc { font-size: 0.91rem; color: var(--text); line-height: 1.65; margin-bottom: 12px; }
+    .proj-needs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .proj-footer { display: flex; align-items: center; gap: 10px; border-top: 1px solid var(--border-lt); padding-top: 12px; }
+    .proj-members { display: flex; }
+    .proj-member-av { width: 26px; height: 26px; border-radius: 50%; background: var(--pale-green); border: 2px solid var(--card); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; color: var(--sage); margin-left: -6px; }
+    .proj-member-av:first-child { margin-left: 0; }
+    .proj-members-label { font-size: 0.77rem; color: var(--text-muted); margin-left: 10px; }
+    .proj-join-btn { margin-left: auto; background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); cursor: pointer; font-family: var(--font-sans); transition: all 0.15s; }
+    .proj-join-btn:hover { border-color: var(--green); color: var(--green); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--green); color: rgba(242,239,230,0.7);
+      padding: 40px 0 24px; margin-top: 60px;
+    }
+    .footer-inner { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
+    .footer-row { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 32px; }
+    .footer-logo { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700; color: var(--parchment); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .footer-logo .brand-back { color: var(--clay); }
+    .footer-tagline { font-size: 0.82rem; color: rgba(242,239,230,0.5); line-height: 1.5; max-width: 26ch; }
+    .footer-col h4 { font-size: 0.73rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(242,239,230,0.5); margin-bottom: 10px; }
+    .footer-col a { display: block; color: rgba(242,239,230,0.7); text-decoration: none; font-size: 0.85rem; margin-bottom: 6px; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--parchment); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 0.78rem; color: rgba(242,239,230,0.4); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp 0.45s ease both; }
+    .fade-up-2 { animation: fadeUp 0.45s 0.08s ease both; }
+    .fade-up-3 { animation: fadeUp 0.45s 0.16s ease both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .profile-body { padding: 0 16px 20px; }
+      .avatar-actions { gap: 8px; }
+      .profile-stats { gap: 16px; }
+      .page-wrap { padding: 80px 14px 48px; }
+      .content-tabs { gap: 2px; }
+      .tab-btn { padding: 8px 10px; font-size: 0.78rem; }
+      .media-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── APP TOPBAR ── -->
+<nav class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <span class="topbar-brand-mark">🌿</span>
+    <span class="topbar-brand-name"><span class="topbar-the">the</span> Earthback <span class="brand-sub">Project</span></span>
+  </a>
+  <div class="topbar-nav">
+    <a href="feed.html" class="topbar-nav-link">Home</a>
+    <a href="projects.html" class="topbar-nav-link active">Projects</a>
+    <a href="profile.html#media" class="topbar-nav-link">Media</a>
+    <a href="#" class="topbar-nav-link coming-soon" title="Coming soon">Marketplace</a>
+    <a href="circles.html" class="topbar-nav-link">Circles</a>
+  </div>
+  <div class="topbar-right">
+    <a href="messages.html" title="Messages" style="color:rgba(255,255,255,0.7);font-size:1rem;text-decoration:none;padding:4px 8px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.background='none'">💬</a>
+    <a href="profile.html" title="View your profile" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sage));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:none;" id="header-avatar">?</a>
+    <button onclick="handleSignOut()" title="Sign out" style="background:none; border:1px solid rgba(255,255,255,0.25); border-radius:8px; padding:7px 14px; color:rgba(255,255,255,0.7); font-size:0.8rem; font-weight:500; font-family:var(--font-sans); cursor:pointer; white-space:nowrap; transition:all 0.2s;" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.25)'">Sign Out</button>
+    <div class="topbar-hamburger" onclick="this.classList.toggle('open'); document.querySelector('.topbar-mobile-menu').classList.toggle('open');">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="topbar-mobile-menu">
+  <a href="feed.html">Home</a>
+  <a href="projects.html" class="active">Projects</a>
+  <a href="profile.html#media">Media</a>
+  <a href="#">Marketplace (Coming Soon)</a>
+  <a href="circles.html">Circles</a>
+  <a href="messages.html">Messages</a>
+  <a href="profile.html">My Profile</a>
+</div>
+
+<!-- ── PAGE ── -->
+<div class="page-wrap">
+
+  <!-- PROJECT HEADER -->
+  <div class="profile-header fade-up" data-demo="true">
+    <div class="cover-band"></div>
+    <div class="profile-body">
+      <div class="avatar-row">
+        <div class="project-avatar">DS</div>
+        <div class="avatar-actions">
+          <button class="btn-collab" onclick="window.location.href='join.html'">✦ Join This Project</button>
+          <button class="btn-follow" onclick="window.location.href='join.html'">+ Follow</button>
+        </div>
+      </div>
+
+      <h1 class="profile-name">Desert Sun Hemp Homes</h1>
+      <p class="profile-tagline">Building affordable hempcrete homes across the Southwest — one community at a time</p>
+
+      <div class="profile-meta">
+        <span class="member-type-badge">Company</span>
+        <span class="status-badge">🔨 Active</span>
+      </div>
+
+      <div class="profile-meta" style="margin-bottom: 14px;">
+        <span class="pmeta-item">📍 Tucson, Arizona</span>
+        <span class="pmeta-item">🛖 Natural Building</span>
+        <span class="pmeta-item">📅 Founded 2023</span>
+      </div>
+
+      <p class="owner-line">Founded by <a href="profile.html">Rosa Delgado-Kwan</a></p>
+
+      <p class="profile-bio">Desert Sun Hemp Homes builds owner-assisted hempcrete houses for families priced out of conventional construction. We source hemp hurd from regional growers within 200 miles, train local crews, and keep total build costs under $85/sq ft. Every home is designed for passive solar, and we document every project publicly so others can learn from what we build.</p>
+
+      <div class="profile-stats">
+        <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Builds Complete</span></div>
+        <div class="stat-item"><span class="stat-num">2</span><span class="stat-label">In Progress</span></div>
+        <div class="stat-item"><span class="stat-num">12</span><span class="stat-label">Team Members</span></div>
+        <div class="stat-item"><span class="stat-num">47</span><span class="stat-label">Followers</span></div>
+      </div>
+
+      <!-- Phase Progress -->
+      <div class="phase-bar" data-demo="true">
+        <div class="phase-step done">
+          <div class="phase-dot">✓</div>
+          <div class="phase-label">Planning</div>
+        </div>
+        <div class="phase-connector done"></div>
+        <div class="phase-step done">
+          <div class="phase-dot">✓</div>
+          <div class="phase-label">Sourcing</div>
+        </div>
+        <div class="phase-connector done"></div>
+        <div class="phase-step current">
+          <div class="phase-dot">3</div>
+          <div class="phase-label">Building</div>
+        </div>
+        <div class="phase-connector"></div>
+        <div class="phase-step">
+          <div class="phase-dot">4</div>
+          <div class="phase-label">Complete</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT GRID -->
+  <div class="profile-grid fade-up-2">
+
+    <!-- SIDEBAR -->
+    <div>
+      <!-- Team Members -->
+      <div class="sidebar-panel" data-demo="true">
+        <div class="panel-title">Team Members</div>
+        <div class="team-row">
+          <div class="team-avatar">RD</div>
+          <div class="team-avatar">JO</div>
+          <div class="team-avatar">PM</div>
+          <div class="team-avatar" style="background: rgba(90,125,82,0.12); color: var(--sage); font-weight: 600;">+9</div>
+        </div>
+        <div class="team-label">12 team members</div>
+        <a href="join.html" class="view-all-link">View all →</a>
+      </div>
+
+      <!-- Needs + Has Board -->
+      <div class="sidebar-panel nh-board" data-demo="true">
+        <div class="panel-title" style="margin-bottom: 16px;">The Puzzle</div>
+
+        <!-- NEEDS -->
+        <div class="nh-section">
+          <div class="nh-header">
+            <span class="nh-title needs">Still Needed</span>
+            <span class="nh-count">4 open</span>
+          </div>
+
+          <div class="nh-row need-row urgent-row">
+            <span class="nh-icon">🔧</span>
+            <div class="nh-content">
+              <div class="nh-desc">Licensed electrician — Tucson area</div>
+              <div class="nh-type">Skill</div>
+            </div>
+            <span class="nh-urgent-tag">Urgent</span>
+            <button class="nh-offer-btn" onclick="offerHelp(this)">I can help</button>
+          </div>
+
+          <div class="nh-row need-row urgent-row">
+            <span class="nh-icon">👷</span>
+            <div class="nh-content">
+              <div class="nh-desc">Lime plaster crew for March build</div>
+              <div class="nh-type">People</div>
+            </div>
+            <span class="nh-urgent-tag">Urgent</span>
+            <button class="nh-offer-btn" onclick="offerHelp(this)">I can help</button>
+          </div>
+
+          <div class="nh-row need-row">
+            <span class="nh-icon">📦</span>
+            <div class="nh-content">
+              <div class="nh-desc">Insulation materials — donated or discounted</div>
+              <div class="nh-type">Resource</div>
+            </div>
+            <button class="nh-offer-btn" onclick="offerHelp(this)">I can help</button>
+          </div>
+
+          <div class="nh-row need-row">
+            <span class="nh-icon">📸</span>
+            <div class="nh-content">
+              <div class="nh-desc">Photography / videography volunteer</div>
+              <div class="nh-type">Skill</div>
+            </div>
+            <button class="nh-offer-btn" onclick="offerHelp(this)">I can help</button>
+          </div>
+        </div>
+
+        <div class="nh-divider"></div>
+
+        <!-- HAS -->
+        <div class="nh-section">
+          <div class="nh-header">
+            <span class="nh-title has">Assembled</span>
+            <span class="nh-count">7 secured</span>
+          </div>
+
+          <div class="nh-row has-row">
+            <span class="nh-icon">🏗️</span>
+            <div class="nh-content">
+              <div class="nh-desc">Earthwork contractor — foundation complete</div>
+              <div class="nh-type">Skill</div>
+            </div>
+          </div>
+
+          <div class="nh-row has-row">
+            <span class="nh-icon">🌾</span>
+            <div class="nh-content">
+              <div class="nh-desc">500 hemp bales — sourced from regional grower</div>
+              <div class="nh-type">Resource</div>
+            </div>
+          </div>
+
+          <div class="nh-row has-row">
+            <span class="nh-icon">📐</span>
+            <div class="nh-content">
+              <div class="nh-desc">Architectural plans — permitted and approved</div>
+              <div class="nh-type">Resource</div>
+            </div>
+          </div>
+
+          <div class="nh-row has-row">
+            <span class="nh-icon">🏠</span>
+            <div class="nh-content">
+              <div class="nh-desc">2-acre site — cleared and graded</div>
+              <div class="nh-type">Place</div>
+            </div>
+          </div>
+
+          <div class="nh-row has-row">
+            <span class="nh-icon">👷</span>
+            <div class="nh-content">
+              <div class="nh-desc">Hempcrete mixing crew — 8 trained volunteers</div>
+              <div class="nh-type">People</div>
+            </div>
+          </div>
+
+          <div class="nh-row has-row">
+            <span class="nh-icon">💰</span>
+            <div class="nh-content">
+              <div class="nh-desc">Foundation grant — materials budget covered</div>
+              <div class="nh-type">Funding</div>
+            </div>
+          </div>
+
+          <div class="nh-row has-row">
+            <span class="nh-icon">☀️</span>
+            <div class="nh-content">
+              <div class="nh-desc">Solar design partner — SolTerra Energy</div>
+              <div class="nh-type">Skill</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Media & Training -->
+      <div class="sidebar-panel" data-demo="true">
+        <div class="panel-title">Media & Training</div>
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 10px;">
+          <div style="display: flex; align-items: flex-start; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid var(--border-lt);">
+            <span style="font-size: 0.9rem;">🎬</span>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 0.82rem; font-weight: 500; color: var(--ink); line-height: 1.4; margin-bottom: 4px;">Full hempcrete pour — 8 hour timelapse</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">YouTube · 12K views</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid var(--border-lt);">
+            <span style="font-size: 0.9rem;">🎬</span>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 0.82rem; font-weight: 500; color: var(--ink); line-height: 1.4; margin-bottom: 4px;">How we keep builds under $85/sq ft</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">YouTube · 8.4K views</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 8px;">
+            <span style="font-size: 0.9rem;">📝</span>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 0.82rem; font-weight: 500; color: var(--ink); line-height: 1.4; margin-bottom: 4px;">Owner-builder hempcrete guide (free PDF)</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">Website</div>
+            </div>
+          </div>
+        </div>
+        <a href="join.html" style="font-size:0.8rem; color:var(--sage); font-weight:500; text-decoration:none; display:block; padding-top:10px; border-top: 1px solid var(--border-lt);">Add media →</a>
+      </div>
+
+      <!-- Circles -->
+      <div class="sidebar-panel" data-demo="true">
+        <div class="panel-title">Circles</div>
+        <a href="circles.html" class="circle-item">
+          <span class="circle-icon">🛖</span>
+          <div class="circle-info">
+            <div class="circle-name">Natural Building</div>
+            <div class="circle-size">1,240 members</div>
+          </div>
+        </a>
+        <a href="circles.html" class="circle-item">
+          <span class="circle-icon">☀️</span>
+          <div class="circle-info">
+            <div class="circle-name">Solar & Off-Grid</div>
+            <div class="circle-size">542 members</div>
+          </div>
+        </a>
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-lt);">
+          <a href="circles.html" style="font-size:0.8rem; color:var(--sage); font-weight:500; text-decoration:none;">Browse all circles →</a>
+        </div>
+      </div>
+
+      <!-- Links & Contact -->
+      <div class="sidebar-panel" data-demo="true">
+        <div class="panel-title">Links & Contact</div>
+        <div class="contact-item"><span class="contact-icon">🌐</span><div><a href="https://www.earthbackproject.org">desertsunshemp.com</a></div></div>
+        <div class="contact-item"><span class="contact-icon">📺</span><div><a href="https://www.youtube.com">YouTube: @DesertSunHemp</a></div></div>
+        <div class="contact-item"><span class="contact-icon">📸</span><div><a href="https://www.instagram.com">Instagram: @desertsunhemp</a></div></div>
+        <div class="contact-item"><span class="contact-icon">📍</span><div>Tucson, Arizona — available for Southwest builds</div></div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="fade-up-3">
+      <div class="content-tabs">
+        <button class="tab-btn active" onclick="showTab('updates', this)">Updates</button>
+        <button class="tab-btn" onclick="showTab('builds', this)">Builds</button>
+        <button class="tab-btn" onclick="showTab('media', this)">Media</button>
+      </div>
+
+      <!-- UPDATES TAB -->
+      <div id="tab-updates" class="tab-panel active" data-demo="true">
+
+        <div class="activity-card">
+          <div class="act-header">
+            <div class="act-avatar" style="background: linear-gradient(135deg, var(--clay), var(--clay2));">DS</div>
+            <div class="act-meta">
+              <div class="act-author">Desert Sun Hemp Homes</div>
+              <div class="act-where">Project update</div>
+            </div>
+            <span class="act-type-tag tag-milestone">Milestone</span>
+          </div>
+          <div class="act-body"><strong>Casa Verde build — walls complete, moving to roof.</strong> We finished pouring the last hempcrete wall yesterday with 14 volunteers on site. The walls are curing beautifully — no major cracks, good color. Starting roof framing next week. Full photo gallery coming soon.</div>
+          <div class="act-footer">
+            <button class="act-action">🌿 Helpful <span>23</span></button>
+            <button class="act-action">💬 Comment <span>5</span></button>
+            <button class="act-action">↗ Share</button>
+            <span class="act-time">1 week ago</span>
+          </div>
+        </div>
+
+        <div class="activity-card">
+          <div class="act-header">
+            <div class="act-avatar" style="background: linear-gradient(135deg, var(--clay), var(--clay2));">DS</div>
+            <div class="act-meta">
+              <div class="act-author">Desert Sun Hemp Homes</div>
+              <div class="act-where">Resource shared</div>
+            </div>
+            <span class="act-type-tag tag-resource">Resource</span>
+          </div>
+          <div class="act-body"><strong>Sharing our complete cost breakdown for Build #3 — $78/sq ft.</strong> Detailed spreadsheet of labor, materials, equipment rental, permits, and contingency. Includes regional sourcing breakdown and what we'd do differently next time. Free to download — we want other builders to replicate what works and improve on what doesn't.</div>
+          <div class="act-footer">
+            <button class="act-action">🌿 Helpful <span>41</span></button>
+            <button class="act-action">💬 Comment <span>12</span></button>
+            <button class="act-action">↗ Share</button>
+            <span class="act-time">2 weeks ago</span>
+          </div>
+        </div>
+
+        <div class="activity-card">
+          <div class="act-header">
+            <div class="act-avatar" style="background: linear-gradient(135deg, var(--clay), var(--clay2));">DS</div>
+            <div class="act-meta">
+              <div class="act-author">Desert Sun Hemp Homes</div>
+              <div class="act-where">Media shared</div>
+            </div>
+            <span class="act-type-tag tag-media">Media</span>
+          </div>
+          <div class="act-body"><strong>New video: hempcrete pour day with 14 volunteers.</strong> We filmed the entire Casa Verde pour — mixing, placement, finishing. 8 hours condensed to 3 minutes. Shows how many hands you actually need on-site and what the real pace feels like. Link: [video coming]</div>
+          <div style="width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #e0d8c4 0%, #d0c4a8 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: rgba(31,58,46,0.2); margin-bottom: 12px; position: relative;">
+            <span style="position: absolute; font-size: 2.2rem; opacity: 0.5;">▶</span>
+          </div>
+          <div class="act-footer">
+            <button class="act-action">🌿 Helpful <span>67</span></button>
+            <button class="act-action">💬 Comment <span>18</span></button>
+            <button class="act-action">↗ Share</button>
+            <span class="act-time">3 weeks ago</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BUILDS TAB -->
+      <div id="tab-builds" class="tab-panel" data-demo="true">
+
+        <div class="project-card">
+          <div class="proj-header">
+            <div class="proj-title">Casa Verde — 1,200 sq ft family home</div>
+            <span class="proj-status status-active">🔨 Active</span>
+          </div>
+          <div class="proj-meta">
+            <span class="proj-meta-item">📍 Tucson, Arizona</span>
+            <span class="proj-meta-item">🛖 Natural Building</span>
+            <span class="proj-meta-item">📅 Started January 2026</span>
+          </div>
+          <p class="proj-desc">3-bedroom, 1.5-bath owner-assisted hempcrete home for a family of 4. Designed for passive solar with 18 south-facing windows and thermal mass from interior concrete floors. Mix: 4:1 hemp/lime. Expected completion: August 2026. Homeowners have 20 hours of sweat equity committed; professional crew handling structural work.</p>
+          <div style="margin-bottom:10px; font-size:0.8rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em;">Currently needs</div>
+          <div class="proj-needs">
+            <span class="need-pill active">Licensed electrician for rough-in (Feb)</span>
+            <span class="need-pill active">Roof framing crew (2 weeks)</span>
+            <span class="need-pill">Exterior lime plaster finish crew</span>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-members">
+              <div class="proj-member-av">RD</div>
+              <div class="proj-member-av">JO</div>
+              <div class="proj-member-av">PM</div>
+              <div class="proj-member-av">+5</div>
+            </div>
+            <span class="proj-members-label">8 collaborators</span>
+            <button class="proj-join-btn" onclick="window.location.href='join.html'">Offer Help →</button>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="proj-header">
+            <div class="proj-title">Community Workshop Center</div>
+            <span class="proj-status status-forming">🌱 Forming</span>
+          </div>
+          <div class="proj-meta">
+            <span class="proj-meta-item">📍 Tucson, Arizona</span>
+            <span class="proj-meta-item">🏗️ Education & Training</span>
+            <span class="proj-meta-item">📅 Planning Spring 2026</span>
+          </div>
+          <p class="proj-desc">1,500 sq ft hempcrete workshop space on a donated 2-acre property. Purpose: hands-on training in hempcrete mixing, placement, and finishing for builders across the Southwest. Looking for structural engineer donation, materials sponsorship, and volunteer crew leads.</p>
+          <div class="proj-needs">
+            <span class="need-pill active">Structural engineer (pro bono)</span>
+            <span class="need-pill active">Materials sponsorship ($15K)</span>
+            <span class="need-pill">Permitting support</span>
+          </div>
+          <div class="proj-footer">
+            <div class="proj-members">
+              <div class="proj-member-av">RD</div>
+              <div class="proj-member-av">JO</div>
+            </div>
+            <span class="proj-members-label">2 leads</span>
+            <button class="proj-join-btn" onclick="window.location.href='join.html'">Join Project →</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MEDIA TAB -->
+      <div id="tab-media" class="tab-panel" data-demo="true">
+        <div class="media-grid">
+          <div class="media-card">
+            <div class="media-thumb"></div>
+            <div class="media-info">
+              <div class="media-title">Full hempcrete pour — 8 hour timelapse</div>
+              <div class="media-meta">
+                <span class="media-platform">YouTube</span>
+                <span>·</span>
+                <span>12K views</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="media-card">
+            <div class="media-thumb"></div>
+            <div class="media-info">
+              <div class="media-title">How we keep builds under $85/sq ft</div>
+              <div class="media-meta">
+                <span class="media-platform">YouTube</span>
+                <span>·</span>
+                <span>8.4K views</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="media-card">
+            <div class="media-thumb"></div>
+            <div class="media-info">
+              <div class="media-title">Desert hemp sourcing — field to build site</div>
+              <div class="media-meta">
+                <span class="media-platform">YouTube</span>
+                <span>·</span>
+                <span>3.2K views</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="media-card">
+            <div class="media-thumb"></div>
+            <div class="media-info">
+              <div class="media-title">Owner-builder hempcrete guide</div>
+              <div class="media-meta">
+                <span class="media-platform">PDF Resource</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-row">
+      <div>
+        <div class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></div>
+        <div class="footer-tagline">A community for anyone building a better world — no algorithm, no ads, no noise.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="circles.html">Explore Circles</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="use-cases.html">Use Cases</a>
+        <a href="join.html">Join / Sign In</a>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <a href="about.html">Our Story</a>
+        <a href="safety.html">Safety & Trust</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 the Earthback Project. All rights reserved.</span>
+      <span>Built for builders, growers, and anyone trying.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+<!-- Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── Sign Out handler ──
+async function handleSignOut() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+// ── Populate header avatar ──
+(async function() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const { data: prof } = await sb.from('profiles').select('display_name, avatar_url').eq('id', session.user.id).single();
+  const el = document.getElementById('header-avatar');
+  if (!el) return;
+  if (prof && prof.avatar_url) {
+    el.innerHTML = '';
+    el.style.background = 'url(' + prof.avatar_url + ') center/cover';
+  } else if (prof && prof.display_name) {
+    el.textContent = prof.display_name.charAt(0).toUpperCase();
+  }
+})();
+
+const SHOW_DEMO = true; // Set to false to hide demo content when dynamic content loads
+
+function initials(name) {
+  return (name || 'EB').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function setAvatarColor(initial) {
+  const colors = ['#1F3A2E','#2d5a27','#4a6fa5','#4a8a7a','#6a5a8a','#8a5a3a'];
+  const idx = (initial || 'A').charCodeAt(0) % colors.length;
+  return colors[idx];
+}
+
+async function loadProject() {
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('slug');
+
+  // No slug param → keep Desert Sun Hemp Homes demo as-is
+  if (!slug) {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      addSignedInNav(session);
+    }
+    return;
+  }
+
+  // Load real project from Supabase (with needs + members)
+  const { data: project, error } = await sb
+    .from('projects')
+    .select('*, project_needs(*), project_members(*, profiles(display_name, avatar_url))')
+    .eq('slug', slug)
+    .single();
+
+  if (error || !project) {
+    document.title = 'Project not found — the Earthback Project';
+    document.querySelector('.profile-name').textContent = 'Project not found.';
+    document.querySelector('.profile-tagline').textContent =
+      'This project may be private or the link may have changed.';
+    return;
+  }
+
+  // Hide demo content
+  document.querySelectorAll('[data-demo="true"]').forEach(el => el.style.display = 'none');
+
+  // ── Populate header ──
+  document.title = project.name + ' — the Earthback Project';
+  const isCompany = project.project_type === 'company';
+  const isOrg = project.project_type === 'organization';
+
+  // Avatar — square for companies, rounded for projects
+  const av = document.querySelector('.project-avatar');
+  av.textContent = initials(project.name);
+  const coverColor = project.cover_color || setAvatarColor(project.name[0]);
+  av.style.background = `linear-gradient(135deg, ${coverColor}, ${lightenHex(coverColor, 30)})`;
+  if (isCompany) {
+    av.style.borderRadius = '12px';
+    av.style.width = '80px';
+    av.style.height = '80px';
+  }
+
+  // Name + tagline + bio
+  document.querySelector('.profile-name').textContent = project.name;
+  document.querySelector('.profile-tagline').textContent = project.tagline || '';
+  document.querySelector('.profile-bio').textContent = project.description || '';
+
+  // Type badge + status
+  const typeLabels = { project: 'Project', company: 'Company', organization: 'Organization', campaign: 'Campaign' };
+  const statusEmoji = { forming: '🌱', active: '🔨', paused: '⏸️', complete: '✅', archived: '📦' };
+  const metaBadges = document.querySelector('.profile-meta');
+  if (metaBadges) {
+    metaBadges.innerHTML = `
+      <span class="member-type-badge">${typeLabels[project.project_type] || project.project_type}</span>
+      <span class="status-badge">${statusEmoji[project.status] || ''} ${project.status.charAt(0).toUpperCase() + project.status.slice(1)}</span>
+    `;
+  }
+
+  // Meta row (location, category, date)
+  const metaItems = document.querySelectorAll('.pmeta-item');
+  if (metaItems[0]) metaItems[0].textContent = project.location ? '📍 ' + project.location : '';
+  if (metaItems[1]) metaItems[1].textContent = project.circle_label ? '🏷️ ' + project.circle_label : '';
+  if (metaItems[2]) metaItems[2].textContent = '📅 ' + new Date(project.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+
+  // Owner line
+  const ownerLine = document.querySelector('.owner-line');
+  if (ownerLine) {
+    const { data: ownerProfile } = await sb.from('profiles').select('display_name').eq('id', project.owner_id).single();
+    if (ownerProfile) {
+      ownerLine.innerHTML = (isCompany ? 'Managed by ' : 'Founded by ') +
+        `<a href="profile.html?id=${project.owner_id}">${ownerProfile.display_name || 'Member'}</a>`;
+    }
+  }
+
+  // Stats
+  const openNeeds = (project.project_needs || []).filter(n => !n.is_filled);
+  const filledNeeds = (project.project_needs || []).filter(n => n.is_filled);
+  const members = project.project_members || [];
+  const statsHTML = isCompany
+    ? `<div class="stat-item"><span class="stat-num">${filledNeeds.length}</span><span class="stat-label">${isCompany ? 'Services' : 'Assembled'}</span></div>
+       <div class="stat-item"><span class="stat-num">${members.length}</span><span class="stat-label">Team</span></div>
+       <div class="stat-item"><span class="stat-num">${project.follower_count || 0}</span><span class="stat-label">Followers</span></div>`
+    : `<div class="stat-item"><span class="stat-num">${openNeeds.length}</span><span class="stat-label">Open Needs</span></div>
+       <div class="stat-item"><span class="stat-num">${members.length}</span><span class="stat-label">Members</span></div>
+       <div class="stat-item"><span class="stat-num">${project.follower_count || 0}</span><span class="stat-label">Followers</span></div>`;
+  document.querySelector('.profile-stats').innerHTML = statsHTML;
+
+  // Phase bar — show for projects, hide for companies
+  const phaseBar = document.querySelector('.phase-bar');
+  if (phaseBar) {
+    if (isCompany || isOrg) {
+      phaseBar.style.display = 'none';
+    } else {
+      phaseBar.style.display = 'flex';
+      const phases = ['forming','active','complete'];
+      const currentIdx = phases.indexOf(project.status);
+      phaseBar.innerHTML = phases.map((p, i) => {
+        const stepClass = i < currentIdx ? 'done' : (i === currentIdx ? 'current' : '');
+        const dot = i < currentIdx ? '✓' : (i + 1);
+        const connHTML = i < phases.length - 1
+          ? `<div class="phase-connector ${i < currentIdx ? 'done' : ''}"></div>` : '';
+        return `<div class="phase-step ${stepClass}"><div class="phase-dot">${dot}</div><div class="phase-label">${p.charAt(0).toUpperCase() + p.slice(1)}</div></div>${connHTML}`;
+      }).join('');
+    }
+  }
+
+  // ── Sidebar: Needs + Has board ──
+  const nhBoard = document.querySelector('.nh-board');
+  if (nhBoard) {
+    nhBoard.style.display = 'block';
+    let needsHTML = '';
+    let hasHTML = '';
+
+    openNeeds.forEach(n => {
+      const urgClass = n.is_urgent ? ' urgent-row' : '';
+      needsHTML += `
+        <div class="nh-row need-row${urgClass}">
+          <span class="nh-icon">${n.description.match(/^[^\w\s]/) ? n.description.charAt(0) : '📌'}</span>
+          <div class="nh-content">
+            <div class="nh-desc">${n.description.replace(/^[^\w\s]\s*/, '')}</div>
+          </div>
+          ${n.is_urgent ? '<span class="nh-urgent-tag">Urgent</span>' : ''}
+          <button class="nh-offer-btn" onclick="offerHelp(this)">I can help</button>
+        </div>`;
+    });
+
+    filledNeeds.forEach(n => {
+      hasHTML += `
+        <div class="nh-row has-row">
+          <span class="nh-icon">${n.description.match(/^[^\w\s]/) ? n.description.charAt(0) : '✅'}</span>
+          <div class="nh-content">
+            <div class="nh-desc">${n.description.replace(/^[^\w\s]\s*/, '')}</div>
+          </div>
+        </div>`;
+    });
+
+    const boardTitle = isCompany ? 'Services & Needs' : 'The Puzzle';
+    const needsLabel = isCompany ? 'Looking For' : 'Still Needed';
+    const hasLabel = isCompany ? 'We Offer' : 'Assembled';
+
+    nhBoard.innerHTML = `
+      <div class="panel-title" style="margin-bottom:16px">${boardTitle}</div>
+      ${openNeeds.length > 0 ? `
+        <div class="nh-section">
+          <div class="nh-header">
+            <span class="nh-title needs">${needsLabel}</span>
+            <span class="nh-count">${openNeeds.length} open</span>
+          </div>
+          ${needsHTML}
+        </div>` : ''}
+      ${openNeeds.length > 0 && filledNeeds.length > 0 ? '<div class="nh-divider"></div>' : ''}
+      ${filledNeeds.length > 0 ? `
+        <div class="nh-section">
+          <div class="nh-header">
+            <span class="nh-title has">${hasLabel}</span>
+            <span class="nh-count">${filledNeeds.length} secured</span>
+          </div>
+          ${hasHTML}
+        </div>` : ''}
+      ${openNeeds.length === 0 && filledNeeds.length === 0
+        ? '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:0.85rem;">No needs listed yet.</div>' : ''}
+    `;
+  }
+
+  // ── Sidebar: Team members ──
+  const teamPanel = document.querySelector('.sidebar-panel:first-child');
+  if (teamPanel && members.length > 0) {
+    teamPanel.style.display = 'block';
+    const avatars = members.slice(0, 3).map(m => {
+      const name = m.profiles?.display_name || 'User';
+      return `<div class="team-avatar">${initials(name)}</div>`;
+    }).join('');
+    const overflow = members.length > 3 ? `<div class="team-avatar" style="background:rgba(90,125,82,0.12);color:var(--sage);font-weight:600">+${members.length - 3}</div>` : '';
+    teamPanel.innerHTML = `
+      <div class="panel-title">Team Members</div>
+      <div class="team-row">${avatars}${overflow}</div>
+      <div class="team-label">${members.length} team member${members.length !== 1 ? 's' : ''}</div>
+    `;
+  }
+
+  // ── Sidebar: Links ──
+  const linksPanel = document.querySelector('.sidebar-panel:last-child');
+  if (linksPanel && (project.website_url || project.youtube_url || project.instagram_url)) {
+    linksPanel.style.display = 'block';
+    linksPanel.innerHTML = `
+      <div class="panel-title">Links & Contact</div>
+      ${project.website_url ? `<div class="contact-item"><span class="contact-icon">🌐</span><div><a href="${project.website_url}" target="_blank">${project.website_url.replace(/^https?:\/\//, '')}</a></div></div>` : ''}
+      ${project.youtube_url ? `<div class="contact-item"><span class="contact-icon">📺</span><div><a href="${project.youtube_url}" target="_blank">YouTube</a></div></div>` : ''}
+      ${project.instagram_url ? `<div class="contact-item"><span class="contact-icon">📸</span><div><a href="${project.instagram_url}" target="_blank">Instagram</a></div></div>` : ''}
+      ${project.location ? `<div class="contact-item"><span class="contact-icon">📍</span><div>${project.location}</div></div>` : ''}
+    `;
+  }
+
+  // ── Cover band color ──
+  if (project.cover_color) {
+    document.querySelector('.cover-band').style.background =
+      `linear-gradient(135deg, ${project.cover_color} 0%, ${lightenHex(project.cover_color, 20)} 50%, ${lightenHex(project.cover_color, 40)} 100%)`;
+  }
+
+  // ── Company-specific: Change button text ──
+  if (isCompany) {
+    const collabBtn = document.querySelector('.btn-collab');
+    if (collabBtn) { collabBtn.textContent = '📩 Contact'; }
+  }
+
+  // Check if this is the current user's project — show "Edit" if so
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    addSignedInNav(session);
+    if (session.user.id === project.owner_id) {
+      const btn = document.querySelector('.btn-collab');
+      if (btn) {
+        btn.textContent = '✏️ Edit Project';
+        btn.onclick = () => { window.location.href = 'create-project.html?edit=' + project.slug; };
+      }
+      const followBtn = document.querySelector('.btn-follow');
+      if (followBtn) followBtn.style.display = 'none';
+    }
+  }
+}
+
+// ── Lighten a hex color ──
+function lightenHex(hex, amount) {
+  hex = hex.replace('#', '');
+  if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+  let r = parseInt(hex.slice(0, 2), 16);
+  let g = parseInt(hex.slice(2, 4), 16);
+  let b = parseInt(hex.slice(4, 6), 16);
+  r = Math.min(255, r + amount);
+  g = Math.min(255, g + amount);
+  b = Math.min(255, b + amount);
+  return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('');
+}
+
+function addSignedInNav(session) {
+  const cta = document.querySelector('.nav-links .nav-cta');
+  if (!cta) return;
+
+  sb.from('profiles').select('display_name, first_name').eq('id', session.user.id).single()
+    .then(({ data: p }) => {
+      const name = p?.display_name || p?.first_name || session.user.email.split('@')[0];
+      const ini = initials(name);
+      cta.textContent = ini;
+      cta.title = name + ' — your profile';
+      cta.href = 'profile.html?id=' + session.user.id;
+      cta.style.cssText = 'width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;padding:0;';
+
+      const signOutLink = document.createElement('a');
+      signOutLink.textContent = 'Sign Out';
+      signOutLink.href = '#';
+      signOutLink.style.cssText = 'font-size:0.8rem;opacity:0.65;text-decoration:none;color:var(--text-muted);margin-left:6px;';
+      signOutLink.addEventListener('click', async function(e) {
+        e.preventDefault();
+        await sb.auth.signOut();
+        window.location.href = 'index.html';
+      });
+      cta.parentNode.insertBefore(signOutLink, cta.nextSibling);
+    });
+}
+
+loadProject();
+
+// ── "I can help" — redirect to messages with context ──
+function offerHelp(btn) {
+  const needDesc = btn.closest('.nh-row')?.querySelector('.nh-desc')?.textContent || '';
+  // For demo data, just redirect to messages with demo context
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('slug');
+
+  // If user is signed in, create a real conversation thread
+  sb.auth.getSession().then(({ data: { session } }) => {
+    if (!session) {
+      window.location.href = 'join.html';
+      return;
+    }
+    // Redirect to messages page with new-conversation params
+    // In production, project_id and owner_id would come from the loaded project
+    // For demo, just go to messages
+    const msgUrl = 'messages.html?new=1&need_desc=' + encodeURIComponent(needDesc);
+    window.location.href = msgUrl;
+  });
+}
+</script>
+
+<!-- Auth state check -->
+<script>
+sb.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT') {
+    window.location.href = 'index.html';
+  }
+});
+</script>
+
+<!--
+═══════════════════════════════════════════════════════════════
+IMAGE GENERATION PROMPTS — for Flux, Midjourney, or DALL-E
+Replace placeholder backgrounds with generated project images.
+═══════════════════════════════════════════════════════════════
+
+COVER BAND / HERO BANNER (1100x120, wide landscape):
+   Prompt: Panoramic photograph of a hempcrete wall under construction at golden
+   hour in the Arizona desert, thick earth-toned walls with wooden form boards
+   partially removed revealing the textured hempcrete surface, warm saguaro
+   landscape beyond, construction staging area with hemp bales in foreground,
+   shallow depth of field on the wall texture, documentary photography style,
+   warm natural earth palette, no text, no people visible
+
+PROJECT AVATAR (128x128, square):
+   Prompt: Minimalist logo mark on a deep forest green background, abstract
+   geometric house shape made from overlapping hemp leaf forms, clean modern
+   design with subtle golden accent, no text, suitable for small circular crop,
+   flat design with minimal gradient, professional brand identity style
+
+MEDIA TAB THUMBNAILS (4 images, 280x160 each):
+
+1. "Full hempcrete pour — 8 hour timelapse"
+   Prompt: Action shot of hempcrete being poured into wall forms from above,
+   wet hemp-lime mixture visible with its characteristic golden-green color,
+   wooden forms on either side, afternoon sun casting shadows, tight crop
+   showing texture and process detail, construction documentary photography
+
+2. "How we keep builds under $85/sq ft"
+   Prompt: Overhead flat-lay photograph of project budget documents on a
+   reclaimed wood desk, calculator, pencil, hemp fiber sample, small lime
+   sample jar, printed spreadsheet with highlighted figures, warm morning
+   light from side window, editorial/lifestyle photography style
+
+3. "Desert hemp sourcing — field to build site"
+   Prompt: Split-scene composition showing hemp field on left transitioning
+   to construction site on right, golden mature hemp plants meeting stacked
+   hemp bales at a building site, Arizona mountain backdrop, midday light,
+   agricultural-to-construction documentary transition
+
+4. "Owner-builder hempcrete guide"
+   Prompt: Close-up of an open spiral-bound manual on a workbench, pages
+   showing hempcrete mixing ratio diagrams, work gloves and safety glasses
+   beside it, hemp hurd samples scattered on the page, shallow depth of
+   field, warm workshop lighting, educational/trade publication style
+
+BUILDS TAB — "Casa Verde" card hero (680x160):
+   Prompt: Three-quarter view of a partially complete hempcrete home in
+   the Sonoran desert, walls at full height with wooden roof trusses being
+   set, the characteristic thick hempcrete walls visible in cross-section
+   at a window opening, afternoon light, 4-5 workers visible at distance
+   on scaffolding, professional construction documentation photography
+
+BUILDS TAB — "Community Workshop" card hero (680x160):
+   Prompt: Architectural concept sketch style rendering of a large open-sided
+   workshop structure with hempcrete demonstration walls inside, timber post
+   and beam frame, desert landscape setting, morning light, a few training
+   stations visible with hemp bales and mixing equipment, clean architectural
+   visualization, watercolor edge treatment
+-->
+
+<!-- Pre-launch Banner -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+  <span style="font-weight:600">🌿 Pre-Launch Preview</span>
+  <span style="opacity:0.7">—</span>
+  <span>You're seeing an early build of the Earthback Project. Features are in active development. Data may reset.</span>
+  <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Send feedback →</a>
+</div>
+
+</body>
+</html>

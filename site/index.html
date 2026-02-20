@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earthback — Find your people. Build something that lasts.</title>
+    <meta name="description" content="A community for anyone curious about building a better world — natural materials, renewable energy, food systems, mutual aid. No algorithm, no politics, no noise. Your circles, your feed, your people.">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        /* ──────────────────────────────────────────────
+           EARTHBACK — Community-First Landing Page
+           v2.0 · Feb 2026
+        ─────────────────────────────────────────────── */
+
+        :root {
+            --green:      #1F3A2E;
+            --green-mid:  #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay:       #C2A56C;
+            --clay-dark:  #8A5B3F;
+            --clay-rust:  #A05E3A;
+            --moss:       #7e9b73;
+            --parchment:  #F2EFE6;
+            --parchment2: #EAE3D3;
+            --ink:        #2B2E30;
+            --ink-soft:   #555A5C;
+            --white:      #FFFFFF;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+            --max:        1280px;
+
+            /* Post type accents */
+            --post-project:    #C2A56C;
+            --post-technique:  #7e9b73;
+            --post-done:       #4A7C5E;
+            --post-resource:   #8A5B3F;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(20, 38, 28, 0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194, 165, 108, 0.12);
+        }
+        .nav-inner {
+            max-width: var(--max); margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--parchment); text-decoration: none;
+            letter-spacing: 0.1em; text-transform: uppercase;
+        }
+        .nav-logo .brand-back { color: var(--clay); }
+/* ── Brand name treatment: "the Earthback Project" ── */
+.brand-the {
+    font-size: 0.5em;
+    font-weight: 300;
+    color: rgba(242,239,230,0.52);
+    text-transform: lowercase;
+    letter-spacing: 0.03em;
+    vertical-align: 0.22em;
+    margin-right: 0.18em;
+}
+.brand-back { color: var(--clay); }
+.brand-project {
+    font-size: 0.46em;
+    font-weight: 400;
+    color: rgba(242,239,230,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    vertical-align: 0.24em;
+}
+        nav ul { display: flex; gap: 1.75rem; list-style: none; align-items: center; }
+        nav a {
+            color: rgba(242,239,230,0.78); text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            transition: color 0.2s var(--ease);
+        }
+        nav a:hover { color: var(--clay); }
+        .nav-join {
+            background: var(--clay); color: var(--green) !important;
+            padding: 0.55rem 1.35rem; border-radius: 3px;
+            font-weight: 700 !important;
+            transition: background 0.2s var(--ease) !important;
+        }
+        .nav-join:hover { background: var(--parchment) !important; }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            background:
+                radial-gradient(ellipse 700px 500px at 80% 60%, rgba(138,91,63,0.18), transparent 65%),
+                radial-gradient(ellipse 500px 400px at 5% 90%, rgba(126,155,115,0.12), transparent 60%),
+                linear-gradient(158deg, #0b1a12 0%, #1F3A2E 42%, #2a4d3a 100%);
+            display: flex; align-items: center;
+            position: relative; overflow: hidden;
+            padding: 8rem 2rem 5rem;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background-image:
+                repeating-linear-gradient(0deg, rgba(0,0,0,.5) 0 1px, transparent 1px 4px),
+                repeating-linear-gradient(90deg, rgba(0,0,0,.2) 0 1px, transparent 1px 6px);
+            opacity: 0.03;
+        }
+        .hero-inner {
+            max-width: var(--max); margin: 0 auto; width: 100%;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 4rem; align-items: center;
+            position: relative; z-index: 1;
+        }
+
+        /* Hero left */
+        .hero-eyebrow {
+            display: flex; align-items: center; gap: 0.6rem;
+            font-size: 0.76rem; font-weight: 600; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--clay); margin-bottom: 1.25rem;
+        }
+        .hero-eyebrow::before {
+            content: ''; width: 24px; height: 1px; background: var(--clay);
+        }
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 5vw, 5rem);
+            font-weight: 700; color: var(--parchment);
+            line-height: 1.05; margin-bottom: 1.4rem;
+        }
+        .hero-title em { font-style: italic; color: var(--clay); }
+        .hero-sub {
+            font-size: 1.08rem;
+            color: rgba(242,239,230,0.76);
+            line-height: 1.85; margin-bottom: 2.5rem;
+            max-width: 46ch;
+        }
+        .hero-sub strong { color: var(--clay); font-weight: 600; }
+
+        .join-form {
+            display: flex; flex-direction: column; gap: 0.6rem;
+            max-width: 420px;
+        }
+        .join-btn-link { text-decoration: none; display: block; }
+        .join-main-btn {
+            width: 100%;
+            background: var(--clay); color: var(--green);
+            border: none; padding: 1rem 2rem;
+            border-radius: 3px;
+            font-family: 'Inter', sans-serif; font-size: 1rem;
+            font-weight: 700; letter-spacing: 0.06em;
+            text-transform: uppercase; cursor: pointer;
+            transition: background 0.2s var(--ease), transform 0.15s;
+        }
+        .join-main-btn:hover { background: var(--parchment); transform: translateY(-1px); }
+        .join-note { font-size: 0.75rem; color: rgba(242,239,230,0.36); }
+
+        /* Hero right — live feed preview */
+        .hero-feed {
+            display: flex; flex-direction: column; gap: 0.85rem;
+        }
+        .hero-feed-label {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+            text-transform: uppercase; color: rgba(194,165,108,0.7);
+            margin-bottom: 0.25rem;
+        }
+
+        /* mini feed post card */
+        .mini-post {
+            background: rgba(242,239,230,0.06);
+            border: 1px solid rgba(242,239,230,0.1);
+            border-radius: 8px;
+            padding: 1rem 1.1rem;
+            display: flex; gap: 0.85rem;
+            transition: background 0.2s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+        .mini-post::before {
+            content: ''; position: absolute;
+            left: 0; top: 0; bottom: 0; width: 3px;
+            border-radius: 8px 0 0 8px;
+        }
+        .mini-post.project::before    { background: var(--post-project); }
+        .mini-post.technique::before  { background: var(--post-technique); }
+        .mini-post.done::before       { background: var(--post-done); }
+        .mini-post.resource::before   { background: var(--post-resource); }
+
+        .mini-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+            color: var(--white);
+        }
+        .av-clay   { background: var(--clay-rust); }
+        .av-moss   { background: var(--moss); }
+        .av-green  { background: var(--green-soft); }
+        .av-copper { background: var(--clay-dark); }
+
+        .mini-content { flex: 1; min-width: 0; }
+        .mini-meta {
+            display: flex; align-items: center; gap: 0.5rem;
+            margin-bottom: 0.3rem; flex-wrap: wrap;
+        }
+        .mini-name {
+            font-size: 0.82rem; font-weight: 600; color: var(--parchment);
+        }
+        .mini-loc {
+            font-size: 0.72rem; color: rgba(242,239,230,0.45);
+        }
+        .mini-time {
+            font-size: 0.7rem; color: rgba(242,239,230,0.32);
+            margin-left: auto;
+        }
+        .mini-text {
+            font-size: 0.82rem; color: rgba(242,239,230,0.72); line-height: 1.55;
+            margin-bottom: 0.45rem;
+        }
+        .mini-tag {
+            display: inline-block;
+            font-size: 0.68rem; font-weight: 600;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            padding: 0.2rem 0.55rem; border-radius: 20px;
+        }
+        .tag-project   { background: rgba(194,165,108,0.15); color: var(--clay); }
+        .tag-technique { background: rgba(126,155,115,0.15); color: var(--moss); }
+        .tag-done      { background: rgba(74,124,94,0.2);    color: #7ec89e; }
+        .tag-resource  { background: rgba(138,91,63,0.15);   color: #c4906a; }
+
+        /* pulse dot = live */
+        .live-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--moss); flex-shrink: 0;
+            animation: livepulse 2s ease-in-out infinite;
+        }
+        @keyframes livepulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.5; transform: scale(0.75); }
+        }
+
+        /* ── ACTIVITY TICKER ── */
+        .ticker {
+            background: var(--green);
+            padding: 1.1rem 2rem;
+            border-bottom: 1px solid rgba(194,165,108,0.12);
+        }
+        .ticker-inner {
+            max-width: var(--max); margin: 0 auto;
+            display: flex; justify-content: center;
+            align-items: center; gap: 3rem; flex-wrap: wrap;
+        }
+        .tick-stat {
+            display: flex; align-items: baseline; gap: 0.45rem;
+        }
+        .tick-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem; font-weight: 700; color: var(--clay);
+        }
+        .tick-label {
+            font-size: 0.8rem; color: rgba(242,239,230,0.55); font-weight: 500;
+        }
+        .tick-div {
+            width: 1px; height: 1.5rem; background: rgba(194,165,108,0.2);
+        }
+
+        /* ── SHARED SECTION PRIMITIVES ── */
+        .section { padding: 6rem 2rem; }
+        .section-inner { max-width: var(--max); margin: 0 auto; }
+        .section-label {
+            font-size: 0.74rem; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--clay-rust); margin-bottom: 0.6rem;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 3.5vw, 2.9rem);
+            font-weight: 700; color: var(--green);
+            line-height: 1.12; margin-bottom: 1rem;
+        }
+        .section-intro {
+            font-size: 1rem; color: var(--ink-soft);
+            max-width: 58ch; line-height: 1.85; margin-bottom: 3.5rem;
+        }
+
+        /* ── LIVE FEED SECTION ── */
+        .feed-section {
+            background: var(--parchment);
+            padding: 6rem 2rem;
+        }
+        .feed-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Full feed post */
+        .feed-post {
+            background: var(--white);
+            border: 1px solid rgba(43,46,48,0.08);
+            border-radius: 10px;
+            padding: 1.4rem;
+            display: flex; gap: 1rem;
+            position: relative; overflow: hidden;
+            transition: all 0.25s var(--ease);
+        }
+        .feed-post:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(31,58,46,0.1);
+            border-color: rgba(194,165,108,0.35);
+        }
+        .feed-post::before {
+            content: ''; position: absolute;
+            left: 0; top: 0; bottom: 0; width: 4px;
+        }
+        .feed-post.project::before    { background: var(--post-project); }
+        .feed-post.technique::before  { background: var(--post-technique); }
+        .feed-post.done::before       { background: var(--post-done); }
+        .feed-post.resource::before   { background: var(--post-resource); }
+
+        .post-avatar {
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+            color: var(--white);
+        }
+        .post-body { flex: 1; min-width: 0; }
+        .post-meta {
+            display: flex; align-items: center; gap: 0.6rem;
+            margin-bottom: 0.5rem; flex-wrap: wrap;
+        }
+        .post-name { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+        .post-loc  { font-size: 0.78rem; color: var(--ink-soft); }
+        .post-time { font-size: 0.74rem; color: rgba(43,46,48,0.35); margin-left: auto; }
+        .post-text {
+            font-size: 0.88rem; color: var(--ink);
+            line-height: 1.65; margin-bottom: 0.75rem;
+        }
+        .post-footer {
+            display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+        }
+        .post-tag {
+            display: inline-block; font-size: 0.7rem; font-weight: 600;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            padding: 0.22rem 0.6rem; border-radius: 20px;
+        }
+        .post-circle {
+            font-size: 0.75rem; color: var(--ink-soft);
+            margin-left: auto;
+        }
+        .post-actions {
+            display: flex; align-items: center; gap: 0.5rem;
+            margin-top: 0.75rem; padding-top: 0.75rem;
+            border-top: 1px solid rgba(43,46,48,0.07);
+        }
+        .post-btn {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            font-size: 0.78rem; font-weight: 500; color: var(--ink-soft);
+            background: none; border: 1px solid rgba(43,46,48,0.1);
+            border-radius: 20px; padding: 0.3rem 0.75rem; cursor: pointer;
+            transition: all 0.18s var(--ease); font-family: 'Inter', sans-serif;
+        }
+        .post-btn:hover { background: rgba(31,58,46,0.06); border-color: var(--moss); color: var(--green); }
+        .post-btn.helpful.active { background: rgba(126,155,115,0.12); border-color: var(--moss); color: var(--moss); }
+        .post-btn.can-help:hover { background: rgba(194,165,108,0.1); border-color: var(--clay); color: var(--clay-rust); }
+
+        /* ── CIRCLES ── */
+        .circles-section {
+            background: var(--parchment2);
+            padding: 6rem 2rem;
+        }
+        .circles-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+        }
+        .circle-card {
+            background: var(--parchment);
+            border: 1px solid rgba(43,46,48,0.08);
+            border-radius: 10px;
+            padding: 1.75rem;
+            transition: all 0.25s var(--ease);
+            cursor: pointer;
+        }
+        .circle-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 44px rgba(31,58,46,0.1);
+            border-color: rgba(194,165,108,0.4);
+        }
+        .circle-icon {
+            width: 2.75rem; height: 2.75rem;
+            background: var(--green); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem; margin-bottom: 1rem;
+        }
+        .circle-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem; font-weight: 700;
+            color: var(--green); margin-bottom: 0.35rem;
+        }
+        .circle-desc { font-size: 0.84rem; color: var(--ink-soft); line-height: 1.65; }
+        .circle-count {
+            margin-top: 0.9rem;
+            font-size: 0.74rem; font-weight: 600;
+            color: var(--clay-dark); letter-spacing: 0.04em;
+        }
+
+
+        /* ── ENHANCED CIRCLE CARDS ── */
+        .circle-tags {
+            display: flex; flex-wrap: wrap; gap: 0.35rem;
+            margin: 0.6rem 0 0.85rem;
+        }
+        .ctag {
+            font-size: 0.68rem; font-weight: 600;
+            color: var(--green-soft); background: rgba(74,124,94,0.1);
+            border-radius: 3px; padding: 0.18rem 0.52rem;
+            letter-spacing: 0.02em;
+        }
+        .circle-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 1rem; padding-top: 0.75rem;
+            border-top: 1px solid rgba(43,46,48,0.07);
+        }
+        .circle-join {
+            font-size: 0.74rem; font-weight: 700;
+            color: var(--clay); letter-spacing: 0.04em;
+            opacity: 0; transition: opacity 0.2s;
+        }
+        .circle-card:hover .circle-join { opacity: 1; }
+        .circles-explore-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 2.5rem; padding-top: 1.5rem;
+            border-top: 1px solid rgba(43,46,48,0.1);
+        }
+        .circles-nearby-hint {
+            font-size: 0.875rem; color: var(--ink-soft);
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .circles-explore-link {
+            font-size: 0.875rem; font-weight: 700;
+            color: var(--clay-dark); text-decoration: none;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+        .circles-explore-link:hover { color: var(--clay); }
+
+        /* ── CREATE POST DEMO ── */
+        .create-section {
+            background: var(--parchment2);
+            padding: 5rem 2rem;
+            border-top: 1px solid rgba(43,46,48,0.07);
+        }
+        .post-composer {
+            max-width: 680px;
+            background: var(--white);
+            border: 1px solid rgba(43,46,48,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(31,58,46,0.07);
+        }
+        .post-type-tabs {
+            display: flex; flex-wrap: wrap; gap: 0;
+            border-bottom: 1px solid rgba(43,46,48,0.09);
+            background: var(--parchment);
+        }
+        .ptype-btn {
+            flex: 1; min-width: 120px;
+            padding: 0.7rem 0.5rem;
+            font-size: 0.74rem; font-weight: 700;
+            letter-spacing: 0.04em; text-transform: uppercase;
+            border: none; background: none; cursor: pointer;
+            color: var(--ink-soft);
+            border-bottom: 2px solid transparent;
+            transition: all 0.18s;
+        }
+        .ptype-btn.active {
+            color: var(--green);
+            border-bottom-color: var(--clay);
+            background: var(--white);
+        }
+        .ptype-btn:hover:not(.active) { color: var(--green); background: rgba(31,58,46,0.04); }
+        .post-textarea {
+            width: 100%; min-height: 120px;
+            padding: 1.25rem 1.5rem;
+            font-family: 'Inter', sans-serif; font-size: 0.95rem;
+            line-height: 1.7; color: var(--ink);
+            border: none; resize: vertical; outline: none;
+            background: var(--white);
+        }
+        .post-textarea::placeholder { color: rgba(85,90,92,0.55); }
+        .post-composer-footer {
+            display: flex; gap: 0.75rem; align-items: center;
+            padding: 1rem 1.25rem;
+            border-top: 1px solid rgba(43,46,48,0.08);
+            background: var(--parchment);
+            flex-wrap: wrap;
+        }
+        .post-location-input {
+            flex: 1; min-width: 160px;
+            padding: 0.55rem 0.85rem;
+            font-size: 0.85rem; font-family: 'Inter', sans-serif;
+            border: 1px solid rgba(43,46,48,0.15);
+            border-radius: 6px; outline: none;
+            background: var(--white); color: var(--ink);
+        }
+        .post-location-input:focus { border-color: var(--clay); }
+        .post-submit-btn {
+            padding: 0.6rem 1.4rem;
+            background: var(--green); color: var(--parchment);
+            font-size: 0.84rem; font-weight: 700;
+            letter-spacing: 0.04em;
+            border: none; border-radius: 6px; cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .post-submit-btn:hover { background: var(--green-mid); }
+        .post-gate-note {
+            font-size: 0.78rem; color: var(--ink-soft);
+            margin-top: 0.85rem;
+        }
+        .post-gate-note a { color: var(--clay-dark); }
+
+        /* ── WHY EARTHBACK ── */
+        .why-section {
+            background: var(--green);
+            padding: 6rem 2rem;
+        }
+        .why-inner {
+            max-width: var(--max); margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 6rem; align-items: start;
+        }
+        .why-content .section-label { color: rgba(194,165,108,0.85); }
+        .why-content .section-title { color: var(--parchment); }
+        .why-content p {
+            color: rgba(242,239,230,0.75);
+            line-height: 1.85; font-size: 0.975rem; margin-bottom: 1.1rem;
+        }
+        .why-quote {
+            margin-top: 2rem;
+            border-left: 2px solid rgba(194,165,108,0.4);
+            padding-left: 1.25rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.2rem; color: var(--clay);
+            line-height: 1.6;
+        }
+
+        /* The not/is comparison — warm version */
+        .why-cards {
+            display: flex; flex-direction: column; gap: 1rem;
+        }
+        .why-card {
+            background: rgba(242,239,230,0.05);
+            border: 1px solid rgba(242,239,230,0.08);
+            border-radius: 8px;
+            padding: 1.25rem 1.4rem;
+        }
+        .why-card-row {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .why-not, .why-is {
+            display: flex; align-items: flex-start; gap: 0.6rem;
+            font-size: 0.875rem; line-height: 1.5;
+        }
+        .why-not { color: rgba(242,239,230,0.38); }
+        .why-is  { color: rgba(242,239,230,0.85); }
+        .why-not::before { content: '✕'; flex-shrink: 0; font-size: 0.8rem; margin-top: 0.15rem; }
+        .why-is::before  { content: '✓'; flex-shrink: 0; color: var(--clay); font-size: 0.8rem; margin-top: 0.15rem; }
+        .why-divider {
+            width: 1px; background: rgba(194,165,108,0.15);
+            margin: 0.1rem 0;
+        }
+
+        /* ── HOW IT WORKS (secondary) ── */
+        .how-section {
+            background: var(--parchment);
+            padding: 6rem 2rem;
+        }
+        .steps-row {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+            position: relative;
+        }
+        .steps-row::before {
+            content: ''; position: absolute;
+            top: 2rem; left: 2rem; right: 2rem; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--clay) 15%, var(--clay) 85%, transparent);
+            opacity: 0.22;
+        }
+        .step { padding-right: 2rem; }
+        .step-num {
+            width: 4rem; height: 4rem;
+            background: var(--green); color: var(--clay);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.35rem;
+            border: 1px solid rgba(194,165,108,0.22); position: relative; z-index: 1;
+        }
+        .step h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem; font-weight: 700;
+            color: var(--green); margin-bottom: 0.45rem;
+        }
+        .step p { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.72; }
+
+        /* ── PILOT CTA ── */
+        .pilot-section {
+            background: var(--parchment2);
+            padding: 7rem 2rem;
+        }
+        .pilot-inner {
+            max-width: 680px; margin: 0 auto; text-align: center;
+        }
+        .pilot-inner .section-title { margin-bottom: 0.85rem; }
+        .pilot-inner > p {
+            color: var(--ink-soft); margin-bottom: 2.5rem;
+            font-size: 1rem; line-height: 1.85;
+        }
+        .pilot-form {
+            display: flex; gap: 0.65rem;
+            max-width: 460px; margin: 0 auto 0.8rem;
+        }
+        .pilot-form input {
+            flex: 1;
+            border: 1px solid rgba(43,46,48,0.18);
+            background: var(--white); color: var(--ink);
+            padding: 0.875rem 1.15rem; border-radius: 3px;
+            font-family: 'Inter', sans-serif; font-size: 0.95rem;
+            outline: none; transition: border-color 0.2s var(--ease);
+        }
+        .pilot-form input:focus { border-color: var(--green); }
+        .pilot-form button {
+            background: var(--green); color: var(--parchment);
+            border: none; padding: 0.875rem 1.6rem; border-radius: 3px;
+            font-family: 'Inter', sans-serif; font-size: 0.85rem;
+            font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+            cursor: pointer; white-space: nowrap;
+            transition: background 0.2s var(--ease);
+        }
+        .pilot-form button:hover { background: var(--clay-rust); }
+        .pilot-note { font-size: 0.78rem; color: rgba(43,46,48,0.4); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: #171c19;
+            padding: 4.5rem 2rem 2.25rem;
+        }
+        .footer-inner { max-width: var(--max); margin: 0 auto; }
+        .footer-top {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(242,239,230,0.07);
+            margin-bottom: 2rem;
+        }
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--parchment); letter-spacing: 0.1em; text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+        .footer-brand p {
+            font-size: 0.84rem; color: rgba(242,239,230,0.4);
+            line-height: 1.75; max-width: 30ch;
+        }
+        .footer-col h4 {
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--clay); margin-bottom: 1rem;
+        }
+        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+        .footer-col a {
+            font-size: 0.84rem; color: rgba(242,239,230,0.45);
+            text-decoration: none; transition: color 0.2s var(--ease);
+        }
+        .footer-col a:hover { color: var(--clay); }
+        .footer-bottom {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.74rem; color: rgba(242,239,230,0.22);
+        }
+        .footer-tagline {
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .hero-inner { grid-template-columns: 1fr; max-width: 580px; }
+            .hero-feed  { display: none; }
+            .why-inner  { grid-template-columns: 1fr; gap: 3rem; }
+            .feed-grid  { grid-template-columns: 1fr; }
+            .circles-grid { grid-template-columns: 1fr 1fr; }
+            .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+        }
+        @media (max-width: 680px) {
+            nav ul { display: none; }
+            .steps-row { grid-template-columns: 1fr 1fr; gap: 2rem; }
+            .steps-row::before { display: none; }
+            .circles-grid { grid-template-columns: 1fr; }
+            .why-card-row { grid-template-columns: 1fr; }
+            .why-divider { display: none; }
+            .pilot-form { flex-direction: column; }
+            .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+        }
+
+        /* ── MOBILE NAV ── */
+        .nav-hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer; padding: 4px;
+        }
+        .nav-hamburger span {
+            display: block; width: 22px; height: 2px;
+            background: var(--parchment); border-radius: 2px;
+            transition: all 0.25s;
+        }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .mobile-nav-overlay {
+            display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+            background: rgba(9,18,13,0.98); z-index: 999;
+            flex-direction: column; padding: 2rem;
+            gap: 0;
+        }
+        .mobile-nav-overlay.open { display: flex; }
+        .mobile-nav-overlay a {
+            font-size: 1.4rem; color: rgba(242,239,230,0.8);
+            text-decoration: none; padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            font-family: 'Cormorant Garamond', serif; font-weight: 600;
+            transition: color 0.15s;
+        }
+        .mobile-nav-overlay a:hover { color: var(--clay); }
+        .mobile-nav-overlay a.join-mobile {
+            margin-top: 1.5rem; border: none;
+            background: var(--clay); color: var(--green) !important;
+            text-align: center; border-radius: 3px;
+            font-family: 'Inter', sans-serif; font-size: 1rem;
+            font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+            padding: 1rem;
+        }
+        @media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
+    </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+    <div class="nav-inner">
+        <a href="/" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+        <ul>
+            <li><a href="#community">The Feed</a></li>
+            <li><a href="circles.html">Circles</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="use-cases.html">Use Cases</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="safety.html">Safety</a></li>
+            <li><a href="login.html" id="nav-signin-link" style="opacity:0.75;">Sign In</a></li>
+            <li><a href="join.html" class="nav-join">Join</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="top">
+    <div class="hero-inner">
+
+        <div>
+            <div class="hero-eyebrow">Your community for green building</div>
+            <h1 class="hero-title">
+                Find your people.<br>
+                <em>Build something that lasts.</em>
+            </h1>
+            <p class="hero-sub">
+                A community for anyone curious about building a better world — natural materials, renewable energy, food systems, mutual aid, and everything in between. Wherever you are in the journey, there's a place for you here. <strong>Conversations that matter, projects that last, people who show up.</strong> No algorithm pushing outrage. No politics drowning out the work. Just your circles, your feed, and the work that counts.
+            </p>
+            <div class="join-form" id="join">
+                <a href="join.html" class="join-btn-link">
+                    <button type="button" class="join-main-btn">Join Earthback — it's free →</button>
+                </a>
+                <p class="join-note">Free · No algorithm · No ads · Your community owns what it builds</p>
+            </div>
+        </div>
+
+        <!-- Live feed preview (right side) -->
+        <div class="hero-feed">
+            <div class="hero-feed-label" style="display:flex;align-items:center;gap:.5rem;">
+                <div class="live-dot"></div>
+                Happening now in Earthback
+            </div>
+
+            <div class="mini-post project">
+                <div class="mini-avatar av-clay">MM</div>
+                <div class="mini-content">
+                    <div class="mini-meta">
+                        <span class="mini-name">Maria Martinez</span>
+                        <span class="mini-loc">· Taos, NM</span>
+                        <span class="mini-time">2h ago</span>
+                    </div>
+                    <p class="mini-text">Hemp build day forming for April 12 — we have the land and the materials, still need a hemp construction expert and 6 volunteers for the weekend. Anyone in the Southwest?</p>
+                    <span class="mini-tag tag-project">Project forming</span>
+                </div>
+            </div>
+
+            <div class="mini-post technique">
+                <div class="mini-avatar av-moss">JW</div>
+                <div class="mini-content">
+                    <div class="mini-meta">
+                        <span class="mini-name">James Whitehorse</span>
+                        <span class="mini-loc">· Flagstaff, AZ</span>
+                        <span class="mini-time">5h ago</span>
+                    </div>
+                    <p class="mini-text">Finished our earthen floor with linseed oil — no VOCs, beautiful result. Happy to share the process with anyone working on natural flooring.</p>
+                    <span class="mini-tag tag-technique">Technique share</span>
+                </div>
+            </div>
+
+            <div class="mini-post done">
+                <div class="mini-avatar av-green">DM</div>
+                <div class="mini-content">
+                    <div class="mini-meta">
+                        <span class="mini-name">Denver Mutual Aid</span>
+                        <span class="mini-loc">· Denver, CO</span>
+                        <span class="mini-time">Yesterday</span>
+                    </div>
+                    <p class="mini-text">Winter food storage project complete. 340 families supported. Thank you to the 22 people who showed up and made this real.</p>
+                    <span class="mini-tag tag-done">Project complete</span>
+                </div>
+            </div>
+
+            <div class="mini-post resource">
+                <div class="mini-avatar av-copper">CR</div>
+                <div class="mini-content">
+                    <div class="mini-meta">
+                        <span class="mini-name">Carlos Rivera</span>
+                        <span class="mini-loc">· Santa Fe, NM</span>
+                        <span class="mini-time">Yesterday</span>
+                    </div>
+                    <p class="mini-text">Listing my concrete mixer + trailer as available in the Southwest through April. If you have a project that needs it, reach out.</p>
+                    <span class="mini-tag tag-resource">Resource available</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── ACTIVITY TICKER ── -->
+<div class="ticker">
+    <div class="ticker-inner">
+        <div class="tick-stat">
+            <span class="tick-num">1,200+</span>
+            <span class="tick-label">people in the community</span>
+        </div>
+        <div class="tick-div"></div>
+        <div class="tick-stat">
+            <span class="tick-num">6</span>
+            <span class="tick-label">active circles</span>
+        </div>
+        <div class="tick-div"></div>
+        <div class="tick-stat">
+            <span class="tick-num">84</span>
+            <span class="tick-label">projects formed this year</span>
+        </div>
+        <div class="tick-div"></div>
+        <div class="tick-stat">
+            <span class="tick-num">31</span>
+            <span class="tick-label">completed &amp; archived</span>
+        </div>
+    </div>
+</div>
+
+<!-- ── LIVE FEED SECTION ── -->
+<section class="feed-section" id="community">
+    <div class="section-inner">
+        <div class="section-label">The community feed</div>
+        <h2 class="section-title">What's happening right now.</h2>
+        <p class="section-intro">Not what an algorithm decided you should see. What the people in your circles are actually doing — sharing techniques, forming projects, offering resources, celebrating what got built. Join to see the real thing.</p>
+
+        <div class="feed-grid">
+
+            <div class="feed-post project">
+                <div class="post-avatar av-clay">MM</div>
+                <div class="post-body">
+                    <div class="post-meta">
+                        <span class="post-name">Maria Martinez</span>
+                        <span class="post-loc">· Taos, NM</span>
+                        <span class="post-time">2 hours ago</span>
+                    </div>
+                    <p class="post-text">Hemp build day forming for April 12 — we have the land and the materials. Still looking for a hemp construction expert and about 6 volunteers for the weekend. Lodging covered for anyone traveling. Anyone in the Southwest want in?</p>
+                    <div class="post-footer">
+                        <span class="post-tag tag-project">Project forming</span>
+                        <span class="post-circle">🌾 Natural Building</span>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-btn can-help" onclick="postAction(this, 'help')">✋ I can help</button>
+                        <button class="post-btn helpful" onclick="postAction(this, 'helpful')">👍 <span class="count">14</span></button>
+                        <button class="post-btn" onclick="postAction(this, 'reply')">💬 Reply</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feed-post technique">
+                <div class="post-avatar av-moss">JW</div>
+                <div class="post-body">
+                    <div class="post-meta">
+                        <span class="post-name">James Whitehorse</span>
+                        <span class="post-loc">· Flagstaff, AZ</span>
+                        <span class="post-time">5 hours ago</span>
+                    </div>
+                    <p class="post-text">Just finished our earthen floor with linseed oil — zero VOCs, beautiful amber tone, way more durable than I expected. Third time using this method and it keeps getting better. Happy to write up the full process if people want it.</p>
+                    <div class="post-footer">
+                        <span class="post-tag tag-technique">Technique share</span>
+                        <span class="post-circle">🌾 Natural Building</span>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-btn helpful" onclick="postAction(this, 'helpful')">👍 <span class="count">31</span></button>
+                        <button class="post-btn" onclick="postAction(this, 'reply')">💬 Reply <span style="opacity:0.5">· 8</span></button>
+                        <button class="post-btn can-help" onclick="postAction(this, 'save')" style="margin-left:auto">🔖 Save</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feed-post done">
+                <div class="post-avatar av-green">DM</div>
+                <div class="post-body">
+                    <div class="post-meta">
+                        <span class="post-name">Denver Mutual Aid Network</span>
+                        <span class="post-loc">· Denver, CO</span>
+                        <span class="post-time">Yesterday</span>
+                    </div>
+                    <p class="post-text">Winter food storage project complete. 340 families got dry goods and preserved produce for the season. 22 people showed up across three Saturdays and made this real. Archiving this one and starting to plan spring. Thank you, everyone.</p>
+                    <div class="post-footer">
+                        <span class="post-tag tag-done">Project complete ✓</span>
+                        <span class="post-circle">🤝 Mutual Aid</span>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-btn helpful active" onclick="postAction(this, 'helpful')">👍 <span class="count">87</span></button>
+                        <button class="post-btn" onclick="postAction(this, 'reply')">💬 Reply <span style="opacity:0.5">· 23</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feed-post resource">
+                <div class="post-avatar av-copper">CR</div>
+                <div class="post-body">
+                    <div class="post-meta">
+                        <span class="post-name">Carlos Rivera</span>
+                        <span class="post-loc">· Santa Fe, NM</span>
+                        <span class="post-time">Yesterday</span>
+                    </div>
+                    <p class="post-text">Concrete mixer + trailer available through April. Happy to haul materials within 200 miles of Santa Fe — just cover fuel. If you've got a project forming in the Southwest, reach out soon, already two people asking.</p>
+                    <div class="post-footer">
+                        <span class="post-tag tag-resource">Resource available</span>
+                        <span class="post-circle">🏗️ Natural Building</span>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-btn can-help" onclick="postAction(this, 'help')">🙋 I'm interested</button>
+                        <button class="post-btn helpful" onclick="postAction(this, 'helpful')">👍 <span class="count">9</span></button>
+                        <button class="post-btn" onclick="postAction(this, 'reply')">💬 Reply</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── CIRCLES ── -->
+<section class="circles-section" id="circles">
+    <div class="section-inner">
+        <div class="section-label">Your neighborhoods</div>
+        <h2 class="section-title">Find your circle.</h2>
+        <p class="section-intro">Earthback is organized around the things people actually build — not tags, not hashtags, but real communities of practice with their own feeds, their own members, and their own projects.</p>
+
+        <div class="circles-grid">
+            <div class="circle-card" onclick="window.location='join.html'">
+                <div class="circle-icon">🌾</div>
+                <div class="circle-name">Natural Building</div>
+                <div class="circle-tags"><span class="ctag">hempcrete</span><span class="ctag">cob</span><span class="ctag">straw bale</span><span class="ctag">timber frame</span><span class="ctag">adobe</span></div>
+                <div class="circle-desc">Building with earth, fiber, and wood. The oldest techniques, refined by people doing the actual work.</div>
+                <div class="circle-footer"><span class="circle-count">412 members · 18 projects</span><span class="circle-join">Join →</span></div>
+            </div>
+            <div class="circle-card" onclick="window.location='join.html'">
+                <div class="circle-icon">☀️</div>
+                <div class="circle-name">Solar &amp; Off-Grid</div>
+                <div class="circle-tags"><span class="ctag">solar</span><span class="ctag">battery storage</span><span class="ctag">micro-hydro</span><span class="ctag">off-grid</span></div>
+                <div class="circle-desc">Solar installs, battery systems, energy independence for homesteads and communities. From a panel on a shed to a full microgrid.</div>
+                <div class="circle-footer"><span class="circle-count">298 members · 11 projects</span><span class="circle-join">Join →</span></div>
+            </div>
+            <div class="circle-card" onclick="window.location='join.html'">
+                <div class="circle-icon">💧</div>
+                <div class="circle-name">Water Systems</div>
+                <div class="circle-tags"><span class="ctag">rainwater</span><span class="ctag">greywater</span><span class="ctag">wells</span><span class="ctag">restoration</span></div>
+                <div class="circle-desc">Harvesting, storing, and stewarding water. Rainwater catchment, greywater, spring development, and riparian restoration.</div>
+                <div class="circle-footer"><span class="circle-count">187 members · 8 projects</span><span class="circle-join">Join →</span></div>
+            </div>
+            <div class="circle-card" onclick="window.location='join.html'">
+                <div class="circle-icon">🌱</div>
+                <div class="circle-name">Permaculture &amp; Food</div>
+                <div class="circle-tags"><span class="ctag">food forest</span><span class="ctag">seed library</span><span class="ctag">market garden</span><span class="ctag">preservation</span></div>
+                <div class="circle-desc">Growing food, building soil, and creating systems that feed communities year after year. Seeds, harvests, and everything in between.</div>
+                <div class="circle-footer"><span class="circle-count">341 members · 22 projects</span><span class="circle-join">Join →</span></div>
+            </div>
+            <div class="circle-card" onclick="window.location='join.html'">
+                <div class="circle-icon">🤝</div>
+                <div class="circle-name">Mutual Aid</div>
+                <div class="circle-tags"><span class="ctag">care networks</span><span class="ctag">skill share</span><span class="ctag">resource pools</span><span class="ctag">resilience</span></div>
+                <div class="circle-desc">Care networks, resource sharing, skill exchanges, and disaster response. Community resilience that doesn't wait for permission.</div>
+                <div class="circle-footer"><span class="circle-count">223 members · 14 projects</span><span class="circle-join">Join →</span></div>
+            </div>
+            <div class="circle-card" onclick="window.location='join.html'">
+                <div class="circle-icon">🏘️</div>
+                <div class="circle-name">Community Housing</div>
+                <div class="circle-tags"><span class="ctag">co-op</span><span class="ctag">land trust</span><span class="ctag">intentional community</span><span class="ctag">affordable</span></div>
+                <div class="circle-desc">Cooperative housing, land trusts, intentional communities. Homes that belong to the people in them — not investors.</div>
+                <div class="circle-footer"><span class="circle-count">156 members · 7 projects</span><span class="circle-join">Join →</span></div>
+            </div>
+            <div class="circle-card" onclick="window.location='join.html'">
+                <div class="circle-icon">🔧</div>
+                <div class="circle-name">Skills &amp; Workshops</div>
+                <div class="circle-tags"><span class="ctag">hands-on</span><span class="ctag">tool library</span><span class="ctag">apprenticeship</span><span class="ctag">courses</span></div>
+                <div class="circle-desc">Learning and teaching the physical skills that make everything else possible. Workshops, tool libraries, apprenticeships, and skill trades.</div>
+                <div class="circle-footer"><span class="circle-count">194 members · 9 projects</span><span class="circle-join">Join →</span></div>
+            </div>
+            <div class="circle-card" onclick="window.location='join.html'">
+                <div class="circle-icon">🌍</div>
+                <div class="circle-name">Land &amp; Soil</div>
+                <div class="circle-tags"><span class="ctag">regenerative ag</span><span class="ctag">rewilding</span><span class="ctag">soil health</span><span class="ctag">restoration</span></div>
+                <div class="circle-desc">Regenerative agriculture, land restoration, rewilding, and soil building. Working with land over time — the slow, essential work.</div>
+                <div class="circle-footer"><span class="circle-count">211 members · 13 projects</span><span class="circle-join">Join →</span></div>
+            </div>
+            <div class="circle-card" onclick="window.location='join.html'">
+                <div class="circle-icon">🏕️</div>
+                <div class="circle-name">Alternative Dwellings</div>
+                <div class="circle-tags"><span class="ctag">tiny homes</span><span class="ctag">conversions</span><span class="ctag">off-grid cabins</span><span class="ctag">mobile</span></div>
+                <div class="circle-desc">Tiny homes, converted spaces, off-grid cabins, mobile dwellings. Living well with less — and building it yourself when you can.</div>
+                <div class="circle-footer"><span class="circle-count">178 members · 10 projects</span><span class="circle-join">Join →</span></div>
+            </div>
+            <div class="circle-card" onclick="window.location='join.html'">
+                <div class="circle-icon">♻️</div>
+                <div class="circle-name">Materials &amp; Salvage</div>
+                <div class="circle-tags"><span class="ctag">reclaimed</span><span class="ctag">salvage</span><span class="ctag">zero waste</span><span class="ctag">sourcing</span></div>
+                <div class="circle-desc">Reclaimed materials, salvage networks, sustainable sourcing, and zero-waste building. The right material, found — not extracted.</div>
+                <div class="circle-footer"><span class="circle-count">143 members · 6 projects</span><span class="circle-join">Join →</span></div>
+            </div>
+        </div>
+
+        <div class="circles-explore-bar">
+            <span class="circles-nearby-hint">📍 Join to see what's active near you — projects, resources, and people within reach.</span>
+            <a href="circles.html" class="circles-explore-link">Explore all circles &amp; find nearby →</a>
+        </div>
+    </div>
+</section>
+
+<!-- ── CREATE A POST DEMO ── -->
+<section class="create-section">
+    <div class="section-inner">
+        <div class="section-label">Add your voice</div>
+        <h2 class="section-title">What are you working on?</h2>
+        <p class="section-intro">Got a project forming, a technique to share, or something to offer? This is where it lives. Join to post for real — or try it now to see how it works.</p>
+
+        <div class="post-composer">
+            <div class="post-type-tabs">
+                <button class="ptype-btn active" onclick="setPostType(this)">🏗 Project Forming</button>
+                <button class="ptype-btn" onclick="setPostType(this)">🔧 Technique Share</button>
+                <button class="ptype-btn" onclick="setPostType(this)">📦 Resource Available</button>
+                <button class="ptype-btn" onclick="setPostType(this)">✅ Project Complete</button>
+            </div>
+            <textarea class="post-textarea" id="postBody" placeholder="What's happening? What do you need? What did you finish? What did you learn?"></textarea>
+            <div class="post-composer-footer">
+                <input class="post-location-input" id="postLocation" type="text" placeholder="📍 Your city or region">
+                <button class="post-submit-btn" onclick="handlePostDemo()">Share with the community →</button>
+            </div>
+        </div>
+        <p class="post-gate-note">You'll create your free account first — takes two minutes. <a href="join.html">Already started? Pick up where you left off.</a></p>
+    </div>
+</section>
+
+
+<!-- ── WHY EARTHBACK ── -->
+<section class="why-section">
+    <div class="why-inner">
+
+        <div class="why-content">
+            <div class="section-label">Why this exists</div>
+            <h2 class="section-title">A home for anyone building something better.</h2>
+            <p>People drawn to natural building, renewable energy, food sovereignty, and mutual aid — they're everywhere. So are the curious ones, the students, the people who know something is here but haven't found their footing yet. All of them scattered across platforms that weren't built for any of it.</p>
+            <p>Facebook has some of them. But it also has everything else, and the algorithm doesn't know the difference between a hempcrete workshop and a rage post. Twitter has the conversations, but not the follow-through. Reddit has the knowledge, but not the relationships.</p>
+            <p>Earthback is the place where this work lives. Your feed shows what your circles are doing. Your profile reflects real contributions and real connections — not follower counts.</p>
+            <blockquote class="why-quote">
+                "When the pieces connect, the work gets done."
+            </blockquote>
+        </div>
+
+        <div class="why-cards">
+            <div class="why-card">
+                <div class="why-card-row">
+                    <div class="why-not">Algorithmic feed designed to enrage</div>
+                    <div class="why-divider"></div>
+                    <div class="why-is">Feed curated by your circles, not an algorithm</div>
+                </div>
+            </div>
+            <div class="why-card">
+                <div class="why-card-row">
+                    <div class="why-not">Political arguments with strangers</div>
+                    <div class="why-divider"></div>
+                    <div class="why-is">Conversations grounded in real projects</div>
+                </div>
+            </div>
+            <div class="why-card">
+                <div class="why-card-row">
+                    <div class="why-not">Follower counts as social currency</div>
+                    <div class="why-divider"></div>
+                    <div class="why-is">Reputation built from completed work</div>
+                </div>
+            </div>
+            <div class="why-card">
+                <div class="why-card-row">
+                    <div class="why-not">Endless scroll, no destination</div>
+                    <div class="why-divider"></div>
+                    <div class="why-is">Posts that lead somewhere real</div>
+                </div>
+            </div>
+            <div class="why-card">
+                <div class="why-card-row">
+                    <div class="why-not">Groups that never actually do anything</div>
+                    <div class="why-divider"></div>
+                    <div class="why-is">Circles with projects, tools, and archives</div>
+                </div>
+            </div>
+            <div class="why-card">
+                <div class="why-card-row">
+                    <div class="why-not">Your data, their product</div>
+                    <div class="why-divider"></div>
+                    <div class="why-is">No ads, no data selling, no extraction</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── HOW IT WORKS (secondary) ── -->
+<section class="how-section">
+    <div class="section-inner">
+        <div class="section-label">How it works</div>
+        <h2 class="section-title">Show up. Connect. Build when you're ready.</h2>
+        <p class="section-intro">You don't have to have a project to belong here. Some people come to share what they know. Some come to find collaborators. Some are just curious and looking for their people. All of that is welcome.</p>
+
+        <div class="steps-row">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h3>Find Your Circles</h3>
+                <p>Join the communities that match your work — Natural Building, Solar & Off-Grid, Permaculture, Mutual Aid. Your feed shows what your circles are actually doing.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h3>Share What You Know</h3>
+                <p>Post a technique, list a resource, ask a question, celebrate something you finished. Every contribution builds the reputation that follows you.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h3>Start a Project</h3>
+                <p>When "we should do this" turns real — set a goal, invite the people who have the missing pieces, make commitments visible. The tools are built in.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <h3>Archive & Keep Going</h3>
+                <p>When a project wraps, close it cleanly. The record stays, the contributions are acknowledged, and you carry your history into the next thing.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── JOIN CTA ── -->
+<section class="pilot-section">
+    <div class="pilot-inner">
+        <div class="section-label">Come on in</div>
+        <h2 class="section-title">The door is open.</h2>
+        <p>Earthback is free to join and open now. Set up your profile, find your circles, and start posting. No algorithm waiting to distort your feed. No politics crowding out the work. Just the people and the projects.</p>
+
+        <div style="margin-top: 2.25rem; display: flex; flex-direction: column; align-items: center; gap: 0.85rem;">
+            <a href="join.html" style="text-decoration:none;">
+                <button style="
+                    background: var(--green); color: var(--parchment);
+                    border: none; padding: 1rem 2.75rem; border-radius: 3px;
+                    font-family: 'Inter', sans-serif; font-size: 1rem;
+                    font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+                    cursor: pointer; transition: background 0.2s; white-space: nowrap;
+                " onmouseover="this.style.background='var(--clay-rust)'" onmouseout="this.style.background='var(--green)'">
+                    Create your account →
+                </button>
+            </a>
+            <p class="pilot-note">Free · Takes two minutes · No spam · Leave whenever you want</p>
+        </div>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></div>
+                <p>The community for people building a better world. No algorithm, no politics, no noise.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="#community">The Feed</a></li>
+                    <li><a href="circles.html">Circles</a></li>
+                    <li><a href="use-cases.html">Use Cases</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Earthback</h4>
+                <ul>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="how-it-works.html">How It Works</a></li>
+                    <li><a href="safety.html">Safety &amp; Trust</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a></li>
+                    <li><a href="join.html">Join the community</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Earthback. All rights reserved. &nbsp;·&nbsp; <a href="terms.html" style="color:inherit;text-decoration:underline;opacity:0.7;">Terms</a> &nbsp;·&nbsp; <a href="privacy.html" style="color:inherit;text-decoration:underline;opacity:0.7;">Privacy</a></span>
+            <span class="footer-tagline">When the pieces connect, the work gets done.</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Nav darkens on scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+        nav.style.background = window.scrollY > 60
+            ? 'rgba(9, 18, 13, 0.99)'
+            : 'rgba(20, 38, 28, 0.97)';
+    }, { passive: true });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        });
+    });
+
+    // Feed post interactions (demo — real actions require login)
+    function postAction(btn, type) {
+        if (type === 'helpful') {
+            const isActive = btn.classList.toggle('active');
+            const countEl = btn.querySelector('.count');
+            if (countEl) {
+                const n = parseInt(countEl.textContent);
+                countEl.textContent = isActive ? n + 1 : n - 1;
+            }
+        } else if (type === 'help' || type === 'reply' || type === 'save') {
+            // Prompt to join
+            const ripple = btn;
+            ripple.style.transform = 'scale(0.95)';
+            setTimeout(() => { ripple.style.transform = ''; }, 120);
+            setTimeout(() => { window.location.href = 'join.html'; }, 350);
+        }
+    }
+</script>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <a href="#community">The Feed</a>
+    <a href="circles.html">Circles</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="use-cases.html">Use Cases</a>
+    <a href="about.html">About</a>
+    <a href="safety.html">Safety</a>
+
+    <a href="join.html" class="join-mobile">Join / Sign In &rarr;</a>
+</div>
+<script>
+function toggleMobileNav() {
+    var btn = document.getElementById('nav-hamburger');
+    var overlay = document.getElementById('mobile-nav-overlay');
+    btn.classList.toggle('open');
+    overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('.mobile-nav-overlay a').forEach(function(a) {
+    a.addEventListener('click', function() {
+        document.getElementById('nav-hamburger').classList.remove('open');
+        document.getElementById('mobile-nav-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    });
+});
+
+    // ── Create Post Demo ──
+    function setPostType(btn) {
+        document.querySelectorAll('.ptype-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    function handlePostDemo() {
+        const btn = document.querySelector('.post-submit-btn');
+        btn.textContent = 'Getting things ready…';
+        btn.style.opacity = '0.75';
+        setTimeout(() => { window.location.href = 'join.html'; }, 700);
+    }
+</script>
+
+<!-- Auth state check -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(async function() {
+  try {
+    const sb = supabase.createClient('https://yptktmzagctusbeqdaty.supabase.co', 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC');
+    const { data: { session } } = await sb.auth.getSession();
+    const link = document.getElementById('nav-signin-link');
+    if (session && link) {
+      link.textContent = 'Sign Out';
+      link.href = '#';
+      link.style.opacity = '1';
+      link.addEventListener('click', async function(e) {
+        e.preventDefault();
+        await sb.auth.signOut();
+        window.location.reload();
+      });
+    }
+  } catch(e) { /* silent fail — sign in link stays as-is */ }
+})();
+</script>
+</body>

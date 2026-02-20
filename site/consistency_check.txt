@@ -1,0 +1,12 @@
+=== CONSISTENCY CHECK REPORT ===
+Date: 2026-02-20
+
+FILE LIST TO CHECK:
+- feed.html
+- projects.html
+- project.html
+- profile.html
+- create-project.html
+- messages.html
+- circles.html
+

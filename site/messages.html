@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messages — the Earthback Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:#1F3A2E;--green2:#2d5a27;--green-mid:#2C4F3B;--green-soft:#4A7C5E;
+      --sage:#5a7d52;--moss:#7a9e6c;--clay:#C2A56C;--clay2:#b8784a;
+      --parchment:#F2EFE6;--parchment2:#EAE3D3;--paper-warm:#ece7da;
+      --card:#faf8f3;--pale-green:#e4eddf;--ink:#1a2218;--text:#3b4a3a;
+      --text-muted:#6b7a63;--border:#d0c4a8;--border-lt:#e0d8c4;
+      --shadow:rgba(30,55,40,0.08);--shadow-d:rgba(30,55,40,0.16);--white:#fff;
+      --font-serif:'Cormorant Garamond',Georgia,serif;
+      --font-sans:'Inter',system-ui,sans-serif;--max:1100px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-sans);background:var(--parchment);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+
+    /* ── APP TOPBAR ── */
+    .topbar{background:linear-gradient(135deg,var(--green) 0%,var(--green2) 100%);color:white;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.12);position:sticky;top:0;z-index:1000}
+    .topbar-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:white;font-weight:600}
+    .topbar-brand-mark{font-size:1.2rem;display:flex;align-items:center;justify-content:center;width:28px;height:28px}
+    .topbar-brand-name{font-family:var(--font-serif);font-size:1.1rem;font-weight:500;letter-spacing:-0.5px}
+    .topbar-the{font-size:0.65em;opacity:0.85;font-weight:400}
+    .brand-sub{display:block;font-size:0.65em;opacity:0.8}
+    .topbar-nav{display:flex;align-items:center;gap:4px}
+    .topbar-nav-link{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.84rem;font-weight:500;font-family:var(--font-sans);padding:6px 14px;border-radius:8px;transition:all 0.2s;white-space:nowrap}
+    .topbar-nav-link:hover{color:white;background:rgba(255,255,255,0.1)}
+    .topbar-nav-link.active{color:white;background:rgba(255,255,255,0.15);font-weight:600}
+    .topbar-nav-link.coming-soon{opacity:0.45;cursor:default}
+    .topbar-right{display:flex;align-items:center;gap:8px}
+    .topbar-hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;border-radius:6px;transition:background 0.2s}
+    .topbar-hamburger:hover{background:rgba(255,255,255,0.1)}
+    .topbar-hamburger span{display:block;width:20px;height:2px;background:white;border-radius:2px;transition:all 0.25s}
+    .topbar-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+    .topbar-hamburger.open span:nth-child(2){opacity:0}
+    .topbar-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+    .topbar-mobile-menu{display:none;position:absolute;top:60px;left:0;right:0;background:linear-gradient(135deg,var(--green) 0%,var(--green2) 100%);padding:8px 16px 14px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:999;flex-direction:column;gap:2px}
+    .topbar-mobile-menu.open{display:flex}
+    .topbar-mobile-menu a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.92rem;font-weight:500;padding:10px 12px;border-radius:8px;transition:background 0.2s}
+    .topbar-mobile-menu a:hover,.topbar-mobile-menu a.active{background:rgba(255,255,255,0.12);color:white}
+
+    /* ── MESSAGES LAYOUT ── */
+    .msg-layout{display:grid;grid-template-columns:320px 1fr;max-width:var(--max);margin:0 auto;height:calc(100vh - 60px);overflow:hidden}
+
+    /* ── THREAD LIST ── */
+    .thread-list{background:var(--card);border-right:1px solid var(--border-lt);overflow-y:auto;display:flex;flex-direction:column}
+    .thread-header{padding:16px 18px;border-bottom:1px solid var(--border-lt);display:flex;align-items:center;justify-content:space-between}
+    .thread-header-title{font-family:var(--font-serif);font-size:1.15rem;font-weight:600;color:var(--ink)}
+    .thread-search{width:100%;padding:8px 14px;margin:8px 18px 4px;width:calc(100% - 36px);border:1px solid var(--border);border-radius:8px;background:var(--parchment);font-family:var(--font-sans);font-size:0.82rem;color:var(--text);outline:none}
+    .thread-search:focus{border-color:var(--sage);box-shadow:0 0 0 3px rgba(90,125,82,0.12)}
+    .thread-item{display:flex;gap:12px;padding:14px 18px;cursor:pointer;transition:background 0.15s;border-bottom:1px solid var(--border-lt);position:relative}
+    .thread-item:hover{background:var(--pale-green)}
+    .thread-item.active{background:var(--pale-green);border-left:3px solid var(--sage)}
+    .thread-item.unread::after{content:'';position:absolute;top:18px;right:18px;width:8px;height:8px;border-radius:50%;background:var(--sage)}
+    .thread-avatar{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.82rem;font-family:var(--font-sans)}
+    .thread-avatar.project-av{border-radius:10px}
+    .thread-content{flex:1;min-width:0}
+    .thread-name{font-size:0.88rem;font-weight:600;color:var(--ink);margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .thread-preview{font-size:0.78rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .thread-meta{display:flex;align-items:center;gap:6px;margin-top:2px}
+    .thread-time{font-size:0.68rem;color:var(--text-muted)}
+    .thread-badge{font-size:0.6rem;font-weight:600;padding:2px 6px;border-radius:4px;background:rgba(194,165,108,0.12);color:var(--clay2);text-transform:uppercase;letter-spacing:0.03em}
+
+    /* ── CHAT PANEL ── */
+    .chat-panel{display:flex;flex-direction:column;background:var(--parchment);overflow:hidden}
+    .chat-header{padding:14px 22px;background:var(--card);border-bottom:1px solid var(--border-lt);display:flex;align-items:center;gap:12px}
+    .chat-header-name{font-size:0.95rem;font-weight:600;color:var(--ink)}
+    .chat-header-context{font-size:0.75rem;color:var(--text-muted)}
+    .chat-header-project{font-size:0.72rem;color:var(--sage);font-weight:500;text-decoration:none}
+    .chat-header-project:hover{text-decoration:underline}
+
+    .chat-messages{flex:1;overflow-y:auto;padding:20px 22px;display:flex;flex-direction:column;gap:12px}
+    .msg-bubble{max-width:75%;padding:12px 16px;border-radius:14px;font-size:0.88rem;line-height:1.55;position:relative}
+    .msg-bubble.sent{background:var(--green);color:white;align-self:flex-end;border-bottom-right-radius:4px}
+    .msg-bubble.received{background:var(--card);color:var(--text);align-self:flex-start;border:1px solid var(--border-lt);border-bottom-left-radius:4px}
+    .msg-bubble.system{background:rgba(90,125,82,0.08);color:var(--text-muted);align-self:center;text-align:center;font-size:0.8rem;padding:8px 16px;border-radius:8px;max-width:90%}
+    .msg-sender{font-size:0.72rem;font-weight:600;color:var(--sage);margin-bottom:3px}
+    .msg-time{font-size:0.65rem;color:rgba(255,255,255,0.5);margin-top:4px;text-align:right}
+    .msg-bubble.received .msg-time{color:var(--text-muted)}
+
+    /* ── COMPOSE ── */
+    .compose-bar{padding:12px 22px;background:var(--card);border-top:1px solid var(--border-lt);display:flex;gap:10px;align-items:flex-end}
+    .compose-input{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--parchment);font-family:var(--font-sans);font-size:0.88rem;color:var(--text);resize:none;outline:none;max-height:120px;min-height:42px;line-height:1.5}
+    .compose-input:focus{border-color:var(--sage);box-shadow:0 0 0 3px rgba(90,125,82,0.12)}
+    .compose-send{background:linear-gradient(135deg,var(--green),var(--green2));color:white;border:none;border-radius:10px;padding:10px 18px;font-size:0.88rem;font-weight:600;font-family:var(--font-sans);cursor:pointer;transition:all 0.2s;white-space:nowrap}
+    .compose-send:hover{transform:translateY(-1px);box-shadow:0 3px 10px var(--shadow-d)}
+    .compose-send:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+    /* ── EMPTY STATES ── */
+    .empty-inbox,.empty-chat{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:40px;color:var(--text-muted)}
+    .empty-icon{font-size:2.4rem;opacity:0.3;margin-bottom:12px}
+    .empty-title{font-family:var(--font-serif);font-size:1.2rem;font-weight:600;color:var(--ink);margin-bottom:6px}
+    .empty-desc{font-size:0.85rem;max-width:320px;line-height:1.5}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px){
+      .topbar{padding:0 16px}
+      .topbar-brand-name{font-size:0.95rem}
+      .topbar-nav{display:none}
+      .topbar-hamburger{display:flex}
+      .msg-layout{grid-template-columns:1fr}
+      .thread-list{display:flex}
+      .chat-panel{display:none}
+      .msg-layout.chat-open .thread-list{display:none}
+      .msg-layout.chat-open .chat-panel{display:flex}
+      .chat-back{display:inline-flex}
+    }
+    @media(min-width:769px){
+      .chat-back{display:none}
+    }
+    .chat-back{background:none;border:none;font-size:1rem;cursor:pointer;padding:4px 8px;border-radius:6px;color:var(--text-muted);transition:all 0.2s}
+    .chat-back:hover{background:var(--pale-green);color:var(--green)}
+  </style>
+</head>
+<body>
+
+<!-- ── APP TOPBAR ── -->
+<nav class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <span class="topbar-brand-mark">🌿</span>
+    <span class="topbar-brand-name"><span class="topbar-the">the</span> Earthback <span class="brand-sub">Project</span></span>
+  </a>
+  <div class="topbar-nav">
+    <a href="feed.html" class="topbar-nav-link">Home</a>
+    <a href="projects.html" class="topbar-nav-link">Projects</a>
+    <a href="profile.html#media" class="topbar-nav-link">Media</a>
+    <a href="#" class="topbar-nav-link coming-soon" title="Coming soon">Marketplace</a>
+    <a href="circles.html" class="topbar-nav-link">Circles</a>
+  </div>
+  <div class="topbar-right">
+    <a href="messages.html" title="Messages" style="color:white;font-size:1rem;text-decoration:none;padding:4px 8px;border-radius:8px;background:rgba(255,255,255,0.15);" id="msg-icon">💬</a>
+    <a href="profile.html" title="View your profile" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sage));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:none;" id="header-avatar">?</a>
+    <button onclick="handleSignOut()" title="Sign out" style="background:none;border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:7px 14px;color:rgba(255,255,255,0.7);font-size:0.8rem;font-weight:500;font-family:var(--font-sans);cursor:pointer;white-space:nowrap;transition:all 0.2s" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.25)'">Sign Out</button>
+    <div class="topbar-hamburger" onclick="this.classList.toggle('open');document.querySelector('.topbar-mobile-menu').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="topbar-mobile-menu">
+  <a href="feed.html">Home</a>
+  <a href="projects.html">Projects</a>
+  <a href="profile.html#media">Media</a>
+  <a href="#">Marketplace (Coming Soon)</a>
+  <a href="circles.html">Circles</a>
+  <a href="messages.html" class="active">Messages</a>
+  <a href="profile.html">My Profile</a>
+</div>
+
+<!-- ── MESSAGES LAYOUT ── -->
+<div class="msg-layout" id="msg-layout">
+
+  <!-- Thread List -->
+  <div class="thread-list" id="thread-list">
+    <div class="thread-header">
+      <span class="thread-header-title">Messages</span>
+    </div>
+    <input class="thread-search" type="text" placeholder="Search conversations..." oninput="filterThreads(this.value)">
+    <div id="threads-container">
+      <!-- JS fills — or shows empty state -->
+    </div>
+  </div>
+
+  <!-- Chat Panel -->
+  <div class="chat-panel" id="chat-panel">
+    <div class="chat-header" id="chat-header" style="display:none;">
+      <button class="chat-back" onclick="closeChat()">← Back</button>
+      <div>
+        <div class="chat-header-name" id="chat-name">—</div>
+        <div class="chat-header-context" id="chat-context"></div>
+      </div>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="empty-chat" id="empty-chat">
+        <div class="empty-icon">💬</div>
+        <div class="empty-title">Select a conversation</div>
+        <div class="empty-desc">Choose a thread from the left, or start one by clicking "I can help" on any project's needs board.</div>
+      </div>
+    </div>
+    <div class="compose-bar" id="compose-bar" style="display:none;">
+      <textarea class="compose-input" id="compose-input" rows="1" placeholder="Type a message..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+      <button class="compose-send" onclick="sendMessage()" id="send-btn">Send</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUserId = null;
+let currentConvId = null;
+let conversations = [];
+
+async function handleSignOut() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+// ── Init ──
+(async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'join.html'; return; }
+  currentUserId = session.user.id;
+
+  // Populate header avatar
+  const { data: prof } = await sb.from('profiles').select('display_name, avatar_url').eq('id', currentUserId).single();
+  const el = document.getElementById('header-avatar');
+  if (el && prof) {
+    if (prof.avatar_url) { el.innerHTML = ''; el.style.background = 'url(' + prof.avatar_url + ') center/cover'; }
+    else if (prof.display_name) el.textContent = prof.display_name.charAt(0).toUpperCase();
+  }
+
+  await loadConversations();
+
+  // Check URL for ?conv= param (deep-link from "I can help")
+  const params = new URLSearchParams(window.location.search);
+  const convParam = params.get('conv');
+  if (convParam) openConversation(convParam);
+
+  // Check URL for ?new= param (start new conversation)
+  const newParam = params.get('new');
+  if (newParam) handleNewConversation(params);
+})();
+
+// ══════════════════════════════════════════════════
+// LOAD CONVERSATIONS
+// ══════════════════════════════════════════════════
+
+async function loadConversations() {
+  const container = document.getElementById('threads-container');
+
+  // Get conversations this user participates in
+  const { data: participations, error } = await sb
+    .from('conversation_participants')
+    .select(`
+      conversation_id,
+      last_read_at,
+      conversations (
+        id, subject, conv_type, last_message_at, project_id,
+        projects ( name, slug )
+      )
+    `)
+    .eq('profile_id', currentUserId)
+    .order('last_read_at', { ascending: false });
+
+  if (error || !participations || participations.length === 0) {
+    container.innerHTML = `
+      <div class="empty-inbox">
+        <div class="empty-icon">📭</div>
+        <div class="empty-title">No messages yet</div>
+        <div class="empty-desc">When you offer to help on a project or someone messages you, conversations will appear here.</div>
+      </div>`;
+    // Show demo threads instead
+    loadDemoThreads();
+    return;
+  }
+
+  conversations = participations.map(p => p.conversations).filter(Boolean);
+
+  // For each conversation, get the latest message and other participant names
+  for (const conv of conversations) {
+    const { data: msgs } = await sb.from('messages')
+      .select('body, sender_id, created_at')
+      .eq('conversation_id', conv.id)
+      .order('created_at', { ascending: false })
+      .limit(1);
+    conv._lastMessage = msgs && msgs[0] ? msgs[0] : null;
+
+    const { data: parts } = await sb.from('conversation_participants')
+      .select('profile_id, profiles(display_name, avatar_url)')
+      .eq('conversation_id', conv.id)
+      .neq('profile_id', currentUserId);
+    conv._otherParticipants = parts || [];
+  }
+
+  renderThreads();
+}
+
+function renderThreads() {
+  const container = document.getElementById('threads-container');
+  if (conversations.length === 0) {
+    loadDemoThreads();
+    return;
+  }
+
+  container.innerHTML = conversations.map(conv => {
+    const others = conv._otherParticipants.map(p => p.profiles?.display_name || 'User').join(', ');
+    const preview = conv._lastMessage ? conv._lastMessage.body.substring(0, 60) : 'No messages yet';
+    const time = conv._lastMessage ? timeAgo(conv._lastMessage.created_at) : '';
+    const initial = others.charAt(0).toUpperCase() || '?';
+    const projectName = conv.projects?.name || '';
+    const badge = conv.conv_type === 'project_help' ? '<span class="thread-badge">Help offer</span>' : '';
+    const colors = avatarColor(initial);
+
+    return `
+      <div class="thread-item" data-conv="${conv.id}" onclick="openConversation('${conv.id}')">
+        <div class="thread-avatar ${conv.conv_type === 'project_help' ? 'project-av' : ''}" style="background:linear-gradient(135deg,${colors[0]},${colors[1]})">${initial}</div>
+        <div class="thread-content">
+          <div class="thread-name">${escHTML(others || 'Thread')}</div>
+          <div class="thread-preview">${escHTML(preview)}</div>
+          <div class="thread-meta">
+            ${badge}
+            ${projectName ? '<span class="thread-badge">' + escHTML(projectName) + '</span>' : ''}
+            <span class="thread-time">${time}</span>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════
+// DEMO THREADS (shown until real conversations exist)
+// ══════════════════════════════════════════════════
+
+function loadDemoThreads() {
+  const container = document.getElementById('threads-container');
+  const demos = [
+    {
+      id: 'demo-1', name: 'Rosa Delgado-Kwan', initial: 'RD',
+      preview: 'Thanks for offering to help with the electrical! Can you come by the site next Tuesday?',
+      time: '2h ago', type: 'project_help', project: 'Desert Sun Hemp Homes',
+      colors: ['#1F3A2E','#2d5a27'], unread: true
+    },
+    {
+      id: 'demo-2', name: 'Jake Ortiz', initial: 'JO',
+      preview: 'I just uploaded the new cost breakdown spreadsheet to the project page.',
+      time: '1d ago', type: 'project_team', project: 'Desert Sun Hemp Homes',
+      colors: ['#4a6fa5','#3a5a85'], unread: false
+    },
+    {
+      id: 'demo-3', name: 'Maria Chen', initial: 'MC',
+      preview: 'Hey! I saw your hempcrete ADU and want to try something similar. Any tips on getting started?',
+      time: '3d ago', type: 'direct', project: '',
+      colors: ['#8a5a3a','#6a4a2a'], unread: false
+    },
+    {
+      id: 'demo-4', name: 'Appalachian Build School', initial: 'AB',
+      preview: 'We\'d love to have you as a guest instructor for our March workshop. Interested?',
+      time: '5d ago', type: 'project_help', project: 'Appalachian Build School',
+      colors: ['#5a7d52','#7a9e6c'], unread: false
+    }
+  ];
+
+  container.innerHTML = demos.map(d => `
+    <div class="thread-item ${d.unread ? 'unread' : ''}" data-conv="${d.id}" onclick="openDemoChat('${d.id}')">
+      <div class="thread-avatar ${d.type === 'project_help' ? 'project-av' : ''}" style="background:linear-gradient(135deg,${d.colors[0]},${d.colors[1]})">${d.initial}</div>
+      <div class="thread-content">
+        <div class="thread-name">${d.name}</div>
+        <div class="thread-preview">${d.preview}</div>
+        <div class="thread-meta">
+          ${d.type === 'project_help' ? '<span class="thread-badge">Help offer</span>' : ''}
+          ${d.project ? '<span class="thread-badge">' + d.project + '</span>' : ''}
+          <span class="thread-time">${d.time}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════
+// OPEN CONVERSATION
+// ══════════════════════════════════════════════════
+
+async function openConversation(convId) {
+  currentConvId = convId;
+  document.getElementById('msg-layout').classList.add('chat-open');
+
+  // Highlight active thread
+  document.querySelectorAll('.thread-item').forEach(t => t.classList.remove('active'));
+  const active = document.querySelector(`[data-conv="${convId}"]`);
+  if (active) { active.classList.add('active'); active.classList.remove('unread'); }
+
+  // Show header + compose
+  document.getElementById('chat-header').style.display = 'flex';
+  document.getElementById('compose-bar').style.display = 'flex';
+  document.getElementById('empty-chat').style.display = 'none';
+
+  // Load conversation details
+  const conv = conversations.find(c => c.id === convId);
+  if (conv) {
+    const others = conv._otherParticipants.map(p => p.profiles?.display_name || 'User').join(', ');
+    document.getElementById('chat-name').textContent = others || 'Thread';
+    const ctx = [];
+    if (conv.subject) ctx.push(conv.subject);
+    if (conv.projects?.name) ctx.push(conv.projects.name);
+    document.getElementById('chat-context').textContent = ctx.join(' · ');
+  }
+
+  // Load messages
+  const { data: messages } = await sb.from('messages')
+    .select('id, body, sender_id, message_type, created_at, profiles(display_name)')
+    .eq('conversation_id', convId)
+    .order('created_at', { ascending: true });
+
+  const msgContainer = document.getElementById('chat-messages');
+  if (!messages || messages.length === 0) {
+    msgContainer.innerHTML = '<div class="msg-bubble system">Conversation started. Say hello!</div>';
+  } else {
+    msgContainer.innerHTML = messages.map(m => {
+      const isMine = m.sender_id === currentUserId;
+      if (m.message_type === 'system') {
+        return `<div class="msg-bubble system">${escHTML(m.body)}</div>`;
+      }
+      return `
+        <div class="msg-bubble ${isMine ? 'sent' : 'received'}">
+          ${!isMine ? `<div class="msg-sender">${escHTML(m.profiles?.display_name || 'User')}</div>` : ''}
+          ${escHTML(m.body)}
+          <div class="msg-time">${formatTime(m.created_at)}</div>
+        </div>`;
+    }).join('');
+  }
+
+  msgContainer.scrollTop = msgContainer.scrollHeight;
+
+  // Update last_read_at
+  await sb.from('conversation_participants')
+    .update({ last_read_at: new Date().toISOString() })
+    .eq('conversation_id', convId)
+    .eq('profile_id', currentUserId);
+
+  document.getElementById('compose-input').focus();
+}
+
+function openDemoChat(demoId) {
+  currentConvId = null;
+  document.getElementById('msg-layout').classList.add('chat-open');
+
+  document.querySelectorAll('.thread-item').forEach(t => t.classList.remove('active'));
+  const active = document.querySelector(`[data-conv="${demoId}"]`);
+  if (active) { active.classList.add('active'); active.classList.remove('unread'); }
+
+  document.getElementById('chat-header').style.display = 'flex';
+  document.getElementById('compose-bar').style.display = 'flex';
+  document.getElementById('empty-chat').style.display = 'none';
+
+  const demoChats = {
+    'demo-1': {
+      name: 'Rosa Delgado-Kwan', context: 'Help offer · Desert Sun Hemp Homes',
+      messages: [
+        { sender: 'system', body: 'You offered to help with: Licensed electrician — Tucson area' },
+        { sender: 'them', name: 'Rosa', body: 'Hi! Thanks so much for reaching out. We really need someone for the rough-in on the Casa Verde build.' },
+        { sender: 'them', name: 'Rosa', body: 'Are you available to come by the site next Tuesday morning? I can walk you through the plans.' },
+        { sender: 'me', body: 'Yes! Tuesday works great. What time? And is it the Tucson site off Ajo Way?' },
+        { sender: 'them', name: 'Rosa', body: 'That\'s the one! 8am works — it gets hot fast out there. I\'ll text you the pin. 🏠' }
+      ]
+    },
+    'demo-2': {
+      name: 'Jake Ortiz', context: 'Desert Sun Hemp Homes · Team',
+      messages: [
+        { sender: 'them', name: 'Jake', body: 'Hey team, I just uploaded the new cost breakdown for Build #3 to the project page. Full materials, labor, and contingency.' },
+        { sender: 'me', body: 'Awesome, I\'ll take a look. $78/sqft is incredible.' },
+        { sender: 'them', name: 'Jake', body: 'Right?! The hemp sourcing from Front Range Co-op was a game changer. Cut materials by 22%.' }
+      ]
+    },
+    'demo-3': {
+      name: 'Maria Chen', context: 'Direct message',
+      messages: [
+        { sender: 'them', name: 'Maria', body: 'Hey! I saw your hempcrete ADU build on the projects page and I\'m really inspired. I have a lot in Sedona and want to try something similar.' },
+        { sender: 'them', name: 'Maria', body: 'Any tips on getting started? Did you do the owner-builder route or hire a contractor?' },
+        { sender: 'me', body: 'Hey Maria! I did owner-builder with a crew lead from Desert Sun. Highly recommend their network — they can connect you with someone in the Sedona area.' }
+      ]
+    },
+    'demo-4': {
+      name: 'Appalachian Build School', context: 'Help offer · Appalachian Build School',
+      messages: [
+        { sender: 'system', body: 'Appalachian Build School invited you to a conversation' },
+        { sender: 'them', name: 'Appalachian Build School', body: 'Hi there! We\'ve been following your hempcrete work on Earthback and we\'d love to have you as a guest instructor for our March workshop in Asheville.' },
+        { sender: 'them', name: 'Appalachian Build School', body: 'It\'s a 3-day intensive — we\'d cover travel and lodging. Around 20 students each cohort. Would you be interested?' }
+      ]
+    }
+  };
+
+  const chat = demoChats[demoId];
+  if (!chat) return;
+
+  document.getElementById('chat-name').textContent = chat.name;
+  document.getElementById('chat-context').textContent = chat.context;
+
+  const msgContainer = document.getElementById('chat-messages');
+  msgContainer.innerHTML = chat.messages.map(m => {
+    if (m.sender === 'system') return `<div class="msg-bubble system">${m.body}</div>`;
+    const isMine = m.sender === 'me';
+    return `
+      <div class="msg-bubble ${isMine ? 'sent' : 'received'}">
+        ${!isMine ? `<div class="msg-sender">${m.name}</div>` : ''}
+        ${m.body}
+        <div class="msg-time">${isMine ? 'You' : ''}</div>
+      </div>`;
+  }).join('');
+  msgContainer.scrollTop = msgContainer.scrollHeight;
+  document.getElementById('compose-input').focus();
+}
+
+// ══════════════════════════════════════════════════
+// SEND MESSAGE
+// ══════════════════════════════════════════════════
+
+async function sendMessage() {
+  const input = document.getElementById('compose-input');
+  const body = input.value.trim();
+  if (!body) return;
+
+  // Demo mode — just append locally
+  if (!currentConvId || currentConvId.startsWith('demo-')) {
+    const msgContainer = document.getElementById('chat-messages');
+    msgContainer.innerHTML += `
+      <div class="msg-bubble sent">
+        ${escHTML(body)}
+        <div class="msg-time">Just now</div>
+      </div>`;
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+    input.value = '';
+    return;
+  }
+
+  // Real message
+  input.disabled = true;
+  document.getElementById('send-btn').disabled = true;
+
+  const { error } = await sb.from('messages').insert({
+    conversation_id: currentConvId,
+    sender_id: currentUserId,
+    body: body,
+    message_type: 'text'
+  });
+
+  input.disabled = false;
+  document.getElementById('send-btn').disabled = false;
+
+  if (!error) {
+    input.value = '';
+    // Re-render messages
+    openConversation(currentConvId);
+  }
+}
+
+// ══════════════════════════════════════════════════
+// "I CAN HELP" — Create new conversation
+// ══════════════════════════════════════════════════
+
+async function handleNewConversation(params) {
+  const projectId = params.get('project_id');
+  const needId = params.get('need_id');
+  const needDesc = params.get('need_desc') || '';
+  const ownerId = params.get('owner_id');
+
+  if (!projectId || !ownerId || !currentUserId) return;
+  if (ownerId === currentUserId) { alert("That's your own project!"); return; }
+
+  // Check if conversation already exists for this need
+  if (needId) {
+    const { data: existing } = await sb.from('conversations')
+      .select('id')
+      .eq('need_id', needId)
+      .limit(1);
+
+    if (existing && existing.length > 0) {
+      // Check if user is already a participant
+      const { data: part } = await sb.from('conversation_participants')
+        .select('id')
+        .eq('conversation_id', existing[0].id)
+        .eq('profile_id', currentUserId)
+        .limit(1);
+
+      if (part && part.length > 0) {
+        openConversation(existing[0].id);
+        return;
+      }
+    }
+  }
+
+  // Create conversation
+  const { data: conv, error: convErr } = await sb.from('conversations').insert({
+    project_id: projectId,
+    need_id: needId || null,
+    subject: needDesc ? 'Offer to help: ' + needDesc : 'Project help offer',
+    conv_type: 'project_help'
+  }).select().single();
+
+  if (convErr) { console.error('Conv create error:', convErr); return; }
+
+  // Add both participants
+  await sb.from('conversation_participants').insert([
+    { conversation_id: conv.id, profile_id: currentUserId },
+    { conversation_id: conv.id, profile_id: ownerId }
+  ]);
+
+  // System message
+  await sb.from('messages').insert({
+    conversation_id: conv.id,
+    sender_id: currentUserId,
+    body: needDesc
+      ? `Offered to help with: ${needDesc}`
+      : 'Started a conversation about this project.',
+    message_type: 'offer'
+  });
+
+  // Reload and open
+  await loadConversations();
+  openConversation(conv.id);
+}
+
+// ══════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════
+
+function closeChat() {
+  document.getElementById('msg-layout').classList.remove('chat-open');
+  currentConvId = null;
+}
+
+function filterThreads(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('.thread-item').forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(q) ? 'flex' : 'none';
+  });
+}
+
+function escHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function avatarColor(initial) {
+  const palettes = [
+    ['#1F3A2E','#2d5a27'],['#4a6fa5','#3a5a85'],['#8a5a3a','#6a4a2a'],
+    ['#5a7d52','#7a9e6c'],['#6a5a8a','#5a4a7a'],['#3a7a6a','#2a6a5a']
+  ];
+  return palettes[(initial || 'A').charCodeAt(0) % palettes.length];
+}
+
+function timeAgo(dateStr) {
+  const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (seconds < 60) return 'just now';
+  if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+  if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+  if (seconds < 604800) return Math.floor(seconds / 86400) + 'd ago';
+  return new Date(dateStr).toLocaleDateString();
+}
+
+function formatTime(dateStr) {
+  return new Date(dateStr).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+}
+</script>
+<!-- Pre-launch Banner -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+  <span style="font-weight:600">🌿 Pre-Launch Preview</span>
+  <span style="opacity:0.7">—</span>
+  <span>You're seeing an early build of the Earthback Project. Features are in active development. Data may reset.</span>
+  <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Send feedback →</a>
+</div>
+
+</body>
+</html>

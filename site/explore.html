@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Circles — the Earthback Project</title>
+    <meta name="description" content="Browse all Earthback circles — communities organized around natural building, renewable energy, food systems, mutual aid, and more. Find what's active near you.">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green:      #1F3A2E;
+            --green-mid:  #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay:       #C2A56C;
+            --clay-dark:  #8A5B3F;
+            --clay-rust:  #A05E3A;
+            --moss:       #7e9b73;
+            --parchment:  #F2EFE6;
+            --parchment2: #EAE3D3;
+            --ink:        #2B2E30;
+            --ink-soft:   #555A5C;
+            --white:      #FFFFFF;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+            --max:        1280px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--parchment); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+        /* ── NAV ── */
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(20,38,28,0.97); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(194,165,108,0.12); }
+        .nav-inner { max-width: var(--max); margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--parchment); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; }
+        .nav-logo .brand-back { color: var(--clay); }
+        .brand-the { font-size: 0.5em; font-weight: 300; color: rgba(242,239,230,0.52); text-transform: lowercase; letter-spacing: 0.03em; vertical-align: 0.22em; margin-right: 0.18em; }
+        .brand-project { font-size: 0.46em; font-weight: 400; color: rgba(242,239,230,0.35); text-transform: uppercase; letter-spacing: 0.25em; vertical-align: 0.24em; }
+        nav ul { display: flex; gap: 1.75rem; list-style: none; align-items: center; }
+        nav a { color: rgba(242,239,230,0.78); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s var(--ease); }
+        nav a:hover { color: var(--clay); }
+        .nav-join { background: var(--clay); color: var(--green) !important; padding: 0.55rem 1.35rem; border-radius: 3px; font-weight: 700 !important; transition: background 0.2s var(--ease) !important; }
+        .nav-join:hover { background: var(--parchment) !important; }
+        .nav-active { color: var(--clay) !important; }
+
+        /* ── HAMBURGER ── */
+        .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+        .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--parchment); border-radius: 2px; transition: all 0.3s; }
+        .mobile-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(20,38,28,0.98); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; padding: 2rem; }
+        .mobile-nav-overlay.open { display: flex; }
+        .mobile-nav-overlay a { font-size: 1.4rem; color: rgba(242,239,230,0.8); text-decoration: none; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-family: 'Cormorant Garamond', serif; font-weight: 600; width: 100%; text-align: center; transition: color 0.15s; }
+        .mobile-nav-overlay a:hover { color: var(--clay); }
+        .mobile-nav-overlay a.join-mobile { margin-top: 1.5rem; border: none; background: var(--clay); color: var(--green) !important; border-radius: 3px; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 1rem; }
+        .mobile-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--parchment); font-size: 1.5rem; cursor: pointer; }
+        @media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
+
+        /* ── HERO ── */
+        .explore-hero {
+            background: linear-gradient(158deg, #0b1a12 0%, #1F3A2E 50%, #2a4d3a 100%);
+            padding: 9rem 2rem 4rem;
+            text-align: center;
+        }
+        .hero-label { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--clay); margin-bottom: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 0.6rem; }
+        .hero-label::before, .hero-label::after { content: ''; width: 24px; height: 1px; background: var(--clay); }
+        .explore-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; color: var(--parchment); line-height: 1.1; margin-bottom: 1rem; }
+        .explore-hero h1 em { color: var(--clay); font-style: italic; }
+        .explore-hero p { font-size: 1.05rem; color: rgba(242,239,230,0.72); max-width: 52ch; margin: 0 auto 2.5rem; line-height: 1.8; }
+
+        /* ── LOCATION SEARCH ── */
+        .location-bar {
+            max-width: 560px; margin: 0 auto;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(194,165,108,0.25);
+            border-radius: 8px;
+            display: flex; overflow: hidden;
+        }
+        .location-input {
+            flex: 1; padding: 0.85rem 1.25rem;
+            background: none; border: none; outline: none;
+            font-family: 'Inter', sans-serif; font-size: 0.95rem;
+            color: var(--parchment);
+        }
+        .location-input::placeholder { color: rgba(242,239,230,0.45); }
+        .location-btn {
+            padding: 0.85rem 1.5rem;
+            background: var(--clay); color: var(--green);
+            font-size: 0.84rem; font-weight: 700; letter-spacing: 0.05em;
+            border: none; cursor: pointer;
+            transition: background 0.2s; white-space: nowrap;
+        }
+        .location-btn:hover { background: #d4b87a; }
+
+        /* ── NEARBY RESULT ── */
+        .nearby-result {
+            display: none;
+            max-width: 560px; margin: 1.25rem auto 0;
+            background: rgba(74,124,94,0.15);
+            border: 1px solid rgba(74,124,94,0.3);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            text-align: left;
+        }
+        .nearby-result.visible { display: block; }
+        .nearby-result-title { font-size: 0.84rem; font-weight: 700; color: var(--moss); margin-bottom: 0.35rem; }
+        .nearby-result-body { font-size: 0.82rem; color: rgba(242,239,230,0.75); line-height: 1.6; }
+        .nearby-result-cta { display: inline-block; margin-top: 0.6rem; font-size: 0.8rem; font-weight: 700; color: var(--clay); text-decoration: none; }
+        .nearby-result-cta:hover { text-decoration: underline; }
+
+        /* ── FILTER BAR ── */
+        .filter-section { background: var(--white); border-bottom: 1px solid rgba(43,46,48,0.1); position: sticky; top: 56px; z-index: 90; }
+        .filter-inner { max-width: var(--max); margin: 0 auto; padding: 0.85rem 2rem; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .filter-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; white-space: nowrap; }
+        .filter-btn { padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid rgba(43,46,48,0.15); background: none; cursor: pointer; color: var(--ink-soft); transition: all 0.18s; white-space: nowrap; }
+        .filter-btn.active, .filter-btn:hover { background: var(--green); color: var(--parchment); border-color: var(--green); }
+        .filter-count { font-size: 0.72rem; font-weight: 700; color: var(--ink-soft); margin-left: auto; white-space: nowrap; }
+
+        /* ── MAIN CONTENT ── */
+        .explore-main { max-width: var(--max); margin: 0 auto; padding: 3rem 2rem 5rem; }
+        .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--clay-rust); margin-bottom: 0.5rem; }
+        .explore-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: var(--green); margin-bottom: 2rem; }
+
+        /* ── CIRCLES GRID ── */
+        .explore-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 4rem; }
+        .ex-card {
+            background: var(--white);
+            border: 1px solid rgba(43,46,48,0.09);
+            border-radius: 12px; padding: 1.75rem;
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+            display: flex; flex-direction: column;
+        }
+        .ex-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(31,58,46,0.1); border-color: rgba(194,165,108,0.4); }
+        .ex-card-icon { width: 2.75rem; height: 2.75rem; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 1rem; flex-shrink: 0; }
+        .ex-card-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: var(--green); margin-bottom: 0.4rem; }
+        .ex-card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.85rem; }
+        .etag { font-size: 0.67rem; font-weight: 600; color: var(--green-soft); background: rgba(74,124,94,0.1); border-radius: 3px; padding: 0.15rem 0.48rem; letter-spacing: 0.02em; }
+        .ex-card-desc { font-size: 0.84rem; color: var(--ink-soft); line-height: 1.7; flex: 1; }
+        .ex-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1.1rem; padding-top: 0.85rem; border-top: 1px solid rgba(43,46,48,0.07); }
+        .ex-card-stats { font-size: 0.74rem; font-weight: 600; color: var(--clay-dark); letter-spacing: 0.03em; }
+        .ex-card-join { font-size: 0.74rem; font-weight: 700; color: var(--clay); opacity: 0; transition: opacity 0.2s; }
+        .ex-card:hover .ex-card-join { opacity: 1; }
+        .ex-card[data-hidden="true"] { display: none; }
+
+        /* ── NEARBY SECTION ── */
+        .nearby-section {
+            background: linear-gradient(135deg, #1F3A2E, #2C4F3B);
+            border-radius: 16px; padding: 3rem;
+            margin-bottom: 3rem;
+            display: flex; gap: 3rem; align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .nearby-left { flex: 1; min-width: 260px; }
+        .nearby-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--clay); margin-bottom: 0.6rem; }
+        .nearby-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: var(--parchment); line-height: 1.2; margin-bottom: 0.85rem; }
+        .nearby-desc { font-size: 0.9rem; color: rgba(242,239,230,0.72); line-height: 1.75; margin-bottom: 1.5rem; }
+        .nearby-input-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .nearby-text-input { flex: 1; min-width: 180px; padding: 0.65rem 1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(194,165,108,0.3); border-radius: 6px; color: var(--parchment); font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; }
+        .nearby-text-input::placeholder { color: rgba(242,239,230,0.45); }
+        .nearby-text-input:focus { border-color: var(--clay); }
+        .nearby-search-btn { padding: 0.65rem 1.25rem; background: var(--clay); color: var(--green); font-weight: 700; font-size: 0.84rem; border: none; border-radius: 6px; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+        .nearby-search-btn:hover { background: #d4b87a; }
+        .nearby-right { flex: 1; min-width: 220px; }
+        .nearby-teaser-cards { display: flex; flex-direction: column; gap: 0.75rem; }
+        .ntcard { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem 1.1rem; }
+        .ntcard-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
+        .ntcard-circle { font-size: 0.7rem; font-weight: 700; color: var(--clay); letter-spacing: 0.06em; text-transform: uppercase; }
+        .ntcard-dist { font-size: 0.7rem; color: rgba(242,239,230,0.5); }
+        .ntcard-title { font-size: 0.88rem; color: var(--parchment); font-weight: 500; }
+        .nearby-gate { margin-top: 1rem; font-size: 0.8rem; color: rgba(242,239,230,0.55); }
+        .nearby-gate a { color: var(--clay); text-decoration: none; font-weight: 600; }
+        .nearby-gate a:hover { text-decoration: underline; }
+
+        /* ── CTA ── */
+        .explore-cta { text-align: center; padding: 4rem 2rem; background: var(--green); border-radius: 16px; }
+        .explore-cta h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 700; color: var(--parchment); margin-bottom: 0.75rem; }
+        .explore-cta p { color: rgba(242,239,230,0.72); font-size: 1rem; max-width: 44ch; margin: 0 auto 2rem; line-height: 1.75; }
+        .explore-cta-btn { display: inline-block; padding: 0.9rem 2.2rem; background: var(--clay); color: var(--green); font-weight: 700; font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border-radius: 4px; transition: background 0.2s; }
+        .explore-cta-btn:hover { background: var(--parchment); }
+
+        /* ── FOOTER ── */
+        footer { background: #111a14; padding: 4rem 2rem 2rem; }
+        .footer-inner { max-width: var(--max); margin: 0 auto; }
+        .footer-top { display: flex; gap: 4rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+        .footer-brand { flex: 2; min-width: 200px; }
+        .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--parchment); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; display: inline-block; margin-bottom: 1rem; }
+        .footer-logo .brand-back { color: var(--clay); }
+        .footer-brand p { font-size: 0.875rem; color: rgba(242,239,230,0.5); line-height: 1.7; max-width: 28ch; }
+        .footer-col { flex: 1; min-width: 130px; }
+        .footer-col h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--clay); margin-bottom: 1rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 0.55rem; }
+        .footer-col a { color: rgba(242,239,230,0.55); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+        .footer-col a:hover { color: var(--clay); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+        .footer-copy { font-size: 0.78rem; color: rgba(242,239,230,0.3); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 960px) { .explore-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 640px) {
+            .explore-grid { grid-template-columns: 1fr; }
+            .nearby-section { padding: 2rem; gap: 2rem; }
+            .filter-inner { padding: 0.75rem 1rem; }
+        }
+        /* Demo content badge + toggle */
+        .demo-badge-sm { font-size:0.58rem; font-weight:600; color:#6b7a63; background:#ece7da; border:1px solid #d0c4a8; border-radius:3px; padding:1px 5px; letter-spacing:0.04em; text-transform:uppercase; vertical-align:middle; margin-left:4px; opacity:0.75; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+        <ul>
+            <li><a href="explore.html" class="nav-active">Circles</a></li>
+            <li><a href="profile.html">People</a></li>
+            <li><a href="index.html#community">The Feed</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="use-cases.html">Use Cases</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="safety.html">Safety</a></li>
+                        <li><a href="login.html" id="nav-signin-link" style="opacity:0.75;">Sign In</a></li>
+            <li><a href="join.html" class="nav-join">Join</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <button class="mobile-close" onclick="toggleMobileNav()">✕</button>
+    <a href="explore.html" onclick="toggleMobileNav()">Circles</a>
+    <a href="profile.html" onclick="toggleMobileNav()">People</a>
+    <a href="index.html#community" onclick="toggleMobileNav()">The Feed</a>
+    <a href="how-it-works.html" onclick="toggleMobileNav()">How It Works</a>
+    <a href="use-cases.html" onclick="toggleMobileNav()">Use Cases</a>
+    <a href="about.html" onclick="toggleMobileNav()">About</a>
+    <a href="safety.html" onclick="toggleMobileNav()">Safety</a>
+    <a href="join.html" class="join-mobile">Join / Sign In &rarr;</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="explore-hero">
+    <div class="hero-label">Your neighborhoods</div>
+    <h1>Find your people.<br><em>Find your circle.</em></h1>
+    <p>Earthback is organized around the things people actually care about — not tags or hashtags, but real communities of practice with their own feeds, members, and projects.</p>
+    <div class="location-bar">
+        <input class="location-input" id="heroLocation" type="text" placeholder="📍 Enter your city or region to find nearby circles">
+        <button class="location-btn" onclick="findNearby()">Find nearby →</button>
+    </div>
+    <div class="nearby-result" id="nearbyResult">
+        <div class="nearby-result-title">📍 Circles active near <span id="nearbyLocationName"></span></div>
+        <div class="nearby-result-body">Join to see exactly who's active near you — projects forming, resources available, and people looking for collaborators in your area.</div>
+        <a href="join.html" class="nearby-result-cta">Create your free account to see what's nearby →</a>
+    </div>
+</section>
+
+<!-- ── FILTER BAR ── -->
+<div class="filter-section">
+    <div class="filter-inner">
+        <span class="filter-label">Filter:</span>
+        <button class="filter-btn active" onclick="filterCircles('all', this)">All circles</button>
+        <button class="filter-btn" onclick="filterCircles('building', this)">Natural Building</button>
+        <button class="filter-btn" onclick="filterCircles('energy', this)">Energy</button>
+        <button class="filter-btn" onclick="filterCircles('food', this)">Food &amp; Land</button>
+        <button class="filter-btn" onclick="filterCircles('water', this)">Water</button>
+        <button class="filter-btn" onclick="filterCircles('housing', this)">Housing</button>
+        <button class="filter-btn" onclick="filterCircles('community', this)">Community</button>
+        <button class="filter-btn" onclick="filterCircles('skills', this)">Skills</button>
+        <span class="filter-count" id="filterCount">12 circles</span>
+    </div>
+</div>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="explore-main">
+
+    <div class="section-label" style="margin-bottom:0.4rem;">All circles</div>
+    <div class="explore-section-title" id="sectionTitle">Browse and find where you belong</div>
+
+    <div class="explore-grid" id="circlesGrid">
+
+        <div class="ex-card" data-cat="building" onclick="window.location='join.html'">
+            <div class="ex-card-icon">🌾</div>
+            <div class="ex-card-name">Natural Building</div>
+            <div class="ex-card-tags"><span class="etag">hempcrete</span><span class="etag">cob</span><span class="etag">straw bale</span><span class="etag">timber frame</span><span class="etag">adobe</span><span class="etag">earthship</span></div>
+            <div class="ex-card-desc">Building with earth, fiber, and wood. Hempcrete walls, cob roundhouses, straw bale studios, timber frames, adobe — the oldest techniques, refined by people doing the actual work. This circle is for everyone from first-timers to seasoned builders.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">412 members · 18 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="energy" onclick="window.location='join.html'">
+            <div class="ex-card-icon">☀️</div>
+            <div class="ex-card-name">Solar &amp; Off-Grid</div>
+            <div class="ex-card-tags"><span class="etag">solar</span><span class="etag">battery storage</span><span class="etag">micro-hydro</span><span class="etag">off-grid</span><span class="etag">wind</span></div>
+            <div class="ex-card-desc">Solar installs, battery systems, micro-hydro, and off-grid power. From a single panel on a shed to full community energy independence. Share system designs, find electricians, troubleshoot setups, and celebrate what you got working.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">298 members · 11 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="water" onclick="window.location='join.html'">
+            <div class="ex-card-icon">💧</div>
+            <div class="ex-card-name">Water Systems</div>
+            <div class="ex-card-tags"><span class="etag">rainwater</span><span class="etag">greywater</span><span class="etag">wells</span><span class="etag">springs</span><span class="etag">riparian</span></div>
+            <div class="ex-card-desc">Harvesting, storing, and stewarding water. Rainwater catchment, greywater recycling, spring development, well drilling, and riparian restoration. Water sovereignty is foundational — this circle is for everyone learning it.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">187 members · 8 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="food" onclick="window.location='join.html'">
+            <div class="ex-card-icon">🌱</div>
+            <div class="ex-card-name">Permaculture &amp; Food</div>
+            <div class="ex-card-tags"><span class="etag">food forest</span><span class="etag">seed library</span><span class="etag">market garden</span><span class="etag">preservation</span><span class="etag">community kitchen</span></div>
+            <div class="ex-card-desc">Growing food, building soil, and creating systems that feed communities for generations. Food forests, market gardens, seed libraries, fermentation, preservation, and community kitchens. Seeds, harvests, and everything between.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">341 members · 22 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="community" onclick="window.location='join.html'">
+            <div class="ex-card-icon">🤝</div>
+            <div class="ex-card-name">Mutual Aid</div>
+            <div class="ex-card-tags"><span class="etag">care networks</span><span class="etag">skill share</span><span class="etag">resource pools</span><span class="etag">disaster response</span><span class="etag">time banking</span></div>
+            <div class="ex-card-desc">Care networks, resource sharing, skill exchanges, and disaster response. Community resilience that doesn't wait for permission or funding. This circle is about neighbors taking care of neighbors — in good times and hard ones.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">223 members · 14 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="housing" onclick="window.location='join.html'">
+            <div class="ex-card-icon">🏘️</div>
+            <div class="ex-card-name">Community Housing</div>
+            <div class="ex-card-tags"><span class="etag">co-op</span><span class="etag">land trust</span><span class="etag">intentional community</span><span class="etag">affordable housing</span></div>
+            <div class="ex-card-desc">Cooperative housing, land trusts, intentional communities, and affordable sustainable builds. Homes that belong to the people in them — not investors or speculation. From co-housing projects to community land trust formation.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">156 members · 7 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="skills" onclick="window.location='join.html'">
+            <div class="ex-card-icon">🔧</div>
+            <div class="ex-card-name">Skills &amp; Workshops</div>
+            <div class="ex-card-tags"><span class="etag">hands-on</span><span class="etag">tool library</span><span class="etag">apprenticeship</span><span class="etag">workshops</span><span class="etag">DIY</span></div>
+            <div class="ex-card-desc">Learning and teaching the physical skills that make everything else possible. Organize a workshop, find an apprenticeship, share your expertise, or borrow a tool. For anyone who learns by doing — or wants to.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">194 members · 9 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="food" onclick="window.location='join.html'">
+            <div class="ex-card-icon">🌍</div>
+            <div class="ex-card-name">Land &amp; Soil</div>
+            <div class="ex-card-tags"><span class="etag">regenerative ag</span><span class="etag">rewilding</span><span class="etag">soil health</span><span class="etag">restoration</span><span class="etag">grazing</span></div>
+            <div class="ex-card-desc">Regenerative agriculture, land restoration, rewilding, and soil building. Working with land over time — the slow, patient, essential work. For landowners, land-seekers, farmers, ranchers, and ecological restorers.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">211 members · 13 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="housing" onclick="window.location='join.html'">
+            <div class="ex-card-icon">🏕️</div>
+            <div class="ex-card-name">Alternative Dwellings</div>
+            <div class="ex-card-tags"><span class="etag">tiny homes</span><span class="etag">conversions</span><span class="etag">off-grid cabins</span><span class="etag">mobile</span><span class="etag">skoolies</span></div>
+            <div class="ex-card-desc">Tiny homes, converted spaces, off-grid cabins, and mobile dwellings. Living well with less — and building it yourself when you can. From a converted van to a hand-built cabin, this circle is for the creative dwellers.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">178 members · 10 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="building" onclick="window.location='join.html'">
+            <div class="ex-card-icon">♻️</div>
+            <div class="ex-card-name">Materials &amp; Salvage</div>
+            <div class="ex-card-tags"><span class="etag">reclaimed</span><span class="etag">salvage</span><span class="etag">zero waste</span><span class="etag">sourcing</span><span class="etag">deconstruction</span></div>
+            <div class="ex-card-desc">Reclaimed materials, salvage networks, sustainable sourcing, and zero-waste building. The right material, found — not extracted. Share sources, post surplus, find what you need, and keep good materials out of landfills.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">143 members · 6 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="energy" onclick="window.location='join.html'">
+            <div class="ex-card-icon">⚡</div>
+            <div class="ex-card-name">Community Energy</div>
+            <div class="ex-card-tags"><span class="etag">microgrids</span><span class="etag">energy co-op</span><span class="etag">shared solar</span><span class="etag">community power</span></div>
+            <div class="ex-card-desc">Energy cooperatives, community microgrids, and shared renewable projects. When one household goes off-grid, it's a homestead. When a neighborhood does it together, it's something else entirely. This circle is for the something else.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">97 members · 4 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+        <div class="ex-card" data-cat="community" onclick="window.location='join.html'">
+            <div class="ex-card-icon">📡</div>
+            <div class="ex-card-name">Community Tech</div>
+            <div class="ex-card-tags"><span class="etag">mesh networks</span><span class="etag">open source</span><span class="etag">community tools</span><span class="etag">appropriate tech</span></div>
+            <div class="ex-card-desc">Community mesh networks, open-source tools, and appropriate technology for resilient communities. Tech that serves people rather than surveilling them. From LoRa radio networks to shared inventory systems.</div>
+            <div class="ex-card-footer"><span class="ex-card-stats">88 members · 3 active projects</span><span class="ex-card-join">Join →</span></div>
+        </div>
+
+    </div>
+
+    <!-- ── NEARBY SECTION ── -->
+    <div class="nearby-section">
+        <div class="nearby-left">
+            <div class="nearby-label">📍 Near you</div>
+            <div class="nearby-title">What's active in your area</div>
+            <div class="nearby-desc">Projects forming, resources available, workshops happening, and people looking for collaborators — all within reach. Join to see what's actually nearby and connect with people in your region.</div>
+            <div class="nearby-input-row">
+                <input class="nearby-text-input" id="nearbyInput" type="text" placeholder="City, state, or region…">
+                <button class="nearby-search-btn" onclick="searchNearby()">Search nearby →</button>
+            </div>
+        </div>
+        <div class="nearby-right">
+            <div class="nearby-teaser-cards">
+                <div class="ntcard">
+                    <div class="ntcard-top">
+                        <span class="ntcard-circle">Natural Building</span>
+                        <span class="ntcard-dist">Join to see distance</span>
+                    </div>
+                    <div class="ntcard-title">Hemp build day forming — need 6 volunteers for weekend</div>
+                </div>
+                <div class="ntcard">
+                    <div class="ntcard-top">
+                        <span class="ntcard-circle">Materials &amp; Salvage</span>
+                        <span class="ntcard-dist">Join to see distance</span>
+                    </div>
+                    <div class="ntcard-title">Free reclaimed 2×6s — barn deconstruction, pick up in person</div>
+                </div>
+                <div class="ntcard">
+                    <div class="ntcard-top">
+                        <span class="ntcard-circle">Skills &amp; Workshops</span>
+                        <span class="ntcard-dist">Join to see distance</span>
+                    </div>
+                    <div class="ntcard-title">Cob plastering workshop — all skill levels welcome, April 19</div>
+                </div>
+            </div>
+            <div class="nearby-gate">Real nearby activity unlocks when you join. <a href="join.html">Create your free account →</a></div>
+        </div>
+    </div>
+
+    <!-- ── FEATURED MEMBERS ── -->
+    <div style="margin: 0 0 48px;">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:20px; gap:12px; flex-wrap:wrap;">
+            <div>
+                <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#7a9e6c; margin-bottom:6px;">People</div>
+                <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(1.6rem,3vw,2rem); font-weight:600; color:#1a2218; line-height:1.15;">Meet some of the community</h2>
+            </div>
+            <a href="profile.html" style="font-size:0.85rem; font-weight:600; color:#4A7C5E; text-decoration:none; white-space:nowrap;">See a full profile →</a>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;">
+
+            <!-- Member 1: Maya Redhawk -->
+            <a href="profile.html" class="demo-member" style="text-decoration:none; background:#faf8f3; border:1px solid #e0d8c4; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(30,55,40,0.07); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+                <div style="height:48px; background:linear-gradient(135deg,#1F3A2E,#2d5a27); position:relative;">
+                    <div style="position:absolute; bottom:-22px; left:16px; width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#5a7d52,#4A7C5E); border:3px solid #faf8f3; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.9rem; font-family:'Inter',sans-serif;">MR</div>
+                </div>
+                <div style="padding: 30px 16px 16px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#1a2218; margin-bottom:2px;">Maya Redhawk <span class="demo-badge-sm">Sample</span></div>
+                    <div style="font-size:0.76rem; color:#6b7a63; margin-bottom:10px;">📍 Taos, NM · Natural Builder</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px;">
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(31,58,46,0.08); color:#1F3A2E; border:1px solid rgba(31,58,46,0.15);">Hempcrete</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(31,58,46,0.08); color:#1F3A2E; border:1px solid rgba(31,58,46,0.15);">Adobe</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(90,125,82,0.08); color:#5a7d52; border:1px solid rgba(90,125,82,0.18);">Lime Plaster</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:#5a7d52; font-weight:600;">View profile →</div>
+                </div>
+            </a>
+
+            <!-- Member 2: James Okonkwo -->
+            <a href="profile.html" class="demo-member" style="text-decoration:none; background:#faf8f3; border:1px solid #e0d8c4; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(30,55,40,0.07); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+                <div style="height:48px; background:linear-gradient(135deg,#2d5a27,#3a7a4a); position:relative;">
+                    <div style="position:absolute; bottom:-22px; left:16px; width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#4a6fa5,#3a5a8a); border:3px solid #faf8f3; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.9rem; font-family:'Inter',sans-serif;">JO</div>
+                </div>
+                <div style="padding: 30px 16px 16px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#1a2218; margin-bottom:2px;">James Okonkwo <span class="demo-badge-sm">Sample</span></div>
+                    <div style="font-size:0.76rem; color:#6b7a63; margin-bottom:10px;">📍 Nashville, TN · Hemp Builder</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px;">
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(31,58,46,0.08); color:#1F3A2E; border:1px solid rgba(31,58,46,0.15);">Hemp Build</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(90,125,82,0.08); color:#5a7d52; border:1px solid rgba(90,125,82,0.18);">Structural</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(194,165,108,0.1); color:#b8784a; border:1px solid rgba(194,165,108,0.2);">Teaching</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:#5a7d52; font-weight:600;">View profile →</div>
+                </div>
+            </a>
+
+            <!-- Member 3: Blue Mesa Collective -->
+            <a href="profile.html" class="demo-member" style="text-decoration:none; background:#faf8f3; border:1px solid #e0d8c4; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(30,55,40,0.07); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+                <div style="height:48px; background:linear-gradient(135deg,#4a7a5a,#2d5a27); position:relative;">
+                    <div style="position:absolute; bottom:-22px; left:16px; width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#4a8a7a,#2d7a6a); border:3px solid #faf8f3; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.9rem; font-family:'Inter',sans-serif;">BM</div>
+                </div>
+                <div style="padding: 30px 16px 16px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#1a2218; margin-bottom:2px;">Blue Mesa Collective <span class="demo-badge-sm">Sample</span></div>
+                    <div style="font-size:0.76rem; color:#6b7a63; margin-bottom:10px;">📍 Durango, CO · Organization</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px;">
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(31,58,46,0.08); color:#1F3A2E; border:1px solid rgba(31,58,46,0.15);">Greywater</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(31,58,46,0.08); color:#1F3A2E; border:1px solid rgba(31,58,46,0.15);">Off-Grid Water</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(90,125,82,0.08); color:#5a7d52; border:1px solid rgba(90,125,82,0.18);">Open Source</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:#5a7d52; font-weight:600;">View profile →</div>
+                </div>
+            </a>
+
+            <!-- Member 4: Rosa Delgado-Kwan -->
+            <a href="profile.html" class="demo-member" style="text-decoration:none; background:#faf8f3; border:1px solid #e0d8c4; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(30,55,40,0.07); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+                <div style="height:48px; background:linear-gradient(135deg,#7a5a1a,#a08030); position:relative;">
+                    <div style="position:absolute; bottom:-22px; left:16px; width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#b8902a,#8a6a18); border:3px solid #faf8f3; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.9rem; font-family:'Inter',sans-serif;">RD</div>
+                </div>
+                <div style="padding: 30px 16px 16px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#1a2218; margin-bottom:2px;">Rosa Delgado-Kwan <span class="demo-badge-sm">Sample</span></div>
+                    <div style="font-size:0.76rem; color:#6b7a63; margin-bottom:10px;">📍 Tucson, AZ · Solar & Energy Co-ops</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px;">
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(138,106,26,0.1); color:#8a6a1a; border:1px solid rgba(138,106,26,0.2);">Shared Solar</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(31,58,46,0.08); color:#1F3A2E; border:1px solid rgba(31,58,46,0.15);">LiFePO4</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(90,125,82,0.08); color:#5a7d52; border:1px solid rgba(90,125,82,0.18);">Co-op Design</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:#5a7d52; font-weight:600;">View profile →</div>
+                </div>
+            </a>
+
+            <!-- Member 5: Yuki Tanaka -->
+            <a href="profile.html" class="demo-member" style="text-decoration:none; background:#faf8f3; border:1px solid #e0d8c4; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(30,55,40,0.07); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+                <div style="height:48px; background:linear-gradient(135deg,#5a3a2a,#8a5a3a); position:relative;">
+                    <div style="position:absolute; bottom:-22px; left:16px; width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#7a5a3a,#5a4020); border:3px solid #faf8f3; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.9rem; font-family:'Inter',sans-serif;">YT</div>
+                </div>
+                <div style="padding: 30px 16px 16px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#1a2218; margin-bottom:2px;">Yuki Tanaka <span class="demo-badge-sm">Sample</span></div>
+                    <div style="font-size:0.76rem; color:#6b7a63; margin-bottom:10px;">📍 Asheville, NC · Tiny Dwellings</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px;">
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(31,58,46,0.08); color:#1F3A2E; border:1px solid rgba(31,58,46,0.15);">Timber Frame</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(90,125,82,0.08); color:#5a7d52; border:1px solid rgba(90,125,82,0.18);">Off-Grid Systems</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(194,165,108,0.1); color:#b8784a; border:1px solid rgba(194,165,108,0.2);">Rainwater</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:#5a7d52; font-weight:600;">View profile →</div>
+                </div>
+            </a>
+
+            <!-- Member 6: Saoirse Ó Briain -->
+            <a href="profile.html" class="demo-member" style="text-decoration:none; background:#faf8f3; border:1px solid #e0d8c4; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(30,55,40,0.07); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+                <div style="height:48px; background:linear-gradient(135deg,#3a6a2a,#5a9a4a); position:relative;">
+                    <div style="position:absolute; bottom:-22px; left:16px; width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#5a8a3a,#3a7020); border:3px solid #faf8f3; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.9rem; font-family:'Inter',sans-serif;">SB</div>
+                </div>
+                <div style="padding: 30px 16px 16px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#1a2218; margin-bottom:2px;">Saoirse Ó Briain <span class="demo-badge-sm">Sample</span></div>
+                    <div style="font-size:0.76rem; color:#6b7a63; margin-bottom:10px;">📍 County Clare, Ireland · Permaculture</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px;">
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(31,58,46,0.08); color:#1F3A2E; border:1px solid rgba(31,58,46,0.15);">Food Forest</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(31,58,46,0.08); color:#1F3A2E; border:1px solid rgba(31,58,46,0.15);">Soil Building</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(90,125,82,0.08); color:#5a7d52; border:1px solid rgba(90,125,82,0.18);">PDC Teaching</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:#5a7d52; font-weight:600;">View profile →</div>
+                </div>
+            </a>
+
+            <!-- Member 7: Amara Diallo -->
+            <a href="profile.html" class="demo-member" style="text-decoration:none; background:#faf8f3; border:1px solid #e0d8c4; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(30,55,40,0.07); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+                <div style="height:48px; background:linear-gradient(135deg,#3a4a7a,#5a6aaa); position:relative;">
+                    <div style="position:absolute; bottom:-22px; left:16px; width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#5a6aaa,#3a4a8a); border:3px solid #faf8f3; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.9rem; font-family:'Inter',sans-serif;">AD</div>
+                </div>
+                <div style="padding: 30px 16px 16px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#1a2218; margin-bottom:2px;">Amara Diallo <span class="demo-badge-sm">Sample</span></div>
+                    <div style="font-size:0.76rem; color:#6b7a63; margin-bottom:10px;">📍 Burlington, VT · Cooperative Housing</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px;">
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(74,90,138,0.1); color:#4a5a8a; border:1px solid rgba(74,90,138,0.2);">Land Trusts</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(31,58,46,0.08); color:#1F3A2E; border:1px solid rgba(31,58,46,0.15);">Co-housing</span>
+                        <span style="font-size:0.71rem; font-weight:500; padding:3px 8px; border-radius:5px; background:rgba(194,165,108,0.1); color:#b8784a; border:1px solid rgba(194,165,108,0.2);">Community Law</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:#5a7d52; font-weight:600;">View profile →</div>
+                </div>
+            </a>
+
+            <!-- Member 8 — Join prompt -->
+            <a href="join.html" style="text-decoration:none; background:linear-gradient(135deg,rgba(31,58,46,0.04),rgba(90,125,82,0.08)); border:1px dashed #d0c4a8; border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:28px 20px; text-align:center; transition:all 0.2s; min-height:170px;" onmouseover="this.style.borderColor='#5a7d52';this.style.background='rgba(90,125,82,0.1)'" onmouseout="this.style.borderColor='#d0c4a8';this.style.background='linear-gradient(135deg,rgba(31,58,46,0.04),rgba(90,125,82,0.08))'">
+                <div style="font-size:1.5rem; margin-bottom:10px;">🌿</div>
+                <div style="font-size:0.88rem; font-weight:600; color:#1a2218; margin-bottom:6px;">Your profile could be here</div>
+                <div style="font-size:0.78rem; color:#6b7a63; line-height:1.5; margin-bottom:14px;">Join to create your profile and appear in search for people looking to collaborate.</div>
+                <div style="font-size:0.8rem; font-weight:700; color:#4A7C5E;">Create your profile →</div>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- ── FEATURED PROJECTS & COMPANIES ── -->
+    <div style="margin: 0 0 48px;">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:20px; gap:12px; flex-wrap:wrap;">
+            <div>
+                <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#A05E3A; margin-bottom:6px;">Projects & Companies</div>
+                <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(1.6rem,3vw,2rem); font-weight:600; color:#1a2218; line-height:1.15;">Work in progress, companies doing the work</h2>
+            </div>
+            <a href="project.html" style="font-size:0.85rem; font-weight:600; color:#4A7C5E; text-decoration:none; white-space:nowrap;">See a project page →</a>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px;">
+
+            <!-- Project 1: Desert Sun Hemp Homes -->
+            <a href="project.html" class="demo-member" style="text-decoration:none; background:#faf8f3; border:1px solid #e0d8c4; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(30,55,40,0.07); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+                <div style="height:48px; background:linear-gradient(135deg,#7a5a1a,#a08030); position:relative;">
+                    <div style="position:absolute; bottom:-20px; left:16px; width:40px; height:40px; border-radius:8px; background:linear-gradient(135deg,#b8902a,#8a6a18); border:3px solid #faf8f3; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.82rem; font-family:'Inter',sans-serif;">DS</div>
+                </div>
+                <div style="padding: 28px 16px 16px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#1a2218; margin-bottom:2px;">Desert Sun Hemp Homes <span class="demo-badge-sm">Sample</span></div>
+                    <div style="font-size:0.72rem; font-weight:600; padding:2px 8px; border-radius:10px; background:rgba(194,165,108,0.12); color:#b8784a; border:1px solid rgba(194,165,108,0.2); display:inline-block; margin-bottom:6px;">Company</div>
+                    <div style="font-size:0.76rem; color:#6b7a63; margin-bottom:10px;">📍 Tucson, AZ · Affordable hempcrete homes</div>
+                    <div style="display:flex; gap:14px; font-size:0.74rem; color:#6b7a63;">
+                        <span>3 builds</span>
+                        <span>12 members</span>
+                        <span>🎬 5 videos</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:#5a7d52; font-weight:600; margin-top:10px;">View project →</div>
+                </div>
+            </a>
+
+            <!-- Project 2: Taos Natural Builders Skills Share -->
+            <a href="project.html" class="demo-member" style="text-decoration:none; background:#faf8f3; border:1px solid #e0d8c4; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(30,55,40,0.07); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+                <div style="height:48px; background:linear-gradient(135deg,#1F3A2E,#2d5a27); position:relative;">
+                    <div style="position:absolute; bottom:-20px; left:16px; width:40px; height:40px; border-radius:8px; background:linear-gradient(135deg,#5a7d52,#3a6a32); border:3px solid #faf8f3; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.82rem; font-family:'Inter',sans-serif;">TN</div>
+                </div>
+                <div style="padding: 28px 16px 16px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#1a2218; margin-bottom:2px;">Taos Natural Builders Network <span class="demo-badge-sm">Sample</span></div>
+                    <div style="font-size:0.72rem; font-weight:600; padding:2px 8px; border-radius:10px; background:rgba(90,125,82,0.12); color:#5a7d52; border:1px solid rgba(90,125,82,0.2); display:inline-block; margin-bottom:6px;">Organization</div>
+                    <div style="font-size:0.76rem; color:#6b7a63; margin-bottom:10px;">📍 Taos, NM · Skills shares & community builds</div>
+                    <div style="display:flex; gap:14px; font-size:0.74rem; color:#6b7a63;">
+                        <span>2 events</span>
+                        <span>8 members</span>
+                        <span>🌱 Forming</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:#5a7d52; font-weight:600; margin-top:10px;">View project →</div>
+                </div>
+            </a>
+
+            <!-- Project 3: Vermont Community Land Trust -->
+            <a href="project.html" class="demo-member" style="text-decoration:none; background:#faf8f3; border:1px solid #e0d8c4; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(30,55,40,0.07); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+                <div style="height:48px; background:linear-gradient(135deg,#3a4a7a,#5a6aaa); position:relative;">
+                    <div style="position:absolute; bottom:-20px; left:16px; width:40px; height:40px; border-radius:8px; background:linear-gradient(135deg,#5a6aaa,#3a4a8a); border:3px solid #faf8f3; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.82rem; font-family:'Inter',sans-serif;">VL</div>
+                </div>
+                <div style="padding: 28px 16px 16px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#1a2218; margin-bottom:2px;">Green Mountain Land Trust <span class="demo-badge-sm">Sample</span></div>
+                    <div style="font-size:0.72rem; font-weight:600; padding:2px 8px; border-radius:10px; background:rgba(74,90,138,0.1); color:#4a5a8a; border:1px solid rgba(74,90,138,0.2); display:inline-block; margin-bottom:6px;">Campaign</div>
+                    <div style="font-size:0.76rem; color:#6b7a63; margin-bottom:10px;">📍 Burlington, VT · 6-household community land trust</div>
+                    <div style="display:flex; gap:14px; font-size:0.74rem; color:#6b7a63;">
+                        <span>22 acres</span>
+                        <span>3 families</span>
+                        <span>🌱 Forming</span>
+                    </div>
+                    <div style="font-size:0.79rem; color:#5a7d52; font-weight:600; margin-top:10px;">View project →</div>
+                </div>
+            </a>
+
+            <!-- Project 4: Create your own -->
+            <a href="join.html" style="text-decoration:none; background:linear-gradient(135deg,rgba(31,58,46,0.04),rgba(90,125,82,0.08)); border:1px dashed #d0c4a8; border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:28px 20px; text-align:center; transition:all 0.2s; min-height:170px;" onmouseover="this.style.borderColor='#5a7d52';this.style.background='rgba(90,125,82,0.1)'" onmouseout="this.style.borderColor='#d0c4a8';this.style.background='linear-gradient(135deg,rgba(31,58,46,0.04),rgba(90,125,82,0.08))'">
+                <div style="font-size:1.5rem; margin-bottom:10px;">🏗️</div>
+                <div style="font-size:0.88rem; font-weight:600; color:#1a2218; margin-bottom:6px;">Start a project or company page</div>
+                <div style="font-size:0.78rem; color:#6b7a63; line-height:1.5; margin-bottom:14px;">Showcase your builds, import your videos, and let people find you.</div>
+                <div style="font-size:0.8rem; font-weight:700; color:#4A7C5E;">Create a project →</div>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- ── CTA ── -->
+    <div class="explore-cta">
+        <h2>Ready to find your circle?</h2>
+        <p>Join free — pick your circles, set your location, and start seeing what's happening where you are.</p>
+        <a href="join.html" class="explore-cta-btn">Create your account →</a>
+    </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <a href="index.html" class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+                <p>The community for people building a better world. No algorithm, no politics, no noise.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="index.html#community">The Feed</a></li>
+                    <li><a href="explore.html">Circles</a></li>
+                    <li><a href="use-cases.html">Use Cases</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Earthback</h4>
+                <ul>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="how-it-works.html">How It Works</a></li>
+                    <li><a href="safety.html">Safety &amp; Trust</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a></li>
+                    <li><a href="join.html">Join the community</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span class="footer-copy">© 2026 the Earthback Project. All rights reserved. &nbsp;·&nbsp; <a href="terms.html" style="color:inherit;text-decoration:underline;opacity:0.7;">Terms</a> &nbsp;·&nbsp; <a href="privacy.html" style="color:inherit;text-decoration:underline;opacity:0.7;">Privacy</a></span>
+            <span class="footer-copy" style="font-style:italic;">When the pieces connect, the work gets done.</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+function toggleMobileNav() {
+    const overlay = document.getElementById('mobile-nav-overlay');
+    overlay.classList.toggle('open');
+}
+
+function findNearby() {
+    const loc = document.getElementById('heroLocation').value.trim();
+    if (!loc) return;
+    document.getElementById('nearbyLocationName').textContent = loc;
+    document.getElementById('nearbyResult').classList.add('visible');
+}
+
+function searchNearby() {
+    const loc = document.getElementById('nearbyInput').value.trim();
+    if (!loc) return;
+    window.location.href = 'join.html';
+}
+
+document.getElementById('heroLocation').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') findNearby();
+});
+document.getElementById('nearbyInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') searchNearby();
+});
+
+function filterCircles(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cards = document.querySelectorAll('.ex-card');
+    let visible = 0;
+    cards.forEach(card => {
+        const show = cat === 'all' || card.dataset.cat === cat;
+        card.dataset.hidden = show ? 'false' : 'true';
+        if (show) visible++;
+    });
+    document.getElementById('filterCount').textContent = visible + ' circle' + (visible !== 1 ? 's' : '');
+    const titles = {
+        all: 'Browse and find where you belong',
+        building: 'Building with natural materials',
+        energy: 'Energy independence',
+        food: 'Food, land, and soil',
+        water: 'Water systems and sovereignty',
+        housing: 'Housing and community dwelling',
+        community: 'Community resilience and mutual aid',
+        skills: 'Skills, tools, and hands-on learning'
+    };
+    document.getElementById('sectionTitle').textContent = titles[cat] || titles.all;
+}
+
+// ── Demo Content Toggle ──
+// Set to false to hide all sample member cards once real traffic arrives.
+const SHOW_DEMO_MEMBERS = true;
+if (!SHOW_DEMO_MEMBERS) {
+    document.querySelectorAll('.demo-member').forEach(el => el.style.display = 'none');
+}
+</script>
+
+<!-- Auth state check -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(async function() {
+  try {
+    const sb = supabase.createClient('https://yptktmzagctusbeqdaty.supabase.co', 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC');
+    const { data: { session } } = await sb.auth.getSession();
+    const link = document.getElementById('nav-signin-link');
+    if (session && link) {
+      link.textContent = 'Sign Out';
+      link.href = '#';
+      link.style.opacity = '1';
+      link.addEventListener('click', async function(e) {
+        e.preventDefault();
+        await sb.auth.signOut();
+        window.location.reload();
+      });
+    }
+  } catch(e) { /* silent fail — sign in link stays as-is */ }
+})();
+</script>
+</body>
+</html>

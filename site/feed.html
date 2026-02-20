@@ -1,0 +1,1513 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Earthback Community — Find your people. Build something that lasts.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+/* ── BRAND TOKENS ── */
+:root {
+  --ink:        #1a2218;
+  --ink-soft:   #2d3d28;
+  --text:       #3b4a3a;
+  --text-muted: #6b7a63;
+  --paper:      #f2efe6;
+  --paper-warm: #ece7da;
+  --card:       #faf8f3;
+  --white:      #fffefb;
+  --green:      #1F3A2E;
+  --green2:     #2d5a27;
+  --sage:       #5a7d52;
+  --moss:       #7a9e6c;
+  --pale-green: #e4eddf;
+  --clay:       #C2A56C;
+  --clay2:      #b8784a;
+  --sand:       #d4c09a;
+  --sand-light: #e8dcc0;
+  --border:     #d0c4a8;
+  --border-lt:  #e0d8c4;
+  --shadow:     rgba(30,55,40,0.08);
+  --shadow-d:   rgba(30,55,40,0.16);
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'Inter', system-ui, sans-serif;
+  --radius:     14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-sans); background: var(--paper); color: var(--text); min-height: 100vh; }
+
+/* ── TOPBAR ── */
+.topbar {
+  background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
+  color: white;
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+}
+
+.topbar-brand-mark {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+
+.topbar-brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+}
+
+.topbar-the {
+  font-size: 0.65em;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+.brand-sub {
+  display: block;
+  font-size: 0.65em;
+  opacity: 0.8;
+}
+
+/* ── APP NAV ── */
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.topbar-nav-link {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.topbar-nav-link:hover {
+  color: white;
+  background: rgba(255,255,255,0.1);
+}
+.topbar-nav-link.active {
+  color: white;
+  background: rgba(255,255,255,0.15);
+  font-weight: 600;
+}
+.topbar-nav-link.coming-soon {
+  opacity: 0.45;
+  cursor: default;
+}
+.topbar-nav-link.coming-soon:hover {
+  background: none;
+  color: rgba(255,255,255,0.7);
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.topbar-hamburger:hover { background: rgba(255,255,255,0.1); }
+.topbar-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.25s;
+}
+.topbar-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px,4px); }
+.topbar-hamburger.open span:nth-child(2) { opacity: 0; }
+.topbar-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px,-4px); }
+.topbar-mobile-menu {
+  display: none;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
+  padding: 8px 16px 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 99;
+  flex-direction: column;
+  gap: 2px;
+}
+.topbar-mobile-menu.open { display: flex; }
+.topbar-mobile-menu a {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.topbar-mobile-menu a:hover,
+.topbar-mobile-menu a.active { background: rgba(255,255,255,0.12); color: white; }
+
+/* ── DASHBOARD LAYOUT ── */
+.dash-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dash-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 84px;
+  height: fit-content;
+}
+
+/* ── SIDEBAR CARD ── */
+.sidebar-card {
+  background: var(--white);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.sidebar-hero {
+  background: linear-gradient(135deg, var(--green) 0%, var(--sage) 100%);
+  height: 60px;
+}
+
+.sidebar-avatar {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--green), var(--sage));
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -28px 16px 0;
+  position: relative;
+  z-index: 1;
+  border: 3px solid var(--white);
+}
+
+.sidebar-body {
+  padding: 16px;
+}
+
+.sidebar-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.sidebar-tagline {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.sidebar-meta {
+  font-size: 0.8rem;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.earth-score-bar {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-lt);
+}
+
+.earth-score-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.progress-track {
+  background: var(--border-lt);
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, var(--green2) 0%, var(--sage) 100%);
+  height: 100%;
+  width: 0%;
+  border-radius: 3px;
+  transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── STREAMS CARD ── */
+.streams-card {
+  background: var(--white);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.streams-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.stream-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  user-select: none;
+}
+
+.stream-item:hover {
+  background: var(--paper);
+}
+
+.stream-item.active {
+  background: var(--pale-green);
+  font-weight: 600;
+}
+
+.stream-icon {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.stream-name {
+  font-size: 0.85rem;
+  color: var(--text);
+  flex: 1;
+}
+
+.stream-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ── INVITE CARD ── */
+.invite-card {
+  background: var(--white);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.invite-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.invite-input-row {
+  display: flex;
+  gap: 6px;
+}
+
+.invite-input-row input {
+  flex: 1;
+  padding: 7px 10px;
+  border: 1px solid var(--border-lt);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  background: var(--card);
+  color: var(--text);
+}
+
+.invite-input-row input::placeholder {
+  color: var(--text-muted);
+}
+
+.invite-input-row button {
+  padding: 7px 12px;
+  background: var(--sage);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.invite-input-row button:hover {
+  background: var(--green2);
+}
+
+/* ── FEED TOP ── */
+.feed-top {
+  margin-bottom: 16px;
+}
+
+.feed-title {
+  font-size: 1.4rem;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.5px;
+}
+
+.feed-sub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── FILTER CONTROLS ── */
+.filter-toggle {
+  display: flex;
+  gap: 0;
+  background: var(--card);
+  border: 1px solid var(--border-lt);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.filter-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 6px;
+}
+
+.filter-btn.on {
+  background: white;
+  color: var(--green);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.filter-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: 12px;
+}
+
+/* ── WELCOME BANNER ── */
+.welcome-banner {
+  background: linear-gradient(135deg, rgba(45,90,39,0.05) 0%, rgba(90,125,82,0.08) 100%);
+  border: 1px solid var(--pale-green);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.welcome-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.welcome-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+  font-family: var(--font-serif);
+}
+
+.welcome-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ── POST CARDS ── */
+.post-card {
+  background: var(--white);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px var(--shadow);
+  transition: all 0.2s;
+}
+
+.post-card:hover {
+  box-shadow: 0 2px 8px var(--shadow-d);
+  border-color: var(--border);
+}
+
+.demo-badge {
+  display: inline-block;
+  background: #e8d5c4;
+  color: #7a5a3a;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 2px;
+}
+
+.post-header {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.post-author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.post-meta {
+  flex: 1;
+}
+
+.post-author {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.post-author-detail {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.post-stream-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.post-type-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.post-body {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+  margin-bottom: 12px;
+  word-break: break-word;
+}
+
+.post-body strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.post-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  position: relative;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-lt);
+}
+
+.post-action {
+  padding: 5px 10px;
+  background: var(--paper);
+  border: 1px solid var(--border-lt);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.post-action:hover {
+  background: var(--white);
+  border-color: var(--border);
+  color: var(--ink);
+}
+
+.post-action.helpful.clicked {
+  background: var(--sage);
+  border-color: var(--sage);
+  color: white;
+}
+
+.post-time {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.signal-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 16px;
+  background: linear-gradient(135deg, var(--green2) 0%, var(--sage) 100%);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* ── COMPOSE CARD ── */
+.compose-card {
+  background: var(--white);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+.compose-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.compose-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--green), var(--sage));
+}
+.compose-prompt {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--paper);
+  border: 1px solid var(--border-lt);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.compose-prompt:hover {
+  border-color: var(--border);
+  background: var(--card);
+}
+.compose-expanded {
+  display: none;
+}
+.compose-expanded.open {
+  display: block;
+}
+.compose-title-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-lt);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--card);
+  margin-bottom: 8px;
+}
+.compose-title-input::placeholder { color: var(--text-muted); font-weight: 400; }
+.compose-body-input {
+  width: 100%;
+  min-height: 90px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-lt);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: var(--card);
+  resize: vertical;
+  line-height: 1.5;
+}
+.compose-body-input::placeholder { color: var(--text-muted); }
+.compose-body-input:focus, .compose-title-input:focus {
+  outline: none;
+  border-color: var(--sage);
+  box-shadow: 0 0 0 2px rgba(90,125,82,0.15);
+}
+.compose-options {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.compose-select {
+  padding: 6px 10px;
+  border: 1px solid var(--border-lt);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: var(--card);
+  cursor: pointer;
+}
+.compose-select:focus { outline: none; border-color: var(--sage); }
+.compose-image-btn {
+  padding: 6px 10px;
+  background: var(--paper);
+  border: 1px solid var(--border-lt);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.compose-image-btn:hover { border-color: var(--border); color: var(--text); }
+.compose-image-preview {
+  display: none;
+  margin-top: 10px;
+  position: relative;
+}
+.compose-image-preview img {
+  max-height: 160px;
+  border-radius: 8px;
+  border: 1px solid var(--border-lt);
+}
+.compose-image-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.compose-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+.compose-cancel {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border-lt);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: all 0.2s;
+}
+.compose-cancel:hover { border-color: var(--border); color: var(--text); }
+.compose-submit {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: all 0.2s;
+}
+.compose-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+.compose-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── POST IMAGE ── */
+.post-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 8px 0 12px;
+  border: 1px solid var(--border-lt);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.4s ease-out;
+}
+
+.fade-up-2 {
+  animation: fadeUp 0.4s ease-out 0.08s both;
+}
+
+.fade-up-3 {
+  animation: fadeUp 0.4s ease-out 0.16s both;
+}
+
+.fade-up-4 {
+  animation: fadeUp 0.4s ease-out 0.24s both;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .dash-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .dash-sidebar {
+    position: static;
+  }
+
+  .post-header {
+    flex-direction: column;
+  }
+
+  .topbar {
+    padding: 0 16px;
+  }
+
+  .topbar-brand-name {
+    font-size: 0.95rem;
+  }
+
+  .topbar-nav { display: none; }
+  .topbar-hamburger { display: flex; }
+
+  .search-placeholder {
+    display: none;
+  }
+
+  .feed-title {
+    font-size: 1.1rem;
+  }
+
+  .sidebar-card .sidebar-hero {
+    height: 40px;
+  }
+}
+  </style>
+</head>
+<body>
+<nav class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <span class="topbar-brand-mark">🌿</span>
+    <span class="topbar-brand-name"><span class="topbar-the">the</span> Earthback <span class="brand-sub">Project</span></span>
+  </a>
+  <div class="topbar-nav">
+    <a href="feed.html" class="topbar-nav-link active">Home</a>
+    <a href="projects.html" class="topbar-nav-link">Projects</a>
+    <a href="profile.html#media" class="topbar-nav-link">Media</a>
+    <a href="#" class="topbar-nav-link coming-soon" title="Coming soon">Marketplace</a>
+    <a href="circles.html" class="topbar-nav-link">Circles</a>
+  </div>
+  <div class="topbar-right">
+    <a href="messages.html" title="Messages" style="color:rgba(255,255,255,0.7);font-size:1rem;text-decoration:none;padding:4px 8px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.background='none'">💬</a>
+    <a href="profile.html" title="View your profile" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sage));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:none;" id="header-avatar">?</a>
+    <button onclick="handleSignOut()" title="Sign out" style="background:none; border:1px solid rgba(255,255,255,0.25); border-radius:8px; padding:7px 14px; color:rgba(255,255,255,0.7); font-size:0.8rem; font-weight:500; font-family:var(--font-sans); cursor:pointer; white-space:nowrap; transition:all 0.2s;" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.25)'">Sign Out</button>
+    <div class="topbar-hamburger" onclick="this.classList.toggle('open'); document.querySelector('.topbar-mobile-menu').classList.toggle('open');">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="topbar-mobile-menu">
+  <a href="feed.html" class="active">Home</a>
+  <a href="projects.html">Projects</a>
+  <a href="profile.html#media">Media</a>
+  <a href="#">Marketplace (Coming Soon)</a>
+  <a href="circles.html">Circles</a>
+  <a href="messages.html">Messages</a>
+  <a href="profile.html">My Profile</a>
+</div>
+
+<div class="dash-layout">
+  <!-- SIDEBAR -->
+  <div class="dash-sidebar">
+    <a href="profile.html" id="sidebar-profile-link" class="sidebar-card" style="text-decoration:none;color:inherit;display:block;cursor:pointer;">
+      <div class="sidebar-hero"></div>
+      <div class="sidebar-avatar" id="sidebar-avatar">?</div>
+      <div class="sidebar-body">
+        <div class="sidebar-name" id="sidebar-name">Loading…</div>
+        <div class="sidebar-tagline" id="sidebar-tagline"></div>
+        <div class="sidebar-meta">📍 <span id="sidebar-location"></span></div>
+        <div class="sidebar-meta">🌿 <span>Member</span></div>
+        <div class="earth-score-bar">
+          <div class="earth-score-label"><span>Earth Score</span> <span id="earth-score">0</span></div>
+          <div class="progress-track"><div class="progress-fill" id="score-fill"></div></div>
+          <div style="font-size:0.72rem; color:var(--text-muted); margin-top:5px;">First post earns your next 10 points</div>
+        </div>
+      </div>
+    </a>
+
+    <div class="streams-card" id="streams-card">
+      <div class="streams-label">Your Streams</div>
+      <div class="stream-item active" onclick="filterStream('all', this)">
+        <span class="stream-icon">🌿</span>
+        <span class="stream-name">All Activity</span>
+        <span class="stream-count" id="stream-all-count">–</span>
+      </div>
+      <div id="stream-items-dynamic"></div>
+      <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border-lt);">
+        <div style="font-size:0.78rem; color:var(--sage); font-weight:500; cursor:pointer;">+ Subscribe to more streams</div>
+      </div>
+    </div>
+
+    <div class="invite-card">
+      <div class="invite-label">Invite a collaborator</div>
+      <div class="invite-input-row">
+        <input type="email" placeholder="their@email.com" />
+        <button>Invite</button>
+      </div>
+      <div style="font-size:0.74rem; color:var(--text-muted); margin-top:8px;">No algorithm, no spam. Just an email from you saying "come check this out."</div>
+    </div>
+  </div>
+
+  <!-- MAIN FEED -->
+  <div>
+    <div class="welcome-banner fade-up">
+      <div class="welcome-icon">🎉</div>
+      <div>
+        <div class="welcome-title">Welcome to Earthback.</div>
+        <div class="welcome-text">Below is what's happening right now across your default streams — projects, needs, and conversations from the community. Subscribe to more streams or post your first update.</div>
+      </div>
+    </div>
+
+    <!-- COMPOSE POST -->
+    <div class="compose-card fade-up-2" id="compose-card">
+      <div class="compose-header" id="compose-collapsed" onclick="openCompose()">
+        <div class="compose-avatar" id="compose-avatar">?</div>
+        <div class="compose-prompt">Share an update, resource, or question…</div>
+      </div>
+      <div class="compose-expanded" id="compose-expanded">
+        <div class="compose-header" style="margin-bottom:8px;">
+          <div class="compose-avatar" id="compose-avatar-2">?</div>
+          <div style="flex:1;">
+            <div style="font-weight:600; font-size:0.88rem; color:var(--ink);" id="compose-author-name">You</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);" id="compose-author-detail">Posting to the community</div>
+          </div>
+        </div>
+        <input class="compose-title-input" id="compose-title" placeholder="Title (optional but recommended)" maxlength="200" />
+        <textarea class="compose-body-input" id="compose-body" placeholder="What are you working on? What do you need? What can you share?" maxlength="2000"></textarea>
+        <div class="compose-image-preview" id="compose-image-preview">
+          <img id="compose-image-thumb" src="" />
+          <button class="compose-image-remove" onclick="removeComposeImage()" title="Remove image">&times;</button>
+        </div>
+        <div class="compose-options">
+          <select class="compose-select" id="compose-type">
+            <option value="resource">📦 Resource</option>
+            <option value="milestone">🏁 Milestone</option>
+            <option value="need">🔧 Need</option>
+            <option value="question">❓ Question</option>
+            <option value="coordination">🤝 Coordination</option>
+          </select>
+          <select class="compose-select" id="compose-circle">
+            <option value="natural-building" data-label="Natural Building">🛠️ Natural Building</option>
+            <option value="solar-off-grid" data-label="Solar & Off-Grid">☀️ Solar & Off-Grid</option>
+            <option value="permaculture-food" data-label="Permaculture & Food">🌱 Permaculture & Food</option>
+            <option value="water-systems" data-label="Water Systems">💧 Water Systems</option>
+            <option value="tiny-dwellings" data-label="Tiny & Alternative Dwellings">🏡 Tiny Dwellings</option>
+            <option value="mutual-aid" data-label="Mutual Aid">🤝 Mutual Aid</option>
+            <option value="land-regen-ag" data-label="Land & Regenerative Agriculture">🌾 Land & Regen Ag</option>
+            <option value="materials-salvage" data-label="Materials & Salvage">♻️ Materials & Salvage</option>
+            <option value="cooperative-housing" data-label="Cooperative Housing">🏘️ Cooperative Housing</option>
+            <option value="community-tech" data-label="Community Tech">📡 Community Tech</option>
+            <option value="skills-workshops" data-label="Skills & Workshops">📍 Skills & Workshops</option>
+            <option value="earthback-project" data-label="the Earthback Project">✦ Earthback Project</option>
+          </select>
+          <label class="compose-image-btn" id="compose-image-label">
+            📷 Add Image
+            <input type="file" accept="image/*" id="compose-image-input" style="display:none" onchange="handleComposeImage(this)" />
+          </label>
+          <label style="font-size:0.78rem; color:var(--text-muted); display:flex; align-items:center; gap:4px; cursor:pointer; margin-left:auto;">
+            <input type="text" id="compose-image-url" placeholder="…or paste image URL" style="width:180px; padding:5px 8px; border:1px solid var(--border-lt); border-radius:6px; font-size:0.76rem; font-family:var(--font-sans); color:var(--text); background:var(--card);" />
+          </label>
+        </div>
+        <div class="compose-actions">
+          <button class="compose-cancel" onclick="closeCompose()">Cancel</button>
+          <button class="compose-submit" id="compose-submit-btn" onclick="submitPost()">Post to Feed</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="feed-top fade-up-2">
+      <div style="display:flex; align-items:baseline; gap:10px; margin-bottom:10px;">
+        <h2 class="feed-title">Community Activity</h2>
+      </div>
+      <div style="display:flex; align-items:center; gap:0; margin-bottom:4px;">
+        <div class="filter-toggle">
+          <button class="filter-btn on" onclick="setFilter('all', this)" id="filter-all-btn">All Posts</button>
+          <button class="filter-btn" onclick="setFilter('signal', this)" id="filter-signal-btn">🌿 Signal</button>
+        </div>
+        <span class="filter-hint" id="filter-hint">Showing everything chronologically</span>
+      </div>
+    </div>
+
+    <div id="feed-container">
+      <div style="text-align:center; padding:40px 20px; color:var(--text-muted); font-size:0.9rem;">Loading feed…</div>
+    </div>
+
+    <div style="text-align:center; padding:24px; color:var(--text-muted); font-size:0.85rem; border-top:1px solid var(--border-lt); margin-top:4px;">
+      You're caught up on your streams. <span style="color:var(--sage); cursor:pointer; font-weight:500;">Subscribe to more</span> or <span style="color:var(--sage); cursor:pointer; font-weight:500;" onclick="document.getElementById('compose-card').scrollIntoView({behavior:'smooth'}); setTimeout(openCompose, 300);">post an update</span>.
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// ── SUPABASE CLIENT ──
+const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── USER STATE ──
+let user = {
+  firstName: '', lastName: '', email: '', location: '',
+  displayName: '', tagline: '', bio: '', skills: [],
+};
+
+// ── DEMO TOGGLE ──
+const SHOW_DEMO_POSTS = true;
+
+// ── CIRCLE & POST TYPE STYLES ──
+const CIRCLE_STYLES = {
+  'earthback-project': { icon: '✦', color: '#6a5a8a', bg: '#f0e8f5' },
+  'natural-building':  { icon: '🛠️', color: '#2d5a27', bg: 'rgba(45,90,39,0.06)' },
+  'skills-workshops':  { icon: '📍', color: '#7a5a9a', bg: 'rgba(122,90,154,0.06)' },
+  'water-systems':     { icon: '💧', color: '#2a6a7a', bg: 'rgba(42,106,122,0.06)' },
+  'solar-off-grid':    { icon: '☀️', color: '#8a6a2a', bg: 'rgba(138,106,42,0.06)' },
+  'permaculture-food': { icon: '🌱', color: '#3a7a3a', bg: 'rgba(58,122,58,0.06)' },
+  'mutual-aid':        { icon: '🤝', color: '#7a3a5a', bg: 'rgba(122,58,90,0.06)' },
+  'tiny-dwellings':    { icon: '🏡', color: '#5a4a3a', bg: 'rgba(90,74,58,0.06)' },
+  'land-regen-ag':     { icon: '🌾', color: '#5a7a2a', bg: 'rgba(90,122,42,0.06)' },
+  'materials-salvage': { icon: '♻️', color: '#6a5a3a', bg: 'rgba(106,90,58,0.06)' },
+  'cooperative-housing': { icon: '🏘️', color: '#4a5a7a', bg: 'rgba(74,90,122,0.06)' },
+  'community-tech':    { icon: '📡', color: '#2a5a7a', bg: 'rgba(42,90,122,0.06)' },
+};
+const DEFAULT_CIRCLE = { icon: '🌿', color: '#5a7d52', bg: 'rgba(90,125,82,0.06)' };
+
+const TYPE_STYLES = {
+  'resource':      { label: 'Resource',      bg: 'rgba(90,125,82,0.1)',    color: '#5a7d52' },
+  'milestone':     { label: 'Milestone',     bg: 'rgba(196,165,108,0.12)', color: '#b8784a' },
+  'need':          { label: 'Need',          bg: 'rgba(184,120,74,0.1)',   color: '#b8784a' },
+  'question':      { label: 'Question',      bg: 'rgba(90,125,140,0.1)',   color: '#3a6a8a' },
+  'coordination':  { label: 'Coordination',  bg: 'rgba(122,58,90,0.1)',    color: '#7a3a5a' },
+  'media':         { label: 'Media',         bg: 'rgba(106,90,154,0.1)',   color: '#6a5a8a' },
+};
+const DEFAULT_TYPE = { label: 'Post', bg: 'rgba(90,125,82,0.1)', color: '#5a7d52' };
+
+// Deterministic author color from initials
+const AUTHOR_COLORS = ['#2d5a27','#6a5a8a','#7a5a9a','#2a6a7a','#8a6a2a','#3a7a3a','#7a3a5a','#5a4a3a','#5a7a2a','#6a5a3a','#4a5a7a','#2a5a7a'];
+function authorColor(initials) {
+  const hash = (initials.charCodeAt(0) * 31 + (initials.charCodeAt(1) || 0)) % AUTHOR_COLORS.length;
+  return AUTHOR_COLORS[hash];
+}
+
+// Relative time formatter
+function relativeTime(dateStr) {
+  const now = Date.now();
+  const then = new Date(dateStr).getTime();
+  const diff = Math.max(0, now - then);
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return mins + ' min ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + (hrs === 1 ? ' hour ago' : ' hours ago');
+  const days = Math.floor(hrs / 24);
+  if (days < 30) return days + (days === 1 ? ' day ago' : ' days ago');
+  const months = Math.floor(days / 30);
+  return months + (months === 1 ? ' month ago' : ' months ago');
+}
+
+// Convert a Supabase row into the format buildPostHTML expects
+function mapPostRow(row) {
+  const cs = CIRCLE_STYLES[row.circle_slug] || DEFAULT_CIRCLE;
+  const ts = TYPE_STYLES[row.post_type] || DEFAULT_TYPE;
+  const initials = row.author_initials || (row.author_name || '??').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+  const titleHtml = row.title ? `<strong>${row.title}.</strong> ` : '';
+  return {
+    id:            row.id,
+    stream:        row.circle_slug,
+    streamLabel:   row.circle_label,
+    streamIcon:    cs.icon,
+    streamColor:   cs.color,
+    streamBg:      cs.bg,
+    type:          row.post_type,
+    typeLabel:     ts.label,
+    typeBg:        ts.bg,
+    typeColor:     ts.color,
+    author:        row.author_name,
+    authorInitials: initials,
+    authorColor:   authorColor(initials),
+    authorDetail:  row.author_detail || '',
+    body:          titleHtml + (row.body || ''),
+    helpful:       row.helpful_count || 0,
+    time:          relativeTime(row.created_at),
+    signal:        row.is_verified || false,
+    demo:          row.is_demo || false,
+    mediaUrl:      row.media_url || '',
+    mediaThumbnail: row.media_thumbnail || '',
+    imageUrl:      row.image_url || '',
+  };
+}
+
+// ── FEED DATA ──
+let POSTS = [];
+
+async function loadFeed() {
+  try {
+    const { data, error } = await sb
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(50);
+    if (error) throw error;
+    POSTS = (data || []).map(mapPostRow);
+  } catch (e) {
+    console.warn('Feed load failed:', e.message);
+    POSTS = [];
+  }
+}
+
+// ── FEED FILTERS ──
+let currentFilter = 'all';
+let currentStream = 'all';
+
+// ── FEED RENDERING ──
+function renderFeed() {
+  const container = document.getElementById('feed-container');
+  let posts = POSTS.filter(p => {
+    if (p.demo && !SHOW_DEMO_POSTS) return false;
+    if (currentStream !== 'all' && p.stream !== currentStream) return false;
+    if (currentFilter === 'signal' && !p.signal) return false;
+    return true;
+  });
+  if (posts.length === 0) {
+    container.innerHTML = '<div style="text-align:center; padding:40px 20px; color:var(--text-muted); font-size:0.9rem;">No posts yet in this stream. Be the first to share something.</div>';
+  } else {
+    container.innerHTML = posts.map(p => buildPostHTML(p)).join('');
+  }
+  buildStreamSidebar();
+}
+
+function buildStreamSidebar() {
+  const counts = {};
+  const labels = {};
+  POSTS.forEach(p => {
+    if (p.demo && !SHOW_DEMO_POSTS) return;
+    counts[p.stream] = (counts[p.stream] || 0) + 1;
+    if (!labels[p.stream]) labels[p.stream] = p.streamLabel;
+  });
+  const allCount = document.getElementById('stream-all-count');
+  if (allCount) allCount.textContent = POSTS.filter(p => !p.demo || SHOW_DEMO_POSTS).length;
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const container = document.getElementById('stream-items-dynamic');
+  if (!container) return;
+  container.innerHTML = sorted.map(([slug, count]) => {
+    const cs = CIRCLE_STYLES[slug] || DEFAULT_CIRCLE;
+    return `<div class="stream-item" onclick="filterStream('${slug}', this)">
+      <span class="stream-icon">${cs.icon}</span>
+      <span class="stream-name">${labels[slug]}</span>
+      <span class="stream-count">${count}</span>
+    </div>`;
+  }).join('');
+}
+
+function buildPostHTML(p) {
+  const signalBadge = p.signal ? `<div class="signal-badge">🌿 High signal</div>` : '';
+  const demoBadge = p.demo ? `<span class="demo-badge">Sample</span>` : '';
+  return `
+  <div class="post-card fade-up" data-stream="${p.stream}" data-signal="${p.signal}" data-demo="${!!p.demo}">
+    <div class="post-header">
+      <div class="post-author-avatar" style="background: linear-gradient(135deg, ${p.authorColor}, ${p.authorColor}aa)">${p.authorInitials}</div>
+      <div class="post-meta">
+        <a class="post-author" href="profile.html" style="color:var(--ink);text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${p.author}</a>
+        <div class="post-author-detail">${p.authorDetail}</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink:0;">
+        <span class="post-stream-tag" style="background:${p.streamBg}; color:${p.streamColor};">${p.streamIcon} ${p.streamLabel}</span>
+        <span class="post-type-tag" style="background:${p.typeBg}; color:${p.typeColor}; border-radius:6px; font-size:0.72rem; font-weight:600; padding:2px 8px;">${p.typeLabel}</span>
+        ${demoBadge}
+      </div>
+    </div>
+    <div class="post-body">${p.body}</div>${p.imageUrl ? `
+    <img src="${p.imageUrl}" class="post-image" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}${p.mediaUrl ? `
+    <a href="${p.mediaUrl}" target="_blank" rel="noopener" style="display:block;text-decoration:none;margin:10px 0 4px;border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 10px var(--shadow)'" onmouseout="this.style.boxShadow='none'">
+      ${p.mediaThumbnail ? `<img src="${p.mediaThumbnail}" style="width:100%;height:160px;object-fit:cover;display:block;">` : ''}
+      <div style="padding:10px 14px;background:var(--card);display:flex;align-items:center;gap:8px;">
+        <span style="color:var(--sage);font-size:0.9rem;">↗</span>
+        <span style="font-size:0.82rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.mediaUrl.replace(/https?:\/\/(www\.)?/, '').split('/')[0]}</span>
+      </div>
+    </a>` : ''}
+    <div class="post-footer">
+      <button class="post-action helpful" onclick="markHelpful(this, '${p.id}')">🌿 Helpful <span class="helpful-count">${p.helpful}</span></button>
+      <button class="post-action" onclick="">💬 Comment</button>
+      <button class="post-action" onclick="">↗ Share</button>
+      <span class="post-time">${p.time}</span>
+      ${signalBadge}
+    </div>
+  </div>`;
+}
+
+function markHelpful(btn, postId) {
+  if (btn.classList.contains('clicked')) return;
+  btn.classList.add('clicked');
+  const count = btn.querySelector('.helpful-count');
+  const newCount = parseInt(count.textContent) + 1;
+  count.textContent = newCount;
+  const post = POSTS.find(p => String(p.id) === String(postId));
+  if (post) post.helpful = newCount;
+  sb.from('posts').update({ helpful_count: newCount }).eq('id', postId).then(() => {});
+}
+
+function setFilter(mode, btn) {
+  currentFilter = mode;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  const hint = document.getElementById('filter-hint');
+  if (mode === 'all') {
+    hint.textContent = 'Showing everything chronologically';
+  } else {
+    hint.textContent = 'Showing high-signal and relevant posts';
+  }
+  renderFeed();
+}
+
+function filterStream(stream, el) {
+  currentStream = stream;
+  document.querySelectorAll('.stream-item').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  renderFeed();
+}
+
+// ── SIGN OUT ──
+async function handleSignOut() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+// ── AUTH INIT ──
+async function initAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+
+  if (!session) {
+    window.location.href = 'join.html';
+    return;
+  }
+
+  // Check for fresh profile from onboarding (avoids extra DB call)
+  const fresh = sessionStorage.getItem('earthback_fresh_profile');
+  let displayName, tagline, bio, location, avatarUrl;
+
+  if (fresh) {
+    const data = JSON.parse(fresh);
+    displayName = data.displayName || data.firstName || 'Friend';
+    tagline = data.tagline || 'Building something better';
+    bio = data.bio || '';
+    location = data.location || 'Location not set';
+    avatarUrl = '';
+    sessionStorage.removeItem('earthback_fresh_profile');
+  } else {
+    const { data: profile } = await sb
+      .from('profiles')
+      .select('*')
+      .eq('id', session.user.id)
+      .single();
+
+    displayName = profile?.display_name ||
+      ((profile?.first_name || '') + ' ' + (profile?.last_name || '')).trim() ||
+      session.user.email.split('@')[0];
+    tagline = profile?.tagline || 'Building something better';
+    bio = profile?.bio || '';
+    location = profile?.location || 'Location not set';
+    avatarUrl = profile?.avatar_url || '';
+  }
+
+  user.email = session.user.email;
+  user.displayName = displayName;
+  user.tagline = tagline;
+  user.bio = bio;
+  user.location = location;
+
+  // Populate sidebar
+  const ini = displayName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  const sidebarAv = document.getElementById('sidebar-avatar');
+  const headerAv = document.getElementById('header-avatar');
+
+  if (avatarUrl) {
+    sidebarAv.textContent = '';
+    sidebarAv.style.backgroundImage = `url(${avatarUrl})`;
+    sidebarAv.style.backgroundSize = 'cover';
+    sidebarAv.style.backgroundPosition = 'center';
+    headerAv.textContent = '';
+    headerAv.style.backgroundImage = `url(${avatarUrl})`;
+    headerAv.style.backgroundSize = 'cover';
+    headerAv.style.backgroundPosition = 'center';
+  } else {
+    sidebarAv.textContent = ini;
+    headerAv.textContent = ini;
+  }
+
+  document.getElementById('sidebar-name').textContent = displayName;
+  document.getElementById('sidebar-tagline').textContent = tagline;
+  document.getElementById('sidebar-location').textContent = location;
+
+  // Populate compose card avatar
+  const composeAv = document.getElementById('compose-avatar');
+  if (avatarUrl) {
+    composeAv.textContent = '';
+    composeAv.style.backgroundImage = `url(${avatarUrl})`;
+    composeAv.style.backgroundSize = 'cover';
+    composeAv.style.backgroundPosition = 'center';
+  } else {
+    composeAv.textContent = ini;
+  }
+
+  // Link sidebar card and header avatar to profile
+  const profileLink = 'profile.html?id=' + session.user.id;
+  document.getElementById('sidebar-profile-link').href = profileLink;
+  headerAv.href = profileLink;
+
+  // Load and render feed
+  await loadFeed();
+  renderFeed();
+
+  // Animate score fill
+  setTimeout(() => {
+    document.getElementById('score-fill').style.width = '18%';
+  }, 600);
+}
+
+// ── COMPOSE POST ──
+let composeImageDataUrl = '';
+
+function openCompose() {
+  document.getElementById('compose-collapsed').style.display = 'none';
+  document.getElementById('compose-expanded').classList.add('open');
+  const ini = user.displayName ? user.displayName.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase() : '?';
+  document.getElementById('compose-avatar-2').textContent = ini;
+  document.getElementById('compose-author-name').textContent = user.displayName || 'You';
+  document.getElementById('compose-author-detail').textContent = user.tagline || 'Posting to the community';
+  setTimeout(() => document.getElementById('compose-body').focus(), 100);
+}
+
+function closeCompose() {
+  document.getElementById('compose-collapsed').style.display = 'flex';
+  document.getElementById('compose-expanded').classList.remove('open');
+  document.getElementById('compose-title').value = '';
+  document.getElementById('compose-body').value = '';
+  document.getElementById('compose-image-url').value = '';
+  removeComposeImage();
+}
+
+function handleComposeImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    composeImageDataUrl = e.target.result;
+    document.getElementById('compose-image-thumb').src = composeImageDataUrl;
+    document.getElementById('compose-image-preview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeComposeImage() {
+  composeImageDataUrl = '';
+  document.getElementById('compose-image-thumb').src = '';
+  document.getElementById('compose-image-preview').style.display = 'none';
+  document.getElementById('compose-image-input').value = '';
+}
+
+async function submitPost() {
+  const btn = document.getElementById('compose-submit-btn');
+  const title = document.getElementById('compose-title').value.trim();
+  const body = document.getElementById('compose-body').value.trim();
+  const postType = document.getElementById('compose-type').value;
+  const circleSelect = document.getElementById('compose-circle');
+  const circleSlug = circleSelect.value;
+  const circleLabel = circleSelect.options[circleSelect.selectedIndex].dataset.label;
+  const imageUrlField = document.getElementById('compose-image-url').value.trim();
+
+  if (!body) {
+    document.getElementById('compose-body').style.borderColor = '#c44';
+    setTimeout(() => document.getElementById('compose-body').style.borderColor = '', 2000);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Posting…';
+
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { alert('Please sign in to post.'); return; }
+
+    const ini = user.displayName ? user.displayName.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase() : '??';
+
+    // Determine image URL: uploaded file (as data URL — would need storage in prod) or pasted URL
+    let imageUrl = imageUrlField || '';
+    // For a real deployment, you'd upload composeImageDataUrl to Supabase Storage here
+    // For now, if user pasted a URL, use that; otherwise skip (file upload needs storage)
+    if (composeImageDataUrl && !imageUrl) {
+      // Attempt upload to Supabase Storage
+      try {
+        const fileName = `post-images/${session.user.id}/${Date.now()}.jpg`;
+        const blob = await (await fetch(composeImageDataUrl)).blob();
+        const { data: uploadData, error: uploadErr } = await sb.storage.from('public-assets').upload(fileName, blob, { contentType: blob.type, upsert: true });
+        if (!uploadErr && uploadData) {
+          const { data: urlData } = sb.storage.from('public-assets').getPublicUrl(fileName);
+          imageUrl = urlData?.publicUrl || '';
+        }
+      } catch (e) {
+        console.warn('Image upload failed, posting without image:', e.message);
+      }
+    }
+
+    const { data: post, error } = await sb.from('posts').insert({
+      author_id: session.user.id,
+      author_name: user.displayName || 'Member',
+      author_initials: ini,
+      author_detail: user.tagline || '',
+      circle_slug: circleSlug,
+      circle_label: circleLabel,
+      post_type: postType,
+      title: title,
+      body: body,
+      image_url: imageUrl || null,
+      helpful_count: 0,
+      is_verified: false,
+      is_public: true,
+    }).select().single();
+
+    if (error) throw error;
+
+    // Add to local feed and re-render
+    POSTS.unshift(mapPostRow(post));
+    renderFeed();
+    closeCompose();
+
+    // Scroll to top of feed
+    document.getElementById('feed-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  } catch (e) {
+    console.error('Post failed:', e);
+    alert('Post failed: ' + (e.message || 'Unknown error'));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Post to Feed';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', initAuth);
+</script>
+
+
+<!-- Pre-launch Banner -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+  <span style="font-weight:600">🌿 Pre-Launch Preview</span>
+  <span style="opacity:0.7">—</span>
+  <span>You're seeing an early build of the Earthback Project. Features are in active development. Data may reset.</span>
+  <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Send feedback →</a>
+</div>
+
+</body>
+
+
+
+</html>

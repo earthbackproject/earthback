@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="icon" href="../site/assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="../site/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../site/assets/img/apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>the Earthback Project — Build Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:      #1F3A2E;
+  --green-mid:  #2C4F3B;
+  --green-soft: #4A7C5E;
+  --clay:       #C2A56C;
+  --clay-rust:  #A05E3A;
+  --moss:       #7e9b73;
+  --moss-lt:    #a8c49e;
+  --parchment:  #F2EFE6;
+  --parchment2: #EAE3D3;
+  --ink:        #2B2E30;
+  --ink-soft:   #555A5C;
+  --white:      #FFFFFF;
+  --red:        #c0392b;
+  --orange:     #d68a1a;
+  --border:     rgba(43,46,48,0.1);
+  --shadow:     rgba(31,58,46,0.08);
+  --ease:       cubic-bezier(0.4,0,0.2,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--parchment);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--green);
+  padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+  border-bottom: 1px solid rgba(194,165,108,0.15);
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--parchment); text-decoration: none;
+}
+.topbar-brand .brand-back { color: var(--clay); }
+/* ── Brand name treatment ── */
+.brand-the {
+  font-size: 0.48em; font-weight: 300;
+  color: rgba(242,239,230,0.48);
+  text-transform: lowercase;
+  letter-spacing: 0.03em;
+  vertical-align: 0.22em;
+  margin-right: 0.18em;
+}
+.brand-back { color: var(--clay); }
+.brand-project {
+  font-size: 0.44em; font-weight: 400;
+  color: rgba(242,239,230,0.32);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  vertical-align: 0.24em;
+}
+.topbar-right { display: flex; align-items: center; gap: 1.5rem; }
+.topbar-label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(194,165,108,0.7);
+}
+.topbar-meta {
+  font-size: 0.78rem; color: rgba(242,239,230,0.5);
+}
+.topbar-site {
+  font-size: 0.8rem; color: rgba(242,239,230,0.6);
+  text-decoration: none; border: 1px solid rgba(242,239,230,0.15);
+  padding: 0.3rem 0.85rem; border-radius: 3px;
+  transition: all 0.2s;
+}
+.topbar-site:hover { color: var(--clay); border-color: rgba(194,165,108,0.4); }
+
+/* ── LAYOUT ── */
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: calc(100vh - 56px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--green-mid);
+  padding: 2rem 0;
+  border-right: 1px solid rgba(194,165,108,0.1);
+  position: sticky; top: 56px; height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+.sidebar-section { margin-bottom: 2rem; }
+.sidebar-heading {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(194,165,108,0.55);
+  padding: 0 1.5rem; margin-bottom: 0.5rem;
+}
+.sidebar-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.84rem; color: rgba(242,239,230,0.65);
+  text-decoration: none; cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: rgba(255,255,255,0.05); color: var(--clay); }
+.sidebar-item.active {
+  background: rgba(194,165,108,0.1);
+  color: var(--clay);
+  border-left-color: var(--clay);
+}
+.sidebar-item-left { display: flex; align-items: center; gap: 0.6rem; }
+.sidebar-icon { font-size: 1rem; }
+.sidebar-badge {
+  font-size: 0.66rem; font-weight: 700;
+  padding: 0.15rem 0.5rem; border-radius: 20px;
+  background: rgba(255,255,255,0.08); color: rgba(242,239,230,0.5);
+}
+.sidebar-badge.done { background: rgba(126,155,115,0.25); color: var(--moss-lt); }
+.sidebar-badge.blocked { background: rgba(192,57,43,0.2); color: #e07a6e; }
+
+.sidebar-divider {
+  height: 1px; background: rgba(255,255,255,0.06);
+  margin: 0.5rem 1.5rem 1rem;
+}
+
+/* ── MAIN CONTENT ── */
+.main { padding: 2.5rem 2.5rem 4rem; max-width: 960px; }
+
+/* ── OVERVIEW CARDS ── */
+.overview {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1rem; margin-bottom: 2.5rem;
+}
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.25rem 1.5rem;
+}
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem; font-weight: 600; color: var(--green);
+  line-height: 1;
+}
+.stat-label { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.3rem; }
+.stat-card.done .stat-num { color: var(--moss); }
+.stat-card.open .stat-num { color: var(--clay-rust); }
+.stat-card.blocked-card .stat-num { color: var(--red); }
+
+/* ── BUILD ORDER PANEL ── */
+.build-order {
+  background: var(--green);
+  border-radius: 10px; padding: 1.5rem 1.75rem;
+  margin-bottom: 2.5rem;
+}
+.build-order-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 600; color: var(--clay);
+  margin-bottom: 1rem;
+}
+.build-steps {
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.build-step {
+  display: flex; align-items: flex-start; gap: 0.85rem;
+  font-size: 0.84rem; color: rgba(242,239,230,0.75);
+}
+.build-step-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(194,165,108,0.2); color: var(--clay);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+}
+.build-step.current .build-step-num { background: var(--clay); color: var(--green); }
+.build-step.current { color: var(--parchment); font-weight: 500; }
+.build-step.complete .build-step-num { background: rgba(126,155,115,0.3); color: var(--moss-lt); }
+.build-step.complete { color: rgba(242,239,230,0.4); text-decoration: line-through; }
+.build-step-note {
+  font-size: 0.72rem; color: rgba(194,165,108,0.6);
+  margin-top: 0.15rem;
+}
+
+/* ── WORKSTREAM SECTION ── */
+.ws-section { margin-bottom: 3rem; }
+.ws-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.25rem; padding-bottom: 0.85rem;
+  border-bottom: 2px solid var(--parchment2);
+}
+.ws-title-row { display: flex; align-items: center; gap: 0.75rem; }
+.ws-icon { font-size: 1.4rem; }
+.ws-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 600; color: var(--green);
+}
+.ws-progress-wrap { display: flex; align-items: center; gap: 0.75rem; }
+.ws-progress-bar {
+  width: 140px; height: 6px; background: var(--parchment2);
+  border-radius: 3px; overflow: hidden;
+}
+.ws-progress-fill {
+  height: 100%; background: var(--moss); border-radius: 3px;
+  transition: width 0.4s var(--ease);
+}
+.ws-pct {
+  font-size: 0.78rem; font-weight: 600; color: var(--ink-soft);
+  min-width: 32px; text-align: right;
+}
+
+/* ── GROUP ── */
+.task-group { margin-bottom: 1.5rem; }
+.task-group-label {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--clay-rust);
+  margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.task-group-label::after {
+  content: ''; flex: 1; height: 1px; background: rgba(160,94,58,0.15);
+}
+
+/* ── TASK ROWS ── */
+.task {
+  display: flex; align-items: flex-start; gap: 0.85rem;
+  padding: 0.7rem 0.9rem; border-radius: 8px;
+  margin-bottom: 0.35rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  transition: all 0.15s var(--ease);
+  cursor: pointer;
+}
+.task:hover { border-color: rgba(194,165,108,0.4); box-shadow: 0 2px 8px var(--shadow); }
+.task.done { background: rgba(126,155,115,0.06); border-color: rgba(126,155,115,0.2); }
+.task.done:hover { border-color: rgba(126,155,115,0.4); }
+.task.blocked { background: rgba(192,57,43,0.04); border-color: rgba(192,57,43,0.15); }
+
+/* Custom checkbox */
+.task-check {
+  width: 18px; height: 18px; border-radius: 4px;
+  border: 2px solid rgba(43,46,48,0.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+  transition: all 0.15s;
+}
+.task.done .task-check {
+  background: var(--moss); border-color: var(--moss); color: white;
+  font-size: 0.7rem;
+}
+.task.done .task-check::after { content: '✓'; }
+.task.blocked .task-check {
+  background: rgba(192,57,43,0.15); border-color: var(--red);
+  color: var(--red); font-size: 0.7rem;
+}
+.task.blocked .task-check::after { content: '⊘'; }
+
+.task-body { flex: 1; min-width: 0; }
+.task-text {
+  font-size: 0.875rem; color: var(--ink); line-height: 1.45;
+}
+.task.done .task-text { color: var(--ink-soft); text-decoration: line-through; }
+.task-note {
+  font-size: 0.76rem; color: var(--ink-soft);
+  margin-top: 0.25rem; line-height: 1.5;
+}
+.task.done .task-note { color: rgba(85,90,92,0.55); }
+
+.task-meta { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; padding-left: 0.75rem; flex-shrink: 0; }
+.priority {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 20px;
+}
+.priority-high { background: rgba(160,94,58,0.12); color: var(--clay-rust); }
+.priority-med  { background: rgba(43,46,48,0.07); color: var(--ink-soft); }
+.priority-low  { background: rgba(43,46,48,0.04); color: rgba(85,90,92,0.6); }
+.blocked-tag {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 20px;
+  background: rgba(192,57,43,0.12); color: var(--red);
+}
+
+/* ── SESSION NOTES ── */
+.session-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.5rem 1.75rem;
+  margin-bottom: 2.5rem;
+}
+.session-panel h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; font-weight: 600; color: var(--green);
+  margin-bottom: 0.85rem;
+}
+.session-panel p { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.7; margin-bottom: 0.5rem; }
+.session-panel ul { margin: 0.5rem 0 0 1.25rem; }
+.session-panel li { font-size: 0.875rem; color: var(--ink-soft); margin-bottom: 0.3rem; }
+
+/* ── DECISIONS LOG ── */
+.decision {
+  display: flex; gap: 1rem;
+  padding: 0.85rem 1rem; border-radius: 8px;
+  background: var(--white); border: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+}
+.decision-date { font-size: 0.72rem; color: var(--ink-soft); flex-shrink: 0; padding-top: 2px; min-width: 80px; }
+.decision-text { font-size: 0.875rem; color: var(--ink); }
+.decision-text strong { color: var(--green); }
+
+/* ── FOOTER ── */
+.tracker-footer {
+  margin-top: 3rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.76rem; color: var(--ink-soft);
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .overview { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .main { padding: 1.5rem 1.25rem 3rem; }
+  .overview { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── TOPBAR ── -->
+<div class="topbar">
+  <a href="../site/index.html" class="topbar-brand"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+  <div class="topbar-right">
+    <span class="topbar-label">Build Tracker</span>
+    <span class="topbar-meta">Last updated: 2026-02-20 · Session 10</span>
+    <a href="../site/index.html" class="topbar-site">← View site</a>
+  </div>
+</div>
+
+<div class="layout">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-heading">Workstreams</div>
+    <a class="sidebar-item active" href="#overview">
+      <div class="sidebar-item-left"><span class="sidebar-icon">📊</span> Overview</div>
+    </a>
+    <a class="sidebar-item" href="#site">
+      <div class="sidebar-item-left"><span class="sidebar-icon">🌐</span> Marketing Site</div>
+      <span class="sidebar-badge done">19/21</span>
+    </a>
+    <a class="sidebar-item" href="#platform">
+      <div class="sidebar-item-left"><span class="sidebar-icon">⚙️</span> Platform / App</div>
+      <span class="sidebar-badge">16/30</span>
+    </a>
+    <a class="sidebar-item" href="#org">
+      <div class="sidebar-item-left"><span class="sidebar-icon">🏛️</span> Org & Legal</div>
+      <span class="sidebar-badge">3/7</span>
+    </a>
+    <a class="sidebar-item" href="#branding">
+      <div class="sidebar-item-left"><span class="sidebar-icon">🎨</span> Branding</div>
+      <span class="sidebar-badge done">4/7</span>
+    </a>
+    <a class="sidebar-item" href="#launch">
+      <div class="sidebar-item-left"><span class="sidebar-icon">🚀</span> Hosting & Launch</div>
+      <span class="sidebar-badge done">8/10</span>
+    </a>
+    <a class="sidebar-item" href="#content">
+      <div class="sidebar-item-left"><span class="sidebar-icon">✍️</span> Content & Copy</div>
+      <span class="sidebar-badge done">8/11</span>
+    </a>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-heading">Reference</div>
+    <a class="sidebar-item" href="#decisions">
+      <div class="sidebar-item-left"><span class="sidebar-icon">📋</span> Decisions Log</div>
+    </a>
+    <a class="sidebar-item" href="#session">
+      <div class="sidebar-item-left"><span class="sidebar-icon">💬</span> Session Notes</div>
+    </a>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+  <!-- OVERVIEW STATS -->
+  <div id="overview" style="margin-bottom:2rem;">
+    <div style="margin-bottom:1.25rem;">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--clay-rust);margin-bottom:0.25rem;">Earthback</div>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--green);">Build Dashboard</h1>
+    </div>
+    <div class="overview">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-total">69</div>
+        <div class="stat-label">Total tasks</div>
+      </div>
+      <div class="stat-card done">
+        <div class="stat-num" id="stat-done">17</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="stat-card open">
+        <div class="stat-num" id="stat-open">52</div>
+        <div class="stat-label">Remaining</div>
+      </div>
+      <div class="stat-card blocked-card">
+        <div class="stat-num" id="stat-blocked">2</div>
+        <div class="stat-label">Blocked / decisions needed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUILD ORDER -->
+  <div class="build-order" style="scroll-margin-top:70px;">
+    <div class="build-order-title">⬆ Recommended Build Order</div>
+    <div class="build-steps">
+      <div class="build-step complete">
+        <div class="build-step-num">1</div>
+        <div><div>Site pages complete — 8 pages, all launch-ready</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">2</div>
+        <div><div>Terms of Service + Privacy Policy</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">3</div>
+        <div><div>Netlify Forms wired — join.html captures real signups</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">4</div>
+        <div><div>Mobile nav + Brand typography on all pages</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">5</div>
+        <div><div>Deployed to Netlify — earthbackproject.org LIVE</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">6</div>
+        <div><div>Profile page + People discovery on explore.html</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">7</div>
+        <div><div>Real backend — Supabase auth + profiles DB + login + auth-callback</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">8</div>
+        <div><div>Filler content — 14-post feed, 7 member cards, SEED_POSTS.sql, demo flags</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">9</div>
+        <div><div>Sign Out — dashboard topbar + nav link swap on all pages</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">10</div>
+        <div><div>Projects, certifications, media — project.html, certs on profile, media tabs, SCHEMA_V2.sql</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">11</div>
+        <div><div>Database migration — SEED_POSTS.sql + SCHEMA_V2.sql run; all 7 tables live + 14 seed posts</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">12</div>
+        <div><div>Real feed + page split — live Supabase query; join.html → join.html + feed.html; /community URL</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">13</div>
+        <div><div>Google OAuth — "Continue with Google" on join + login; auth-callback pulls Google metadata</div></div>
+      </div>
+      <div class="build-step complete">
+        <div class="build-step-num">14</div>
+        <div><div>Profile editing + avatar upload — inline edit, skills, Supabase Storage, UI polish</div></div>
+      </div>
+      <div class="build-step current">
+        <div class="build-step-num">15</div>
+        <div>
+          <div>Project creation flow — form to create project/company page</div>
+          <div class="build-step-note">← NEXT UP</div>
+        </div>
+      </div>
+      <div class="build-step">
+        <div class="build-step-num">16</div>
+        <div><div>Media import pipeline — URL paste → oEmbed/OG → auto-populate → create post</div></div>
+      </div>
+      <div class="build-step">
+        <div class="build-step-num">17</div>
+        <div><div>Social media accounts + MFA (TOTP) + settings page</div></div>
+      </div>
+      <div class="build-step">
+        <div class="build-step-num">18</div>
+        <div><div>Verification + rate limiting — safety layer before public launch</div></div>
+      </div>
+      <div class="build-step">
+        <div class="build-step-num">19</div>
+        <div><div>Operations tooling — monitoring, incident pipeline, digest</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WORKSTREAM: MARKETING SITE ── -->
+  <div class="ws-section" id="site" style="scroll-margin-top:70px;">
+    <div class="ws-header">
+      <div class="ws-title-row">
+        <span class="ws-icon">🌐</span>
+        <span class="ws-name">Marketing Site</span>
+      </div>
+      <div class="ws-progress-wrap">
+        <div class="ws-progress-bar"><div class="ws-progress-fill" style="width:88%"></div></div>
+        <span class="ws-pct">88%</span>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Pages — All Complete</div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">index.html — landing page, hero, feed preview, circles, CTA</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">about.html — origin story & mission</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">how-it-works.html — three-pillar explainer</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">safety.html — community trust & safety</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">use-cases.html — six project archetypes</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">join.html — onboarding only (signup + profile builder); Google OAuth + magic link</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">feed.html — community dashboard at /community; live Supabase feed + sidebar streams</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">project.html — project/company page template ("Desert Sun Hemp Homes")</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">terms.html + privacy.html — legal pages linked from all footers</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">explore.html — circles browse + filter + geo + 7 featured member cards</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">profile.html — dynamic member profile (loads from Supabase by UUID)</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">login.html — returning user sign-in page</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">auth-callback.html — magic link redirect handler</div></div></div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Infrastructure — Done</div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Netlify Forms wired — join.html captures signups in background</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Brand typography — "the Earthback Project" on all pages</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Mobile hamburger nav on all pages</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Sign In link added to all page navs</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Demo content flagging — SHOW_DEMO_POSTS / SHOW_DEMO_MEMBERS toggles + "Sample" badges</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Language softened — "real posts from real people" updated to honest pre-launch phrasing</div></div></div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Still Needed</div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Favicon — Eb monogram, shows on all tabs</div></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">og:image — social sharing preview card (1200×630)</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Review page titles + meta descriptions for SEO (after naming)</div></div><div class="task-meta"><span class="priority priority-med">Med</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Extract shared CSS to assets/css/main.css</div></div><div class="task-meta"><span class="priority priority-low">Low</span></div></div>
+    </div>
+  </div>
+
+  <!-- ── WORKSTREAM: PLATFORM ── -->
+  <div class="ws-section" id="platform" style="scroll-margin-top:70px;">
+    <div class="ws-header">
+      <div class="ws-title-row">
+        <span class="ws-icon">⚙️</span>
+        <span class="ws-name">Platform / App</span>
+      </div>
+      <div class="ws-progress-wrap">
+        <div class="ws-progress-bar"><div class="ws-progress-fill" style="width:53%"></div></div>
+        <span class="ws-pct">53%</span>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Stack & Schema</div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Stack decided and documented</div><div class="task-note">AT Protocol · Next.js · Supabase Postgres · n8n · Postmark/Resend · OpenAI API</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Supabase project created + profiles table live with RLS</div><div class="task-note">Project: yptktmzagctusbeqdaty · profiles table: id, name, bio, location, skills, earth_score, etc.</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">SEED_POSTS.sql written — posts table schema + 14 sample posts ready</div><div class="task-note">Run in Supabase SQL Editor when wiring real feed (Phase 2).</div></div></div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Auth & Identity — Live</div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Magic link auth via Supabase OTP</div><div class="task-note">Real emails sending, session persists, returning users auto-login.</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Google OAuth sign-in — "Continue with Google"</div><div class="task-note">On join.html + login.html. auth-callback pulls name/avatar from Google metadata.</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Signup → profile creation flow</div><div class="task-note">join.html → localStorage → auth-callback.html → Supabase profiles upsert</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Session management — getSession() on page load, auto-redirect to /community</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Sign Out flow — dashboard topbar + nav link swap on all pages</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Avatar upload — click-to-upload on profile, Supabase Storage, shows on feed</div><div class="task-note">5 MB limit, file type validation, cache-busting, camera overlay in edit mode.</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Profile editing — inline edit for name, tagline, bio, location, skills</div><div class="task-note">3 skill levels (lead/experienced/learning), saves to Supabase JSONB.</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Page split — join.html (onboarding) + feed.html (dashboard at /community)</div><div class="task-note">sessionStorage handoff for fresh profiles, Netlify _redirects rewrite.</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Live feed — Supabase query, dynamic sidebar streams, circle styles, helpful count</div></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">MFA (TOTP) — authenticator apps via Supabase MFA</div></div><div class="task-meta"><span class="priority priority-med">Med</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Settings page — account settings, avatar change, MFA enrollment</div></div><div class="task-meta"><span class="priority priority-med">Med</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">DID storage (AT Protocol) — future phase</div></div><div class="task-meta"><span class="priority priority-low">Low</span></div></div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Core User Flow (v1 required)</div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Create Project</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Add Source URL</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Create Ingest Job</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Scraper worker (safe fetch + SSRF protection)</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Store ingest artifacts with TTL</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">AI Draft generation (structured JSON output)</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Draft review UI</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">User Accept Fields → canonical record update</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Publish Project → appears in Feed</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Feed & Circles</div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Real community feed — live Supabase query with circle styles + stream sidebar</div></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Circle membership</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Post types: Project forming / Technique / Resource / Complete</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Feed filter by circle + verified status</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Verification</div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Earthback Labeler service</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Verified Human label</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Verified Project label</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Security & Rate Limiting</div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">DID-based rate limits</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">IP-based safety cap</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Tier quotas (unverified vs verified)</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Audit logging</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Email & Operations</div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Email service (Postmark or Resend)</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">SPF / DKIM / DMARC configured</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Ingest job tracking dashboard</div></div><div class="task-meta"><span class="priority priority-med">Med</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Error monitoring dashboard</div></div><div class="task-meta"><span class="priority priority-med">Med</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Daily digest (optional but preferred)</div></div><div class="task-meta"><span class="priority priority-low">Low</span></div></div>
+    </div>
+  </div>
+
+  <!-- ── WORKSTREAM: ORG & LEGAL ── -->
+  <div class="ws-section" id="org" style="scroll-margin-top:70px;">
+    <div class="ws-header">
+      <div class="ws-title-row">
+        <span class="ws-icon">🏛️</span>
+        <span class="ws-name">Org & Legal</span>
+      </div>
+      <div class="ws-progress-wrap">
+        <div class="ws-progress-bar"><div class="ws-progress-fill" style="width:43%"></div></div>
+        <span class="ws-pct">43%</span>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Naming — In Progress</div>
+      <div class="task blocked"><div class="task-check"></div><div class="task-body"><div class="task-text">Finish trademark research — other "Earthbacks" in green building space</div><div class="task-note">Nicco handling. Needed before name is fully finalized and applied to title tags/meta.</div></div><div class="task-meta"><span class="blocked-tag">Nicco</span></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Provisional public name — "the Earthback Project"</div><div class="task-note">"Alliance" dropped (too political). "Foundation" reserved for 501c3. Brand typography applied. Finalize after trademark research.</div></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Apply name consistently across all site files</div><div class="task-note">Title tags, meta descriptions, about page, footer, og:image</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Entity & Legal</div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">501(c)(3) formation</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Terms of Service written — /site/terms.html</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Privacy Policy written — /site/privacy.html</div></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Community Guidelines / Code of Conduct</div><div class="task-note">Can draw from safety.html content as a base.</div></div><div class="task-meta"><span class="priority priority-med">Med</span></div></div>
+    </div>
+  </div>
+
+  <!-- ── WORKSTREAM: BRANDING ── -->
+  <div class="ws-section" id="branding" style="scroll-margin-top:70px;">
+    <div class="ws-header">
+      <div class="ws-title-row">
+        <span class="ws-icon">🎨</span>
+        <span class="ws-name">Branding</span>
+      </div>
+      <div class="ws-progress-wrap">
+        <div class="ws-progress-bar"><div class="ws-progress-fill" style="width:57%"></div></div>
+        <span class="ws-pct">57%</span>
+      </div>
+    </div>
+
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Color palette established</div><div class="task-note">Forest green · Parchment · Clay/gold · Moss</div></div></div>
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Typography established</div><div class="task-note">Cormorant Garamond (display/serif) + Inter (body)</div></div></div>
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Brand standards documented</div><div class="task-note">/external_reference_docs/Earthback_Brand_Standards_v1.0_Expanded_Feb2026.pdf</div></div></div>
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Brand wordmark typography — "the Earthback Project" treatment</div><div class="task-note">Applied across all 8 site pages. CSS classes: .brand-the / .brand-back / .brand-project</div></div></div>
+    <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Logo — finalized version</div><div class="task-note">Needed for: favicon, og:image, app UI, any printed materials</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+    <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Apply final name across branding</div><div class="task-note">After naming decision is made.</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+    <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">og:image / social sharing card</div></div><div class="task-meta"><span class="priority priority-med">Med</span></div></div>
+  </div>
+
+  <!-- ── WORKSTREAM: HOSTING & LAUNCH ── -->
+  <div class="ws-section" id="launch" style="scroll-margin-top:70px;">
+    <div class="ws-header">
+      <div class="ws-title-row">
+        <span class="ws-icon">🚀</span>
+        <span class="ws-name">Hosting & Launch</span>
+      </div>
+      <div class="ws-progress-wrap">
+        <div class="ws-progress-bar"><div class="ws-progress-fill" style="width:80%"></div></div>
+        <span class="ws-pct">80%</span>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Pre-launch — Done</div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Hosting platform chosen — Netlify</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Domain decided — earthbackproject.org</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Deployed to Netlify — site live at earthbackproject.org</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">DNS + SSL configured — auto-SSL via Netlify active</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Netlify Forms verified — signups capturing</div></div></div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Launch Checklist (remaining)</div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Auth working end-to-end (magic link + Google OAuth + session)</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Real feed loads from Supabase (live query, not demo array)</div></div></div>
+      <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Profile editing + avatar upload working</div></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Rate limits active + tested</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+      <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Error monitoring live</div></div><div class="task-meta"><span class="priority priority-high">High</span></div></div>
+    </div>
+  </div>
+
+  <!-- ── WORKSTREAM: CONTENT ── -->
+  <div class="ws-section" id="content" style="scroll-margin-top:70px;">
+    <div class="ws-header">
+      <div class="ws-title-row">
+        <span class="ws-icon">✍️</span>
+        <span class="ws-name">Content & Copy</span>
+      </div>
+      <div class="ws-progress-wrap">
+        <div class="ws-progress-bar"><div class="ws-progress-fill" style="width:73%"></div></div>
+        <span class="ws-pct">73%</span>
+      </div>
+    </div>
+
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Landing page copy</div></div></div>
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">About / origin story</div></div></div>
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">How it works</div></div></div>
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Safety & trust</div></div></div>
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Use cases (6 archetypes)</div></div></div>
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Join flow copy + 14-post demo feed</div></div></div>
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Terms of Service + Privacy Policy</div></div></div>
+    <div class="task done"><div class="task-check"></div><div class="task-body"><div class="task-text">Explore page — circles, member cards, nearby activity</div></div></div>
+    <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Email templates (welcome, magic link, digest)</div><div class="task-note">Magic link subject customized in Supabase. Full branded HTML template still needed.</div></div><div class="task-meta"><span class="priority priority-med">Med</span></div></div>
+    <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Community Guidelines / Code of Conduct</div></div><div class="task-meta"><span class="priority priority-med">Med</span></div></div>
+    <div class="task"><div class="task-check"></div><div class="task-body"><div class="task-text">Press / media one-pager</div></div><div class="task-meta"><span class="priority priority-low">Low</span></div></div>
+  </div>
+
+  <!-- ── DECISIONS LOG ── -->
+  <div class="ws-section" id="decisions" style="scroll-margin-top:70px;">
+    <div class="ws-header">
+      <div class="ws-title-row">
+        <span class="ws-icon">📋</span>
+        <span class="ws-name">Decisions Log</span>
+      </div>
+    </div>
+
+    <div class="decision">
+      <div class="decision-date">2026-02-20</div>
+      <div class="decision-text"><strong>Profile avatar: 3-tier system</strong> — uploaded photo (Supabase Storage) → Google OAuth photo → colored initials fallback. 128px circle on profile page.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-20</div>
+      <div class="decision-text"><strong>Google OAuth shipped</strong> — "Continue with Google" on join + login pages. Google Cloud Console OAuth credential configured. Auth-callback extracts name + avatar from Google metadata.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-20</div>
+      <div class="decision-text"><strong>Page architecture split</strong> — join.html is onboarding only. feed.html is the dashboard served at /community via Netlify rewrite. sessionStorage handoff for fresh profiles.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-20</div>
+      <div class="decision-text"><strong>MFA approach decided</strong> — TOTP (authenticator apps like Google Authenticator, Authy), not SMS. Supabase supports via sb.auth.mfa.enroll(). Implementation deferred to later session.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-20</div>
+      <div class="decision-text"><strong>Skills stored as JSONB</strong> — [{name, level}] where level is 'lead', 'experienced', or 'learning'. Comma-separated input in edit mode, parsed on save.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-20</div>
+      <div class="decision-text"><strong>Demo content flagging system</strong> — all filler posts/members tagged with demo:true and "Sample" badges. Two boolean toggles (SHOW_DEMO_POSTS, SHOW_DEMO_MEMBERS) hide everything when set to false.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-20</div>
+      <div class="decision-text"><strong>Language softened</strong> — "real posts from real people" phrasing across 4 pages replaced with honest pre-launch wording that doesn't overclaim.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-20</div>
+      <div class="decision-text"><strong>Supabase magic link auth shipped</strong> — no passwords. Magic link OTP via supabase.auth.signInWithOtp(). Session persists in browser. Returning users auto-login.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-20</div>
+      <div class="decision-text"><strong>Posts table designed</strong> — SEED_POSTS.sql ready with schema + 14 sample posts. FK to profiles, circle_slug, post_type enum, RLS policies. Run when wiring real feed.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-19</div>
+      <div class="decision-text"><strong>Primary domain — earthbackproject.org</strong> — earthback.org and .com both taken; .com has an imminent competing launch. Registered earthbackproject/earthbackfoundation/earthbackalliance in .com/.net/.org. Launching on earthbackproject.org.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-19</div>
+      <div class="decision-text"><strong>Vanity domains deferred</strong> — earthback.earth ($24/yr) and earthback.build ($75/yr) both available but not purchased. Revisit in 60 days once community is active.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-19</div>
+      <div class="decision-text"><strong>Provisional public brand name — "the Earthback Project"</strong> — "Alliance" dropped (too political). "Foundation" reserved for the 501c3. Typography treatment applied to all 8 pages.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-19</div>
+      <div class="decision-text"><strong>Hosting — Netlify</strong> — chosen for native Forms support, free tier, and easy folder/repo deployment.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-19</div>
+      <div class="decision-text"><strong>Eliminated waitlist</strong> — site moves to direct signup via join.html. No email holding pattern. Real functionality or nothing.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-19</div>
+      <div class="decision-text"><strong>Join CTA → join.html directly</strong> — All "join" buttons across site point to join.html, not an email form.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-19</div>
+      <div class="decision-text"><strong>Feed has interactive demo buttons</strong> — Helpful likes work locally; Reply/I can help redirect to join.html to drive signups.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-19</div>
+      <div class="decision-text"><strong>"How It Works" reframed</strong> — Now community-first (Find Circles → Share → Project → Archive), not project-workflow-only.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-19</div>
+      <div class="decision-text"><strong>Entity structure clarified</strong> — Earthback Project = for-profit, holds IP. 501(c)(3) forming. "Alliance" as community label likely being dropped.</div>
+    </div>
+    <div class="decision">
+      <div class="decision-date">2026-02-18</div>
+      <div class="decision-text"><strong>v1 scope frozen</strong> — Defined exactly what's in/out for v1 launch. See /docs/decision log_v1/06_launch/v1_scope_freeze.md</div>
+    </div>
+  </div>
+
+  <!-- ── SESSION NOTES ── -->
+  <div class="session-panel" id="session" style="scroll-margin-top:70px;">
+    <h3>💬 Session 10 — 2026-02-20</h3>
+    <p><strong>What we did:</strong></p>
+    <ul>
+      <li><strong>Google OAuth</strong> — "Continue with Google" button on join + login pages. Google Cloud Console setup. Auth-callback pulls name/avatar from Google metadata. Tested and working.</li>
+      <li><strong>Profile editing</strong> — inline edit mode for name, tagline, bio, location, skills (3 levels). Save fixed (was broken with nth-of-type selectors, rewrote to IDs).</li>
+      <li><strong>Avatar upload</strong> — click-to-upload in edit mode. Supabase Storage 'avatars' bucket. 5 MB limit, file type validation, cache-busting. Camera overlay on hover.</li>
+      <li><strong>Feed sidebar linked to profile</strong> — sidebar card and header avatar both link to profile page.</li>
+      <li><strong>Profile UI polish</strong> — cover band shrunk (120→56px), avatar enlarged (80→128px), z-index fixed so avatar sits on top of band.</li>
+      <li><em>Sessions 7-9:</em> Sign Out button, projects/certs/media pages, SCHEMA_V2.sql, database migration, live feed from Supabase, join.html → feed.html page split.</li>
+    </ul>
+    <p style="margin-top:0.75rem;"><strong>Next session should start with:</strong> Project creation flow, media import pipeline, settings page, social media accounts, mobile responsive check on avatar size.</p>
+  </div>
+
+  <div class="tracker-footer">
+    <span>the Earthback Project — Build Tracker · Internal use only</span>
+    <span>To update: tell Claude "update TRACKER.md and the tracker page with what we did today"</span>
+  </div>
+
+</main>
+</div>
+
+<script>
+// Sidebar active state on scroll
+const sections = document.querySelectorAll('[id]');
+const sidebarLinks = document.querySelectorAll('.sidebar-item[href^="#"]');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      sidebarLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.sidebar-item[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-10% 0px -80% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// Smooth scroll for sidebar links
+sidebarLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Task click — toggle done state (local only, Claude updates the file for real changes)
+document.querySelectorAll('.task:not(.blocked)').forEach(task => {
+  task.addEventListener('click', () => {
+    task.classList.toggle('done');
+    updateStats();
+  });
+});
+
+function updateStats() {
+  const total = document.querySelectorAll('.task').length;
+  const done  = document.querySelectorAll('.task.done').length;
+  const blocked = document.querySelectorAll('.task.blocked').length;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-open').textContent = total - done - blocked;
+  document.getElementById('stat-blocked').textContent = blocked;
+}
+
+updateStats();
+</script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — the Earthback Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:      #1F3A2E; --green2: #2d5a27; --sage: #5a7d52; --moss: #7a9e6c;
+      --clay:       #C2A56C; --clay2: #b8784a;
+      --parchment:  #F2EFE6; --paper-warm: #ece7da; --card: #faf8f3; --white: #fffefb;
+      --ink:        #1a2218; --text: #3b4a3a; --text-muted: #6b7a63;
+      --border:     #d0c4a8; --border-lt: #e0d8c4;
+      --shadow:     rgba(30,55,40,0.08); --shadow-d: rgba(30,55,40,0.16);
+      --pale-green: #e4eddf;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans); min-height: 100vh;
+      background: linear-gradient(158deg, #0b1a12 0%, var(--green) 55%, #2a4d3a 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+
+    .login-box {
+      background: var(--card); border-radius: 20px;
+      padding: 48px 40px; max-width: 440px; width: 100%;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.3);
+    }
+    @media (max-width: 480px) { .login-box { padding: 36px 24px; } }
+
+    .logo {
+      display: block; text-align: center;
+      font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700;
+      color: var(--green); letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; margin-bottom: 32px;
+    }
+    .logo .brand-the { font-size: 0.5em; font-weight: 300; color: rgba(31,58,46,0.45); text-transform: lowercase; vertical-align: 0.22em; margin-right: 0.15em; }
+    .logo .brand-back { color: var(--clay); }
+    .logo .brand-project { font-size: 0.46em; font-weight: 400; color: rgba(31,58,46,0.35); text-transform: uppercase; letter-spacing: 0.25em; vertical-align: 0.24em; }
+
+    .login-title {
+      font-family: var(--font-serif); font-size: 2rem; font-weight: 400;
+      color: var(--ink); line-height: 1.15; margin-bottom: 8px; text-align: center;
+    }
+    .login-title em { font-style: italic; color: var(--clay); }
+    .login-sub {
+      font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;
+      text-align: center; margin-bottom: 28px; max-width: 34ch; margin-left: auto; margin-right: auto;
+    }
+
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block; font-size: 0.78rem; font-weight: 600; color: var(--text);
+      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px;
+    }
+    .field input {
+      width: 100%; padding: 13px 16px;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--white); color: var(--ink); font-size: 0.96rem;
+      font-family: var(--font-sans); outline: none; transition: border 0.15s;
+    }
+    .field input:focus { border-color: var(--green2); box-shadow: 0 0 0 3px rgba(45,90,39,0.08); }
+
+    .btn-primary {
+      width: 100%; padding: 15px 24px;
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      border: none; border-radius: 11px; color: var(--white);
+      font-size: 1rem; font-weight: 600; font-family: var(--font-sans);
+      cursor: pointer; letter-spacing: 0.01em;
+      box-shadow: 0 4px 16px rgba(31,58,46,0.3); transition: all 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(31,58,46,0.38); }
+    .btn-primary:disabled { opacity: 0.7; cursor: default; transform: none; }
+
+    /* Success state */
+    .success-panel {
+      display: none; text-align: center; padding: 8px 0;
+    }
+    .success-icon {
+      font-size: 2.5rem; margin-bottom: 16px; display: block;
+      animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .success-title {
+      font-family: var(--font-serif); font-size: 1.6rem; color: var(--ink);
+      margin-bottom: 10px; line-height: 1.2;
+    }
+    .success-sub { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; }
+    .success-email {
+      display: inline-block; margin: 14px 0; padding: 8px 16px;
+      background: var(--pale-green); border-radius: 8px;
+      font-weight: 600; color: var(--green); font-size: 0.9rem;
+    }
+
+    /* Error */
+    .error-msg {
+      display: none; font-size: 0.8rem; color: var(--clay2);
+      margin-top: 6px; padding: 8px 12px; background: rgba(184,120,74,0.08);
+      border-radius: 7px; border: 1px solid rgba(184,120,74,0.15);
+    }
+
+    .divider {
+      display: flex; align-items: center; gap: 12px; margin: 22px 0;
+      font-size: 0.77rem; color: var(--text-muted); font-weight: 500;
+    }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border-lt); }
+
+    .link-row {
+      text-align: center; font-size: 0.83rem; color: var(--text-muted); margin-top: 20px;
+    }
+    .link-row a { color: var(--sage); text-decoration: none; font-weight: 500; }
+    .link-row a:hover { text-decoration: underline; }
+
+    .magic-note {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 0.78rem; color: var(--text-muted); line-height: 1.5;
+      margin-top: 16px; padding: 10px 14px;
+      background: rgba(90,125,82,0.06); border-radius: 8px;
+      border: 1px solid rgba(90,125,82,0.12);
+    }
+
+    .btn-google {
+      width: 100%; padding: 13px 24px;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 11px; font-size: 0.95rem; font-weight: 500;
+      font-family: var(--font-sans); color: var(--ink);
+      cursor: pointer; display: flex; align-items: center;
+      justify-content: center; gap: 10px; transition: all 0.15s;
+    }
+    .btn-google:hover { border-color: var(--text-muted); box-shadow: 0 2px 8px var(--shadow); }
+    .btn-google svg { flex-shrink: 0; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .login-box { animation: fadeUp 0.4s ease both; }
+  </style>
+</head>
+<body>
+
+<div class="login-box">
+  <a href="index.html" class="logo">
+    <span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span>
+  </a>
+
+  <!-- FORM STATE -->
+  <div id="form-panel">
+    <h1 class="login-title">Welcome<br><em>back.</em></h1>
+    <p class="login-sub">Sign in to get back to your community.</p>
+
+    <button class="btn-google" onclick="signInWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59a14.5 14.5 0 0 1 0-9.18l-7.98-6.19a24.0 24.0 0 0 0 0 21.56l7.98-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+
+    <div class="divider">or sign in with email</div>
+
+    <div class="field">
+      <label>Email address</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+      <div class="error-msg" id="error-msg"></div>
+    </div>
+
+    <button class="btn-primary" id="submit-btn" onclick="sendLink()">
+      Send me a magic link →
+    </button>
+
+    <div class="magic-note">
+      <span>🔑</span>
+      We'll email you a one-time link. Click it and you're straight in — nothing to type, nothing to remember.
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="link-row">
+      Not a member yet? <a href="join.html">Join Earthback free →</a>
+    </div>
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <div class="success-panel" id="success-panel">
+    <span class="success-icon">✉️</span>
+    <h2 class="success-title">Check your email.</h2>
+    <div class="success-sub">
+      We sent a sign-in link to<br>
+      <span class="success-email" id="sent-email"></span><br>
+      Click the link in that email — you'll be signed in instantly, no password needed.
+    </div>
+    <div style="margin-top: 20px; font-size: 0.78rem; color: var(--text-muted); line-height: 1.55;">
+      The link expires in 1 hour. Didn't get it? Check your spam folder, or
+      <a href="#" onclick="resetForm(); return false;" style="color:var(--sage); font-weight:500; text-decoration:none;">try again</a>.
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center; margin-top: 24px;">
+  <a href="index.html" style="color: rgba(255,255,255,0.45); font-size: 0.82rem; text-decoration: none; font-family: var(--font-sans);">← Back to site</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// If already signed in, redirect straight to dashboard
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    window.location.href = 'community';
+  }
+})();
+
+async function signInWithGoogle() {
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: 'https://earthbackproject.org/auth-callback.html',
+    },
+  });
+  if (error) {
+    const errEl = document.getElementById('error-msg');
+    errEl.textContent = 'Google sign-in failed — please try again.';
+    errEl.style.display = 'block';
+  }
+}
+
+// Allow Enter key
+document.getElementById('email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendLink();
+});
+
+async function sendLink() {
+  const email = document.getElementById('email').value.trim();
+  const btn   = document.getElementById('submit-btn');
+  const errEl = document.getElementById('error-msg');
+
+  errEl.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    errEl.textContent = 'Please enter a valid email address.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: 'https://earthbackproject.org/auth-callback.html',
+    },
+  });
+
+  if (error) {
+    btn.textContent = 'Send me a sign-in link →';
+    btn.disabled = false;
+    errEl.textContent = 'Something went wrong — please try again in a moment.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // Success
+  document.getElementById('sent-email').textContent = email;
+  document.getElementById('form-panel').style.display = 'none';
+  document.getElementById('success-panel').style.display = 'block';
+}
+
+function resetForm() {
+  document.getElementById('form-panel').style.display = 'block';
+  document.getElementById('success-panel').style.display = 'none';
+  document.getElementById('submit-btn').textContent = 'Send me a sign-in link →';
+  document.getElementById('submit-btn').disabled = false;
+}
+</script>
+</body>
+</html>

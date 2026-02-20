@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Earthback</title>
+    <meta name="description" content="Earthback exists because building things together is one of the oldest human activities — and it's gotten harder, not easier, to do it well.">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --green:      #1F3A2E;
+            --green-mid:  #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay:       #C2A56C;
+            --clay-dark:  #8A5B3F;
+            --moss:       #7e9b73;
+            --parchment:  #F2EFE6;
+            --parchment2: #EAE3D3;
+            --ink:        #2B2E30;
+            --ink-soft:   #555A5C;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+            --max:        1100px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(20, 38, 28, 0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194, 165, 108, 0.12);
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--parchment); text-decoration: none;
+            letter-spacing: 0.1em; text-transform: uppercase;
+        }
+        .nav-logo .brand-back { color: var(--clay); }
+/* ── Brand name treatment: "the Earthback Project" ── */
+.brand-the {
+    font-size: 0.5em;
+    font-weight: 300;
+    color: rgba(242,239,230,0.52);
+    text-transform: lowercase;
+    letter-spacing: 0.03em;
+    vertical-align: 0.22em;
+    margin-right: 0.18em;
+}
+.brand-back { color: var(--clay); }
+.brand-project {
+    font-size: 0.46em;
+    font-weight: 400;
+    color: rgba(242,239,230,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    vertical-align: 0.24em;
+}
+        nav ul { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        nav a {
+            color: rgba(242,239,230,0.78); text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            transition: color 0.2s var(--ease);
+        }
+        nav a:hover { color: var(--clay); }
+        .nav-join {
+            background: var(--clay); color: var(--green) !important;
+            padding: 0.55rem 1.35rem; border-radius: 3px;
+            font-weight: 700 !important;
+        }
+        .nav-join:hover { background: var(--parchment) !important; }
+
+        /* PAGE HERO */
+        .page-hero {
+            background: linear-gradient(158deg, #0b1a12 0%, #1F3A2E 55%, #2a4d3a 100%);
+            padding: 9rem 2rem 5rem;
+            text-align: center;
+        }
+        .page-hero .eyebrow {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 0.76rem; font-weight: 600; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--clay); margin-bottom: 1.25rem;
+        }
+        .page-hero .eyebrow::before, .page-hero .eyebrow::after {
+            content: ''; width: 20px; height: 1px; background: var(--clay);
+        }
+        .page-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            font-weight: 700; color: var(--parchment);
+            line-height: 1.1; margin-bottom: 1.25rem;
+        }
+        .page-hero h1 em { font-style: italic; color: var(--clay); }
+        .page-hero .lead {
+            font-size: 1.1rem; color: rgba(242,239,230,0.78);
+            max-width: 58ch; margin: 0 auto; line-height: 1.8;
+        }
+
+        /* SHARED */
+        section { padding: 5rem 2rem; }
+        .inner { max-width: var(--max); margin: 0 auto; }
+        .section-label {
+            font-size: 0.74rem; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--clay); margin-bottom: 0.75rem;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700; color: var(--green);
+            line-height: 1.15; margin-bottom: 1.5rem;
+        }
+        h2 em { font-style: italic; color: var(--clay-dark); }
+        p { font-size: 1rem; color: var(--ink-soft); line-height: 1.9; margin-bottom: 1.5rem; }
+        p:last-child { margin-bottom: 0; }
+        p strong { color: var(--green); font-weight: 600; }
+
+        /* ORIGIN STORY */
+        .origin-section { background: var(--parchment); }
+        .origin-grid {
+            display: grid; grid-template-columns: 1fr 2fr; gap: 6rem;
+            align-items: start;
+        }
+        .origin-aside {}
+        .aside-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.75rem; font-weight: 700;
+            color: var(--green); line-height: 1.25;
+            font-style: italic;
+            border-left: 3px solid var(--clay);
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .aside-note { font-size: 0.87rem; color: var(--ink-soft); line-height: 1.75; }
+
+        /* BELIEFS */
+        .beliefs-section { background: white; }
+        .beliefs-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+            margin-top: 3rem;
+        }
+        .belief { padding-top: 1.75rem; border-top: 2px solid var(--parchment2); }
+        .belief-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem; font-weight: 700;
+            color: var(--clay); letter-spacing: 0.12em; margin-bottom: 0.6rem;
+        }
+        .belief h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--green); margin-bottom: 0.75rem;
+        }
+        .belief p { font-size: 0.93rem; }
+
+        /* WHAT WE'RE NOT */
+        .not-section {
+            background: var(--green); padding: 5rem 2rem;
+        }
+        .not-section .section-label { color: var(--clay); }
+        .not-section h2 { color: var(--parchment); margin-bottom: 2.5rem; }
+        .not-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+        }
+        .not-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(194,165,108,0.15);
+            padding: 1.75rem; border-radius: 3px;
+        }
+        .not-label {
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+            text-transform: uppercase; color: rgba(194,165,108,0.7);
+            margin-bottom: 0.6rem;
+        }
+        .not-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem; font-weight: 700;
+            color: var(--parchment); margin-bottom: 0.6rem;
+        }
+        .not-body {
+            font-size: 0.88rem; color: rgba(242,239,230,0.62);
+            line-height: 1.75; margin-bottom: 0;
+        }
+
+        /* CONSTITUTION SECTION */
+        .constitution-section { background: var(--parchment2); }
+        .constitution-layout {
+            display: grid; grid-template-columns: 2fr 1fr; gap: 5rem;
+            align-items: start;
+        }
+        .constitution-body p { color: var(--ink-soft); }
+        .constitution-sidebar {
+            background: white;
+            border: 1px solid var(--parchment2);
+            border-top: 3px solid var(--clay);
+            padding: 2rem;
+        }
+        .cs-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem; font-weight: 700;
+            color: var(--green); margin-bottom: 1.25rem;
+        }
+        .cs-articles { display: flex; flex-direction: column; gap: 0.85rem; }
+        .cs-article { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.6; }
+        .cs-article strong {
+            display: block; font-size: 0.78rem; font-weight: 700;
+            color: var(--clay); letter-spacing: 0.08em;
+            text-transform: uppercase; margin-bottom: 0.15rem;
+        }
+
+        /* TEAM / WHO WE ARE */
+        .team-section { background: var(--parchment); }
+        .mission-statement {
+            max-width: 70ch; margin-bottom: 3rem;
+        }
+        .mission-statement p { font-size: 1.1rem; line-height: 1.9; }
+        .values-row {
+            display: flex; flex-wrap: wrap; gap: 1rem;
+        }
+        .value-pill {
+            background: white; border: 1px solid var(--parchment2);
+            padding: 0.65rem 1.5rem; border-radius: 30px;
+            font-size: 0.88rem; font-weight: 500; color: var(--ink);
+        }
+
+        /* CTA */
+        .cta-section {
+            background: var(--green); text-align: center; padding: 6rem 2rem;
+        }
+        .cta-section h2 { color: var(--parchment); margin-bottom: 1rem; }
+        .cta-section p { color: rgba(242,239,230,0.72); max-width: 52ch; margin: 0 auto 2.5rem; font-size: 1.05rem; }
+        .cta-form { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+        .cta-input {
+            padding: 0.875rem 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(194,165,108,0.4);
+            color: var(--parchment); border-radius: 3px;
+            font-size: 0.95rem; width: 280px; outline: none;
+        }
+        .cta-input::placeholder { color: rgba(242,239,230,0.45); }
+        .cta-input:focus { border-color: var(--clay); }
+        .cta-btn {
+            background: var(--clay); color: var(--green);
+            padding: 0.875rem 2rem; border: none;
+            border-radius: 3px; font-size: 0.875rem;
+            font-weight: 700; letter-spacing: 0.05em;
+            text-transform: uppercase; cursor: pointer;
+        }
+        .cta-btn:hover { background: var(--parchment); }
+        .cta-note { margin-top: 1.25rem; font-size: 0.8rem; color: rgba(242,239,230,0.45); }
+
+        /* FOOTER */
+        footer { background: #0e1e15; padding: 3rem 2rem; text-align: center; }
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 700;
+            color: var(--parchment); letter-spacing: 0.1em;
+            text-transform: uppercase; text-decoration: none;
+            display: inline-block; margin-bottom: 1.25rem;
+        }
+        .footer-logo .brand-back { color: var(--clay); }
+        .footer-links {
+            display: flex; gap: 2rem; justify-content: center;
+            list-style: none; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: rgba(242,239,230,0.5); text-decoration: none;
+            font-size: 0.83rem; transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--clay); }
+        .footer-copy { font-size: 0.78rem; color: rgba(242,239,230,0.3); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .origin-grid,
+            .constitution-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+            .beliefs-grid,
+            .not-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 680px) {
+            nav ul { display: none; }
+            .page-hero { padding: 7rem 1.25rem 4rem; }
+            section { padding: 3.5rem 1.25rem; }
+        }
+
+
+        /* ── MOBILE NAV ── */
+        .nav-hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer; padding: 4px;
+        }
+        .nav-hamburger span {
+            display: block; width: 22px; height: 2px;
+            background: var(--parchment); border-radius: 2px;
+            transition: all 0.25s;
+        }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .mobile-nav-overlay {
+            display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+            background: rgba(9,18,13,0.98); z-index: 999;
+            flex-direction: column; padding: 2rem;
+            gap: 0;
+        }
+        .mobile-nav-overlay.open { display: flex; }
+        .mobile-nav-overlay a {
+            font-size: 1.4rem; color: rgba(242,239,230,0.8);
+            text-decoration: none; padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            font-family: 'Cormorant Garamond', serif; font-weight: 600;
+            transition: color 0.15s;
+        }
+        .mobile-nav-overlay a:hover { color: var(--clay); }
+        .mobile-nav-overlay a.join-mobile {
+            margin-top: 1.5rem; border: none;
+            background: var(--clay); color: var(--green) !important;
+            text-align: center; border-radius: 3px;
+            font-family: 'Inter', sans-serif; font-size: 1rem;
+            font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+            padding: 1rem;
+        }
+        @media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+        <ul>
+            <li><a href="how-it-works.html">How it works</a></li>
+            <li><a href="use-cases.html">Use cases</a></li>
+            <li><a href="about.html" style="color:var(--clay)">About</a></li>
+            <li><a href="safety.html">Safety</a></li>
+                        <li><a href="login.html" id="nav-signin-link" style="opacity:0.75;">Sign In</a></li>
+            <li><a href="join.html" class="nav-join">Join / Sign In</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<div class="page-hero">
+    <div class="eyebrow">The mission</div>
+    <h1>Building things together<br><em>is the oldest work there is.</em></h1>
+    <p class="lead">Earthback exists because that work has gotten harder to organize, not easier — and because the tools people use to do it are mostly optimized for other people's interests.</p>
+</div>
+
+<!-- ORIGIN STORY -->
+<section class="origin-section">
+    <div class="inner">
+        <div class="origin-grid">
+            <div class="origin-aside">
+                <div class="aside-quote">"The problem isn't that people don't want to build things together. The problem is that nothing helps them find each other."</div>
+                <p class="aside-note">Earthback started from a simple observation: builders are isolated. The skills, materials, tools, and labor that communities need to become more resilient exist — they're just fragmented across people who can't easily locate or coordinate with each other.</p>
+            </div>
+            <div class="origin-body">
+                <div class="section-label">How it started</div>
+                <h2>A coordination problem<br>masquerading as a resource problem</h2>
+                <p>Every person who has tried to organize a build day, a food co-op, a neighborhood greywater project, or a mutual aid network has felt it: the work of coordination is harder than the work itself. You're texting people who don't text back, managing a spreadsheet that's always out of date, or posting in a Facebook group where your message drowns in noise.</p>
+                <p>The skills exist. The materials are often available. The willing hands are there. What's missing is a place that makes it easy for all of them to find each other and organize around a specific, bounded goal.</p>
+                <p><strong>Earthback is that place.</strong> Not a social network. Not a project management tool. A community platform built specifically for people who want to build things that are good for the places they live in.</p>
+                <p>The ethos is simple: <strong>constructive, not extractive.</strong> If what you're building gives more than it takes — to the land, to the community, to the future — Earthback is for you. The circles are organized around what people build. The feed shows what's actually happening. The projects hold commitments. The archives keep the memory.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BELIEFS -->
+<section class="beliefs-section">
+    <div class="inner">
+        <div class="section-label">What we believe</div>
+        <h2>The principles Earthback is built on</h2>
+        <div class="beliefs-grid">
+            <div class="belief">
+                <div class="belief-num">01</div>
+                <h3>Collective action is irreplaceable</h3>
+                <p>Individual action is meaningful. Market-based solutions have their place. But the problems communities face — housing, food sovereignty, energy resilience, water stewardship — require sustained collective action at a scale that neither individuals nor markets handle well on their own.</p>
+            </div>
+            <div class="belief">
+                <div class="belief-num">02</div>
+                <h3>Skills and resources already exist</h3>
+                <p>Most communities don't lack the materials or the knowledge to become more resilient. They lack the coordination infrastructure to put what already exists to work. A builder who knows hemp-lime construction lives 20 miles from someone building with straw bale. They just haven't found each other.</p>
+            </div>
+            <div class="belief">
+                <div class="belief-num">03</div>
+                <h3>Trust is built through track record</h3>
+                <p>You can't download trust. It accumulates through repeated commitments, kept or explained. A platform that makes commitments visible — and that holds the record honestly when they're met or missed — does more for community trust than any identity verification system.</p>
+            </div>
+            <div class="belief">
+                <div class="belief-num">04</div>
+                <h3>Completed work is the community's memory</h3>
+                <p>Most projects end and disappear. The next group who tries to do the same thing starts from zero. Earthback's archive is a deliberate design choice: every completed project is permanent, searchable, and useful to future builders. The network's knowledge compounds over time.</p>
+            </div>
+            <div class="belief">
+                <div class="belief-num">05</div>
+                <h3>The feed should serve the people in it</h3>
+                <p>Algorithmic feeds optimize for engagement — which is not the same as usefulness or accuracy. Earthback uses a simple circle-based feed: you see what the people in your circles post. No algorithmic amplification, no engagement optimization, no content from outside your circles unless you ask for it.</p>
+            </div>
+            <div class="belief">
+                <div class="belief-num">06</div>
+                <h3>Governance belongs to the community</h3>
+                <p>Earthback is governed by its Core Constitution — a document written to keep the platform accountable to the people who use it, not to investors or advertisers. The community has standing to shape how the platform evolves. No VC term sheet will override that.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHAT WE'RE NOT -->
+<section class="not-section">
+    <div class="inner">
+        <div class="section-label">What Earthback is not</div>
+        <h2 style="color:var(--parchment);">Some things we've decided<br><em style="color:var(--clay); font-style:italic;">not to build.</em></h2>
+        <div class="not-grid">
+            <div class="not-card">
+                <div class="not-label">Not this</div>
+                <div class="not-heading">A social network optimized for engagement</div>
+                <p class="not-body">Earthback doesn't have a global feed, a trending section, follower counts, or likes. The platform is not trying to maximize the time you spend on it. It's trying to help you get something done and then go do it.</p>
+            </div>
+            <div class="not-card">
+                <div class="not-label">Not this</div>
+                <div class="not-heading">A marketplace</div>
+                <p class="not-body">Earthback is not optimized for commercial transactions. There's no listing fee, no payment processing, no promoted content. Resources move between people based on commitment and community relationship, not price.</p>
+            </div>
+            <div class="not-card">
+                <div class="not-label">Not this</div>
+                <div class="not-heading">A project management tool</div>
+                <p class="not-body">There are no Gantt charts, no ticket queues, no velocity metrics. Projects in Earthback have commitments, tasks, and events — the minimum structure needed to coordinate real work without making the coordination feel like a job.</p>
+            </div>
+            <div class="not-card">
+                <div class="not-label">Not this</div>
+                <div class="not-heading">A VC-backed growth machine</div>
+                <p class="not-body">Earthback is not built to be acquired, to serve ads, or to grow as fast as possible. It's built to be useful to the people who use it, governed by them, and resilient enough to keep working for a long time. Growth should follow usefulness, not the other way around.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONSTITUTION -->
+<section class="constitution-section">
+    <div class="inner">
+        <div class="constitution-layout">
+            <div class="constitution-body">
+                <div class="section-label">Governance</div>
+                <h2>Built by the community.<br><em>Governed by it.</em></h2>
+                <p>Earthback operates under a Core Constitution — a governing document that sets out the rights of community members, the limits of platform authority, and the principles that guide how the platform evolves. The constitution is not a terms-of-service agreement designed to protect the company. It's a compact designed to protect the community.</p>
+                <p>The core commitments the constitution makes: <strong>the platform will never optimize for engagement over usefulness, will never sell member data, will never introduce payment mechanisms that undermine community trust, and will not make major changes to community structure without community consent.</strong></p>
+                <p>The constitution is a living document. As Earthback grows and the community encounters situations the founding document didn't anticipate, members have standing to propose amendments. Changes require a structured consent process — not a quiet update to the terms of service.</p>
+                <p>This is deliberate. The history of community platforms is a history of communities that built real relationships and real value on someone else's infrastructure, only to have the rules change under them. Earthback is trying to do something different: give the community real standing and real teeth, not just a feedback form.</p>
+            </div>
+            <div class="constitution-sidebar">
+                <div class="cs-title">Core Constitution — Article Summary</div>
+                <div class="cs-articles">
+                    <div class="cs-article"><strong>Art. I · Purpose</strong>Coordination of constructive, community-based projects. Non-extractive ethos.</div>
+                    <div class="cs-article"><strong>Art. II · Membership</strong>Open to individuals and groups committed to the platform's values.</div>
+                    <div class="cs-article"><strong>Art. III · Rights</strong>Member rights to participation, data, and governance.</div>
+                    <div class="cs-article"><strong>Art. IV · Projects</strong>Structure and lifecycle of projects within the platform.</div>
+                    <div class="cs-article"><strong>Art. V · Resources</strong>How skills, materials, and labor are committed and tracked.</div>
+                    <div class="cs-article"><strong>Art. VI · Trust</strong>Reputation, vouching, and verified action systems.</div>
+                    <div class="cs-article"><strong>Art. VII · Safety</strong>Moderation, reporting, and graduated permissions.</div>
+                    <div class="cs-article"><strong>Art. VIII · Governance</strong>Decision-making, amendments, and community consent.</div>
+                    <div class="cs-article"><strong>Art. IX · Sustainability</strong>Platform funding and anti-extraction commitments.</div>
+                    <div class="cs-article"><strong>Art. X · Evolution</strong>How the platform grows and changes with community guidance.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TEAM / VALUES -->
+<section class="team-section">
+    <div class="inner">
+        <div class="section-label">Who we are</div>
+        <h2>Builders building<br>for builders</h2>
+        <div class="mission-statement">
+            <p>Earthback is a small team with direct experience in the kinds of projects this platform is designed to support: natural building, off-grid systems, food production, mutual aid, and community organizing. We've felt the coordination problem from the inside.</p>
+            <p>We're not funded by investors. We're not trying to build a billion-dollar company. We're trying to build something that's genuinely useful to communities who want to work together toward a more resilient world — and to make it sustainable enough to keep doing that for a long time.</p>
+            <p>If that sounds like you, <strong>come join us.</strong> Earthback is free and open. Early members get direct access to us, their feedback shapes what we build next, and their projects become the first entries in the community's shared archive.</p>
+        </div>
+        <div class="values-row">
+            <div class="value-pill">Constructive, not extractive</div>
+            <div class="value-pill">Community governed</div>
+            <div class="value-pill">No algorithmic feed</div>
+            <div class="value-pill">No ads, ever</div>
+            <div class="value-pill">Archives are permanent</div>
+            <div class="value-pill">Commitments are specific</div>
+            <div class="value-pill">Trust is earned</div>
+            <div class="value-pill">Start small</div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="join">
+    <div class="inner">
+        <h2>Be part of what comes next</h2>
+        <p>Earthback is open and free to join. We're a community of people building with intention — and we're just getting started.</p>
+        <a href="join.html" style="text-decoration:none;"><button class="cta-btn">Create your free account →</button></a>
+        <div class="cta-note">Free · Takes two minutes · No spam</div>
+    </div>
+</section>
+
+<footer>
+    <a href="index.html" class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+    <ul class="footer-links">
+        <li><a href="how-it-works.html">How it works</a></li>
+        <li><a href="use-cases.html">Use cases</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="safety.html">Safety</a></li>
+        <li><a href="join.html">Join / Sign In</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+    <div class="footer-copy">© 2026 Earthback. Built by the community, for the community.</div>
+</footer>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <a href="how-it-works.html">How It Works</a>
+    <a href="use-cases.html">Use Cases</a>
+    <a href="about.html">About</a>
+    <a href="safety.html">Safety</a>
+
+    <a href="join.html" class="join-mobile">Join / Sign In &rarr;</a>
+</div>
+<script>
+function toggleMobileNav() {
+    var btn = document.getElementById('nav-hamburger');
+    var overlay = document.getElementById('mobile-nav-overlay');
+    btn.classList.toggle('open');
+    overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('.mobile-nav-overlay a').forEach(function(a) {
+    a.addEventListener('click', function() {
+        document.getElementById('nav-hamburger').classList.remove('open');
+        document.getElementById('mobile-nav-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    });
+});
+</script>
+
+<!-- Auth state check -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(async function() {
+  try {
+    const sb = supabase.createClient('https://yptktmzagctusbeqdaty.supabase.co', 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC');
+    const { data: { session } } = await sb.auth.getSession();
+    const link = document.getElementById('nav-signin-link');
+    if (session && link) {
+      link.textContent = 'Sign Out';
+      link.href = '#';
+      link.style.opacity = '1';
+      link.addEventListener('click', async function(e) {
+        e.preventDefault();
+        await sb.auth.signOut();
+        window.location.reload();
+      });
+    }
+  } catch(e) { /* silent fail — sign in link stays as-is */ }
+})();
+</script>
+</body>

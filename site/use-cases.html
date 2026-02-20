@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Use Cases — Earthback</title>
+    <meta name="description" content="Build days, food co-ops, off-grid energy projects, mutual aid networks — real things people build with Earthback.">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --green:      #1F3A2E;
+            --green-mid:  #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay:       #C2A56C;
+            --clay-dark:  #8A5B3F;
+            --moss:       #7e9b73;
+            --parchment:  #F2EFE6;
+            --parchment2: #EAE3D3;
+            --ink:        #2B2E30;
+            --ink-soft:   #555A5C;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+            --max:        1200px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(20, 38, 28, 0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194, 165, 108, 0.12);
+        }
+        .nav-inner {
+            max-width: var(--max); margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--parchment); text-decoration: none;
+            letter-spacing: 0.1em; text-transform: uppercase;
+        }
+        .nav-logo .brand-back { color: var(--clay); }
+/* ── Brand name treatment: "the Earthback Project" ── */
+.brand-the {
+    font-size: 0.5em;
+    font-weight: 300;
+    color: rgba(242,239,230,0.52);
+    text-transform: lowercase;
+    letter-spacing: 0.03em;
+    vertical-align: 0.22em;
+    margin-right: 0.18em;
+}
+.brand-back { color: var(--clay); }
+.brand-project {
+    font-size: 0.46em;
+    font-weight: 400;
+    color: rgba(242,239,230,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    vertical-align: 0.24em;
+}
+        nav ul { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        nav a {
+            color: rgba(242,239,230,0.78); text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            transition: color 0.2s var(--ease);
+        }
+        nav a:hover { color: var(--clay); }
+        .nav-join {
+            background: var(--clay); color: var(--green) !important;
+            padding: 0.55rem 1.35rem; border-radius: 3px;
+            font-weight: 700 !important;
+        }
+        .nav-join:hover { background: var(--parchment) !important; }
+
+        /* PAGE HERO */
+        .page-hero {
+            background: linear-gradient(158deg, #0b1a12 0%, #1F3A2E 55%, #2a4d3a 100%);
+            padding: 9rem 2rem 5rem;
+            text-align: center;
+        }
+        .page-hero .eyebrow {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 0.76rem; font-weight: 600; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--clay); margin-bottom: 1.25rem;
+        }
+        .page-hero .eyebrow::before, .page-hero .eyebrow::after {
+            content: ''; width: 20px; height: 1px; background: var(--clay);
+        }
+        .page-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            font-weight: 700; color: var(--parchment);
+            line-height: 1.1; margin-bottom: 1.25rem;
+        }
+        .page-hero h1 em { font-style: italic; color: var(--clay); }
+        .page-hero .lead {
+            font-size: 1.1rem; color: rgba(242,239,230,0.78);
+            max-width: 60ch; margin: 0 auto; line-height: 1.8;
+        }
+
+        /* SHARED */
+        section { padding: 5rem 2rem; }
+        .inner { max-width: var(--max); margin: 0 auto; }
+        .section-label {
+            font-size: 0.74rem; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--clay); margin-bottom: 0.75rem;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700; color: var(--green);
+            line-height: 1.15; margin-bottom: 1rem;
+        }
+
+        /* USE CASE CARDS */
+        .cases-section { background: var(--parchment); }
+        .cases-intro { max-width: 60ch; margin-bottom: 4rem; }
+        .cases-intro p { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.85; }
+        .case-grid { display: flex; flex-direction: column; gap: 3.5rem; }
+
+        .case-card {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            background: white;
+            border: 1px solid var(--parchment2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .case-card.flip { grid-template-columns: 1fr 320px; }
+        .case-card.flip .case-visual { order: 2; }
+        .case-card.flip .case-body { order: 1; }
+
+        .case-visual {
+            padding: 2.75rem 2.25rem;
+            display: flex; flex-direction: column;
+            justify-content: space-between;
+            min-height: 340px;
+        }
+        .cv-natural { background: linear-gradient(160deg, #2a3d2e, #3d5a40); }
+        .cv-solar   { background: linear-gradient(160deg, #1a2d3d, #2a4a5f); }
+        .cv-water   { background: linear-gradient(160deg, #1d3340, #264e5c); }
+        .cv-food    { background: linear-gradient(160deg, #2e3a1e, #3d5228); }
+        .cv-mutual  { background: linear-gradient(160deg, #3d2820, #5a3628); }
+        .cv-housing { background: linear-gradient(160deg, #2a2020, #3d2e2a); }
+
+        .case-circle-tag {
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+            text-transform: uppercase; color: rgba(255,255,255,0.5);
+        }
+        .case-title-big {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.1rem; font-weight: 700;
+            color: white; line-height: 1.1; margin-top: 1.5rem;
+        }
+        .case-title-big em { color: var(--clay); font-style: italic; }
+        .case-stats { display: flex; gap: 1.75rem; margin-top: 1.75rem; flex-wrap: wrap; }
+        .cs-n {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem; font-weight: 700;
+            color: var(--clay); line-height: 1;
+        }
+        .cs-l { font-size: 0.72rem; color: rgba(255,255,255,0.48); }
+
+        .case-body { padding: 2.75rem 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+        .case-story {
+            font-size: 0.97rem; color: var(--ink-soft);
+            line-height: 1.9; margin-bottom: 1.25rem;
+        }
+        .case-story strong { color: var(--green); }
+        .case-primitives { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .prim-tag {
+            background: var(--parchment); border: 1px solid var(--parchment2);
+            padding: 0.3rem 0.8rem; border-radius: 20px;
+            font-size: 0.77rem; font-weight: 500; color: var(--ink-soft);
+        }
+        .case-quote {
+            border-left: 3px solid var(--clay);
+            padding: 0.9rem 1.25rem;
+            font-size: 0.92rem; color: var(--ink);
+            font-style: italic; line-height: 1.7;
+            background: var(--parchment);
+            border-radius: 0 2px 2px 0;
+        }
+        .case-quote cite {
+            display: block; margin-top: 0.5rem;
+            font-style: normal; font-size: 0.78rem; color: var(--ink-soft);
+        }
+
+        /* TEMPLATE STRIP */
+        .template-section { background: var(--green); padding: 5rem 2rem; }
+        .template-section .section-label { color: var(--clay); }
+        .template-lead {
+            color: rgba(242,239,230,0.72); max-width: 58ch;
+            font-size: 1rem; line-height: 1.85; margin-bottom: 3rem;
+        }
+        .template-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+        }
+        .template-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(194,165,108,0.2);
+            padding: 1.75rem; border-radius: 3px;
+        }
+        .tc-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem; font-weight: 700;
+            color: var(--clay); margin-bottom: 0.6rem;
+        }
+        .tc-desc { font-size: 0.87rem; color: rgba(242,239,230,0.62); line-height: 1.7; }
+        .tc-badge {
+            display: inline-block; margin-top: 1rem;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+            text-transform: uppercase; color: rgba(194,165,108,0.65);
+        }
+
+        /* CTA */
+        .cta-section { background: var(--parchment2); text-align: center; padding: 5rem 2rem; }
+        .cta-section h2 { color: var(--green); margin-bottom: 1rem; }
+        .cta-section p { color: var(--ink-soft); max-width: 52ch; margin: 0 auto 2.5rem; font-size: 1.05rem; }
+        .cta-form { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+        .cta-input {
+            padding: 0.875rem 1.5rem; background: white;
+            border: 1px solid var(--parchment2);
+            color: var(--ink); border-radius: 3px;
+            font-size: 0.95rem; width: 280px; outline: none;
+        }
+        .cta-input:focus { border-color: var(--green); }
+        .cta-btn {
+            background: var(--green); color: var(--parchment);
+            padding: 0.875rem 2rem; border: none;
+            border-radius: 3px; font-size: 0.875rem;
+            font-weight: 700; letter-spacing: 0.05em;
+            text-transform: uppercase; cursor: pointer;
+        }
+        .cta-btn:hover { background: var(--green-mid); }
+        .cta-note { margin-top: 1.25rem; font-size: 0.8rem; color: var(--ink-soft); }
+
+        /* FOOTER */
+        footer { background: #0e1e15; padding: 3rem 2rem; text-align: center; }
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 700;
+            color: var(--parchment); letter-spacing: 0.1em;
+            text-transform: uppercase; text-decoration: none;
+            display: inline-block; margin-bottom: 1.25rem;
+        }
+        .footer-logo .brand-back { color: var(--clay); }
+        .footer-links {
+            display: flex; gap: 2rem; justify-content: center;
+            list-style: none; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: rgba(242,239,230,0.5); text-decoration: none;
+            font-size: 0.83rem; transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--clay); }
+        .footer-copy { font-size: 0.78rem; color: rgba(242,239,230,0.3); }
+
+        /* RESPONSIVE */
+        @media (max-width: 960px) {
+            .case-card, .case-card.flip { grid-template-columns: 1fr; }
+            .case-card.flip .case-visual, .case-card.flip .case-body { order: unset; }
+            .case-visual { min-height: 240px; }
+            .template-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 680px) {
+            nav ul { display: none; }
+            .page-hero { padding: 7rem 1.25rem 4rem; }
+            section { padding: 3.5rem 1.25rem; }
+            .template-grid { grid-template-columns: 1fr; }
+        }
+
+
+        /* ── MOBILE NAV ── */
+        .nav-hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer; padding: 4px;
+        }
+        .nav-hamburger span {
+            display: block; width: 22px; height: 2px;
+            background: var(--parchment); border-radius: 2px;
+            transition: all 0.25s;
+        }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .mobile-nav-overlay {
+            display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+            background: rgba(9,18,13,0.98); z-index: 999;
+            flex-direction: column; padding: 2rem;
+            gap: 0;
+        }
+        .mobile-nav-overlay.open { display: flex; }
+        .mobile-nav-overlay a {
+            font-size: 1.4rem; color: rgba(242,239,230,0.8);
+            text-decoration: none; padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            font-family: 'Cormorant Garamond', serif; font-weight: 600;
+            transition: color 0.15s;
+        }
+        .mobile-nav-overlay a:hover { color: var(--clay); }
+        .mobile-nav-overlay a.join-mobile {
+            margin-top: 1.5rem; border: none;
+            background: var(--clay); color: var(--green) !important;
+            text-align: center; border-radius: 3px;
+            font-family: 'Inter', sans-serif; font-size: 1rem;
+            font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+            padding: 1rem;
+        }
+        @media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+        <ul>
+            <li><a href="how-it-works.html">How it works</a></li>
+            <li><a href="use-cases.html" style="color:var(--clay)">Use cases</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="safety.html">Safety</a></li>
+                        <li><a href="login.html" id="nav-signin-link" style="opacity:0.75;">Sign In</a></li>
+            <li><a href="join.html" class="nav-join">Join / Sign In</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<div class="page-hero">
+    <div class="eyebrow">Real projects</div>
+    <h1>What people build<br><em>on Earthback</em></h1>
+    <p class="lead">Build days, food co-ops, off-grid energy systems, water infrastructure, mutual aid networks, community housing — the kind of work that happens when people coordinate through shared circles and honest commitments.</p>
+</div>
+
+<section class="cases-section">
+    <div class="inner">
+        <div class="cases-intro">
+            <div class="section-label">Stories from the field</div>
+            <h2>Six types of projects.<br>One way of working.</h2>
+            <p>Every group uses Earthback differently. But every project follows the same pattern: people find each other in a circle, something forms from conversation, commitments are made and kept, and the record stays when it's done.</p>
+        </div>
+
+        <div class="case-grid">
+
+            <div class="case-card">
+                <div class="case-visual cv-natural">
+                    <div class="case-circle-tag">Circle · Natural Building</div>
+                    <div>
+                        <div class="case-title-big">The<br><em>Build Day</em></div>
+                        <div class="case-stats">
+                            <div><div class="cs-n">9</div><div class="cs-l">builders</div></div>
+                            <div><div class="cs-n">1</div><div class="cs-l">weekend</div></div>
+                            <div><div class="cs-n">3</div><div class="cs-l">walls raised</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-body">
+                    <p class="case-story"><strong>Maria has been doing hemp-lime construction for three years</strong>, but she doesn't have enough hands for the next phase of her studio build. She posts in the Natural Building circle — not an ad, just a description of what she's doing, what she needs, and when.</p>
+                    <p class="case-story">In 48 hours, six people have responded. Three have direct hemp-lime experience. Two want to learn. One is offering a truck and mixer. Maria creates a project, adds an event (Saturday, 8am, Taos), and everyone commits specifically — what they're bringing, how many hours, what skill level.</p>
+                    <p class="case-story">Nine people show up. Three walls go up. The project archives with a full record. Maria's circle sees it. Future organizers find it when planning their own build day.</p>
+                    <div class="case-primitives">
+                        <span class="prim-tag">People</span><span class="prim-tag">Skills</span><span class="prim-tag">Projects</span><span class="prim-tag">Places</span><span class="prim-tag">Resources</span>
+                    </div>
+                    <div class="case-quote">
+                        "I've organized build days on Facebook and it's chaos — people say they're coming and don't. Earthback commitments actually mean something."
+                        <cite>— Maria Martinez, Taos NM</cite>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card flip">
+                <div class="case-visual cv-solar">
+                    <div class="case-circle-tag">Circle · Solar & Off-Grid</div>
+                    <div>
+                        <div class="case-title-big">Group<br><em>Equipment Buy</em></div>
+                        <div class="case-stats">
+                            <div><div class="cs-n">4</div><div class="cs-l">households</div></div>
+                            <div><div class="cs-n">$2,800</div><div class="cs-l">saved together</div></div>
+                            <div><div class="cs-n">12kW</div><div class="cs-l">installed total</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-body">
+                    <p class="case-story"><strong>Tom knows that solar panels get cheaper when you buy in bulk</strong>, but he's only one household. He posts in the Solar & Off-Grid circle asking if anyone nearby is planning a system this year.</p>
+                    <p class="case-story">Three households respond — two in the same county, one 40 miles away but willing to coordinate. Together they negotiate a group purchase with an installer who would have quoted each of them 15% more individually. Each household commits their system specs, timeline, and budget contribution.</p>
+                    <p class="case-story">All four systems go in. The savings and installer contact become part of the circle's knowledge — the next group who organizes a bulk buy finds it and starts faster.</p>
+                    <div class="case-primitives">
+                        <span class="prim-tag">People</span><span class="prim-tag">Resources</span><span class="prim-tag">Projects</span><span class="prim-tag">Needs</span>
+                    </div>
+                    <div class="case-quote">
+                        "I never would have found the other households on my own. The circle made it obvious we existed and could work together."
+                        <cite>— Tom H., rural New Mexico</cite>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <div class="case-visual cv-water">
+                    <div class="case-circle-tag">Circle · Water Systems</div>
+                    <div>
+                        <div class="case-title-big">Shared<br><em>Greywater System</em></div>
+                        <div class="case-stats">
+                            <div><div class="cs-n">3</div><div class="cs-l">households</div></div>
+                            <div><div class="cs-n">8 mo</div><div class="cs-l">timeline</div></div>
+                            <div><div class="cs-n">18k</div><div class="cs-l">gal/yr reused</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-body">
+                    <p class="case-story"><strong>Three neighboring households on a shared property each needed a greywater system</strong>, but the cost and permitting was prohibitive alone. Through the Water Systems circle, they discovered their properties share a natural drainage gradient that makes a shared system feasible.</p>
+                    <p class="case-story">The project ran eight months across three phases: site assessment, permitting (which they split), and installation. Each household committed specific financial contributions, labor days, and ongoing maintenance responsibilities.</p>
+                    <p class="case-story">The archived project documents the design, permit process, installer, and division of maintenance — everything the next group attempting this in their county needs to start faster.</p>
+                    <div class="case-primitives">
+                        <span class="prim-tag">People</span><span class="prim-tag">Places</span><span class="prim-tag">Projects</span><span class="prim-tag">Resources</span><span class="prim-tag">Needs</span>
+                    </div>
+                    <div class="case-quote">
+                        "The project archive is going to save the next group months of research. The permitting alone — we learned so much the hard way."
+                        <cite>— Keiko N., northern Arizona</cite>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card flip">
+                <div class="case-visual cv-food">
+                    <div class="case-circle-tag">Circle · Permaculture & Food</div>
+                    <div>
+                        <div class="case-title-big">Food Forest<br><em>Planning Cohort</em></div>
+                        <div class="case-stats">
+                            <div><div class="cs-n">12</div><div class="cs-l">participants</div></div>
+                            <div><div class="cs-n">6</div><div class="cs-l">months</div></div>
+                            <div><div class="cs-n">4</div><div class="cs-l">sites planned</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-body">
+                    <p class="case-story"><strong>A group of landowners and renters wanted to plant food forests</strong> on their properties but didn't have the design knowledge to do it well alone. A permaculture designer in the circle offered to run a monthly cohort — not as paid consulting, but as a skill-share in exchange for labor on her own site.</p>
+                    <p class="case-story">Twelve people joined. Six months, one session per month, rotating through each site. By the end, four properties had detailed food forest designs. Everyone who participated had both given and received. Three participants went on to start their own cohorts.</p>
+                    <div class="case-primitives">
+                        <span class="prim-tag">People</span><span class="prim-tag">Skills</span><span class="prim-tag">Projects</span><span class="prim-tag">Places</span>
+                    </div>
+                    <div class="case-quote">
+                        "We got more done learning together than any of us would have alone. And I got six free labor days on my own site."
+                        <cite>— Priya S., permaculture designer</cite>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <div class="case-visual cv-mutual">
+                    <div class="case-circle-tag">Circle · Mutual Aid</div>
+                    <div>
+                        <div class="case-title-big">Winter<br><em>Heating Network</em></div>
+                        <div class="case-stats">
+                            <div><div class="cs-n">31</div><div class="cs-l">households</div></div>
+                            <div><div class="cs-n">14</div><div class="cs-l">cord of wood</div></div>
+                            <div><div class="cs-n">0</div><div class="cs-l">left cold</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-body">
+                    <p class="case-story"><strong>Before the first hard freeze, a neighborhood organizer posted in the Mutual Aid circle</strong>: she knew of at least six households that couldn't reliably heat through winter. She was looking for wood donors, haulers, and connectors who could identify households that hadn't yet asked for help.</p>
+                    <p class="case-story">The response was immediate. Donors committed specific quantities. Haulers committed dates and vehicle capacity. The project grew to 31 participants — donors, haulers, and recipients alike. By December, 14 cord had moved. No household went cold.</p>
+                    <p class="case-story">The archived project became a template. The following winter the network ran it again, faster, with more reach — using last year's record as a starting point.</p>
+                    <div class="case-primitives">
+                        <span class="prim-tag">People</span><span class="prim-tag">Resources</span><span class="prim-tag">Projects</span><span class="prim-tag">Needs</span><span class="prim-tag">Places</span>
+                    </div>
+                    <div class="case-quote">
+                        "Mutual aid usually runs on spreadsheets and group texts. Earthback gave us structure that didn't collapse when it got complicated."
+                        <cite>— Rena A., community organizer</cite>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card flip">
+                <div class="case-visual cv-housing">
+                    <div class="case-circle-tag">Circle · Community Housing</div>
+                    <div>
+                        <div class="case-title-big">Land Trust<br><em>Formation</em></div>
+                        <div class="case-stats">
+                            <div><div class="cs-n">18 mo</div><div class="cs-l">to incorporation</div></div>
+                            <div><div class="cs-n">7</div><div class="cs-l">founders</div></div>
+                            <div><div class="cs-n">5 acres</div><div class="cs-l">under stewardship</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-body">
+                    <p class="case-story"><strong>Forming a community land trust is one of the most complex collective projects imaginable</strong> — legal structure, governance, fundraising, site selection, long-term stewardship decisions — all requiring sustained coordination among people with different skills and timelines.</p>
+                    <p class="case-story">Seven people in the Community Housing circle began together. Eighteen months of phased milestones, committed contributors, and documents attached to project phases meant nothing got lost between members and meetings. Governance documents, bylaws, and meeting records lived inside the project, not in someone's email.</p>
+                    <p class="case-story">The archived project is now one of the most detailed in the network — a documented path for any group attempting something similar.</p>
+                    <div class="case-primitives">
+                        <span class="prim-tag">People</span><span class="prim-tag">Places</span><span class="prim-tag">Projects</span><span class="prim-tag">Resources</span><span class="prim-tag">Skills</span><span class="prim-tag">Needs</span>
+                    </div>
+                    <div class="case-quote">
+                        "Without a way to track decisions and accountability, we would have dissolved in month three. The project archive kept us honest."
+                        <cite>— Denise W., land trust co-founder</cite>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="template-section">
+    <div class="inner">
+        <div class="section-label">Project templates</div>
+        <h2 style="color:var(--parchment);">Start with a template.<br><em style="color:var(--clay); font-style:italic;">Make it your own.</em></h2>
+        <p class="template-lead">Every new project can start from a template built around real workflows. Pre-filled with the roles, tasks, and commitment types that have worked for groups like yours.</p>
+        <div class="template-grid">
+            <div class="template-card">
+                <div class="tc-name">Build Day</div>
+                <div class="tc-desc">Skill-share and labor coordination for a single-day construction event. Roles: lead builder, skill-sharers, laborers, resource providers.</div>
+                <div class="tc-badge">Natural Building</div>
+            </div>
+            <div class="template-card">
+                <div class="tc-name">Food Co-op</div>
+                <div class="tc-desc">Recurring group buying coordination — orders, pickups, storage, and rotating admin responsibilities across households.</div>
+                <div class="tc-badge">Permaculture & Food</div>
+            </div>
+            <div class="template-card">
+                <div class="tc-name">Training Cohort</div>
+                <div class="tc-desc">Multi-session learning group with rotating host sites, skill leads, and mutual commitment to attendance and participation.</div>
+                <div class="tc-badge">Any circle</div>
+            </div>
+            <div class="template-card">
+                <div class="tc-name">Mutual Aid Network</div>
+                <div class="tc-desc">Resource mapping, donor and recipient coordination, and recurring distribution cycles for neighborhood resilience.</div>
+                <div class="tc-badge">Mutual Aid</div>
+            </div>
+            <div class="template-card">
+                <div class="tc-name">Infrastructure Project</div>
+                <div class="tc-desc">Multi-phase technical coordination with split costs, shared maintenance responsibilities, and milestone tracking.</div>
+                <div class="tc-badge">Water · Solar</div>
+            </div>
+            <div class="template-card">
+                <div class="tc-name">Community Housing</div>
+                <div class="tc-desc">Long-term governance and land stewardship coordination — legal milestones, document management, member accountability.</div>
+                <div class="tc-badge">Community Housing</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section" id="join">
+    <div class="inner">
+        <div class="section-label">Come build with us</div>
+        <h2>What are you building?</h2>
+        <p>Earthback is open and free to join. Start with your circles, share what you know, and form a project when you're ready.</p>
+        <a href="join.html" style="text-decoration:none;"><button class="cta-btn">Create your free account →</button></a>
+        <div class="cta-note">Free · Takes two minutes · No spam</div>
+    </div>
+</section>
+
+<footer>
+    <a href="index.html" class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+    <ul class="footer-links">
+        <li><a href="how-it-works.html">How it works</a></li>
+        <li><a href="use-cases.html">Use cases</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="safety.html">Safety</a></li>
+        <li><a href="join.html">Join / Sign In</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+    <div class="footer-copy">© 2026 Earthback. Built by the community, for the community.</div>
+</footer>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <a href="how-it-works.html">How It Works</a>
+    <a href="use-cases.html">Use Cases</a>
+    <a href="about.html">About</a>
+    <a href="safety.html">Safety</a>
+
+    <a href="join.html" class="join-mobile">Join / Sign In &rarr;</a>
+</div>
+<script>
+function toggleMobileNav() {
+    var btn = document.getElementById('nav-hamburger');
+    var overlay = document.getElementById('mobile-nav-overlay');
+    btn.classList.toggle('open');
+    overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('.mobile-nav-overlay a').forEach(function(a) {
+    a.addEventListener('click', function() {
+        document.getElementById('nav-hamburger').classList.remove('open');
+        document.getElementById('mobile-nav-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    });
+});
+</script>
+
+<!-- Auth state check -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(async function() {
+  try {
+    const sb = supabase.createClient('https://yptktmzagctusbeqdaty.supabase.co', 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC');
+    const { data: { session } } = await sb.auth.getSession();
+    const link = document.getElementById('nav-signin-link');
+    if (session && link) {
+      link.textContent = 'Sign Out';
+      link.href = '#';
+      link.style.opacity = '1';
+      link.addEventListener('click', async function(e) {
+        e.preventDefault();
+        await sb.auth.signOut();
+        window.location.reload();
+      });
+    }
+  } catch(e) { /* silent fail — sign in link stays as-is */ }
+})();
+</script>
+</body>

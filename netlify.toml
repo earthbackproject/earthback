@@ -1,0 +1,8 @@
+[build]
+  publish = "site/"
+
+# Redirect rules (backup — _redirects in site/ takes priority)
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200

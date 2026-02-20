@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety & Trust — Earthback</title>
+    <meta name="description" content="How trust works in Earthback, how the community stays healthy, and what we mean by 'constructive, not extractive.'">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --green:      #1F3A2E;
+            --green-mid:  #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay:       #C2A56C;
+            --clay-dark:  #8A5B3F;
+            --moss:       #7e9b73;
+            --parchment:  #F2EFE6;
+            --parchment2: #EAE3D3;
+            --ink:        #2B2E30;
+            --ink-soft:   #555A5C;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+            --max:        1100px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(20, 38, 28, 0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194, 165, 108, 0.12);
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--parchment); text-decoration: none;
+            letter-spacing: 0.1em; text-transform: uppercase;
+        }
+        .nav-logo .brand-back { color: var(--clay); }
+/* ── Brand name treatment: "the Earthback Project" ── */
+.brand-the {
+    font-size: 0.5em;
+    font-weight: 300;
+    color: rgba(242,239,230,0.52);
+    text-transform: lowercase;
+    letter-spacing: 0.03em;
+    vertical-align: 0.22em;
+    margin-right: 0.18em;
+}
+.brand-back { color: var(--clay); }
+.brand-project {
+    font-size: 0.46em;
+    font-weight: 400;
+    color: rgba(242,239,230,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    vertical-align: 0.24em;
+}
+        nav ul { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        nav a {
+            color: rgba(242,239,230,0.78); text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            transition: color 0.2s var(--ease);
+        }
+        nav a:hover { color: var(--clay); }
+        .nav-join {
+            background: var(--clay); color: var(--green) !important;
+            padding: 0.55rem 1.35rem; border-radius: 3px;
+            font-weight: 700 !important;
+        }
+        .nav-join:hover { background: var(--parchment) !important; }
+
+        /* PAGE HERO */
+        .page-hero {
+            background: linear-gradient(158deg, #0b1a12 0%, #1F3A2E 55%, #2a4d3a 100%);
+            padding: 9rem 2rem 5rem;
+            text-align: center;
+        }
+        .page-hero .eyebrow {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 0.76rem; font-weight: 600; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--clay); margin-bottom: 1.25rem;
+        }
+        .page-hero .eyebrow::before, .page-hero .eyebrow::after {
+            content: ''; width: 20px; height: 1px; background: var(--clay);
+        }
+        .page-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            font-weight: 700; color: var(--parchment);
+            line-height: 1.1; margin-bottom: 1.25rem;
+        }
+        .page-hero h1 em { font-style: italic; color: var(--clay); }
+        .page-hero .lead {
+            font-size: 1.1rem; color: rgba(242,239,230,0.78);
+            max-width: 58ch; margin: 0 auto; line-height: 1.8;
+        }
+
+        /* SHARED */
+        section { padding: 5rem 2rem; }
+        .inner { max-width: var(--max); margin: 0 auto; }
+        .section-label {
+            font-size: 0.74rem; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--clay); margin-bottom: 0.75rem;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700; color: var(--green);
+            line-height: 1.15; margin-bottom: 1.5rem;
+        }
+        h2 em { font-style: italic; color: var(--clay-dark); }
+        p { font-size: 1rem; color: var(--ink-soft); line-height: 1.9; margin-bottom: 1.25rem; }
+        p:last-child { margin-bottom: 0; }
+        p strong { color: var(--green); font-weight: 600; }
+
+        /* ETHOS SECTION */
+        .ethos-section { background: var(--parchment); }
+        .ethos-grid {
+            display: grid; grid-template-columns: 1fr 2fr; gap: 6rem;
+            align-items: start;
+        }
+        .ethos-aside {}
+        .ethos-badge {
+            background: var(--green); color: var(--parchment);
+            display: inline-block; padding: 1.25rem 1.75rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            line-height: 1.25; margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+        .ethos-badge em { color: var(--clay); font-style: normal; }
+        .ethos-aside p { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.75; }
+
+        /* TRUST SECTION */
+        .trust-section { background: white; }
+        .trust-grid {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;
+            margin-top: 3rem;
+        }
+        .trust-card {
+            padding: 2rem;
+            border-top: 3px solid var(--clay);
+            background: var(--parchment);
+        }
+        .trust-icon {
+            font-size: 1.75rem; display: block; margin-bottom: 1rem;
+        }
+        .trust-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.45rem; font-weight: 700;
+            color: var(--green); margin-bottom: 0.75rem;
+        }
+        .trust-card p { font-size: 0.9rem; }
+
+        /* STANDARDS SECTION */
+        .standards-section { background: var(--parchment2); }
+        .standards-layout {
+            display: grid; grid-template-columns: 2fr 1fr; gap: 5rem;
+            align-items: start;
+        }
+        .standards-body {}
+        .standards-sidebar {
+            background: white;
+            border: 1px solid var(--parchment2);
+            border-top: 3px solid var(--clay);
+            padding: 2rem;
+        }
+        .std-section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem; font-weight: 700;
+            color: var(--green); margin-bottom: 1rem;
+        }
+        .std-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+        .std-item {
+            display: flex; align-items: flex-start; gap: 0.75rem;
+            font-size: 0.86rem; color: var(--ink-soft); line-height: 1.6;
+        }
+        .std-check {
+            flex-shrink: 0; width: 18px; height: 18px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 700; margin-top: 2px;
+        }
+        .std-check.yes { background: var(--green-soft); color: white; }
+        .std-check.no { background: #c0392b; color: white; }
+
+        /* MODERATION SECTION */
+        .mod-section { background: var(--green); padding: 5rem 2rem; }
+        .mod-section .section-label { color: var(--clay); }
+        .mod-section h2 { color: var(--parchment); margin-bottom: 1rem; }
+        .mod-lead {
+            color: rgba(242,239,230,0.72); max-width: 62ch;
+            font-size: 1rem; line-height: 1.85; margin-bottom: 3rem;
+        }
+        .mod-steps {
+            display: flex; flex-direction: column; gap: 0;
+            counter-reset: step;
+        }
+        .mod-step {
+            display: grid; grid-template-columns: 60px 1fr;
+            gap: 1.5rem; align-items: start;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(194,165,108,0.15);
+        }
+        .mod-step:last-child { border-bottom: none; }
+        .mod-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem; font-weight: 700;
+            color: rgba(194,165,108,0.3); line-height: 1;
+        }
+        .mod-content {}
+        .mod-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem; font-weight: 700;
+            color: var(--parchment); margin-bottom: 0.5rem;
+        }
+        .mod-desc {
+            font-size: 0.9rem; color: rgba(242,239,230,0.62);
+            line-height: 1.75;
+        }
+
+        /* PRIVACY SECTION */
+        .privacy-section { background: var(--parchment); }
+        .privacy-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        .privacy-card {
+            background: white;
+            border: 1px solid var(--parchment2);
+            padding: 2rem;
+            border-radius: 3px;
+        }
+        .privacy-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem; font-weight: 700;
+            color: var(--green); margin-bottom: 0.75rem;
+        }
+        .privacy-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.75; }
+        .priv-tag {
+            display: inline-block; margin-top: 1rem;
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+            text-transform: uppercase; padding: 0.3rem 0.75rem;
+            border-radius: 2px;
+        }
+        .priv-tag.shared { background: var(--parchment2); color: var(--ink-soft); }
+        .priv-tag.private { background: var(--green); color: var(--parchment); }
+        .priv-tag.never { background: #c0392b; color: white; }
+
+        /* CTA */
+        .cta-section {
+            background: var(--parchment2); text-align: center; padding: 5rem 2rem;
+        }
+        .cta-section h2 { color: var(--green); margin-bottom: 1rem; }
+        .cta-section p { color: var(--ink-soft); max-width: 52ch; margin: 0 auto 2.5rem; font-size: 1.05rem; }
+        .cta-form { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+        .cta-input {
+            padding: 0.875rem 1.5rem; background: white;
+            border: 1px solid var(--parchment2);
+            color: var(--ink); border-radius: 3px;
+            font-size: 0.95rem; width: 280px; outline: none;
+        }
+        .cta-input:focus { border-color: var(--green); }
+        .cta-btn {
+            background: var(--green); color: var(--parchment);
+            padding: 0.875rem 2rem; border: none;
+            border-radius: 3px; font-size: 0.875rem;
+            font-weight: 700; letter-spacing: 0.05em;
+            text-transform: uppercase; cursor: pointer;
+        }
+        .cta-note { margin-top: 1.25rem; font-size: 0.8rem; color: var(--ink-soft); }
+
+        /* FOOTER */
+        footer { background: #0e1e15; padding: 3rem 2rem; text-align: center; }
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 700;
+            color: var(--parchment); letter-spacing: 0.1em;
+            text-transform: uppercase; text-decoration: none;
+            display: inline-block; margin-bottom: 1.25rem;
+        }
+        .footer-logo .brand-back { color: var(--clay); }
+        .footer-links {
+            display: flex; gap: 2rem; justify-content: center;
+            list-style: none; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: rgba(242,239,230,0.5); text-decoration: none;
+            font-size: 0.83rem; transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--clay); }
+        .footer-copy { font-size: 0.78rem; color: rgba(242,239,230,0.3); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .ethos-grid,
+            .standards-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+            .trust-grid { grid-template-columns: 1fr; }
+            .privacy-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 680px) {
+            nav ul { display: none; }
+            .page-hero { padding: 7rem 1.25rem 4rem; }
+            section { padding: 3.5rem 1.25rem; }
+        }
+
+
+        /* ── MOBILE NAV ── */
+        .nav-hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer; padding: 4px;
+        }
+        .nav-hamburger span {
+            display: block; width: 22px; height: 2px;
+            background: var(--parchment); border-radius: 2px;
+            transition: all 0.25s;
+        }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .mobile-nav-overlay {
+            display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+            background: rgba(9,18,13,0.98); z-index: 999;
+            flex-direction: column; padding: 2rem;
+            gap: 0;
+        }
+        .mobile-nav-overlay.open { display: flex; }
+        .mobile-nav-overlay a {
+            font-size: 1.4rem; color: rgba(242,239,230,0.8);
+            text-decoration: none; padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            font-family: 'Cormorant Garamond', serif; font-weight: 600;
+            transition: color 0.15s;
+        }
+        .mobile-nav-overlay a:hover { color: var(--clay); }
+        .mobile-nav-overlay a.join-mobile {
+            margin-top: 1.5rem; border: none;
+            background: var(--clay); color: var(--green) !important;
+            text-align: center; border-radius: 3px;
+            font-family: 'Inter', sans-serif; font-size: 1rem;
+            font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+            padding: 1rem;
+        }
+        @media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+        <ul>
+            <li><a href="how-it-works.html">How it works</a></li>
+            <li><a href="use-cases.html">Use cases</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="safety.html" style="color:var(--clay)">Safety</a></li>
+                        <li><a href="login.html" id="nav-signin-link" style="opacity:0.75;">Sign In</a></li>
+            <li><a href="join.html" class="nav-join">Join / Sign In</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<div class="page-hero">
+    <div class="eyebrow">Trust & safety</div>
+    <h1>A community worth<br><em>protecting.</em></h1>
+    <p class="lead">Earthback is designed around genuine commitments and the people who make them. Here's how trust is built, how the community stays healthy, and what we mean when we say "constructive, not extractive."</p>
+</div>
+
+<!-- ETHOS -->
+<section class="ethos-section">
+    <div class="inner">
+        <div class="ethos-grid">
+            <div class="ethos-aside">
+                <div class="ethos-badge">Constructive,<br><em>not extractive.</em></div>
+                <p>This is the filter. It's not a checklist of approved activities or a political litmus test. It's a question: does what you're doing give more than it takes?</p>
+                <p>If you're building something that improves the land, the community, or the future — you belong here. If what you're doing extracts value from people or places without giving back — you don't.</p>
+            </div>
+            <div class="ethos-body">
+                <div class="section-label">The standard</div>
+                <h2>Not a rulebook.<br><em>A shared commitment.</em></h2>
+                <p>Earthback doesn't have a 47-page terms of service written by lawyers to protect the platform. It has a Core Constitution written by the community to protect the people in it — and a shared standard that everyone who joins agrees to uphold.</p>
+                <p>The standard is intentionally human and intentionally high. We're not trying to attract everyone — we're trying to attract the right people. Someone who is building a straw-bale home, organizing a food forest, running a mutual aid network, or stewarding a shared water system. People who are already oriented toward the collective good.</p>
+                <p>The community self-governs in the way that any good community does: by holding its members accountable, by maintaining honest records of what was committed and what was delivered, and by having clear expectations about what happens when someone falls short.</p>
+                <p><strong>The platform is a tool. The community is what makes it work.</strong></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust-section">
+    <div class="inner">
+        <div class="section-label">How trust works</div>
+        <h2>Earned, not assumed</h2>
+        <p class="section-lead" style="max-width: 65ch; font-size: 1rem; color: var(--ink-soft); line-height: 1.85; margin-bottom: 0;">Trust in Earthback is built the same way it's built in any real community: through repeated interaction, fulfilled commitments, and the honest record that accumulates over time.</p>
+        <div class="trust-grid">
+            <div class="trust-card">
+                <span class="trust-icon">◎</span>
+                <h3>Track record</h3>
+                <p>Every commitment you make — time, skills, resources — is recorded. Every commitment you keep adds to your track record. Every commitment you miss, with no explanation, also stays on the record. Future project members can see who shows up.</p>
+                <p>This isn't punitive. Life happens and commitments fall through. But honesty matters. If you can't make it, say so early. If something went wrong, say why. The record is honest, not ruthless.</p>
+            </div>
+            <div class="trust-card">
+                <span class="trust-icon">◈</span>
+                <h3>Vouching</h3>
+                <p>Within a circle, members can vouch for each other — an explicit signal that says "I've worked with this person and I'd work with them again." Vouches are public and carry weight.</p>
+                <p>A vouch is a form of accountability for the voucher as well as the vouched. If someone you've vouched for behaves badly, that matters. The social accountability is intentional.</p>
+            </div>
+            <div class="trust-card">
+                <span class="trust-icon">◇</span>
+                <h3>Verified actions</h3>
+                <p>Certain types of activity can be verified by other project members — attendance at a build day, delivery of materials, completion of a task. Verified actions are distinct from self-reported ones and carry additional weight in your profile.</p>
+                <p>As the platform matures, reputation from verified activity becomes the primary trust signal in the network — more than any identity check or self-description.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMMUNITY STANDARDS -->
+<section class="standards-section">
+    <div class="inner">
+        <div class="standards-layout">
+            <div class="standards-body">
+                <div class="section-label">Community standards</div>
+                <h2>What the community<br><em>expects of everyone</em></h2>
+                <p>These aren't rules invented by the platform. They're the expectations that naturally emerge from a community of people trying to do something real together. The platform makes them explicit so there's no ambiguity.</p>
+                <p><strong>Be specific about what you're committing to.</strong> "I'll help" isn't a commitment. "I'll bring my transit level and 6 hours of labor on March 8" is. The difference matters — to the project and to the people depending on you.</p>
+                <p><strong>Communicate early when something changes.</strong> Dropping out of a commitment is sometimes unavoidable. Disappearing without notice is not acceptable. Give the group time to adjust. The earlier you communicate, the less it costs everyone.</p>
+                <p><strong>Be honest about your skills and resources.</strong> Don't claim expertise you don't have, or resources you can't actually provide. A project that's counting on your contribution can't easily replace it at the last minute.</p>
+                <p><strong>Keep what you learn in the circle.</strong> Circles are spaces where people share real information — techniques, resources, failures, lessons learned. That information belongs to the circle. It's not for sharing outside it without consent.</p>
+                <p><strong>Engage in good faith.</strong> Disagreements happen. Disputes over how a project is going are normal. Work through them within the project or circle. Don't take disputes public in ways that harm other members.</p>
+            </div>
+            <div class="standards-sidebar">
+                <div class="std-section-title">What's welcome here</div>
+                <div class="std-list">
+                    <div class="std-item">
+                        <div class="std-check yes">✓</div>
+                        <div>Natural building, earthen construction, hemp-lime, straw bale, cob</div>
+                    </div>
+                    <div class="std-item">
+                        <div class="std-check yes">✓</div>
+                        <div>Solar, wind, off-grid energy systems, group energy purchases</div>
+                    </div>
+                    <div class="std-item">
+                        <div class="std-check yes">✓</div>
+                        <div>Water systems — greywater, rainwater, irrigation, shared infrastructure</div>
+                    </div>
+                    <div class="std-item">
+                        <div class="std-check yes">✓</div>
+                        <div>Permaculture, food forests, community gardens, food co-ops</div>
+                    </div>
+                    <div class="std-item">
+                        <div class="std-check yes">✓</div>
+                        <div>Mutual aid, resource sharing, neighborhood resilience</div>
+                    </div>
+                    <div class="std-item">
+                        <div class="std-check yes">✓</div>
+                        <div>Community land trusts, shared housing, cooperative stewardship</div>
+                    </div>
+                </div>
+                <div class="std-section-title" style="margin-top: 1.5rem;">What doesn't belong</div>
+                <div class="std-list">
+                    <div class="std-item">
+                        <div class="std-check no">✗</div>
+                        <div>Commercial transactions without community context</div>
+                    </div>
+                    <div class="std-item">
+                        <div class="std-check no">✗</div>
+                        <div>Political advocacy unrelated to constructive projects</div>
+                    </div>
+                    <div class="std-item">
+                        <div class="std-check no">✗</div>
+                        <div>Extractive or exploitative project structures</div>
+                    </div>
+                    <div class="std-item">
+                        <div class="std-check no">✗</div>
+                        <div>Misrepresentation of skills, resources, or intentions</div>
+                    </div>
+                    <div class="std-item">
+                        <div class="std-check no">✗</div>
+                        <div>Harassment, discrimination, or bad-faith engagement</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MODERATION -->
+<section class="mod-section">
+    <div class="inner">
+        <div class="section-label">When things go wrong</div>
+        <h2 style="color:var(--parchment);">Moderation that's<br><em style="color:var(--clay); font-style:italic;">proportionate and transparent.</em></h2>
+        <p class="mod-lead">Moderation in Earthback is not automated or algorithmic. It's a human process, handled by circle moderators and the platform's community stewards, with graduated responses and a clear path to resolution.</p>
+        <div class="mod-steps">
+            <div class="mod-step">
+                <div class="mod-num">1</div>
+                <div class="mod-content">
+                    <div class="mod-title">Report</div>
+                    <div class="mod-desc">Any member can report a concern — about a commitment missed without communication, a member acting in bad faith, or a post or project that doesn't belong in the community. Reports are reviewed by circle moderators, not by an algorithm.</div>
+                </div>
+            </div>
+            <div class="mod-step">
+                <div class="mod-num">2</div>
+                <div class="mod-content">
+                    <div class="mod-title">Review</div>
+                    <div class="mod-desc">Circle moderators review the report and reach out to all parties involved. The goal at this stage is understanding, not punishment. Most issues are resolved through conversation — an explanation, an apology, a commitment to do differently.</div>
+                </div>
+            </div>
+            <div class="mod-step">
+                <div class="mod-num">3</div>
+                <div class="mod-content">
+                    <div class="mod-title">Graduated response</div>
+                    <div class="mod-desc">When conversation doesn't resolve the issue, moderators apply a graduated response: a warning that stays on record, a temporary restriction on new commitments or project creation, a suspension from the circle, or — in serious cases — removal from the platform. The response matches the severity and pattern of behavior.</div>
+                </div>
+            </div>
+            <div class="mod-step">
+                <div class="mod-num">4</div>
+                <div class="mod-content">
+                    <div class="mod-title">Appeal</div>
+                    <div class="mod-desc">Any moderation decision can be appealed to the platform's community stewards. Appeals are reviewed by people who weren't involved in the original decision. The outcome of the appeal is final and recorded in the platform's moderation log, which is accessible to community members.</div>
+                </div>
+            </div>
+            <div class="mod-step">
+                <div class="mod-num">5</div>
+                <div class="mod-content">
+                    <div class="mod-title">Transparency</div>
+                    <div class="mod-desc">Earthback publishes aggregated moderation statistics periodically — number of reports, types of issues, outcomes. No individual member data is disclosed, but the community can see how moderation is being applied. Accountability goes both ways.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRIVACY -->
+<section class="privacy-section">
+    <div class="inner">
+        <div class="section-label">Your data</div>
+        <h2>What's shared,<br><em>what stays with you</em></h2>
+        <p style="max-width: 65ch; margin-bottom: 0;">Earthback collects the minimum data needed to make the platform work. Here's what you share with whom, and what stays private.</p>
+        <div class="privacy-grid">
+            <div class="privacy-card">
+                <h3>Visible to your circles</h3>
+                <p>Your name or display name, your circle memberships, your public posts and project activity, your commitment track record (what you committed, what you delivered), and vouches you've given or received.</p>
+                <div class="priv-tag shared">Circle-visible</div>
+            </div>
+            <div class="privacy-card">
+                <h3>Visible only within projects</h3>
+                <p>The details of your specific commitments (when, what, how much), task assignments, and any contact information you choose to share with a project group. Project members can see this; your broader circles cannot.</p>
+                <div class="priv-tag private">Project-only</div>
+            </div>
+            <div class="privacy-card">
+                <h3>Private to you</h3>
+                <p>Your email address, your location beyond what you choose to share (e.g., "Taos NM" is voluntary), any direct messages, draft posts and projects you haven't published. This data is never shared with other members.</p>
+                <div class="priv-tag private">Always private</div>
+            </div>
+            <div class="privacy-card">
+                <h3>Never sold or shared</h3>
+                <p>Earthback does not sell your data. It does not share your data with advertisers, data brokers, or third parties for marketing purposes. Ever. This is a constitutional commitment, not a policy that can be quietly updated.</p>
+                <div class="priv-tag never">Never sold</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="join">
+    <div class="inner">
+        <div class="section-label">Join the community</div>
+        <h2>A place worth building<br>together.</h2>
+        <p>Earthback is open and free. If this sounds like the community you've been looking for, come on in.</p>
+        <a href="join.html" style="text-decoration:none;"><button class="cta-btn">Create your free account →</button></a>
+        <div class="cta-note">Free · Takes two minutes · No spam</div>
+    </div>
+</section>
+
+<footer>
+    <a href="index.html" class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+    <ul class="footer-links">
+        <li><a href="how-it-works.html">How it works</a></li>
+        <li><a href="use-cases.html">Use cases</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="safety.html">Safety</a></li>
+        <li><a href="join.html">Join / Sign In</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+    <div class="footer-copy">© 2026 Earthback. Built by the community, for the community.</div>
+</footer>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <a href="how-it-works.html">How It Works</a>
+    <a href="use-cases.html">Use Cases</a>
+    <a href="about.html">About</a>
+    <a href="safety.html">Safety</a>
+
+    <a href="join.html" class="join-mobile">Join / Sign In &rarr;</a>
+</div>
+<script>
+function toggleMobileNav() {
+    var btn = document.getElementById('nav-hamburger');
+    var overlay = document.getElementById('mobile-nav-overlay');
+    btn.classList.toggle('open');
+    overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('.mobile-nav-overlay a').forEach(function(a) {
+    a.addEventListener('click', function() {
+        document.getElementById('nav-hamburger').classList.remove('open');
+        document.getElementById('mobile-nav-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    });
+});
+</script>
+
+<!-- Auth state check -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(async function() {
+  try {
+    const sb = supabase.createClient('https://yptktmzagctusbeqdaty.supabase.co', 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC');
+    const { data: { session } } = await sb.auth.getSession();
+    const link = document.getElementById('nav-signin-link');
+    if (session && link) {
+      link.textContent = 'Sign Out';
+      link.href = '#';
+      link.style.opacity = '1';
+      link.addEventListener('click', async function(e) {
+        e.preventDefault();
+        await sb.auth.signOut();
+        window.location.reload();
+      });
+    }
+  } catch(e) { /* silent fail — sign in link stays as-is */ }
+})();
+</script>
+</body>

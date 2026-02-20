@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signing you in — the Earthback Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #1F3A2E; --green2: #2d5a27; --sage: #5a7d52; --moss: #7a9e6c;
+      --clay: #C2A56C; --parchment: #F2EFE6; --card: #faf8f3;
+      --text: #3b4a3a; --text-muted: #6b7a63; --ink: #1a2218;
+      --border: #d0c4a8; --border-lt: #e0d8c4; --shadow: rgba(30,55,40,0.08);
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans); background: var(--green);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: var(--card); border-radius: 18px;
+      padding: 48px 40px; max-width: 420px; width: 100%;
+      text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+    }
+    .logo {
+      font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700;
+      color: var(--green); letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 32px; display: block; text-decoration: none;
+    }
+    .logo .brand-the { font-size: 0.5em; font-weight: 300; color: rgba(31,58,46,0.45); text-transform: lowercase; vertical-align: 0.22em; margin-right: 0.15em; }
+    .logo .brand-back { color: var(--clay); }
+    .logo .brand-project { font-size: 0.46em; font-weight: 400; color: rgba(31,58,46,0.35); text-transform: uppercase; letter-spacing: 0.25em; vertical-align: 0.24em; }
+
+    .spinner {
+      width: 52px; height: 52px; margin: 0 auto 24px;
+      border-radius: 50%;
+      border: 3px solid rgba(90,125,82,0.2);
+      border-top-color: var(--sage);
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .status-title {
+      font-family: var(--font-serif); font-size: 1.8rem; color: var(--ink);
+      margin-bottom: 10px; line-height: 1.15;
+    }
+    .status-sub {
+      font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;
+    }
+    .status-sub a { color: var(--sage); text-decoration: none; font-weight: 500; }
+    .status-sub a:hover { text-decoration: underline; }
+
+    .success-check {
+      width: 56px; height: 56px; margin: 0 auto 24px;
+      border-radius: 50%; background: rgba(90,125,82,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; display: none;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .card { animation: fadeIn 0.4s ease both; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <a href="index.html" class="logo">
+    <span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span>
+  </a>
+
+  <div class="spinner" id="spinner"></div>
+  <div class="success-check" id="success-check">🌿</div>
+
+  <h1 class="status-title" id="status-title">Signing you in…</h1>
+  <p class="status-sub" id="status-sub">Just a moment while we verify your link.</p>
+</div>
+
+<!-- Supabase JS (UMD build — no bundler needed) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function setStatus(title, sub, isError) {
+  document.getElementById('status-title').textContent = title;
+  document.getElementById('status-sub').innerHTML = sub;
+  if (isError) {
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('status-title').style.color = '#b8784a';
+  }
+}
+
+function setSuccess(title, sub) {
+  document.getElementById('spinner').style.display = 'none';
+  document.getElementById('success-check').style.display = 'flex';
+  document.getElementById('status-title').textContent = title;
+  document.getElementById('status-sub').innerHTML = sub;
+}
+
+async function saveProfile(user) {
+  const pending = JSON.parse(localStorage.getItem('earthback_pending_profile') || '{}');
+
+  // For Google OAuth signups, pull name from user metadata if no pending profile
+  const meta = user.user_metadata || {};
+  const firstName = pending.firstName || meta.given_name || meta.full_name?.split(' ')[0] || '';
+  const lastName = pending.lastName || meta.family_name || meta.full_name?.split(' ').slice(1).join(' ') || '';
+  const displayName = pending.displayName || meta.full_name || firstName || '';
+
+  if (!displayName && !firstName && !pending.email) return; // truly nothing to save
+
+  const { error } = await sb.from('profiles').upsert({
+    id: user.id,
+    first_name:   firstName,
+    last_name:    lastName,
+    display_name: displayName,
+    location:     pending.location    || '',
+    member_type:  pending.memberType  || 'individual',
+    what_bring:   pending.whatBring   || '',
+    what_seek:    pending.whatSeek    || '',
+    avatar_url:   meta.avatar_url    || meta.picture || '',
+  }, { onConflict: 'id' });
+
+  if (!error) {
+    localStorage.removeItem('earthback_pending_profile');
+  }
+  // Silent fail — don't block the UX on DB errors
+}
+
+async function handleCallback() {
+  try {
+    // supabase-js v2 automatically reads the URL hash or code param on init.
+    // Wait briefly for it to process, then check the session.
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    const { data: { session }, error } = await sb.auth.getSession();
+
+    if (error) throw error;
+
+    if (session) {
+      setStatus('You\'re in!', 'Saving your profile…');
+      await saveProfile(session.user);
+      setSuccess('Welcome to Earthback.', 'Taking you to your dashboard…');
+      setTimeout(() => {
+        window.location.href = '/community';
+      }, 1000);
+      return;
+    }
+
+    // Not yet — listen for the auth state change (PKCE flow takes a moment)
+    const { data: { subscription } } = sb.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        subscription.unsubscribe();
+        setStatus('You\'re in!', 'Saving your profile…');
+        await saveProfile(session.user);
+        setSuccess('Welcome to Earthback.', 'Taking you to your dashboard…');
+        setTimeout(() => {
+          window.location.href = '/community';
+        }, 1000);
+      }
+    });
+
+    // 12-second timeout fallback
+    setTimeout(() => {
+      subscription.unsubscribe();
+      const { data: { session: s } } = sb.auth.getSession().then(({ data }) => {
+        if (data.session) {
+          window.location.href = '/community';
+        } else {
+          setStatus(
+            'Link expired.',
+            'Magic links expire after 1 hour. <a href="login.html">Request a new one →</a>',
+            true
+          );
+        }
+      });
+    }, 12000);
+
+  } catch (err) {
+    setStatus(
+      'Something went wrong.',
+      'The link may have expired. <a href="login.html">Try signing in again →</a>',
+      true
+    );
+  }
+}
+
+handleCallback();
+</script>
+</body>
+</html>

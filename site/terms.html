@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — Earthback</title>
+<meta name="description" content="Earthback Terms of Service. Plain language. No legalese.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:      #1F3A2E;
+  --green-mid:  #2C4F3B;
+  --clay:       #C2A56C;
+  --clay-rust:  #A05E3A;
+  --moss:       #7e9b73;
+  --parchment:  #F2EFE6;
+  --parchment2: #EAE3D3;
+  --ink:        #2B2E30;
+  --ink-soft:   #555A5C;
+  --white:      #FFFFFF;
+  --border:     rgba(43,46,48,0.1);
+  --ease:       cubic-bezier(0.4,0,0.2,1);
+  --max:        1280px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', system-ui, sans-serif; background: var(--parchment); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 1000;
+  background: rgba(20,38,28,0.97); backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(194,165,108,0.12);
+}
+.nav-inner { max-width: var(--max); margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+.nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--parchment); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; }
+.nav-logo .brand-back { color: var(--clay); }
+/* ── Brand name treatment: "the Earthback Project" ── */
+.brand-the {
+    font-size: 0.5em;
+    font-weight: 300;
+    color: rgba(242,239,230,0.52);
+    text-transform: lowercase;
+    letter-spacing: 0.03em;
+    vertical-align: 0.22em;
+    margin-right: 0.18em;
+}
+.brand-back { color: var(--clay); }
+.brand-project {
+    font-size: 0.46em;
+    font-weight: 400;
+    color: rgba(242,239,230,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    vertical-align: 0.24em;
+}
+nav ul { display: flex; gap: 1.75rem; list-style: none; align-items: center; }
+nav a { color: rgba(242,239,230,0.78); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+nav a:hover { color: var(--clay); }
+.nav-join { background: var(--clay); color: var(--green) !important; padding: 0.55rem 1.35rem; border-radius: 3px; font-weight: 700 !important; }
+.nav-join:hover { background: var(--parchment) !important; }
+
+/* Mobile nav */
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--parchment); border-radius: 2px; transition: all 0.25s; }
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-nav-overlay { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(9,18,13,0.98); z-index: 999; flex-direction: column; padding: 2rem; gap: 0; }
+.mobile-nav-overlay.open { display: flex; }
+.mobile-nav-overlay a { font-size: 1.4rem; color: rgba(242,239,230,0.8); text-decoration: none; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-family: 'Cormorant Garamond', serif; font-weight: 600; }
+.mobile-nav-overlay a.join-mobile { margin-top: 1.5rem; border: none; background: var(--clay); color: var(--green) !important; text-align: center; border-radius: 3px; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; padding: 1rem; }
+@media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
+
+/* Page */
+.page-hero {
+  padding: 9rem 2rem 4rem;
+  background: linear-gradient(158deg, #0b1a12 0%, var(--green) 60%);
+  text-align: center;
+}
+.eyebrow {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--clay); margin-bottom: 1rem;
+}
+.page-hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 600;
+  color: var(--parchment); line-height: 1.1;
+}
+.page-hero h1 em { font-style: italic; color: var(--clay); }
+.hero-meta {
+  margin-top: 1.25rem; font-size: 0.84rem;
+  color: rgba(242,239,230,0.45);
+}
+
+.doc-body {
+  max-width: 760px; margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+.plain-note {
+  background: rgba(126,155,115,0.12);
+  border-left: 3px solid var(--moss);
+  border-radius: 0 8px 8px 0;
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 3rem;
+  font-size: 0.9rem; color: var(--ink-soft); line-height: 1.7;
+}
+.plain-note strong { color: var(--green); }
+
+.doc-section { margin-bottom: 2.75rem; }
+.doc-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 600; color: var(--green);
+  margin-bottom: 0.85rem; padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--parchment2);
+}
+.doc-section p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0.85rem; line-height: 1.8; }
+.doc-section ul { margin: 0.5rem 0 0.85rem 1.4rem; }
+.doc-section li { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0.4rem; line-height: 1.7; }
+.doc-section a { color: var(--green); }
+
+footer {
+  background: #171c19; padding: 2.5rem 2rem;
+  text-align: center;
+}
+.footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--parchment); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; display: inline-block; margin-bottom: 1rem; }
+.footer-logo .brand-back { color: var(--clay); }
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1.5rem; list-style: none; }
+.footer-links a { font-size: 0.82rem; color: rgba(242,239,230,0.4); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--clay); }
+.footer-copy { font-size: 0.74rem; color: rgba(242,239,230,0.2); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+    <ul>
+      <li><a href="how-it-works.html">How it works</a></li>
+      <li><a href="use-cases.html">Use cases</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="safety.html">Safety</a></li>
+                  <li><a href="login.html" style="opacity:0.75;">Sign In</a></li>
+            <li><a href="join.html" class="nav-join">Join / Sign In</a></li>
+    </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Legal</div>
+  <h1>Terms of <em>Service</em></h1>
+  <p class="hero-meta">Effective date: February 19, 2026 · Earthback</p>
+</div>
+
+<div class="doc-body">
+
+  <div class="plain-note">
+    <strong>Plain language first.</strong> We've written these terms to actually be readable. The short version: Earthback is a community for green builders. You own your content. We don't sell your data. Behave like a person who'd want to build something with you. If something here is confusing, email us at <a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a>.
+  </div>
+
+  <div class="doc-section">
+    <h2>1. Who we are</h2>
+    <p>Earthback is a community platform for people doing green building, sustainable construction, food systems, off-grid energy, mutual aid, and related work. We are operated by Earthback Project and organized as a community governed by the Earthback Core Constitution.</p>
+    <p>By creating an account or using the site, you agree to these terms.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>2. Your account</h2>
+    <p>To participate fully, you create an account with a name and email address. You're responsible for keeping your account secure. Don't share your login link. If you think your account has been compromised, email us immediately.</p>
+    <p>You must be at least 16 years old to use Earthback. If you're creating an account on behalf of an organization, you're representing that you have authority to do so.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>3. Your content</h2>
+    <p>You own what you post. When you share content on Earthback — project posts, technique descriptions, resource listings, comments — you keep ownership of it. You give Earthback a limited license to display and distribute that content within the platform, but that's it.</p>
+    <p>We don't sell your content to third parties. We don't use it to train AI models for others. We don't repurpose it for advertising.</p>
+    <p>You're responsible for making sure what you post is accurate, doesn't infringe someone else's rights, and doesn't violate these terms.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>4. What we ask of you</h2>
+    <p>Earthback is a community of practice — people doing real work. We expect members to:</p>
+    <ul>
+      <li>Post honestly. Don't misrepresent your skills, projects, or affiliations.</li>
+      <li>Engage constructively. Debate is fine. Harassment, threats, and targeted abuse are not.</li>
+      <li>Respect the focus. This is a space for green building and related work — not general social media, not politics, not noise.</li>
+      <li>Honor commitments. When you commit to a project, follow through or communicate early if something changes.</li>
+      <li>Protect others' privacy. Don't share someone else's contact information or private messages without their consent.</li>
+    </ul>
+    <p>The full community expectations are in our <a href="safety.html">Safety &amp; Trust guidelines</a>.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>5. What we don't allow</h2>
+    <ul>
+      <li>Spam, automated posting, or scraping the platform</li>
+      <li>Impersonating another person or organization</li>
+      <li>Posting illegal content or content that violates others' intellectual property</li>
+      <li>Coordinated harassment or targeted abuse of any member</li>
+      <li>Using Earthback to facilitate fraud or misrepresentation in projects</li>
+    </ul>
+    <p>Violations can result in content removal, account suspension, or permanent ban depending on severity.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>6. Platform availability</h2>
+    <p>We work hard to keep Earthback running reliably, but we can't guarantee 100% uptime. We may occasionally need to take the platform down for maintenance. We'll communicate planned outages in advance when possible.</p>
+    <p>We reserve the right to modify, suspend, or discontinue features with reasonable notice to members.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>7. Limitation of liability</h2>
+    <p>Earthback is provided as-is. We're not liable for disputes between members, outcomes of projects coordinated through the platform, or losses resulting from platform downtime. We facilitate coordination — we're not a party to the projects themselves.</p>
+    <p>To the extent permitted by law, our liability to you is limited to the amount you've paid us in the past 12 months (which for most members is $0, since Earthback is free).</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>8. Changes to these terms</h2>
+    <p>If we update these terms in a meaningful way, we'll notify members by email and post the changes on this page with an updated effective date. Continued use after changes means you accept the new terms.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>9. Governing law</h2>
+    <p>These terms are governed by the laws of the United States. Disputes will be resolved through good-faith discussion first; failing that, through binding arbitration.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>10. Contact</h2>
+    <p>Questions about these terms? Email us at <a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a>. We actually read it.</p>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+  <ul class="footer-links">
+    <li><a href="how-it-works.html">How it works</a></li>
+    <li><a href="use-cases.html">Use cases</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="safety.html">Safety</a></li>
+    <li><a href="terms.html" style="color:rgba(242,239,230,0.6)">Terms</a></li>
+    <li><a href="privacy.html">Privacy</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Earthback. All rights reserved.</div>
+</footer>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay">
+  <a href="how-it-works.html">How It Works</a>
+  <a href="use-cases.html">Use Cases</a>
+  <a href="about.html">About</a>
+  <a href="safety.html">Safety</a>
+  <a href="join.html" class="join-mobile">Join / Sign In &rarr;</a>
+</div>
+<script>
+function toggleMobileNav() {
+  var btn = document.getElementById('nav-hamburger');
+  var overlay = document.getElementById('mobile-nav-overlay');
+  btn.classList.toggle('open');
+  overlay.classList.toggle('open');
+  document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('.mobile-nav-overlay a').forEach(function(a) {
+  a.addEventListener('click', function() {
+    document.getElementById('nav-hamburger').classList.remove('open');
+    document.getElementById('mobile-nav-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+</script>
+</body>
+</html>
