@@ -384,6 +384,80 @@
         .profile-hint p { font-size: 0.88rem; color: var(--ink-soft); }
         .profile-hint strong { color: var(--clay-dark); }
 
+        /* ── VISION GALLERY ── */
+        .visions-gallery {
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(194,165,108,0.2);
+        }
+        .visions-gallery-header {
+            display: flex; justify-content: space-between; align-items: baseline;
+            margin-bottom: 1.2rem;
+        }
+        .visions-gallery-header h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 600; color: var(--ink);
+        }
+        .visions-gallery-header span {
+            font-size: 0.78rem; color: var(--ink-soft);
+        }
+        .visions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+        }
+        .vision-card {
+            background: var(--white); border: 1px solid rgba(194,165,108,0.15);
+            border-radius: 10px; overflow: hidden;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+            cursor: pointer; transition: all 0.2s;
+            position: relative;
+        }
+        .vision-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .vision-card img {
+            width: 100%; height: 160px; object-fit: cover; display: block;
+        }
+        .vision-card-body {
+            padding: 10px 12px;
+        }
+        .vision-card-prompt {
+            font-size: 0.8rem; color: var(--ink);
+            line-height: 1.4; display: -webkit-box;
+            -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; margin-bottom: 6px;
+        }
+        .vision-card-meta {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .vision-card-chips {
+            display: flex; gap: 4px; flex-wrap: wrap;
+        }
+        .vision-card-chip {
+            font-size: 0.65rem; font-weight: 600; padding: 2px 6px;
+            border-radius: 4px; background: rgba(31,58,46,0.06); color: var(--ink-soft);
+        }
+        .vision-card-date {
+            font-size: 0.68rem; color: rgba(0,0,0,0.35);
+        }
+        .vision-card-delete {
+            position: absolute; top: 6px; right: 6px;
+            width: 24px; height: 24px; border-radius: 50%;
+            background: rgba(0,0,0,0.5); color: white;
+            border: none; font-size: 0.85rem; cursor: pointer;
+            display: none; align-items: center; justify-content: center;
+            line-height: 1;
+        }
+        .vision-card:hover .vision-card-delete { display: flex; }
+        .vision-card-delete:hover { background: rgba(160,94,58,0.8); }
+
+        .visions-empty {
+            text-align: center; padding: 2rem;
+            color: var(--ink-soft); font-size: 0.88rem;
+        }
+
         /* ── ERROR MESSAGE ── */
         .error-toast {
             display: none; position: fixed; bottom: 2rem; left: 50%;
@@ -552,9 +626,13 @@
         <button class="upgrade-btn">Coming soon</button>
     </div>
 
-    <!-- PROFILE BRIDGE -->
-    <div class="profile-hint">
-        <p><strong>Coming soon:</strong> Save your generated visions directly to your Earthback profile. Your builds become part of your story — visible to your circles, linked to your projects.</p>
+    <!-- VISION GALLERY -->
+    <div class="visions-gallery" id="visionsGallery" style="display:none;">
+        <div class="visions-gallery-header">
+            <h3>Your visions</h3>
+            <span id="visionsCount"></span>
+        </div>
+        <div class="visions-grid" id="visionsGrid"></div>
     </div>
 </div>
 
@@ -650,6 +728,7 @@
     // ── KEEP TRACK OF LAST PROMPT FOR REFINEMENTS ──
     let lastPrompt = '';
     let lastImageUrl = '';
+    let lastFullPrompt = '';
 
     // ── GENERATE ──
     async function generateVision() {
@@ -707,7 +786,13 @@
 
             lastPrompt = prompt;
             lastImageUrl = data.image_url;
+            lastFullPrompt = data.full_prompt || '';
+            window.lastFullPrompt = lastFullPrompt;
             incrementUsage();
+
+            // Reset save button for new image
+            var saveBtn = document.getElementById('saveBtn');
+            if (saveBtn) { saveBtn.textContent = 'Save to profile'; saveBtn.disabled = false; }
 
         } catch (err) {
             loading.classList.remove('active');
@@ -746,9 +831,18 @@
         document.body.removeChild(a);
     }
 
-    // ── SAVE TO PROFILE (placeholder) ──
+    // ── SAVE TO PROFILE ──
     function saveToProfile() {
-        showError('Profile save coming soon! Sign up to be notified.');
+        if (!lastImageUrl) {
+            showError('Generate an image first.');
+            return;
+        }
+        if (!window._vizSession) {
+            showError('Sign in to save visions.');
+            return;
+        }
+        // Trigger save immediately (doesn't wait for background)
+        saveVisionToSupabase(lastImageUrl, lastFullPrompt);
     }
 
 </script>
@@ -757,38 +851,237 @@
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/footer.js"></script>
 <script>
-    // ── AUTH GATE ──
-    // Visitors can see the page but must sign in to generate
-    (function() {
-        var SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
-        var SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
-        var _sb;
-        try { _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { return; }
+// ── SUPABASE CLIENT + AUTH + VISION PERSISTENCE ──
+(function() {
+    var SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+    var SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+    var sb;
+    try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { return; }
 
-        _sb.auth.getSession().then(function(result) {
-            var session = result.data.session;
-            if (!session) {
-                // Override generate to require auth
-                window._vizAuthGated = true;
-                var btn = document.getElementById('generateBtn');
-                if (btn) {
-                    btn.onclick = function(e) {
-                        e.preventDefault();
-                        showError('Sign in to generate visions.');
-                        setTimeout(function() {
-                            window.location.href = 'join.html?redirect=visualizer.html';
-                        }, 1500);
-                    };
-                }
-                // Update counter to show sign-in message
-                var counter = document.getElementById('renderCounter');
-                if (counter) {
-                    counter.textContent = 'sign in to generate';
-                    counter.style.color = 'var(--clay-rust)';
-                }
+    // Expose for save functions
+    window._vizSb = sb;
+    window._vizSession = null;
+    window.lastFullPrompt = '';
+
+    sb.auth.getSession().then(async function(result) {
+        var session = result.data.session;
+
+        if (!session) {
+            // ── AUTH GATE — visitors can browse but not generate ──
+            window._vizAuthGated = true;
+            var btn = document.getElementById('generateBtn');
+            if (btn) {
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    showError('Sign in to generate visions.');
+                    setTimeout(function() {
+                        window.location.href = 'join.html?redirect=visualizer.html';
+                    }, 1500);
+                };
             }
+            var counter = document.getElementById('renderCounter');
+            if (counter) {
+                counter.textContent = 'sign in to generate';
+                counter.style.color = 'var(--clay-rust)';
+            }
+            return;
+        }
+
+        // ── Signed in — store session and load gallery ──
+        window._vizSession = session;
+
+        // Update "Save to profile" button to be active
+        var saveBtn = document.getElementById('saveBtn');
+        if (saveBtn) {
+            saveBtn.textContent = 'Save to profile';
+            saveBtn.style.opacity = '1';
+        }
+
+        // Load existing visions
+        loadVisionGallery(session.user.id);
+    });
+
+    // ── LOAD VISION GALLERY ──
+    async function loadVisionGallery(userId) {
+        var gallery = document.getElementById('visionsGallery');
+        var grid = document.getElementById('visionsGrid');
+        var countEl = document.getElementById('visionsCount');
+        if (!gallery || !grid) return;
+
+        var { data: visions, error } = await sb
+            .from('visions')
+            .select('*')
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false });
+
+        if (error || !visions || visions.length === 0) {
+            gallery.style.display = 'none';
+            return;
+        }
+
+        gallery.style.display = 'block';
+        countEl.textContent = visions.length + ' vision' + (visions.length !== 1 ? 's' : '');
+
+        grid.innerHTML = visions.map(function(v) {
+            var dateStr = new Date(v.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            var promptSnippet = (v.prompt || '').substring(0, 100);
+            return '<div class="vision-card" onclick="repopulateVision(' + JSON.stringify(JSON.stringify({
+                prompt: v.prompt || '',
+                structure: v.structure || 'single-home',
+                climate: v.climate || 'high-desert',
+                style: v.style || 'photorealistic',
+                image_url: v.image_url || ''
+            })) + ')">' +
+                (v.image_url ? '<img src="' + v.image_url + '" alt="Vision render" loading="lazy">' :
+                    '<div style="height:160px;background:linear-gradient(135deg,#2a3a2a,#3a5a3a);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🏗</div>') +
+                '<div class="vision-card-body">' +
+                    '<div class="vision-card-prompt">' + promptSnippet + '</div>' +
+                    '<div class="vision-card-meta">' +
+                        '<div class="vision-card-chips">' +
+                            '<span class="vision-card-chip">' + (v.structure || '').replace(/-/g, ' ') + '</span>' +
+                            '<span class="vision-card-chip">' + (v.climate || '').replace(/-/g, ' ') + '</span>' +
+                            '<span class="vision-card-chip">' + (v.style || '') + '</span>' +
+                        '</div>' +
+                        '<span class="vision-card-date">' + dateStr + '</span>' +
+                    '</div>' +
+                '</div>' +
+                '<button class="vision-card-delete" onclick="event.stopPropagation();deleteVision(\'' + v.id + '\')" title="Delete">×</button>' +
+            '</div>';
+        }).join('');
+    }
+
+    // Expose for use outside IIFE
+    window._loadVisionGallery = loadVisionGallery;
+})();
+
+// ── REPOPULATE FORM FROM GALLERY CLICK ──
+function repopulateVision(jsonStr) {
+    var v = JSON.parse(jsonStr);
+
+    // Set prompt text
+    document.getElementById('promptInput').value = v.prompt;
+
+    // Set structure chip
+    var structureChips = document.getElementById('structureChips');
+    structureChips.querySelectorAll('.chip').forEach(function(c) {
+        c.classList.toggle('selected', c.dataset.value === v.structure);
+    });
+
+    // Set climate chip
+    var climateChips = document.getElementById('climateChips');
+    climateChips.querySelectorAll('.chip').forEach(function(c) {
+        c.classList.toggle('selected', c.dataset.value === v.climate);
+    });
+
+    // Set style
+    document.querySelectorAll('.style-option').forEach(function(o) {
+        o.classList.toggle('selected', o.dataset.value === v.style);
+    });
+
+    // Show the saved image
+    if (v.image_url) {
+        var img = document.getElementById('generatedImage');
+        var placeholder = document.getElementById('placeholderState');
+        var loading = document.getElementById('loadingState');
+        placeholder.style.display = 'none';
+        loading.classList.remove('active');
+        img.src = v.image_url;
+        img.style.display = 'block';
+        window.lastImageUrl = v.image_url;
+        window.lastPrompt = v.prompt;
+    }
+
+    // Scroll to top of form
+    document.querySelector('.page-header').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── SAVE VISION TO SUPABASE (background, after render) ──
+async function saveVisionToSupabase(replicateUrl, fullPrompt) {
+    var sb = window._vizSb;
+    var session = window._vizSession;
+    if (!sb || !session) return;
+
+    var userId = session.user.id;
+    var prompt = document.getElementById('promptInput').value.trim();
+    var structure = getSelected('structureChips');
+    var climate = getSelected('climateChips');
+    var style = getStyleSelected();
+
+    var saveBtn = document.getElementById('saveBtn');
+    if (saveBtn) { saveBtn.textContent = 'Saving...'; saveBtn.disabled = true; }
+
+    try {
+        // 1. Fetch the image from Replicate as a blob
+        var imgResponse = await fetch(replicateUrl);
+        if (!imgResponse.ok) throw new Error('Failed to fetch image');
+        var blob = await imgResponse.blob();
+
+        // 2. Upload to Supabase Storage
+        var timestamp = Date.now();
+        var path = userId + '/' + timestamp + '.webp';
+        var { error: uploadError } = await sb.storage.from('visions').upload(path, blob, {
+            contentType: 'image/webp',
+            upsert: false
         });
-    })();
+
+        var permanentUrl = '';
+        if (!uploadError) {
+            var { data: urlData } = sb.storage.from('visions').getPublicUrl(path);
+            permanentUrl = urlData.publicUrl;
+        } else {
+            console.warn('Storage upload failed, saving with Replicate URL:', uploadError.message);
+            permanentUrl = replicateUrl; // Fallback — will expire but at least the record exists
+        }
+
+        // 3. Insert vision record
+        var { error: insertError } = await sb.from('visions').insert({
+            user_id: userId,
+            prompt: prompt,
+            structure: structure,
+            climate: climate,
+            style: style,
+            image_url: permanentUrl,
+            replicate_url: replicateUrl,
+            full_prompt: fullPrompt || ''
+        });
+
+        if (insertError) {
+            console.error('Vision save failed:', insertError.message);
+            showError('Save failed: ' + insertError.message);
+        } else {
+            if (saveBtn) { saveBtn.textContent = '✓ Saved'; }
+            // Reload gallery
+            if (window._loadVisionGallery) window._loadVisionGallery(userId);
+        }
+    } catch (err) {
+        console.error('Vision save error:', err);
+        showError('Could not save vision: ' + err.message);
+    } finally {
+        if (saveBtn) {
+            setTimeout(function() {
+                saveBtn.textContent = 'Save to profile';
+                saveBtn.disabled = false;
+            }, 2000);
+        }
+    }
+}
+
+// ── DELETE VISION ──
+async function deleteVision(visionId) {
+    if (!confirm('Delete this vision?')) return;
+    var sb = window._vizSb;
+    if (!sb) return;
+
+    var { error } = await sb.from('visions').delete().eq('id', visionId);
+    if (error) {
+        showError('Delete failed: ' + error.message);
+    } else {
+        var session = window._vizSession;
+        if (session && window._loadVisionGallery) {
+            window._loadVisionGallery(session.user.id);
+        }
+    }
+}
 </script>
 
 </body>

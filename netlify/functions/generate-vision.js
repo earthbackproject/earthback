@@ -176,7 +176,7 @@ exports.handler = async (event) => {
       const imageUrl = Array.isArray(prediction.output) ? prediction.output[0] : prediction.output;
       return {
         statusCode: 200, headers,
-        body: JSON.stringify({ image_url: imageUrl })
+        body: JSON.stringify({ image_url: imageUrl, full_prompt: fullPrompt })
       };
     }
 
@@ -195,7 +195,7 @@ exports.handler = async (event) => {
         const imageUrl = Array.isArray(result.output) ? result.output[0] : result.output;
         return {
           statusCode: 200, headers,
-          body: JSON.stringify({ image_url: imageUrl })
+          body: JSON.stringify({ image_url: imageUrl, full_prompt: fullPrompt })
         };
       }
 

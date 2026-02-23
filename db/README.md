@@ -11,6 +11,7 @@ All SQL files for the Supabase Postgres database.
 | 3 | PROFILE_MIGRATION.sql | ❌ Not run | — | Profile table updates — run before V3 |
 | 4 | SCHEMA_V3_messages.sql | ❌ Not run | — | Creates conversations, conversation_participants, messages tables with RLS |
 | 5 | SCHEMA_V4_post_images.sql | ❌ Not run | — | Adds image_url + is_demo columns; sets AI-generated image paths on 8 demo posts |
+| 6 | SCHEMA_V5_visions.sql | ❌ Not run | — | Creates visions table for AI Visualizer saved renders; needs 'visions' Storage bucket |
 
 ## How to Run
 
