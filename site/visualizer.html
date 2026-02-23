@@ -520,7 +520,7 @@
         <div class="card">
             <div class="card-header">
                 <h3>Describe your project</h3>
-                <span class="free-counter" id="renderCounter">50 credits</span>
+                <span class="free-counter" id="renderCounter">25 credits</span>
             </div>
             <div class="card-body">
                 <div class="field-group">
@@ -660,13 +660,13 @@
     });
 
     // ── ROTATING CREDITS (localStorage) ──
-    // 2 credits per hour, max 50. Each render costs 1 credit.
-    // Credits accrue while away — full bar in ~25 hours.
-    // Leaving credits at 50 means you're "wasting" accrual → come back!
+    // 1 credit every 2 hours (~12/day), max 25. Each render costs 1 credit.
+    // Credits accrue while away — full bar in ~2 days.
+    // Leaving credits at 25 means you're "wasting" accrual → come back!
     const CREDIT_KEY = 'earthback_viz_credits';
-    const CREDITS_PER_HOUR = 2;
-    const CREDIT_MAX = 50;
-    const MS_PER_CREDIT = (60 * 60 * 1000) / CREDITS_PER_HOUR; // 30 min per credit
+    const CREDITS_PER_HOUR = 0.5;
+    const CREDIT_MAX = 25;
+    const MS_PER_CREDIT = (60 * 60 * 1000) / CREDITS_PER_HOUR; // 2 hours per credit
 
     function getCredits() {
         try {
@@ -707,6 +707,16 @@
         spendCredit();
     }
 
+    function formatCountdown(ms) {
+        const totalMins = Math.ceil(ms / 60000);
+        if (totalMins >= 60) {
+            const h = Math.floor(totalMins / 60);
+            const m = totalMins % 60;
+            return m > 0 ? `${h}h ${m}m` : `${h}h`;
+        }
+        return `${totalMins}m`;
+    }
+
     function updateCounter() {
         const data = getCredits();
         // Save the recalculated credits (with accrual) back
@@ -723,8 +733,7 @@
             const raw = JSON.parse(localStorage.getItem(CREDIT_KEY) || '{}');
             const elapsed = Date.now() - (raw.lastCheck || Date.now());
             const msUntilNext = Math.max(0, MS_PER_CREDIT - elapsed);
-            const minsUntilNext = Math.ceil(msUntilNext / 60000);
-            counter.textContent = `${credits} credit${credits !== 1 ? 's' : ''} · +1 in ${minsUntilNext}m`;
+            counter.textContent = `${credits} credit${credits !== 1 ? 's' : ''} · +1 in ${formatCountdown(msUntilNext)}`;
             counter.style.color = '';
             counter.style.background = '';
         } else {
@@ -732,8 +741,7 @@
             const raw = JSON.parse(localStorage.getItem(CREDIT_KEY) || '{}');
             const elapsed = Date.now() - (raw.lastCheck || Date.now());
             const msUntilNext = Math.max(0, MS_PER_CREDIT - elapsed);
-            const minsUntilNext = Math.ceil(msUntilNext / 60000);
-            counter.textContent = `0 credits · +1 in ${minsUntilNext}m`;
+            counter.textContent = `0 credits · +1 in ${formatCountdown(msUntilNext)}`;
             counter.style.color = 'var(--clay-rust)';
             counter.style.background = 'rgba(160,94,58,0.1)';
         }
@@ -773,7 +781,7 @@
     // ── GENERATE ──
     async function generateVision() {
         if (!canGenerate()) {
-            showError('Out of credits — you earn 2 per hour. Check back soon!');
+            showError('Out of credits — you earn 1 every 2 hours. Check back soon!');
             return;
         }
 
