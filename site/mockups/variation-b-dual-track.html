@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Earthback Project — Variation B Dual-Track</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* CSS Variables */
+    :root {
+      --green: #1F3A2E;
+      --green-mid: #2C4F3B;
+      --green-soft: #4A7C5E;
+      --clay: #C2A56C;
+      --clay-dark: #8A5B3F;
+      --clay-rust: #A05E3A;
+      --moss: #7e9b73;
+      --parchment: #F2EFE6;
+      --parchment2: #EAE3D3;
+      --ink: #2B2E30;
+      --ink-soft: #555A5C;
+      --white: #FFFFFF;
+    }
+
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      line-height: 1.6;
+      background-color: var(--white);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+    }
+
+    /* Mockup Label */
+    .mockup-label {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: var(--clay);
+      color: var(--white);
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      z-index: 1000;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      background-color: rgba(31, 58, 46, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .nav-brand .the {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--ink-soft);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-brand .earth {
+      color: var(--parchment);
+      font-weight: 700;
+    }
+
+    .nav-brand .back {
+      color: var(--clay);
+      font-weight: 700;
+    }
+
+    .nav-brand .project {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--ink-soft);
+      letter-spacing: 0.5px;
+      margin-left: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--parchment);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--clay);
+    }
+
+    /* Hero Section */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--white) 0%, var(--parchment) 100%);
+      align-items: center;
+      padding: 80px 40px;
+      gap: 60px;
+    }
+
+    .hero-left h1 {
+      font-size: 72px;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      color: var(--green);
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--clay);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--ink-soft);
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--green);
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--ink-soft);
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background-color: var(--green);
+      color: var(--white);
+      padding: 16px 40px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .cta-button:hover {
+      background-color: var(--green-mid);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(31, 58, 46, 0.2);
+    }
+
+    /* Hero Right — Cycle Diagram */
+    .hero-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cycle-diagram {
+      position: relative;
+      width: 280px;
+      height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cycle-node {
+      width: 120px;
+      height: 80px;
+      background-color: var(--parchment2);
+      border: 2px solid var(--green);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      color: var(--green);
+      position: relative;
+    }
+
+    .cycle-connector {
+      width: 3px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--green), var(--green-soft));
+      position: relative;
+    }
+
+    .cycle-connector::after {
+      content: '↓';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--green);
+      font-size: 16px;
+    }
+
+    /* Vision Section */
+    .vision {
+      background-color: var(--parchment);
+      padding: 80px 40px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--clay);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 48px;
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--green);
+      margin-bottom: 48px;
+      line-height: 1.2;
+    }
+
+    .vision-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 48px;
+    }
+
+    .vision-column h3 {
+      font-size: 20px;
+      color: var(--green);
+      margin-bottom: 16px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .vision-column ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .vision-column li {
+      padding: 10px 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .vision-column li::before {
+      content: '•';
+      margin-right: 12px;
+      color: var(--clay);
+      font-weight: 700;
+    }
+
+    .callout {
+      background-color: var(--green);
+      color: var(--white);
+      padding: 32px;
+      border-radius: 8px;
+      font-style: italic;
+      font-size: 16px;
+      line-height: 1.8;
+      border-left: 4px solid var(--clay);
+    }
+
+    /* Technology Section */
+    .technology {
+      background-color: var(--white);
+      padding: 80px 40px;
+    }
+
+    .tech-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .tech-card {
+      background-color: var(--parchment2);
+      padding: 40px 24px;
+      border-radius: 8px;
+      border-top: 4px solid var(--clay);
+      transition: all 0.3s ease;
+    }
+
+    .tech-card:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+      transform: translateY(-4px);
+    }
+
+    .tech-card h3 {
+      font-size: 18px;
+      color: var(--green);
+      margin-bottom: 16px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .tech-card p {
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+
+    /* Bridge Section */
+    .bridge {
+      background: linear-gradient(180deg, var(--white) 0%, var(--green) 100%);
+      padding: 100px 40px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+
+    .bridge-content {
+      max-width: 600px;
+    }
+
+    .bridge-content h2 {
+      font-size: 52px;
+      color: var(--green);
+      margin-bottom: 16px;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+    }
+
+    .bridge-content p {
+      font-size: 18px;
+      color: var(--ink);
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    /* Platform Section */
+    .platform {
+      background-color: var(--green);
+      color: var(--white);
+      padding: 80px 40px;
+    }
+
+    .platform .section-label {
+      color: var(--clay);
+    }
+
+    .platform .section-title {
+      color: var(--white);
+    }
+
+    .platform-description {
+      font-size: 18px;
+      color: var(--parchment);
+      margin-bottom: 60px;
+      max-width: 600px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .feature-card {
+      background-color: rgba(255, 255, 255, 0.08);
+      padding: 40px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      color: var(--clay);
+      margin-bottom: 12px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .feature-card p {
+      font-size: 15px;
+      color: var(--parchment);
+      line-height: 1.6;
+    }
+
+    .feed-mockups {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .feed-post {
+      background-color: rgba(255, 255, 255, 0.06);
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .feed-post-header {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+
+    .feed-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--clay);
+      flex-shrink: 0;
+    }
+
+    .feed-user-info {
+      flex: 1;
+    }
+
+    .feed-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      display: block;
+    }
+
+    .feed-time {
+      font-size: 12px;
+      color: var(--parchment2);
+    }
+
+    .feed-post-content {
+      font-size: 14px;
+      color: var(--parchment);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .feed-post-image-placeholder {
+      width: 100%;
+      height: 120px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      margin: 12px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--parchment2);
+    }
+
+    /* Join CTA Section */
+    .join-cta {
+      background: linear-gradient(135deg, var(--clay) 0%, var(--clay-dark) 100%);
+      padding: 100px 40px;
+      text-align: center;
+    }
+
+    .join-cta h2 {
+      font-size: 42px;
+      color: var(--white);
+      margin-bottom: 32px;
+      font-family: 'Cormorant Garamond', serif;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+
+    .join-cta .cta-button {
+      background-color: var(--green);
+      font-size: 16px;
+      padding: 18px 48px;
+      margin: 0 auto;
+      display: inline-block;
+    }
+
+    .join-tagline {
+      font-size: 14px;
+      color: var(--white);
+      margin-top: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--green);
+      color: var(--parchment);
+      padding: 40px;
+      text-align: center;
+      font-size: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    footer p {
+      margin: 8px 0;
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: var(--parchment2);
+      margin-top: 12px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      nav {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .nav-links {
+        gap: 20px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 60px 20px;
+        gap: 40px;
+        min-height: auto;
+      }
+
+      .hero-left h1 {
+        font-size: 48px;
+      }
+
+      .vision-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .tech-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feed-mockups {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .section-title {
+        font-size: 36px;
+      }
+
+      .bridge-content h2 {
+        font-size: 36px;
+      }
+
+      .join-cta h2 {
+        font-size: 32px;
+      }
+
+      .vision, .technology, .platform, .join-cta, .bridge {
+        padding: 60px 20px;
+      }
+
+      .mockup-label {
+        font-size: 9px;
+        padding: 6px 12px;
+        top: 10px;
+        right: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav {
+        padding: 12px 16px;
+      }
+
+      .nav-brand {
+        font-size: 14px;
+      }
+
+      .nav-links {
+        gap: 12px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 40px 16px;
+      }
+
+      .hero-left h1 {
+        font-size: 36px;
+      }
+
+      .hero-eyebrow {
+        font-size: 10px;
+      }
+
+      .hero-subtitle {
+        font-size: 16px;
+      }
+
+      .section-title {
+        font-size: 28px;
+      }
+
+      .vision-column h3,
+      .tech-card h3,
+      .feature-card h3 {
+        font-size: 16px;
+      }
+
+      .tech-cards {
+        gap: 16px;
+      }
+
+      .tech-card {
+        padding: 24px 16px;
+      }
+
+      .cycle-diagram {
+        width: 220px;
+        height: 300px;
+      }
+
+      .cycle-node {
+        width: 100px;
+        height: 70px;
+        font-size: 12px;
+      }
+
+      .callout {
+        padding: 20px;
+        font-size: 14px;
+      }
+
+      .feature-card {
+        padding: 24px;
+      }
+
+      .bridge-content h2 {
+        font-size: 28px;
+      }
+
+      .bridge-content p {
+        font-size: 15px;
+      }
+
+      .join-cta h2 {
+        font-size: 24px;
+      }
+
+      .join-cta {
+        padding: 60px 16px;
+      }
+
+      footer {
+        padding: 24px 16px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mockup Label -->
+  <div class="mockup-label">MOCKUP B — DUAL TRACK</div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-brand">
+      <span class="the">the</span>
+      <span class="earth">EARTH</span><span class="back">BACK</span>
+      <span class="project">Project</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#vision">Vision</a></li>
+      <li><a href="#technology">Build</a></li>
+      <li><a href="#platform">Connect</a></li>
+      <li><a href="#join">Join</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Hemp · Construction · Community</div>
+      <h1>From Soil to Shelter</h1>
+      <p class="hero-subtitle">We grow hemp. We print homes. We build communities that own their future.</p>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">250+</span>
+          <span class="stat-label">Year Homes</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">0-50</span>
+          <span class="stat-label">Mile Supply Chains</span>
+        </div>
+      </div>
+
+      <a href="#vision" class="cta-button">See the Vision</a>
+    </div>
+
+    <div class="hero-right">
+      <div class="cycle-diagram">
+        <div class="cycle-node">Grow</div>
+        <div class="cycle-connector"></div>
+        <div class="cycle-node">Process</div>
+        <div class="cycle-connector"></div>
+        <div class="cycle-node">Build</div>
+        <div class="cycle-connector"></div>
+        <div class="cycle-node">Live</div>
+        <div class="cycle-connector"></div>
+        <div class="cycle-node">Teach</div>
+        <div class="cycle-connector"></div>
+        <div class="cycle-node">Repeat</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision Section -->
+  <section class="vision" id="vision">
+    <div class="container">
+      <div class="section-label">The Big Picture</div>
+      <h2 class="section-title">Housing is Broken. We're Rebuilding It From the Ground Up.</h2>
+
+      <div class="vision-grid">
+        <div class="vision-column">
+          <h3>The Problem</h3>
+          <ul>
+            <li>1.8 billion people without adequate housing</li>
+            <li>96,000 homes needed daily, globally</li>
+            <li>Conventional materials: toxic, fragile, reliant on fossil fuels</li>
+            <li>Supply chains broken — thousands of miles, no local control</li>
+            <li>Communities are left dependent on external builders and finance</li>
+          </ul>
+        </div>
+
+        <div class="vision-column">
+          <h3>The Earthback Answer</h3>
+          <ul>
+            <li>Community-grown hemp crops → local supply</li>
+            <li>3D-printed hempcrete walls → monolithic strength, zero waste</li>
+            <li>Multi-century roofing → fire, flood, and rot resilience built in</li>
+            <li>Local economy loop → farmers, builders, communities profit directly</li>
+            <li>Carbon-negative homes → every home plants a future</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout">
+        "Earthback does not operate from a traditional profit motive. The only 'return' we care about is the success of the Alliance itself — communities gaining permanent skills, ownership, and economic sovereignty."
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Section -->
+  <section class="technology" id="technology">
+    <div class="container">
+      <div class="section-label">What We Build</div>
+      <h2 class="section-title">Three Breakthrough Technologies</h2>
+
+      <div class="tech-cards">
+        <div class="tech-card">
+          <h3>Layer-Free 3D Printing</h3>
+          <p>Monolithic hempcrete walls printed without traditional layers. Stronger, faster, and with zero material waste. Each wall is load-bearing from the ground up.</p>
+        </div>
+
+        <div class="tech-card">
+          <h3>Multi-Century Metal Roofing</h3>
+          <p>100+ year service life, solar-ready, and fire-resilient. Engineered with Spengler Industries for durability that matches the lifespan of the home itself.</p>
+        </div>
+
+        <div class="tech-card">
+          <h3>Integrated Solar Shingles</h3>
+          <p>Modular solar systems that integrate seamlessly into roofing. Energy-positive homes with maintainable, replaceable components. No single point of failure.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        "None of this technology is required for an Earthback project to succeed. Every home can be built with conventional tools. We teach manual building first because real resilience comes from people, not machines. Technology accelerates the work, but communities must always be able to build with their own hands."
+      </div>
+    </div>
+  </section>
+
+  <!-- Bridge Section -->
+  <section class="bridge">
+    <div class="bridge-content">
+      <h2>Building homes is only the beginning.</h2>
+      <p>To coordinate this at scale — connecting farmers, builders, communities, and partners — we needed a new kind of platform.</p>
+    </div>
+  </section>
+
+  <!-- Platform Section -->
+  <section class="platform" id="platform">
+    <div class="container">
+      <div class="section-label">The Network</div>
+      <h2 class="section-title">Where the Alliance Comes Alive</h2>
+
+      <p class="platform-description">A community platform built specifically for people building a better world. Share progress, find partners, learn techniques, coordinate projects.</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>Topic-Based Groups</h3>
+          <p>Join circles focused on Hemp Farming, Building Techniques, Community Projects, and more. Connect with people pursuing the same expertise as you.</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Live Feed</h3>
+          <p>Share updates, techniques, project milestones. See real-time progress from the Alliance. Real conversations, real people.</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Direct Connection</h3>
+          <p>Find builders, farmers, engineers, and partners near you. Coordinate projects, share resources, build supply chains together.</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Knowledge Base</h3>
+          <p>Guides, plans, best practices, and lessons learned from the entire Alliance. Build on what others have already tested and proven.</p>
+        </div>
+      </div>
+
+      <div class="feed-mockups">
+        <div class="feed-post">
+          <div class="feed-post-header">
+            <div class="feed-avatar"></div>
+            <div class="feed-user-info">
+              <span class="feed-name">Maya Chen</span>
+              <span class="feed-time">2 days ago</span>
+            </div>
+          </div>
+          <div class="feed-post-content">
+            Harvest wrapped on our 15-acre plot. First-season hempcrete is ready for processing. Thrilled to have local supply for the Colorado build team.
+          </div>
+          <div class="feed-post-image-placeholder">[Hemp Crop Photo]</div>
+        </div>
+
+        <div class="feed-post">
+          <div class="feed-post-header">
+            <div class="feed-avatar" style="background-color: var(--green-soft);"></div>
+            <div class="feed-user-info">
+              <span class="feed-name">James Rodriguez</span>
+              <span class="feed-time">4 days ago</span>
+            </div>
+          </div>
+          <div class="feed-post-content">
+            Live demo of our hempcrete mix ratio. The 1:2 aggregate-to-binder gives us perfect density for the press. Testing flow rates with the new batch.
+          </div>
+          <div class="feed-post-image-placeholder">[Hempcrete Mix Demo]</div>
+        </div>
+
+        <div class="feed-post">
+          <div class="feed-post-header">
+            <div class="feed-avatar" style="background-color: var(--clay-dark);"></div>
+            <div class="feed-user-info">
+              <span class="feed-name">Community: Asheville Build</span>
+              <span class="feed-time">1 week ago</span>
+            </div>
+          </div>
+          <div class="feed-post-content">
+            Foundation pour complete! 150+ volunteers, zero delays. First Earthback home in North Carolina is in the ground. Next: walls.
+          </div>
+          <div class="feed-post-image-placeholder">[Foundation Milestone]</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join CTA Section -->
+  <section class="join-cta" id="join">
+    <h2>Whether you grow hemp, swing a hammer, engineer systems, or simply believe homes should last centuries — there's a place for you.</h2>
+    <a href="#" class="cta-button">Join the Earthback Community</a>
+    <p class="join-tagline">Free to join · Community-governed · Your people, your projects</p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p><strong>The Earthback Project</strong> · earthbackproject.org</p>
+    <p class="footer-tagline">Building the future of housing, one community at a time.</p>
+  </footer>
+
+</body>
+</html>

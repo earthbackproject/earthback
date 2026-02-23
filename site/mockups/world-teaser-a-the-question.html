@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earthback World — The Question</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@0;1&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #1F3A2E;
+            --clay: #C2A56C;
+            --clay-rust: #A05E3A;
+            --moss: #7e9b73;
+            --parchment: #F2EFE6;
+            --ink: #2B2E30;
+            --ink-soft: #555A5C;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--ink);
+            background: #fafaf8;
+        }
+
+        /* Proof label (fixed, top-right) */
+        .proof-label {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--clay);
+            opacity: 0.6;
+            text-transform: uppercase;
+            z-index: 10;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Main section */
+        section.earthback-world {
+            width: 100%;
+            padding: 120px 2rem;
+            background: linear-gradient(135deg, var(--green) 0%, #2d4a3e 35%, #3d5a4e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle texture overlay (linen/grain effect) */
+        section.earthback-world::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, 0.03) 0px,
+                    rgba(0, 0, 0, 0.03) 1px,
+                    transparent 1px,
+                    transparent 2px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(0, 0, 0, 0.02) 0px,
+                    rgba(0, 0, 0, 0.02) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Container for content */
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* The Question */
+        h1.the-question {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-style: italic;
+            font-weight: 700;
+            color: var(--parchment);
+            margin-bottom: 2.5rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Horizontal rule */
+        .divider-h {
+            width: 60px;
+            height: 2px;
+            background: var(--clay);
+            margin: 2rem auto 2.5rem;
+            opacity: 0.8;
+        }
+
+        /* The Description */
+        p.the-description {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            color: var(--parchment);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        /* The Hook */
+        p.the-hook {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.3rem;
+            color: var(--clay);
+            font-weight: 700;
+            margin-bottom: 3.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* Split visual container */
+        .split-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(194, 165, 108, 0.3);
+        }
+
+        /* Individual panels */
+        .panel {
+            padding: 2.5rem 2rem;
+            position: relative;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .panel-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--clay);
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .panel-text {
+            font-size: 0.95rem;
+            color: var(--parchment);
+            line-height: 1.6;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        /* Left panel - Current World */
+        .panel-left {
+            background: linear-gradient(135deg, rgba(126, 155, 115, 0.15) 0%, rgba(31, 58, 46, 0.25) 100%);
+            border-right: 1px solid rgba(194, 165, 108, 0.2);
+        }
+
+        /* Right panel - After the Fall */
+        .panel-right {
+            background: linear-gradient(135deg, rgba(160, 94, 58, 0.1) 0%, rgba(43, 46, 48, 0.2) 100%);
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--clay);
+            color: var(--green);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.05em;
+            border: 2px solid var(--clay);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            border-radius: 0;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--clay);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(194, 165, 108, 0.2);
+        }
+
+        /* Coming soon text */
+        .coming-soon {
+            font-size: 0.8rem;
+            color: var(--clay);
+            opacity: 0.7;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            section.earthback-world {
+                padding: 80px 1.5rem;
+            }
+
+            h1.the-question {
+                font-size: clamp(1.8rem, 6vw, 2.8rem);
+                margin-bottom: 2rem;
+            }
+
+            p.the-description {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            p.the-hook {
+                font-size: 1.1rem;
+                margin-bottom: 2.5rem;
+            }
+
+            /* Stack panels vertically on mobile */
+            .split-visual {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .panel-left {
+                border-right: none;
+                border-bottom: 1px solid rgba(194, 165, 108, 0.2);
+            }
+
+            .panel {
+                min-height: 240px;
+            }
+
+            .proof-label {
+                top: 1rem;
+                right: 1rem;
+                font-size: 0.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            section.earthback-world {
+                padding: 60px 1rem;
+            }
+
+            h1.the-question {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+
+            p.the-description {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            p.the-hook {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .cta-button {
+                padding: 0.9rem 2rem;
+                font-size: 0.95rem;
+            }
+
+            .panel {
+                padding: 2rem 1.5rem;
+                min-height: 220px;
+            }
+
+            .panel-label {
+                font-size: 0.6rem;
+                margin-bottom: 1rem;
+            }
+
+            .panel-text {
+                font-size: 0.9rem;
+            }
+
+            .coming-soon {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Proof label -->
+    <div class="proof-label">Proof A — The Question</div>
+
+    <!-- Main section -->
+    <section class="earthback-world">
+        <div class="content-wrapper">
+            <!-- The Question -->
+            <h1 class="the-question">What if you could build your first home tonight?</h1>
+
+            <!-- Horizontal divider -->
+            <div class="divider-h"></div>
+
+            <!-- The Description -->
+            <p class="the-description">
+                A world where you start with land, seeds, and your own two hands. Where the walls you raise are grown from the soil beneath your feet — hemp, bamboo, earth, whatever your land provides. Where the community you build beside becomes the community you build with.
+            </p>
+
+            <!-- The Hook -->
+            <p class="the-hook">Two worlds. One set of skills. Both of them real.</p>
+
+            <!-- Split Visual -->
+            <div class="split-visual">
+                <div class="panel panel-left">
+                    <div class="panel-label">The Current World</div>
+                    <p class="panel-text">Build a better future alongside the world that exists.</p>
+                </div>
+                <div class="panel panel-right">
+                    <div class="panel-label">After the Fall</div>
+                    <p class="panel-text">Rebuild civilization with only what you can grow.</p>
+                </div>
+            </div>
+
+            <!-- CTA Button -->
+            <button class="cta-button">Join Earthback</button>
+
+            <div class="coming-soon">Earthback World</div>
+        </div>
+    </section>
+</body>
+</html>

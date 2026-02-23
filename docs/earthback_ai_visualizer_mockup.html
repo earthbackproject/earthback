@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earthback — Envision Your Build</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Pulled from earthbackproject.org live site */
+            --bg: #faf9f6;
+            --bg-card: #ffffff;
+            --bg-warm: #f5f3ef;
+            --border: #e8e5df;
+            --border-light: #f0ede8;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-muted: #999;
+            --accent: #2d5a27;
+            --accent-hover: #3d7a35;
+            --accent-light: #e8f2e6;
+            --accent-glow: rgba(45, 90, 39, 0.08);
+            --warm-accent: #b8860b;
+            --warm-accent-light: #fdf6e3;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── HEADER — matches earthbackproject.org ─── */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.75rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a.active { color: var(--accent); font-weight: 600; }
+
+        .nav-btn {
+            background: var(--accent);
+            color: white !important;
+            padding: 0.5rem 1.1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover { background: var(--accent-hover); color: white; }
+
+        /* ─── PAGE LAYOUT ─── */
+        .page-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* ─── PAGE HEADER ─── */
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .page-header .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--accent-light);
+            color: var(--accent);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .badge .dot {
+            width: 5px; height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .page-header h1 {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 0.6rem;
+        }
+
+        .page-header h1 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        /* ─── MAIN GRID ─── */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ─── CARD ─── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h3 { font-size: 0.9rem; font-weight: 600; }
+
+        .free-counter {
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 0.25rem 0.65rem;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .card-body { padding: 1.25rem; }
+
+        /* ─── FORM FIELDS ─── */
+        .field-group { margin-bottom: 1.25rem; }
+
+        .field-label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+        .chip {
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .chip:hover { border-color: var(--accent); color: var(--accent); }
+
+        .chip.selected {
+            border-color: var(--accent);
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .prompt-input {
+            width: 100%;
+            min-height: 130px;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            background: var(--bg);
+            resize: vertical;
+            line-height: 1.6;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .prompt-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .prompt-input::placeholder { color: #bbb; }
+
+        .style-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .style-option {
+            padding: 0.65rem 0.5rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .style-option:hover { border-color: var(--accent); }
+
+        .style-option.selected {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .style-option .icon { font-size: 1.3rem; margin-bottom: 0.2rem; }
+
+        .style-option .label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 0.85rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: var(--accent);
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .generate-btn:hover { background: var(--accent-hover); box-shadow: var(--shadow-md); }
+        .generate-btn svg { width: 16px; height: 16px; }
+
+        /* ─── IMAGE PANEL ─── */
+        .image-area {
+            aspect-ratio: 4 / 3;
+            background: var(--bg-warm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .placeholder { text-align: center; padding: 2rem; }
+
+        .placeholder-ring {
+            width: 64px; height: 64px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            border: 2px dashed var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .placeholder-ring svg { width: 24px; height: 24px; opacity: 0.4; color: var(--text-muted); }
+
+        .placeholder h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+
+        .placeholder p { font-size: 0.82rem; color: var(--text-muted); max-width: 280px; margin: 0 auto; }
+
+        .loading-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(26, 26, 26, 0.88);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 2;
+        }
+
+        .loading-overlay.active { display: flex; }
+
+        .spinner {
+            width: 36px; height: 36px;
+            border: 2.5px solid rgba(255,255,255,0.15);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-overlay span { color: rgba(255,255,255,0.7); font-size: 0.85rem; }
+
+        .generated-state {
+            display: none;
+            width: 100%; height: 100%;
+            background: linear-gradient(145deg, #5a7d3a 0%, #3d5a28 40%, #6b8f4a 70%, #4a7c59 100%);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .generated-state .mock-label { font-size: 0.85rem; opacity: 0.6; margin-top: 0.5rem; }
+
+        .image-toolbar {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toolbar-group { display: flex; gap: 0.4rem; }
+
+        .tool-btn {
+            padding: 0.4rem 0.7rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .tool-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .tool-btn.filled {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .tool-btn.filled:hover { background: var(--accent-hover); }
+
+        /* ─── REFINE BAR ─── */
+        .refine-bar { margin-bottom: 2rem; }
+
+        .refine-inner {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .refine-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            white-space: nowrap;
+        }
+
+        .refine-input {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            background: var(--bg);
+            color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+
+        .refine-input:focus { outline: none; border-color: var(--accent); }
+        .refine-input::placeholder { color: #bbb; }
+
+        .refine-send {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            background: var(--accent);
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .refine-send:hover { background: var(--accent-hover); }
+
+        /* ─── UPGRADE CTA ─── */
+        .upgrade-cta {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .upgrade-cta h3 {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .upgrade-cta p { color: var(--text-secondary); font-size: 0.92rem; }
+
+        .upgrade-btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--accent);
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--accent);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .upgrade-btn:hover { background: var(--accent); color: white; }
+
+        /* ─── PROFILE HINT ─── */
+        .profile-hint {
+            margin-top: 1.5rem;
+            text-align: center;
+            padding: 1.25rem;
+            background: var(--warm-accent-light);
+            border: 1px solid #ede0c0;
+            border-radius: var(--radius);
+        }
+
+        .profile-hint p { font-size: 0.88rem; color: var(--text-secondary); }
+        .profile-hint strong { color: var(--warm-accent); }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 1.75rem; }
+            .upgrade-cta { flex-direction: column; text-align: center; }
+            .nav-links { gap: 1rem; }
+            .nav-links .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER — matches earthbackproject.org -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/" class="logo">the Earthback Project</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/circles" class="hide-mobile">Circles</a></li>
+                    <li><a href="/how-it-works" class="hide-mobile">How It Works</a></li>
+                    <li><a href="/visualizer" class="active">Visualizer</a></li>
+                    <li><a href="/join" class="nav-btn">Join</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-container">
+
+        <div class="page-header">
+            <div class="badge"><span class="dot"></span> AI Preview</div>
+            <h1>Envision your <em>build.</em></h1>
+            <p>Describe the home, workshop, or community space you're imagining — our AI renders it in the materials and methods this community actually uses.</p>
+        </div>
+
+        <div class="main-grid">
+
+            <!-- LEFT: PROMPT -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Describe your project</h3>
+                    <span class="free-counter">3 free renders</span>
+                </div>
+                <div class="card-body">
+                    <div class="field-group">
+                        <span class="field-label">Structure</span>
+                        <div class="chips">
+                            <span class="chip selected">Single Home</span>
+                            <span class="chip">Duplex</span>
+                            <span class="chip">Community Hub</span>
+                            <span class="chip">Workshop</span>
+                            <span class="chip">Full Village</span>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <span class="field-label">Climate / Region</span>
+                        <div class="chips">
+                            <span class="chip selected">High Desert</span>
+                            <span class="chip">Prairie</span>
+                            <span class="chip">Forest</span>
+                            <span class="chip">Coastal</span>
+                            <span class="chip">Mountain</span>
+                            <span class="chip">Tropical</span>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <span class="field-label">Your vision</span>
+                        <textarea class="prompt-input" placeholder="A 1,200 sq ft rammed earth home with a living roof, passive solar orientation, large south-facing windows, a shaded courtyard with rainwater cisterns, native xeriscape plantings and a small hemp garden..."></textarea>
+                    </div>
+
+                    <div class="field-group">
+                        <span class="field-label">Render style</span>
+                        <div class="style-row">
+                            <div class="style-option selected">
+                                <div class="icon">📷</div>
+                                <span class="label">Photorealistic</span>
+                            </div>
+                            <div class="style-option">
+                                <div class="icon">✏️</div>
+                                <span class="label">Sketch</span>
+                            </div>
+                            <div class="style-option">
+                                <div class="icon">📐</div>
+                                <span class="label">Blueprint</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="generate-btn" onclick="simulateGeneration()">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z"/></svg>
+                        Generate vision
+                    </button>
+                </div>
+            </div>
+
+            <!-- RIGHT: IMAGE -->
+            <div class="card">
+                <div class="image-area" id="imageArea">
+                    <div class="placeholder" id="placeholderState">
+                        <div class="placeholder-ring">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.41a2.25 2.25 0 013.182 0l2.909 2.91M6.75 7.5a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18 7.5a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"/></svg>
+                        </div>
+                        <h4>Your vision will appear here</h4>
+                        <p>Describe your project and hit generate to see it rendered in earth, hemp, and timber.</p>
+                    </div>
+
+                    <div class="loading-overlay" id="loadingState">
+                        <div class="spinner"></div>
+                        <span>Rendering your vision...</span>
+                    </div>
+
+                    <div class="generated-state" id="generatedState">
+                        <div>
+                            <div style="font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.7;">🏡</div>
+                            <div class="mock-label">[AI-generated image renders here]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-toolbar">
+                    <div class="toolbar-group">
+                        <button class="tool-btn">🔄 Regenerate</button>
+                        <button class="tool-btn">✨ Variations</button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button class="tool-btn">📥 Download</button>
+                        <button class="tool-btn filled">Save to profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REFINE BAR -->
+        <div class="refine-bar">
+            <div class="refine-inner">
+                <span class="refine-label">Refine</span>
+                <input type="text" class="refine-input" placeholder="Add a greenhouse on the south side, make the roof steeper...">
+                <button class="refine-send">Update</button>
+            </div>
+        </div>
+
+        <!-- UPGRADE -->
+        <div class="upgrade-cta">
+            <div>
+                <h3>Unlock unlimited visions</h3>
+                <p>Unlimited renders, HD downloads, all three styles, and early access to the interactive builder. $9/month — cancel anytime.</p>
+            </div>
+            <button class="upgrade-btn">Upgrade to Pro</button>
+        </div>
+
+        <!-- PROFILE BRIDGE -->
+        <div class="profile-hint">
+            <p><strong>Coming soon:</strong> Save your generated visions directly to your Earthback profile. Your builds become part of your story — visible to your circles, linked to your projects.</p>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.chips').forEach(group => {
+            group.querySelectorAll('.chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+                    chip.classList.add('selected');
+                });
+            });
+        });
+
+        document.querySelectorAll('.style-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.style-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+            });
+        });
+
+        function simulateGeneration() {
+            const placeholder = document.getElementById('placeholderState');
+            const loading = document.getElementById('loadingState');
+            const generated = document.getElementById('generatedState');
+            placeholder.style.display = 'none';
+            loading.classList.add('active');
+            setTimeout(() => {
+                loading.classList.remove('active');
+                generated.style.display = 'flex';
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

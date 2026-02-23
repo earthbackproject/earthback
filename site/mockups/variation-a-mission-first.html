@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Earthback Project — Building Homes, Building Community</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* CSS Variables */
+    :root {
+      --green: #1F3A2E;
+      --green-mid: #2C4F3B;
+      --green-soft: #4A7C5E;
+      --clay: #C2A56C;
+      --clay-dark: #8A5B3F;
+      --clay-rust: #A05E3A;
+      --moss: #7e9b73;
+      --parchment: #F2EFE6;
+      --parchment2: #EAE3D3;
+      --ink: #2B2E30;
+      --ink-soft: #555A5C;
+      --white: #FFFFFF;
+    }
+
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      background-color: var(--white);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* Mockup Label */
+    .mockup-label {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background-color: var(--green);
+      color: var(--parchment);
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-radius: 4px;
+      z-index: 9999;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(31, 58, 46, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 16px 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-brand-the,
+    .nav-brand-project {
+      font-size: 12px;
+      color: rgba(242, 239, 230, 0.6);
+      font-weight: 400;
+    }
+
+    .nav-brand-earth {
+      color: var(--parchment);
+    }
+
+    .nav-brand-back {
+      color: var(--clay);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(242, 239, 230, 0.9);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--parchment);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 800px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--clay);
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-size: 64px;
+      margin-bottom: 24px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      display: inline-block;
+      border-radius: 4px;
+    }
+
+    .cta-primary {
+      background-color: var(--clay);
+      color: var(--green);
+    }
+
+    .cta-primary:hover {
+      background-color: #d4b880;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(194, 165, 108, 0.25);
+    }
+
+    .cta-secondary {
+      background-color: transparent;
+      color: var(--white);
+      border: 2px solid var(--white);
+    }
+
+    .cta-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Section Base Styles */
+    .section {
+      padding: 80px 24px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--ink-soft);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 48px;
+      margin-bottom: 48px;
+      max-width: 600px;
+    }
+
+    .section-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Crisis Section */
+    .crisis {
+      background-color: var(--parchment);
+    }
+
+    .crisis-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .stat-card {
+      background-color: var(--white);
+      padding: 40px 32px;
+      border-radius: 8px;
+      border: 1px solid rgba(31, 58, 46, 0.1);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+
+    .crisis-text {
+      font-size: 16px;
+      color: var(--ink);
+      max-width: 700px;
+      line-height: 1.8;
+    }
+
+    /* Solution Section */
+    .solution {
+      background-color: var(--white);
+    }
+
+    .solution-columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .solution-card {
+      padding: 32px;
+      background-color: var(--parchment2);
+      border-radius: 8px;
+    }
+
+    .solution-card h3 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: var(--green);
+    }
+
+    .solution-card p {
+      font-size: 15px;
+      color: var(--ink);
+      line-height: 1.8;
+    }
+
+    .solution-callout {
+      background: linear-gradient(135deg, rgba(31, 58, 46, 0.08) 0%, rgba(74, 124, 94, 0.08) 100%);
+      border-left: 4px solid var(--green);
+      padding: 32px;
+      border-radius: 4px;
+      font-size: 15px;
+      color: var(--ink);
+      line-height: 1.8;
+      max-width: 900px;
+    }
+
+    /* Materials Comparison */
+    .materials {
+      background-color: var(--parchment);
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .comparison-card {
+      padding: 40px;
+      border-radius: 8px;
+    }
+
+    .comparison-conventional {
+      background: linear-gradient(135deg, #f5f5f5 0%, #efefef 100%);
+      border: 1px solid #ddd;
+    }
+
+    .comparison-earthback {
+      background: linear-gradient(135deg, rgba(31, 58, 46, 0.08) 0%, rgba(242, 239, 230, 0.5) 100%);
+      border: 1px solid var(--green-soft);
+    }
+
+    .comparison-card h3 {
+      font-size: 24px;
+      margin-bottom: 24px;
+      color: var(--ink);
+    }
+
+    .comparison-earthback h3 {
+      color: var(--green);
+    }
+
+    .comparison-item {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .comparison-item:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .comparison-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .comparison-value {
+      font-size: 15px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* Three Organizations */
+    .organizations {
+      background-color: var(--white);
+    }
+
+    .org-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .org-card {
+      padding: 40px;
+      border-radius: 8px;
+      background: var(--parchment2);
+      border-left: 4px solid;
+      position: relative;
+    }
+
+    .org-card.foundation {
+      border-left-color: #D4A574;
+    }
+
+    .org-card.alliance {
+      border-left-color: #4A90E2;
+    }
+
+    .org-card.project {
+      border-left-color: var(--green);
+    }
+
+    .org-card h3 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+
+    .org-card p {
+      font-size: 15px;
+      color: var(--ink);
+      line-height: 1.8;
+    }
+
+    /* Community Platform Section */
+    .community-section {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+      color: var(--white);
+    }
+
+    .community-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .community-text h2 {
+      font-size: 48px;
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+
+    .community-text p {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+
+    .community-cta {
+      display: inline-block;
+    }
+
+    .community-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .feed-post {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 24px;
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+    }
+
+    .feed-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .feed-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--clay) 0%, var(--clay-rust) 100%);
+      margin-right: 12px;
+    }
+
+    .feed-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feed-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .feed-role {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .feed-content {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--green);
+      color: rgba(242, 239, 230, 0.8);
+      padding: 60px 24px;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-main {
+      font-size: 16px;
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+
+    .footer-main a {
+      color: var(--parchment);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-main a:hover {
+      color: var(--clay);
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: rgba(242, 239, 230, 0.7);
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 40px;
+      }
+
+      .hero-subtitle {
+        font-size: 16px;
+      }
+
+      .section {
+        padding: 60px 20px;
+      }
+
+      .section-title {
+        font-size: 36px;
+      }
+
+      .crisis-stats {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .solution-columns {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .org-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .community-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .community-text h2 {
+        font-size: 36px;
+      }
+
+      .hero-ctas {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta-btn {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 28px;
+      }
+
+      .section-title {
+        font-size: 28px;
+      }
+
+      .stat-number {
+        font-size: 40px;
+      }
+
+      .community-text h2 {
+        font-size: 28px;
+      }
+
+      .nav-brand {
+        font-size: 14px;
+      }
+
+      .mockup-label {
+        font-size: 9px;
+        padding: 6px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="mockup-label">MOCKUP A — MISSION FIRST</div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span class="nav-brand-the">the</span>
+        <span class="nav-brand-earth">EARTH</span><span class="nav-brand-back">BACK</span>
+        <span class="nav-brand-project">Project</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#mission">Mission</a></li>
+        <li><a href="#technology">Technology</a></li>
+        <li><a href="#alliance">Alliance</a></li>
+        <li><a href="#community">Community</a></li>
+        <li><a href="#join">Join</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">From Soil to Shelter</div>
+      <h1 class="hero-title">1.8 billion people lack adequate housing. We're changing that.</h1>
+      <p class="hero-subtitle">Through hemp construction, 3D printing technology, and community-led transformation, the Earthback Alliance is building homes that last centuries — from materials grown in the same communities that need them.</p>
+      <div class="hero-ctas">
+        <button class="cta-btn cta-primary">Join the Alliance</button>
+        <button class="cta-btn cta-secondary">See How It Works</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crisis Section -->
+  <section class="crisis section" id="mission">
+    <div class="section-container">
+      <div class="section-label">The Problem</div>
+      <h2 class="section-title">An Interconnected Crisis</h2>
+
+      <div class="crisis-stats">
+        <div class="stat-card">
+          <div class="stat-number">1.8B</div>
+          <div class="stat-label">People without adequate housing</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">96,000</div>
+          <div class="stat-label">New homes needed per day by 2030</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">500–2000 mi</div>
+          <div class="stat-label">Average distance construction materials travel</div>
+        </div>
+      </div>
+
+      <p class="crisis-text">
+        Global supply chains for conventional building materials are broken. Construction materials travel hundreds or thousands of miles, carrying embedded carbon and creating dependency on distant manufacturers. Conventional building methods are slow, materials are toxic, and homes deteriorate within decades. We need a fundamental shift: materials grown locally, construction powered by community, homes built to last centuries.
+      </p>
+    </div>
+  </section>
+
+  <!-- Solution Section -->
+  <section class="solution section" id="technology">
+    <div class="section-container">
+      <div class="section-label">The Earthback Approach</div>
+      <h2 class="section-title">Grow It. Build It. Own It.</h2>
+
+      <div class="solution-columns">
+        <div class="solution-card">
+          <h3>Hemp Farming & Processing</h3>
+          <p>Community-grown building materials with a 0–10 mile supply chain. Hemp sequesters carbon as it grows, and the entire plant becomes usable — fiber, shiv, and seed oil. Local processing creates jobs and keeps value within the community.</p>
+        </div>
+        <div class="solution-card">
+          <h3>Layer-Free 3D Construction</h3>
+          <p>Monolithic hempcrete printing eliminates the need for separate structural and insulation layers. Homes print in days instead of months. Strong, fireproof, and with R-values that exceed conventional construction — all from a single material.</p>
+        </div>
+        <div class="solution-card">
+          <h3>Multi-Century Roofing</h3>
+          <p>100+ year metal roofing with integrated solar. Durable infrastructure that outlasts the structural life of the home and generates clean power. Simple maintenance, zero degradation, and a pathway to energy autonomy for every household.</p>
+        </div>
+      </div>
+
+      <div class="solution-callout">
+        <strong>The Technology Supports, It Doesn't Require:</strong> Even though we've developed advanced systems — layer-free 3D printing, multi-century metal roofing, and integrated solar — none of this technology is required for an Earthback project to succeed. Every home can be built entirely with conventional tools and methods. We teach manual building first because real resilience comes from people, not machines.
+      </div>
+    </div>
+  </section>
+
+  <!-- Materials Comparison -->
+  <section class="materials section">
+    <div class="section-container">
+      <div class="section-label">Why It Matters</div>
+      <h2 class="section-title">Conventional vs. Earthback Construction</h2>
+
+      <div class="comparison-grid">
+        <div class="comparison-card comparison-conventional">
+          <h3>Conventional Construction</h3>
+          <div class="comparison-item">
+            <div class="comparison-label">Supply Chain</div>
+            <div class="comparison-value">500–2000 miles</div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-label">Materials</div>
+            <div class="comparison-value">Concrete, vinyl, fiberglass, foam — many carcinogenic</div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-label">Cost</div>
+            <div class="comparison-value">$150–250 per sq ft</div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-label">Durability</div>
+            <div class="comparison-value">Repairs every 20–30 years; structural life 50–75 years</div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-label">Carbon</div>
+            <div class="comparison-value">High embodied carbon from manufacturing and transport</div>
+          </div>
+        </div>
+
+        <div class="comparison-card comparison-earthback">
+          <h3>Earthback Construction</h3>
+          <div class="comparison-item">
+            <div class="comparison-label">Supply Chain</div>
+            <div class="comparison-value">0–50 miles (local hemp + processing)</div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-label">Materials</div>
+            <div class="comparison-value">Hemp fiber, wood shiv, renewable binders — zero carcinogens</div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-label">Cost</div>
+            <div class="comparison-value">$90–140 per sq ft</div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-label">Durability</div>
+            <div class="comparison-value">Minimal maintenance; structural life 250+ years</div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-label">Carbon</div>
+            <div class="comparison-value">Hemp sequesters carbon during growth; negative net lifecycle carbon</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Organizations -->
+  <section class="organizations section" id="alliance">
+    <div class="section-container">
+      <div class="section-label">The Structure</div>
+      <h2 class="section-title">Three Organizations, One Mission</h2>
+
+      <div class="org-cards">
+        <div class="org-card foundation">
+          <h3>Earthback Foundation</h3>
+          <p>Drives social impact through grants, education, and community development. Funds research, trains builders and farmers, and ensures the Earthback approach remains accessible to low-income communities worldwide.</p>
+        </div>
+        <div class="org-card alliance">
+          <h3>Earthback Alliance</h3>
+          <p>Coordinates partner networks across the supply chain. Connects farmers, processors, builders, and communities. Manages quality standards, knowledge sharing, and workforce development across all Earthback projects.</p>
+        </div>
+        <div class="org-card project">
+          <h3>Earthback Project</h3>
+          <p>Develops, tests, and deploys Earthback technology. Holds IP, licenses innovations, and manages the technology roadmap. Ensures the Alliance has access to cutting-edge tools and methods.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Platform Section -->
+  <section class="community-section section" id="community">
+    <div class="section-container">
+      <div class="community-content">
+        <div class="community-text">
+          <div class="section-label" style="color: var(--clay);">The Network</div>
+          <h2>Where the Alliance Comes Together</h2>
+          <p>The Earthback community platform is where builders, farmers, partners, and communities coordinate in real time. Share crop updates, track hempcrete cures, post wins and challenges, and learn from thousands of projects worldwide. One shared network. One shared mission.</p>
+          <div class="community-cta">
+            <button class="cta-btn cta-primary">Join the Community</button>
+          </div>
+        </div>
+
+        <div class="community-feed">
+          <div class="feed-post">
+            <div class="feed-header">
+              <div class="feed-avatar" style="background: linear-gradient(135deg, #7e9b73 0%, #4A7C5E 100%);"></div>
+              <div class="feed-meta">
+                <div class="feed-name">Farmers, Midwest Chapter</div>
+                <div class="feed-role">Hemp crop update</div>
+              </div>
+            </div>
+            <div class="feed-content">
+              Our second planting is thriving. Fiber quality is 18% above baseline. First processor pickup scheduled for next month. Already training the next batch of growers.
+            </div>
+          </div>
+
+          <div class="feed-post">
+            <div class="feed-header">
+              <div class="feed-avatar" style="background: linear-gradient(135deg, #C2A56C 0%, #A05E3A 100%);"></div>
+              <div class="feed-meta">
+                <div class="feed-name">BuildLab Team</div>
+                <div class="feed-role">Construction update</div>
+              </div>
+            </div>
+            <div class="feed-content">
+              Hempcrete walls have reached full cure. Compressive strength at 850 psi. Three walls printed in 72 hours. Roofing prep begins tomorrow.
+            </div>
+          </div>
+
+          <div class="feed-post">
+            <div class="feed-header">
+              <div class="feed-avatar" style="background: linear-gradient(135deg, #88c68a 0%, #5a9c5c 100%);"></div>
+              <div class="feed-meta">
+                <div class="feed-name">Oak Ridge Community</div>
+                <div class="feed-role">First home milestone</div>
+              </div>
+            </div>
+            <div class="feed-content">
+              Our first Earthback home is complete. Forty families participated in the build. We're in. We're home. Next phase: five more homes by spring.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-main">The Earthback Project · <a href="#">earthbackproject.org</a></div>
+      <div class="footer-tagline">
+        Earthback does not operate from a traditional profit motive. The only "return" we care about is the success of the Alliance itself.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

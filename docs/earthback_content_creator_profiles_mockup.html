@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earthback — Creator Profiles & Content Libraries (3-State Mockup)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #faf9f6;
+            --bg-card: #ffffff;
+            --bg-warm: #f5f3ef;
+            --border: #e8e5df;
+            --border-light: #f0ede8;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-muted: #999;
+            --accent: #2d5a27;
+            --accent-hover: #3d7a35;
+            --accent-light: #e8f2e6;
+            --accent-glow: rgba(45, 90, 39, 0.08);
+            --warm: #b8860b;
+            --warm-light: #fdf6e3;
+            --warm-border: #ede0c0;
+            --blue: #3b6fb5;
+            --blue-light: #eef4ff;
+            --blue-border: #c8d9f0;
+            --yt-red: #c4302b;
+            --yt-red-light: #fef2f2;
+            --pod-purple: #7c3aed;
+            --pod-purple-light: #f3f0ff;
+            --blog-orange: #d97706;
+            --blog-orange-light: #fefce8;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── HEADER ─── */
+        .site-header {
+            position: sticky; top: 0; z-index: 100;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-inner {
+            max-width: 1100px; margin: 0 auto;
+            padding: 0.75rem 1.5rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo { font-weight: 700; font-size: 1.1rem; color: var(--text-primary); text-decoration: none; }
+        .nav-links { display: flex; gap: 1.75rem; align-items: center; list-style: none; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-btn { background: var(--accent); color: white !important; padding: 0.5rem 1.1rem; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; }
+
+        /* ─── STATE SWITCHER ─── */
+        .state-switcher { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.5rem 0; }
+        .switcher-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.6rem; }
+        .switcher-tabs { display: flex; border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; width: fit-content; }
+        .switcher-tab {
+            padding: 0.55rem 1.2rem; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600;
+            border: none; background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+            border-right: 1px solid var(--border); transition: all 0.15s;
+        }
+        .switcher-tab:last-child { border-right: none; }
+        .switcher-tab:hover { background: var(--bg-warm); }
+        .switcher-tab.active { background: var(--accent); color: white; }
+
+        .view { display: none; }
+        .view.active { display: block; }
+        .page-container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+        /* ─── SHARED COMPONENTS ─── */
+        .search-bar {
+            display: flex; align-items: center; gap: 0.75rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 0.6rem 1rem;
+            box-shadow: var(--shadow-sm); margin-bottom: 1.5rem;
+        }
+        .search-bar svg { width: 18px; height: 18px; color: var(--text-muted); flex-shrink: 0; }
+        .search-bar input { flex: 1; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text-primary); background: transparent; }
+
+        .badge-sm {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-size: 0.7rem; padding: 0.18rem 0.5rem; border-radius: 4px; font-weight: 600;
+        }
+        .badge-ghost { color: var(--warm); background: var(--warm-light); border: 1px solid var(--warm-border); }
+        .badge-claimed { color: var(--accent); background: var(--accent-light); }
+        .badge-yt { color: var(--yt-red); background: var(--yt-red-light); }
+        .badge-pod { color: var(--pod-purple); background: var(--pod-purple-light); }
+        .badge-blog { color: var(--blog-orange); background: var(--blog-orange-light); }
+
+        .tag { font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px; background: var(--bg-warm); color: var(--text-secondary); font-weight: 500; }
+        .tag.circle { background: var(--accent-light); color: var(--accent); }
+
+        .btn {
+            padding: 0.4rem 0.85rem; border-radius: 6px; font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
+            border: 1px solid var(--border); background: var(--bg-card); color: var(--text-secondary);
+            display: inline-flex; align-items: center; gap: 0.35rem;
+        }
+        .btn:hover { border-color: var(--accent); color: var(--accent); }
+        .btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+        .btn.primary:hover { background: var(--accent-hover); }
+        .btn.lg { padding: 0.6rem 1.2rem; font-size: 0.88rem; border-radius: var(--radius-sm); }
+
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden;
+        }
+
+        /* ════════════════════════════════════
+           STATE 1: SEARCH RESULTS
+           ════════════════════════════════════ */
+        .search-meta { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem; }
+        .search-meta strong { color: var(--text-secondary); }
+
+        .result-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); box-shadow: var(--shadow-sm);
+            padding: 1.25rem 1.5rem; display: flex; gap: 1.25rem;
+            align-items: flex-start; transition: box-shadow 0.2s; margin-bottom: 1rem;
+        }
+        .result-card:hover { box-shadow: var(--shadow-md); }
+
+        .result-avatar {
+            width: 56px; height: 56px; border-radius: 50%; background: var(--bg-warm);
+            border: 1px solid var(--border-light); display: flex; align-items: center;
+            justify-content: center; font-size: 1.4rem; flex-shrink: 0; overflow: hidden;
+        }
+        .result-avatar.square { border-radius: 10px; }
+
+        .result-body { flex: 1; min-width: 0; }
+        .result-name-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.15rem; flex-wrap: wrap; }
+        .result-name { font-size: 1rem; font-weight: 600; }
+        .result-location { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+        .result-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.5rem; }
+        .result-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.7rem; }
+        .result-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+        .result-social { font-size: 0.78rem; color: var(--text-muted); margin-left: 0.25rem; }
+
+        /* Source stats row */
+        .source-stats {
+            display: flex; gap: 1rem; margin-bottom: 0.6rem;
+            font-size: 0.8rem; color: var(--text-muted);
+        }
+        .source-stat { display: flex; align-items: center; gap: 0.3rem; }
+
+        /* ════════════════════════════════════
+           STATE 2: CREATOR LIBRARY PAGE
+           ════════════════════════════════════ */
+        .ghost-banner {
+            background: var(--warm-light); border: 1px solid var(--warm-border);
+            border-radius: var(--radius); padding: 1rem 1.5rem; margin-bottom: 2rem;
+            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        }
+        .ghost-banner p { font-size: 0.88rem; color: var(--text-secondary); }
+        .ghost-banner strong { color: var(--warm); }
+
+        .creator-header {
+            display: flex; gap: 1.5rem; align-items: flex-start;
+            padding: 1.5rem; border-bottom: 1px solid var(--border-light);
+        }
+        .creator-avatar {
+            width: 72px; height: 72px; border-radius: 50%; background: var(--bg-warm);
+            border: 2px solid var(--border); display: flex; align-items: center;
+            justify-content: center; font-size: 1.8rem; flex-shrink: 0;
+        }
+        .creator-info { flex: 1; }
+        .creator-name {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-size: 1.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.2rem;
+        }
+        .creator-meta { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .creator-desc { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; }
+        .creator-badges { display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap; }
+
+        /* Content filter tabs */
+        .content-filters {
+            padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--border-light);
+            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        }
+        .filter-tabs { display: flex; gap: 0; }
+        .filter-tab {
+            padding: 0.45rem 0.9rem; font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+            font-weight: 600; border: 1px solid var(--border); background: var(--bg-card);
+            color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+            margin-left: -1px;
+        }
+        .filter-tab:first-child { border-radius: 6px 0 0 6px; margin-left: 0; }
+        .filter-tab:last-child { border-radius: 0 6px 6px 0; }
+        .filter-tab.active { background: var(--accent); color: white; border-color: var(--accent); z-index: 1; }
+        .filter-tab:hover:not(.active) { background: var(--bg-warm); }
+
+        .filter-count {
+            font-size: 0.7rem; background: var(--bg-warm); color: var(--text-muted);
+            padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.3rem;
+        }
+        .filter-tab.active .filter-count { background: rgba(255,255,255,0.25); color: white; }
+
+        .content-search {
+            padding: 0.4rem 0.7rem; border: 1px solid var(--border); border-radius: 6px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.82rem; background: var(--bg);
+            color: var(--text-primary); width: 200px;
+        }
+        .content-search:focus { outline: none; border-color: var(--accent); }
+
+        /* Category sections */
+        .category-section { padding: 1.25rem 1.5rem; }
+        .category-section + .category-section { border-top: 1px solid var(--border-light); }
+
+        .category-label {
+            font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 0.75rem;
+        }
+
+        /* Video grid */
+        .video-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+        }
+
+        .video-card {
+            border-radius: var(--radius-sm); overflow: hidden; cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            border: 1px solid var(--border-light); background: var(--bg-card);
+        }
+        .video-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+        .video-thumb {
+            aspect-ratio: 16 / 9; background: #1a1a1a; position: relative;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .video-thumb-img {
+            width: 100%; height: 100%; object-fit: cover;
+            background: linear-gradient(135deg, #3d5a28, #6b8f4a);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 0.75rem; opacity: 0.4;
+        }
+        .play-btn {
+            position: absolute; width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(0,0,0,0.7); display: flex; align-items: center;
+            justify-content: center; color: white; font-size: 0.9rem;
+            transition: background 0.15s;
+        }
+        .video-card:hover .play-btn { background: var(--yt-red); }
+
+        .video-duration {
+            position: absolute; bottom: 6px; right: 6px;
+            background: rgba(0,0,0,0.8); color: white; font-size: 0.68rem;
+            padding: 0.15rem 0.4rem; border-radius: 3px; font-weight: 600;
+        }
+
+        .video-info { padding: 0.6rem 0.75rem; }
+        .video-title { font-size: 0.82rem; font-weight: 600; line-height: 1.35; margin-bottom: 0.2rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .video-meta { font-size: 0.72rem; color: var(--text-muted); }
+
+        /* Podcast / blog items */
+        .episode-list { display: flex; flex-direction: column; gap: 0.6rem; }
+        .episode-item {
+            display: flex; gap: 0.75rem; align-items: center;
+            padding: 0.6rem 0.75rem; border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light); transition: background 0.15s; cursor: pointer;
+        }
+        .episode-item:hover { background: var(--bg-warm); }
+
+        .episode-icon {
+            width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; font-size: 1rem;
+        }
+        .episode-icon.podcast { background: var(--pod-purple-light); }
+        .episode-icon.blog { background: var(--blog-orange-light); }
+
+        .episode-info { flex: 1; min-width: 0; }
+        .episode-title { font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .episode-meta { font-size: 0.72rem; color: var(--text-muted); }
+
+        /* Video player modal */
+        .player-modal {
+            display: none; position: fixed; inset: 0; z-index: 200;
+            background: rgba(0,0,0,0.75); align-items: center; justify-content: center;
+            padding: 2rem;
+        }
+        .player-modal.active { display: flex; }
+
+        .player-inner {
+            background: var(--bg-card); border-radius: var(--radius);
+            overflow: hidden; max-width: 800px; width: 100%;
+            box-shadow: var(--shadow-lg);
+        }
+        .player-video {
+            aspect-ratio: 16 / 9; background: #000;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 0.85rem; opacity: 0.5;
+        }
+        .player-bar {
+            padding: 0.75rem 1rem; display: flex; align-items: center;
+            justify-content: space-between; border-top: 1px solid var(--border-light);
+        }
+        .player-title { font-size: 0.9rem; font-weight: 600; }
+        .player-close {
+            padding: 0.4rem 0.8rem; border-radius: 6px; border: 1px solid var(--border);
+            background: var(--bg-card); font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem; cursor: pointer;
+        }
+
+        /* Sidebar for library page */
+        .library-grid {
+            display: grid; grid-template-columns: 1fr 300px; gap: 1.5rem; align-items: start;
+        }
+
+        .sidebar-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); box-shadow: var(--shadow-sm);
+            padding: 1.25rem; margin-bottom: 1rem;
+        }
+        .sidebar-card h4 {
+            font-size: 0.82rem; font-weight: 600; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 0.75rem;
+        }
+
+        .proof-item {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;
+        }
+        .proof-avatars { display: flex; }
+        .proof-avatar {
+            width: 26px; height: 26px; border-radius: 50%; background: var(--accent-light);
+            border: 2px solid var(--bg-card); display: flex; align-items: center;
+            justify-content: center; font-size: 0.6rem; font-weight: 700; color: var(--accent);
+            margin-left: -6px;
+        }
+        .proof-avatar:first-child { margin-left: 0; }
+
+        /* Community notes */
+        .community-note {
+            padding: 0.6rem 0.75rem; border-radius: var(--radius-sm);
+            background: var(--bg-warm); margin-bottom: 0.5rem; font-size: 0.85rem;
+        }
+        .community-note .note-author { font-weight: 600; font-size: 0.78rem; color: var(--accent); margin-bottom: 0.2rem; }
+        .community-note .note-text { color: var(--text-secondary); line-height: 1.4; }
+        .community-note .note-ref { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+        /* ════════════════════════════════════
+           STATE 3: CLAIM VIEW
+           ════════════════════════════════════ */
+        .claim-banner {
+            background: var(--blue-light); border: 1px solid var(--blue-border);
+            border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 2rem;
+        }
+        .claim-banner-inner {
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem;
+        }
+        .claim-banner h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .claim-banner p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; }
+
+        .claim-actions { display: flex; flex-direction: column; gap: 0.5rem; flex-shrink: 0; }
+        .btn-claim {
+            padding: 0.65rem 1.5rem; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none;
+            background: var(--accent); color: white; text-align: center;
+        }
+        .btn-claim:hover { background: var(--accent-hover); }
+        .not-you { font-size: 0.78rem; color: var(--text-muted); text-align: center; cursor: pointer; }
+
+        .invited-by {
+            margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--blue-border);
+            font-size: 0.85rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.5rem;
+        }
+        .invited-by-avatar {
+            width: 24px; height: 24px; border-radius: 50%; background: var(--accent-light);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.6rem; font-weight: 700; color: var(--accent); flex-shrink: 0;
+        }
+
+        .sync-options {
+            display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem;
+        }
+        .sync-option {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.6rem 0.75rem; border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm); font-size: 0.85rem;
+        }
+        .sync-toggle {
+            width: 36px; height: 20px; border-radius: 10px; background: var(--accent);
+            position: relative; cursor: pointer;
+        }
+        .sync-toggle::after {
+            content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%;
+            background: white; top: 2px; right: 2px; transition: right 0.15s;
+        }
+        .sync-toggle.off { background: var(--border); }
+        .sync-toggle.off::after { right: 18px; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            .library-grid { grid-template-columns: 1fr; }
+            .video-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .video-grid { grid-template-columns: 1fr; }
+            .creator-header { flex-direction: column; }
+            .claim-banner-inner { flex-direction: column; }
+            .ghost-banner { flex-direction: column; }
+            .nav-links .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/" class="logo">the Earthback Project</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#" class="hide-mobile">Circles</a></li>
+                    <li><a href="#" class="hide-mobile">How It Works</a></li>
+                    <li><a href="#" class="hide-mobile">Visualizer</a></li>
+                    <li><a href="#" class="nav-btn">Join</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="state-switcher">
+        <div class="switcher-label">Mockup View — click to switch states</div>
+        <div class="switcher-tabs">
+            <button class="switcher-tab active" onclick="showView('search')">1. Search Results</button>
+            <button class="switcher-tab" onclick="showView('library')">2. Creator Library Page</button>
+            <button class="switcher-tab" onclick="showView('claim')">3. Claim Preview</button>
+        </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════
+         STATE 1: SEARCH RESULTS
+         ════════════════════════════════════════ -->
+    <div class="view active" id="view-search">
+        <div class="page-container">
+
+            <div class="search-bar">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+                <input type="text" value="hempcrete building tutorial" readonly>
+            </div>
+
+            <div class="search-meta">
+                Showing results for <strong>"hempcrete building tutorial"</strong> · 4 results (1 on Earthback, 3 found on the web)
+            </div>
+
+            <!-- EXISTING MEMBER -->
+            <div class="result-card">
+                <div class="result-avatar">🌿</div>
+                <div class="result-body">
+                    <div class="result-name-row">
+                        <div class="result-name">Southwest Hemp Builders Co-op</div>
+                        <span class="badge-sm badge-claimed">On Earthback</span>
+                    </div>
+                    <div class="result-location">Flagstaff, AZ · 6 videos shared · 🌾 Natural Building</div>
+                    <div class="result-desc">Worker-owned cooperative. Their shared content includes hempcrete wall pour tutorials and insulation retrofit walkthroughs.</div>
+                    <div class="result-actions">
+                        <button class="btn primary">View Library</button>
+                        <button class="btn">Message</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GHOST: YOUTUBE CREATOR -->
+            <div class="result-card" style="border-color: var(--warm-border);">
+                <div class="result-avatar">🎬</div>
+                <div class="result-body">
+                    <div class="result-name-row">
+                        <div class="result-name">Essential Craftsman</div>
+                        <span class="badge-sm badge-ghost">Not on Earthback yet</span>
+                        <span class="badge-sm badge-yt">▶ YouTube · 1.2M subs</span>
+                    </div>
+                    <div class="result-location">Oregon, US</div>
+                    <div class="source-stats">
+                        <span class="source-stat">📹 847 videos</span>
+                        <span class="source-stat">👁 180M views</span>
+                        <span class="source-stat">⏱ Active 3 days ago</span>
+                    </div>
+                    <div class="result-desc">Craftsman and builder covering construction techniques, tool use, and life skills. Extensive series on building a spec house from foundation to finish.</div>
+                    <div class="result-tags">
+                        <span class="tag">construction</span>
+                        <span class="tag">building</span>
+                        <span class="tag">tools</span>
+                        <span class="tag">tutorials</span>
+                    </div>
+                    <div class="result-actions">
+                        <button class="btn primary" onclick="showView('library')">View Library</button>
+                        <button class="btn">✉️ Invite to Earthback</button>
+                        <button class="btn">🤝 Vouch</button>
+                        <span class="result-social">5 people searched</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GHOST: PODCAST -->
+            <div class="result-card" style="border-color: var(--warm-border);">
+                <div class="result-avatar">🎙️</div>
+                <div class="result-body">
+                    <div class="result-name-row">
+                        <div class="result-name">The Natural Building Podcast</div>
+                        <span class="badge-sm badge-ghost">Not on Earthback yet</span>
+                        <span class="badge-sm badge-pod">🎙 Podcast · 210 episodes</span>
+                    </div>
+                    <div class="result-location">Various · RSS feed available</div>
+                    <div class="source-stats">
+                        <span class="source-stat">🎙 210 episodes</span>
+                        <span class="source-stat">⏱ Weekly</span>
+                    </div>
+                    <div class="result-desc">Long-form interviews with natural builders, material scientists, and community housing advocates. Recent episodes cover hempcrete code compliance and earthen floors.</div>
+                    <div class="result-tags">
+                        <span class="tag">hempcrete</span>
+                        <span class="tag">interviews</span>
+                        <span class="tag">natural building</span>
+                    </div>
+                    <div class="result-actions">
+                        <button class="btn primary">View Library</button>
+                        <button class="btn">✉️ Invite to Earthback</button>
+                        <button class="btn">🤝 Vouch</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GHOST: BLOG/SUBSTACK -->
+            <div class="result-card" style="border-color: var(--warm-border);">
+                <div class="result-avatar">✍️</div>
+                <div class="result-body">
+                    <div class="result-name-row">
+                        <div class="result-name">The Year of Mud</div>
+                        <span class="badge-sm badge-ghost">Not on Earthback yet</span>
+                        <span class="badge-sm badge-blog">📝 Blog · 140+ posts</span>
+                    </div>
+                    <div class="result-location">Missouri, US · WordPress blog</div>
+                    <div class="source-stats">
+                        <span class="source-stat">📝 140+ articles</span>
+                        <span class="source-stat">⏱ Updated monthly</span>
+                    </div>
+                    <div class="result-desc">Detailed documentation of building a cob house from scratch, with technique guides on natural plasters, earthen floors, and hempcrete insulation.</div>
+                    <div class="result-tags">
+                        <span class="tag">cob</span>
+                        <span class="tag">hempcrete</span>
+                        <span class="tag">documentation</span>
+                    </div>
+                    <div class="result-actions">
+                        <button class="btn primary">View Library</button>
+                        <button class="btn">✉️ Invite to Earthback</button>
+                        <button class="btn">🤝 Vouch</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════
+         STATE 2: CREATOR LIBRARY PAGE
+         ════════════════════════════════════════ -->
+    <div class="view" id="view-library">
+        <div class="page-container">
+
+            <div class="ghost-banner">
+                <p>This creator <strong>isn't on Earthback yet.</strong> Their content library was imported from public sources. Know them? Invite them to claim this page and join the community.</p>
+                <button class="btn primary lg">✉️ Invite to Earthback</button>
+            </div>
+
+            <div class="library-grid">
+                <div>
+                    <!-- Creator card -->
+                    <div class="card" style="margin-bottom: 1.5rem;">
+                        <div class="creator-header">
+                            <div class="creator-avatar">🎬</div>
+                            <div class="creator-info">
+                                <div class="creator-name">Essential Craftsman</div>
+                                <div class="creator-meta">Oregon, US · essentialcraftsman.com</div>
+                                <div class="creator-desc">Craftsman and builder covering construction techniques, tool use, and life skills. Hosted by Scott Wadsworth, a blacksmith and general contractor with 40 years of building experience.</div>
+                                <div class="creator-badges">
+                                    <span class="badge-sm badge-yt">▶ YouTube · 1.2M subs</span>
+                                    <span class="badge-sm badge-ghost">Not claimed</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filter tabs -->
+                        <div class="content-filters">
+                            <div class="filter-tabs">
+                                <button class="filter-tab active">All<span class="filter-count">847</span></button>
+                                <button class="filter-tab">Videos<span class="filter-count">847</span></button>
+                                <button class="filter-tab">Playlists<span class="filter-count">24</span></button>
+                            </div>
+                            <input type="text" class="content-search" placeholder="Search this library...">
+                        </div>
+
+                        <!-- AI-categorized sections -->
+                        <div class="category-section">
+                            <div class="category-label">🏗 Construction Techniques · 89 videos</div>
+                            <div class="video-grid">
+                                <div class="video-card" onclick="openPlayer()">
+                                    <div class="video-thumb">
+                                        <div class="video-thumb-img">[thumbnail]</div>
+                                        <div class="play-btn">▶</div>
+                                        <div class="video-duration">18:42</div>
+                                    </div>
+                                    <div class="video-info">
+                                        <div class="video-title">Hempcrete Wall Pour — Complete Process</div>
+                                        <div class="video-meta">124K views · 8 months ago</div>
+                                    </div>
+                                </div>
+                                <div class="video-card">
+                                    <div class="video-thumb">
+                                        <div class="video-thumb-img">[thumbnail]</div>
+                                        <div class="play-btn">▶</div>
+                                        <div class="video-duration">24:15</div>
+                                    </div>
+                                    <div class="video-info">
+                                        <div class="video-title">Foundation Layout — Getting It Right the First Time</div>
+                                        <div class="video-meta">89K views · 1 year ago</div>
+                                    </div>
+                                </div>
+                                <div class="video-card">
+                                    <div class="video-thumb">
+                                        <div class="video-thumb-img">[thumbnail]</div>
+                                        <div class="play-btn">▶</div>
+                                        <div class="video-duration">31:07</div>
+                                    </div>
+                                    <div class="video-info">
+                                        <div class="video-title">Framing a Wall — Every Step Explained</div>
+                                        <div class="video-meta">210K views · 1 year ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="category-section">
+                            <div class="category-label">🔨 Tool Reviews & Technique · 62 videos</div>
+                            <div class="video-grid">
+                                <div class="video-card">
+                                    <div class="video-thumb">
+                                        <div class="video-thumb-img">[thumbnail]</div>
+                                        <div class="play-btn">▶</div>
+                                        <div class="video-duration">12:33</div>
+                                    </div>
+                                    <div class="video-info">
+                                        <div class="video-title">The Only Trowels You'll Ever Need</div>
+                                        <div class="video-meta">67K views · 6 months ago</div>
+                                    </div>
+                                </div>
+                                <div class="video-card">
+                                    <div class="video-thumb">
+                                        <div class="video-thumb-img">[thumbnail]</div>
+                                        <div class="play-btn">▶</div>
+                                        <div class="video-duration">15:48</div>
+                                    </div>
+                                    <div class="video-info">
+                                        <div class="video-title">How to Read a Tape Measure (and Why Most People Do It Wrong)</div>
+                                        <div class="video-meta">445K views · 2 years ago</div>
+                                    </div>
+                                </div>
+                                <div class="video-card">
+                                    <div class="video-thumb">
+                                        <div class="video-thumb-img">[thumbnail]</div>
+                                        <div class="play-btn">▶</div>
+                                        <div class="video-duration">19:22</div>
+                                    </div>
+                                    <div class="video-info">
+                                        <div class="video-title">Circular Saw Basics — Cut Straight Every Time</div>
+                                        <div class="video-meta">312K views · 1 year ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div>
+                    <div class="sidebar-card">
+                        <h4>Community interest</h4>
+                        <div class="proof-item">
+                            <div class="proof-avatars">
+                                <div class="proof-avatar">MM</div>
+                                <div class="proof-avatar">JW</div>
+                                <div class="proof-avatar">CR</div>
+                                <div class="proof-avatar">DM</div>
+                                <div class="proof-avatar">+1</div>
+                            </div>
+                            <span>5 members searched</span>
+                        </div>
+                        <div class="proof-item">
+                            <div class="proof-avatars">
+                                <div class="proof-avatar">CR</div>
+                                <div class="proof-avatar">MM</div>
+                            </div>
+                            <span>2 members vouched</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h4>Community notes</h4>
+                        <div class="community-note">
+                            <div class="note-author">Maria M.</div>
+                            <div class="note-text">The spec house series is incredible for anyone planning their first build. Start with episode 1.</div>
+                            <div class="note-ref">Re: Spec House Series</div>
+                        </div>
+                        <div class="community-note">
+                            <div class="note-author">Carlos R.</div>
+                            <div class="note-text">His hempcrete wall pour video is the best I've found. Skip to 6:30 for the mix ratio.</div>
+                            <div class="note-ref">Re: Hempcrete Wall Pour</div>
+                        </div>
+                        <button class="btn" style="width: 100%; justify-content: center; margin-top: 0.5rem;">+ Add a note</button>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h4>Would fit in</h4>
+                        <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.3rem 0; border-bottom: 1px solid var(--border-light);">
+                                <span>🌾 Natural Building</span>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">412 members</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.3rem 0; border-bottom: 1px solid var(--border-light);">
+                                <span>🔧 Skills & Workshops</span>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">194 members</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.3rem 0;">
+                                <span>🏘️ Community Housing</span>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">156 members</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card" style="text-align: center;">
+                        <h4>Know this creator?</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">Help them join the community.</p>
+                        <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                            <button class="btn primary">✉️ Invite</button>
+                            <button class="btn">🤝 Vouch</button>
+                        </div>
+                        <div style="margin-top: 0.6rem; font-size: 0.78rem; color: var(--text-muted);">
+                            Or <a href="#" style="color: var(--accent);">follow</a> to know when they join.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════
+         STATE 3: CLAIM PREVIEW
+         ════════════════════════════════════════ -->
+    <div class="view" id="view-claim">
+        <div class="page-container">
+
+            <div class="claim-banner">
+                <div class="claim-banner-inner">
+                    <div>
+                        <h3>Your content library is waiting for you.</h3>
+                        <p>The Earthback community has been watching your videos and wants you here. We imported your public content and built this page for you. Claim it to control what's shown, add your own context, and connect with a community that's actually building things.</p>
+                        <div class="invited-by">
+                            <div class="invited-by-avatar">MM</div>
+                            <span>Invited by <strong>Maria Martinez</strong> from Natural Building · <em>"Your hempcrete series is the reason I started my build. The community needs you here."</em></span>
+                        </div>
+                    </div>
+                    <div class="claim-actions">
+                        <button class="btn-claim">Claim This Page</button>
+                        <span class="not-you">Not you? Let us know</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="library-grid">
+                <div>
+                    <div class="card" style="margin-bottom: 1.5rem;">
+                        <div class="creator-header">
+                            <div class="creator-avatar">🎬</div>
+                            <div class="creator-info">
+                                <div class="creator-name">Essential Craftsman</div>
+                                <div class="creator-meta">Oregon, US · essentialcraftsman.com</div>
+                                <div class="creator-desc">Craftsman and builder covering construction techniques, tool use, and life skills. Hosted by Scott Wadsworth, a blacksmith and general contractor with 40 years of building experience.</div>
+                                <div class="creator-badges">
+                                    <span class="badge-sm badge-yt">▶ YouTube · 1.2M subs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content-filters">
+                            <div class="filter-tabs">
+                                <button class="filter-tab active">All<span class="filter-count">847</span></button>
+                                <button class="filter-tab">Videos<span class="filter-count">847</span></button>
+                                <button class="filter-tab">Playlists<span class="filter-count">24</span></button>
+                            </div>
+                            <input type="text" class="content-search" placeholder="Search this library...">
+                        </div>
+
+                        <div class="category-section">
+                            <div class="category-label">🏗 Construction Techniques · 89 videos</div>
+                            <div class="video-grid">
+                                <div class="video-card">
+                                    <div class="video-thumb">
+                                        <div class="video-thumb-img">[thumbnail]</div>
+                                        <div class="play-btn">▶</div>
+                                        <div class="video-duration">18:42</div>
+                                    </div>
+                                    <div class="video-info">
+                                        <div class="video-title">Hempcrete Wall Pour — Complete Process</div>
+                                        <div class="video-meta">124K views · 8 months ago</div>
+                                    </div>
+                                </div>
+                                <div class="video-card">
+                                    <div class="video-thumb">
+                                        <div class="video-thumb-img">[thumbnail]</div>
+                                        <div class="play-btn">▶</div>
+                                        <div class="video-duration">24:15</div>
+                                    </div>
+                                    <div class="video-info">
+                                        <div class="video-title">Foundation Layout — Getting It Right</div>
+                                        <div class="video-meta">89K views · 1 year ago</div>
+                                    </div>
+                                </div>
+                                <div class="video-card">
+                                    <div class="video-thumb">
+                                        <div class="video-thumb-img">[thumbnail]</div>
+                                        <div class="play-btn">▶</div>
+                                        <div class="video-duration">31:07</div>
+                                    </div>
+                                    <div class="video-info">
+                                        <div class="video-title">Framing a Wall — Every Step</div>
+                                        <div class="video-meta">210K views · 1 year ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Claim sidebar -->
+                <div>
+                    <div class="sidebar-card">
+                        <h4>People waiting for you</h4>
+                        <div class="proof-item">
+                            <div class="proof-avatars">
+                                <div class="proof-avatar">MM</div>
+                                <div class="proof-avatar">JW</div>
+                                <div class="proof-avatar">CR</div>
+                                <div class="proof-avatar">DM</div>
+                                <div class="proof-avatar">+1</div>
+                            </div>
+                            <span>5 members searched for you</span>
+                        </div>
+                        <div class="proof-item">
+                            <div class="proof-avatars">
+                                <div class="proof-avatar">CR</div>
+                                <div class="proof-avatar">MM</div>
+                            </div>
+                            <span>2 members vouched</span>
+                        </div>
+                        <div class="proof-item" style="color: var(--accent); font-weight: 500; margin-top: 0.25rem;">
+                            7 people will be notified when you publish
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h4>What members are saying</h4>
+                        <div class="community-note">
+                            <div class="note-author">Maria M.</div>
+                            <div class="note-text">The spec house series is incredible for anyone planning their first build.</div>
+                        </div>
+                        <div class="community-note">
+                            <div class="note-author">Carlos R.</div>
+                            <div class="note-text">His hempcrete wall pour video is the best I've found.</div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h4>Content sync settings</h4>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem;">Control how your content appears on Earthback.</p>
+                        <div class="sync-options">
+                            <div class="sync-option">
+                                <span>Auto-import new YouTube uploads</span>
+                                <div class="sync-toggle"></div>
+                            </div>
+                            <div class="sync-option">
+                                <span>Show view counts</span>
+                                <div class="sync-toggle"></div>
+                            </div>
+                            <div class="sync-option">
+                                <span>Allow community notes</span>
+                                <div class="sync-toggle"></div>
+                            </div>
+                            <div class="sync-option">
+                                <span>Show in circle feeds</span>
+                                <div class="sync-toggle off"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h4>Suggested circles</h4>
+                        <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.3rem 0; border-bottom: 1px solid var(--border-light);">
+                                <span>🌾 Natural Building</span>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">412 members</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.3rem 0; border-bottom: 1px solid var(--border-light);">
+                                <span>🔧 Skills & Workshops</span>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">194 members</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.3rem 0;">
+                                <span>🏘️ Community Housing</span>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">156 members</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- VIDEO PLAYER MODAL -->
+    <div class="player-modal" id="playerModal">
+        <div class="player-inner">
+            <div class="player-video">
+                [YouTube iframe embed would render here]<br>
+                &lt;iframe src="youtube.com/embed/{videoId}" ...&gt;
+            </div>
+            <div class="player-bar">
+                <div class="player-title">Hempcrete Wall Pour — Complete Process</div>
+                <button class="player-close" onclick="closePlayer()">✕ Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function showView(name) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.switcher-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('view-' + name).classList.add('active');
+            event.target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openPlayer() {
+            document.getElementById('playerModal').classList.add('active');
+        }
+
+        function closePlayer() {
+            document.getElementById('playerModal').classList.remove('active');
+        }
+
+        document.getElementById('playerModal').addEventListener('click', function(e) {
+            if (e.target === this) closePlayer();
+        });
+    </script>
+</body>
+</html>

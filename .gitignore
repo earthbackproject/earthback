@@ -23,6 +23,19 @@ branding/
 governance/
 imported images/
 org-test1/
+
+# ComfyUI / Flux raw output (processed versions go to site/assets/img/)
+comfyui-output/
+comfy-run.bat
+start-comfy-claude.bat
+
+# Large image assets (keep locally, processed versions in site/assets/img/)
+site/content/cast-photos/
+site/content/social/processed/
+*.docx
+
+# Command center WIP
+tracker/
 *.psd
 *.ai
 *.sketch

@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earthback — Ghost Profiles (3-State Mockup)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #faf9f6;
+            --bg-card: #ffffff;
+            --bg-warm: #f5f3ef;
+            --border: #e8e5df;
+            --border-light: #f0ede8;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-muted: #999;
+            --accent: #2d5a27;
+            --accent-hover: #3d7a35;
+            --accent-light: #e8f2e6;
+            --accent-glow: rgba(45, 90, 39, 0.08);
+            --warm: #b8860b;
+            --warm-light: #fdf6e3;
+            --warm-border: #ede0c0;
+            --blue-light: #eef4ff;
+            --blue: #3b6fb5;
+            --blue-border: #c8d9f0;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── HEADER ─── */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.75rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--text-primary); }
+
+        .nav-btn {
+            background: var(--accent);
+            color: white !important;
+            padding: 0.5rem 1.1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* ─── STATE SWITCHER ─── */
+        .state-switcher {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 0;
+        }
+
+        .switcher-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.6rem;
+        }
+
+        .switcher-tabs {
+            display: flex;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            width: fit-content;
+        }
+
+        .switcher-tab {
+            padding: 0.55rem 1.2rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: none;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+            border-right: 1px solid var(--border);
+        }
+
+        .switcher-tab:last-child { border-right: none; }
+
+        .switcher-tab:hover { background: var(--bg-warm); }
+
+        .switcher-tab.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* ─── VIEWS ─── */
+        .view { display: none; }
+        .view.active { display: block; }
+
+        .page-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* ============================================
+           STATE 1: SEARCH RESULTS
+           ============================================ */
+
+        .search-bar-container {
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.6rem 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-bar svg {
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            background: transparent;
+        }
+
+        .search-bar input::placeholder { color: #bbb; }
+
+        .search-meta {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .search-meta strong { color: var(--text-secondary); }
+
+        /* Result cards */
+        .result-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+            transition: box-shadow 0.2s;
+        }
+
+        .result-card:hover { box-shadow: var(--shadow-md); }
+
+        .result-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 10px;
+            background: var(--bg-warm);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .result-body { flex: 1; min-width: 0; }
+
+        .result-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.15rem;
+        }
+
+        .result-location {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .result-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 0.6rem;
+        }
+
+        .result-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .tag {
+            font-size: 0.72rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            background: var(--bg-warm);
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .tag.circle {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.85rem;
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+
+        .btn-sm.primary {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .btn-sm.primary:hover { background: var(--accent-hover); }
+
+        .result-social {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-left: 0.25rem;
+        }
+
+        /* Ghost indicator */
+        .ghost-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.72rem;
+            color: var(--warm);
+            background: var(--warm-light);
+            border: 1px solid var(--warm-border);
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .ghost-badge .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--warm);
+        }
+
+        /* Existing profile indicator */
+        .claimed-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.72rem;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* ============================================
+           STATE 2: PUBLIC GHOST PROFILE PAGE
+           ============================================ */
+
+        .ghost-page-banner {
+            background: var(--warm-light);
+            border: 1px solid var(--warm-border);
+            border-radius: var(--radius);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .ghost-page-banner p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .ghost-page-banner strong { color: var(--warm); }
+
+        .ghost-page-banner .btn-sm { flex-shrink: 0; }
+
+        .profile-header-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-cover {
+            height: 120px;
+            background: linear-gradient(135deg, var(--accent-light), var(--bg-warm));
+            position: relative;
+        }
+
+        .profile-cover-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.15;
+            background-image: radial-gradient(circle at 20% 50%, var(--accent) 1px, transparent 1px),
+                              radial-gradient(circle at 80% 30%, var(--accent) 1px, transparent 1px),
+                              radial-gradient(circle at 50% 80%, var(--accent) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .profile-main-info {
+            padding: 0 1.5rem 1.5rem;
+            position: relative;
+        }
+
+        .profile-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: var(--bg-warm);
+            border: 3px solid var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-name-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-top: 0.75rem;
+            gap: 1rem;
+        }
+
+        .profile-name {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.2rem;
+        }
+
+        .profile-location-line {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+        }
+
+        .profile-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+        }
+
+        /* Social proof section */
+        .social-proof {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-proof h4 {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 0.75rem;
+        }
+
+        .proof-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .proof-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        .proof-avatars {
+            display: flex;
+        }
+
+        .proof-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            border: 2px solid var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-left: -8px;
+        }
+
+        .proof-avatar:first-child { margin-left: 0; }
+
+        .invite-actions-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 1.25rem 1.5rem;
+            text-align: center;
+        }
+
+        .invite-actions-box h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .invite-actions-box p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .invite-btn-row {
+            display: flex;
+            gap: 0.6rem;
+            justify-content: center;
+        }
+
+        .btn-md {
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-md:hover { border-color: var(--accent); color: var(--accent); }
+
+        .btn-md.primary {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .btn-md.primary:hover { background: var(--accent-hover); }
+
+        .follow-note {
+            margin-top: 0.75rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           STATE 3: CLAIM PREVIEW (business owner view)
+           ============================================ */
+
+        .claim-banner {
+            background: var(--blue-light);
+            border: 1px solid var(--blue-border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .claim-banner-inner {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .claim-banner h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .claim-banner p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .claim-banner-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .btn-claim {
+            padding: 0.65rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: none;
+            background: var(--accent);
+            color: white;
+            text-align: center;
+        }
+
+        .btn-claim:hover { background: var(--accent-hover); }
+
+        .not-you-link {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .not-you-link:hover { color: var(--text-secondary); text-decoration: underline; }
+
+        .invited-by-note {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--blue-border);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .invited-by-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        /* Editable field indicators */
+        .editable-hint {
+            position: relative;
+        }
+
+        .editable-hint::after {
+            content: '✎';
+            position: absolute;
+            top: -2px;
+            right: -20px;
+            font-size: 0.75rem;
+            color: var(--blue);
+            opacity: 0.5;
+        }
+
+        .profile-edit-overlay {
+            border: 1.5px dashed var(--blue-border);
+            border-radius: var(--radius-sm);
+            padding: 0.25rem;
+            margin: -0.25rem;
+            position: relative;
+        }
+
+        .edit-label {
+            position: absolute;
+            top: -8px;
+            right: 8px;
+            background: var(--blue-light);
+            color: var(--blue);
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* Two column for ghost page */
+        .ghost-page-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .ghost-page-grid { grid-template-columns: 1fr; }
+            .ghost-page-banner { flex-direction: column; }
+            .claim-banner-inner { flex-direction: column; }
+            .nav-links { gap: 1rem; }
+            .nav-links .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/" class="logo">the Earthback Project</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#" class="hide-mobile">Circles</a></li>
+                    <li><a href="#" class="hide-mobile">How It Works</a></li>
+                    <li><a href="#">Visualizer</a></li>
+                    <li><a href="#" class="nav-btn">Join</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- STATE SWITCHER (for mockup navigation only — not part of real UI) -->
+    <div class="state-switcher">
+        <div class="switcher-label">Mockup View — click to switch states</div>
+        <div class="switcher-tabs">
+            <button class="switcher-tab active" onclick="showView('search')">1. Search Results</button>
+            <button class="switcher-tab" onclick="showView('ghost')">2. Ghost Profile Page</button>
+            <button class="switcher-tab" onclick="showView('claim')">3. Claim Preview</button>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════
+         STATE 1: SEARCH RESULTS
+         ═══════════════════════════════════════ -->
+    <div class="view active" id="view-search">
+        <div class="page-container">
+
+            <div class="search-bar-container">
+                <div class="search-bar">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+                    <input type="text" value="hempcrete supplier flagstaff" readonly>
+                </div>
+            </div>
+
+            <div class="search-meta">
+                Showing results for <strong>"hempcrete supplier flagstaff"</strong> · 3 results (1 on Earthback, 2 found on the web)
+            </div>
+
+            <div class="result-list">
+
+                <!-- EXISTING PROFILE (already on Earthback) -->
+                <div class="result-card">
+                    <div class="result-avatar">🌿</div>
+                    <div class="result-body">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.15rem;">
+                            <div class="result-name">Southwest Hemp Builders Co-op</div>
+                            <span class="claimed-badge">On Earthback</span>
+                        </div>
+                        <div class="result-location">Flagstaff, AZ · Member since Jan 2026</div>
+                        <div class="result-desc">Worker-owned cooperative specializing in hempcrete wall systems, insulation retrofits, and natural plaster finishes across Northern Arizona.</div>
+                        <div class="result-tags">
+                            <span class="tag circle">🌾 Natural Building</span>
+                            <span class="tag circle">♻️ Materials</span>
+                            <span class="tag">hempcrete</span>
+                            <span class="tag">insulation</span>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn-sm primary">View Profile</button>
+                            <button class="btn-sm">Message</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GHOST PROFILE (auto-generated from search) -->
+                <div class="result-card" style="border-color: var(--warm-border);">
+                    <div class="result-avatar" style="background: var(--warm-light); border-color: var(--warm-border);">🏗️</div>
+                    <div class="result-body">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.15rem;">
+                            <div class="result-name">Desert Sun Hempcrete</div>
+                            <span class="ghost-badge"><span class="dot"></span> Not on Earthback yet</span>
+                        </div>
+                        <div class="result-location">Flagstaff, AZ · Found on web</div>
+                        <div class="result-desc">Hempcrete supplier and installation contractor serving the Four Corners region. Specializes in new construction and retrofit applications.</div>
+                        <div class="result-tags">
+                            <span class="tag">hempcrete</span>
+                            <span class="tag">supplier</span>
+                            <span class="tag">installation</span>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn-sm primary" onclick="showView('ghost')">View Profile</button>
+                            <button class="btn-sm">✉️ Invite to Earthback</button>
+                            <button class="btn-sm">🤝 I vouch</button>
+                            <span class="result-social">2 people searched</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ANOTHER GHOST -->
+                <div class="result-card" style="border-color: var(--warm-border);">
+                    <div class="result-avatar" style="background: var(--warm-light); border-color: var(--warm-border);">👤</div>
+                    <div class="result-body">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.15rem;">
+                            <div class="result-name">Raven Sandoval</div>
+                            <span class="ghost-badge"><span class="dot"></span> Not on Earthback yet</span>
+                        </div>
+                        <div class="result-location">Sedona, AZ · Found on web</div>
+                        <div class="result-desc">Independent natural building practitioner and hempcrete specialist. Teaches workshops on hemp-lime construction techniques.</div>
+                        <div class="result-tags">
+                            <span class="tag">practitioner</span>
+                            <span class="tag">workshops</span>
+                            <span class="tag">hempcrete</span>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn-sm primary">View Profile</button>
+                            <button class="btn-sm">✉️ Invite to Earthback</button>
+                            <button class="btn-sm">🤝 I vouch</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════
+         STATE 2: PUBLIC GHOST PROFILE PAGE
+         ═══════════════════════════════════════ -->
+    <div class="view" id="view-ghost">
+        <div class="page-container">
+
+            <div class="ghost-page-banner">
+                <p>This business <strong>isn't on Earthback yet.</strong> This profile was created from public information. Know them? Invite them to claim it and join the community.</p>
+                <button class="btn-sm primary">✉️ Invite to Earthback</button>
+            </div>
+
+            <div class="ghost-page-grid">
+                <div>
+                    <!-- Profile header -->
+                    <div class="profile-header-card">
+                        <div class="profile-cover">
+                            <div class="profile-cover-pattern"></div>
+                        </div>
+                        <div class="profile-main-info">
+                            <div class="profile-avatar-large">🏗️</div>
+                            <div class="profile-name-row">
+                                <div>
+                                    <div class="profile-name">Desert Sun Hempcrete</div>
+                                    <div class="profile-location-line">📍 Flagstaff, AZ · 🌐 desertsunh.com</div>
+                                </div>
+                                <span class="ghost-badge"><span class="dot"></span> Not claimed</span>
+                            </div>
+                            <div class="profile-desc">
+                                Hempcrete supplier and installation contractor serving the Four Corners region. Specializes in new construction hempcrete wall systems, retrofit insulation, and natural lime plaster finishes. Family-owned since 2019.
+                            </div>
+                            <div class="profile-tags">
+                                <span class="tag">hempcrete</span>
+                                <span class="tag">supplier</span>
+                                <span class="tag">installation</span>
+                                <span class="tag">lime plaster</span>
+                                <span class="tag">Northern Arizona</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div>
+                    <!-- Social proof -->
+                    <div class="social-proof">
+                        <h4>Community interest</h4>
+                        <div class="proof-items">
+                            <div class="proof-item">
+                                <div class="proof-avatars">
+                                    <div class="proof-avatar">MM</div>
+                                    <div class="proof-avatar">JW</div>
+                                </div>
+                                <span>2 members searched for this business</span>
+                            </div>
+                            <div class="proof-item">
+                                <div class="proof-avatars">
+                                    <div class="proof-avatar">CR</div>
+                                </div>
+                                <span>1 member vouched for them</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Invite actions -->
+                    <div class="invite-actions-box">
+                        <h4>Know this business?</h4>
+                        <p>Help them join the community.</p>
+                        <div class="invite-btn-row">
+                            <button class="btn-md primary">✉️ Invite them</button>
+                            <button class="btn-md">🤝 Vouch</button>
+                        </div>
+                        <div class="follow-note">
+                            Or <a href="#" style="color: var(--accent);">follow this profile</a> to get notified when they join.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════
+         STATE 3: CLAIM PREVIEW (business owner)
+         ═══════════════════════════════════════ -->
+    <div class="view" id="view-claim">
+        <div class="page-container">
+
+            <div class="claim-banner">
+                <div class="claim-banner-inner">
+                    <div>
+                        <h3>This profile is waiting for you.</h3>
+                        <p>We built this from public information about your business. Only you can see this full preview. Claim it to edit the details and choose when to make it visible to the Earthback community.</p>
+                        <div class="invited-by-note">
+                            <div class="invited-by-avatar">MM</div>
+                            <span>Invited by <strong>Maria Martinez</strong> from the Natural Building circle · <em>"Love your work — the community would benefit from having you here."</em></span>
+                        </div>
+                    </div>
+                    <div class="claim-banner-actions">
+                        <button class="btn-claim">Claim This Profile</button>
+                        <span class="not-you-link">Not your business? Let us know</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ghost-page-grid">
+                <div>
+                    <div class="profile-header-card">
+                        <div class="profile-cover">
+                            <div class="profile-cover-pattern"></div>
+                        </div>
+                        <div class="profile-main-info">
+                            <div class="profile-edit-overlay" style="display: inline-block;">
+                                <div class="edit-label">Editable</div>
+                                <div class="profile-avatar-large">🏗️</div>
+                            </div>
+                            <div class="profile-name-row">
+                                <div>
+                                    <div class="profile-edit-overlay">
+                                        <div class="edit-label">Editable</div>
+                                        <div class="profile-name">Desert Sun Hempcrete</div>
+                                    </div>
+                                    <div class="profile-location-line">📍 Flagstaff, AZ · 🌐 desertsunh.com</div>
+                                </div>
+                            </div>
+                            <div class="profile-edit-overlay" style="margin-top: 0.75rem;">
+                                <div class="edit-label">Editable</div>
+                                <div class="profile-desc" style="border-top: none; padding-top: 0; margin-top: 0;">
+                                    Hempcrete supplier and installation contractor serving the Four Corners region. Specializes in new construction hempcrete wall systems, retrofit insulation, and natural lime plaster finishes. Family-owned since 2019.
+                                </div>
+                            </div>
+                            <div class="profile-tags" style="margin-top: 0.75rem;">
+                                <span class="tag">hempcrete</span>
+                                <span class="tag">supplier</span>
+                                <span class="tag">installation</span>
+                                <span class="tag">lime plaster</span>
+                                <span class="tag">Northern Arizona</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="social-proof">
+                        <h4>People waiting for you</h4>
+                        <div class="proof-items">
+                            <div class="proof-item">
+                                <div class="proof-avatars">
+                                    <div class="proof-avatar">MM</div>
+                                    <div class="proof-avatar">JW</div>
+                                </div>
+                                <span>2 members searched for you</span>
+                            </div>
+                            <div class="proof-item">
+                                <div class="proof-avatars">
+                                    <div class="proof-avatar">CR</div>
+                                </div>
+                                <span>1 member vouched for you</span>
+                            </div>
+                            <div class="proof-item" style="color: var(--accent); font-weight: 500;">
+                                3 people will be notified when you publish
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="invite-actions-box">
+                        <h4>Suggested circles</h4>
+                        <p>Based on your profile, you'd fit in these communities:</p>
+                        <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; text-align: left;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border-light);">
+                                <span style="font-size: 0.88rem;">🌾 Natural Building</span>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">412 members</span>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border-light);">
+                                <span style="font-size: 0.88rem;">♻️ Materials & Salvage</span>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">143 members</span>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0;">
+                                <span style="font-size: 0.88rem;">🔧 Skills & Workshops</span>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">194 members</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function showView(name) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.switcher-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('view-' + name).classList.add('active');
+            event.target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

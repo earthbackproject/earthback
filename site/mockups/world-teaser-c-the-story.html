@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earthback World — The Story</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@0;1&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #1F3A2E;
+            --green-mid: #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay: #C2A56C;
+            --clay-dark: #8A5B3F;
+            --clay-rust: #A05E3A;
+            --moss: #7e9b73;
+            --parchment: #F2EFE6;
+            --ink: #2B2E30;
+            --ink-soft: #555A5C;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--parchment);
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        /* Main container with gradient background */
+        .story-section {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #F5F0E8 0%, #E8DFD0 15%, #D9CCC0 30%, #C9B5A8 45%, #4A7C5E 75%, var(--green) 100%);
+            overflow: hidden;
+        }
+
+        /* Proof label */
+        .proof-label {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--clay);
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        /* Narrative section */
+        .narrative {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 6rem 2rem 0 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .narrative-line {
+            width: 100%;
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .narrative-line.story {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--clay);
+            line-height: 1.3;
+            font-weight: 400;
+        }
+
+        .narrative-line.context {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--ink-soft);
+            letter-spacing: 0.3px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        /* Extra breathing room between story and context */
+        .narrative-line.context {
+            margin-bottom: 3.5rem;
+        }
+
+        /* Reveal section */
+        .reveal {
+            position: relative;
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(42, 124, 94, 0.3) 0%, var(--green) 100%);
+            margin-top: 2rem;
+        }
+
+        .reveal-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--clay);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .reveal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            color: var(--parchment);
+            font-weight: 400;
+            line-height: 1.4;
+            margin-top: 0.5rem;
+        }
+
+        /* Vignettes section */
+        .vignettes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 4rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--green);
+            position: relative;
+        }
+
+        .vignette {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--parchment);
+        }
+
+        .vignette-left {
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            padding-right: 2rem;
+        }
+
+        .vignette-right {
+            padding-left: 2rem;
+        }
+
+        /* Close section */
+        .close-section {
+            background-color: var(--green);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .close-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: var(--parchment);
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: var(--clay);
+            color: var(--green);
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button:hover {
+            background-color: #D4B877;
+            transform: translateY(-2px);
+        }
+
+        .close-footer {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: var(--ink-soft);
+            letter-spacing: 0.2px;
+            opacity: 0.6;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .story-section {
+                min-height: auto;
+            }
+
+            .proof-label {
+                font-size: 0.65rem;
+                top: 1.5rem;
+                right: 1.5rem;
+            }
+
+            .narrative {
+                padding: 3rem 1.5rem 0 1.5rem;
+                max-width: 100%;
+            }
+
+            .narrative-line {
+                margin-bottom: 2rem;
+            }
+
+            .narrative-line.story {
+                font-size: 1.5rem;
+            }
+
+            .narrative-line.context {
+                font-size: 0.85rem;
+                margin-bottom: 2.5rem;
+            }
+
+            .reveal {
+                padding: 3rem 1.5rem;
+                margin-top: 1rem;
+            }
+
+            .reveal-title {
+                font-size: 1.6rem;
+            }
+
+            .vignettes {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 3rem 1.5rem;
+            }
+
+            .vignette-left {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+                padding-right: 0;
+                padding-bottom: 2rem;
+            }
+
+            .vignette-right {
+                padding-left: 0;
+                padding-top: 0;
+            }
+
+            .close-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .close-text {
+                font-size: 0.95rem;
+            }
+
+            .cta-button {
+                padding: 0.9rem 2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .narrative {
+                padding: 2rem 1rem 0 1rem;
+            }
+
+            .narrative-line.story {
+                font-size: 1.25rem;
+            }
+
+            .narrative-line.context {
+                font-size: 0.8rem;
+            }
+
+            .reveal {
+                padding: 2rem 1rem;
+            }
+
+            .reveal-title {
+                font-size: 1.3rem;
+            }
+
+            .vignettes {
+                padding: 2rem 1rem;
+                gap: 1.5rem;
+            }
+
+            .vignette {
+                font-size: 0.85rem;
+            }
+
+            .close-section {
+                padding: 2rem 1rem;
+            }
+
+            .close-text {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="story-section">
+        <div class="proof-label">PROOF C — THE STORY</div>
+
+        <div class="narrative">
+            <div class="narrative-line story">
+                You plant hemp in spring.
+            </div>
+
+            <div class="narrative-line context">
+                Four months later, the stalks become walls.
+            </div>
+
+            <div class="narrative-line story">
+                A printer arrives. In days, not months, a home rises.
+            </div>
+
+            <div class="narrative-line context">
+                The roof will outlast your grandchildren.
+            </div>
+
+            <div class="narrative-line story">
+                The community that grew the materials now lives in them.
+            </div>
+
+            <div class="narrative-line context">
+                This isn't a pitch. It's a place you can go tonight.
+            </div>
+        </div>
+
+        <div class="reveal">
+            <div class="reveal-label">Earthback World</div>
+            <div class="reveal-title">
+                Two worlds. The one we're building. The one we'd have to rebuild.
+            </div>
+        </div>
+
+        <div class="vignettes">
+            <div class="vignette vignette-left">
+                <p>In the <strong>Current World</strong>, you grow hemp and bamboo, form alliances, trade with neighboring communities, and prove that local materials can replace a broken global supply chain. Everything you build can be exported as real construction documents.</p>
+            </div>
+            <div class="vignette vignette-right">
+                <p>In <strong>After the Fall</strong>, the supply chains are gone. You salvage, you grow, you build — or you don't survive. The same skills. The same printer. The same specs toggle. But now the stakes are everything.</p>
+            </div>
+        </div>
+
+        <div class="close-section">
+            <div class="close-text">
+                The skills are real. The certifications count. The communities you form become real Alliance partners.
+            </div>
+            <button class="cta-button">Join Earthback</button>
+            <div class="close-footer">
+                Earthback World
+            </div>
+        </div>
+    </div>
+</body>
+</html>
