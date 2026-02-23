@@ -29,16 +29,6 @@ CREATE TABLE IF NOT EXISTS public.conversations (
 
 ALTER TABLE public.conversations ENABLE ROW LEVEL SECURITY;
 
--- Users can only see conversations they participate in
-CREATE POLICY "Users see own conversations"
-  ON public.conversations FOR SELECT
-  USING (
-    id IN (
-      SELECT conversation_id FROM public.conversation_participants
-      WHERE profile_id = auth.uid()
-    )
-  );
-
 CREATE POLICY "Authenticated users can create conversations"
   ON public.conversations FOR INSERT
   WITH CHECK (auth.uid() IS NOT NULL);
@@ -77,6 +67,18 @@ CREATE POLICY "Users can update own participation"
 
 CREATE INDEX IF NOT EXISTS cp_conv_idx ON public.conversation_participants(conversation_id);
 CREATE INDEX IF NOT EXISTS cp_profile_idx ON public.conversation_participants(profile_id);
+
+
+-- ── NOW safe to reference conversation_participants ──────
+-- (Moved here from conversations block — needs the table to exist first)
+CREATE POLICY "Users see own conversations"
+  ON public.conversations FOR SELECT
+  USING (
+    id IN (
+      SELECT conversation_id FROM public.conversation_participants
+      WHERE profile_id = auth.uid()
+    )
+  );
 
 
 -- ── MESSAGES TABLE ─────────────────────────────────────────
