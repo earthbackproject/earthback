@@ -117,7 +117,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 502,
         headers,
-        body: JSON.stringify({ error: "Image generation failed. Please try again." })
+        body: JSON.stringify({ error: "Image generation failed (" + createResponse.status + "): " + errText.substring(0, 200) })
       };
     }
 
