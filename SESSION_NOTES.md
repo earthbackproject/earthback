@@ -4,7 +4,69 @@
 ---
 
 ## Last Updated
-2026-02-20 — Session 14 with Nicco via Cowork
+2026-02-23 — Session 15 with Nicco via Cowork
+
+---
+
+## What Was Done in Session 15 (2026-02-23)
+
+*AI image generation infrastructure, character curation, file naming overhaul, 3D printer LoRA pipeline.*
+
+### Chrome MCP crash — identified and documented
+- Chrome MCP tools (`tabs_context_mcp`, `computer`, `navigate`, etc.) cause `CoworkVMService` to hang and crash — happened a second time this session when checking a browser tab
+- Root cause: Chrome MCP bridge conflicts with the non-WSL VM virtualization stack, especially under ComfyUI load
+- Fix script already existed: `maint scripts/fix-cowork-vm.ps1` — run as Administrator in PowerShell
+- **Added explicit prohibition to CLAUDE.md** — Claude now knows never to use Chrome tools in this session
+
+### CLAUDE.md — created (auto-read every session)
+- New file at `/Earthback/CLAUDE.md`; Cowork reads it automatically at session start (no prompt needed)
+- Contains: machine quirks (no WSL, ComfyUI Python path), Chrome crash warning + fix command, ComfyUI REST API endpoints, Flux node ID table, seed strategy, all script reference table, key docs table, working directory convention
+- **This is the primary orientation file for future sessions** — update it when anything fundamental changes
+
+### command-center.html — updated
+- Added ComfyUI to the reboot sequence (step 6: run `comfy-run.bat`; step 7: open Cowork)
+- Added red warning strip for the Cowork crash fix referencing `maint scripts\fix-cowork-vm.ps1`
+- Added full AI Image Generation section: batch scripts list, ComfyUI API code block + link, output dir, 3D printer LoRA pipeline
+- Updated Key Files to include CLAUDE.md, fix-cowork-vm.ps1, CHARACTERS.md, CIRCLES.md
+
+### Character image review — T1-T4 all rejected
+- Built `tracker/char-gallery.html` — gallery grouping all 940 character images by character with subsections (Faces, T4-01 through T4-05, T5 scenes), 180×180px thumbnails, lightbox zoom
+- After review: **all 237 T1-T4 character images rejected** — fixed seeds caused near-duplicate output (same underlying noise = same face/pose every run)
+- Nicco moved all to `comfyui-output/_rejected/` in Windows Explorer
+- T5 and face images (198 files) kept
+
+### File naming overhaul — character-first convention
+- **Old naming:** `T4-chars-NAME-face-front_00001_.png` / `T5-chars-NAME-01_00001_.png`
+- **New naming:** `chars-NAME-face-front_00001_.png` / `chars-NAME-T5-01_00001_.png`
+- Character-first so Windows Explorer sort-by-name groups all shots of one character together (critical for curation workflow)
+- **198 existing files renamed** via Python script: 36 face images + 162 T5 scene images
+- **All 10 prefix strings updated in `queue-batches.py`** — face-front/left/right/down/talk and T4-01 through T4-05 all now use `chars-{name}-*`; T5 prefix changed to `chars-{name}-T5-{i+1:02d}`
+
+### T4 re-run queued
+- Command: `python queue-batches.py --batch t4 --reseed --batch-size 3`
+- 12 chars × 5 batches × 3 images = **180 new images** with random seeds (no more duplicates)
+- User ran from Windows; was queuing as session ended (had ~40 jobs still pending from prior run)
+- `--reseed` flag: bypasses character seeds entirely, uses fully random seeds per job for genuine variety
+
+### 3D Printer LoRA pipeline — built
+All scripts created at `/Earthback/`:
+- `collect-3dprinter-images.py` — downloads CC0 photos from Pexels + Pixabay APIs; 15 search terms; min 800px; saves metadata JSON
+- `curate-3dprinter-images.py` — smart center-crop to 1024×1024; rejects images under 600px short-side or aspect ratio >3.5; optional `--review` mode
+- `caption-3dprinter-images.py` — template captions (`a [type] 3D FDM printer, [state], [lighting]...`) or BLIP-2 auto-caption; `--apply-edits` flag; Kohya format `.txt` files
+- `train-3dprinter-lora.bat` — Kohya SS `flux_train_network.py` command; 1500 steps, rank 16, alpha 16, lr 1e-4, bf16, AdamW8bit
+- `docs/HANDOFF-3D-PRINTER-LORA.md` — updated with scope decision, per-type visual grammar table, full pipeline, dataset specs, evaluation prompts
+
+### Immediate next
+- [ ] **Review char-gallery after T4 re-run completes** — pick best 2-3 shots per character
+- [ ] **Select PuLID reference images** — best face-front shot per character → drop in `faces-reference/CharacterName.png`
+- [ ] **Download PuLID models** — `python setup-pulid.py` (downloads `pulid_flux_v0.9.1.safetensors` + EVA CLIP)
+- [ ] **Run PuLID face-locked generation** — `python queue-pulid-faces.py` after reference images placed
+- [ ] **Run hempcrete LoRA batch** — `python queue-hempcrete-lora.py` (never ran, 0 images generated)
+- [ ] **3D printer LoRA** — get Pexels + Pixabay API keys, run `collect-3dprinter-images.py`, curate, caption, train
+- [ ] **Regenerate char-gallery.html** — should reflect new `chars-NAME-*` filenames once images are reviewed
+- [ ] **Run 3 pending SQL migrations** — PROFILE_MIGRATION → SCHEMA_V3 → SCHEMA_V4 in Supabase SQL Editor
+- [ ] **Git commit + push** — sessions 13-15 changes not yet pushed
+- [ ] **Manual folder cleanup** — delete `reference/`, `org-test1/`, `imported images/`, old PNGs (see session 14 notes)
 
 ---
 
@@ -209,7 +271,7 @@
 
 ## What Earthback Is
 
-A community platform for people doing green building and construction — hempcrete, off-grid solar, food systems, mutual aid, community housing. Positioned as the anti-Facebook: no algorithm, no politics, no ads. People can hang out, share techniques, form projects, coordinate work.
+A community platform for people doing green building and construction — hempcrete, off-grid solar, food systems, mutual aid, community housing. No algorithm, no data harvesting, no feed manipulation. Revenue comes from connecting members with aligned suppliers and materials partners — not from selling attention. People hang out, share techniques, form projects, coordinate work.
 
 **The goal right now:** Get the pre-launch marketing/community site finished and live. The app platform (auth, projects, feeds) comes after.
 

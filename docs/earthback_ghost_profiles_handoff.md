@@ -201,7 +201,7 @@ Only accessible via the unique claim link from the invitation email. Shows:
 >
 > **[See Your Profile →]** ← links to `/claim/{claim_token}`
 >
-> Earthback is a community for people building with natural materials, renewable energy, and mutual aid. No algorithm, no ads — just the people and the projects.
+> Earthback is a community for people building with natural materials, renewable energy, and mutual aid. No algorithm, no data harvesting — just the people and the projects.
 >
 > This link expires in 30 days. If this isn't your business, just ignore this email or [let us know].
 
