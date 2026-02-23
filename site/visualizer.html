@@ -520,7 +520,7 @@
         <div class="card">
             <div class="card-header">
                 <h3>Describe your project</h3>
-                <span class="free-counter" id="renderCounter">20 renders today</span>
+                <span class="free-counter" id="renderCounter">50 credits</span>
             </div>
             <div class="card-body">
                 <div class="field-group">
@@ -659,53 +659,93 @@
         });
     });
 
-    // ── RATE LIMITING (localStorage) ──
-    const STORAGE_KEY = 'earthback_viz_renders';
-    const DAILY_LIMIT = 20;
+    // ── ROTATING CREDITS (localStorage) ──
+    // 2 credits per hour, max 50. Each render costs 1 credit.
+    // Credits accrue while away — full bar in ~25 hours.
+    // Leaving credits at 50 means you're "wasting" accrual → come back!
+    const CREDIT_KEY = 'earthback_viz_credits';
+    const CREDITS_PER_HOUR = 2;
+    const CREDIT_MAX = 50;
+    const MS_PER_CREDIT = (60 * 60 * 1000) / CREDITS_PER_HOUR; // 30 min per credit
 
-    function getUsage() {
+    function getCredits() {
         try {
-            const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-            // Reset daily
-            const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-            if (data.day !== today) {
-                return { day: today, count: 0 };
+            const data = JSON.parse(localStorage.getItem(CREDIT_KEY) || 'null');
+            if (!data || !data.lastCheck) {
+                // First visit: start with full credits
+                return { credits: CREDIT_MAX, lastCheck: Date.now() };
             }
-            return data;
+            // Calculate accrued credits since last check
+            const elapsed = Date.now() - data.lastCheck;
+            const earned = Math.floor(elapsed / MS_PER_CREDIT);
+            const newCredits = Math.min(CREDIT_MAX, data.credits + earned);
+            // Only advance lastCheck by the credits we actually awarded
+            const newLastCheck = data.lastCheck + (earned * MS_PER_CREDIT);
+            return { credits: newCredits, lastCheck: newLastCheck };
         } catch {
-            return { day: '', count: 0 };
+            return { credits: CREDIT_MAX, lastCheck: Date.now() };
         }
     }
 
-    function incrementUsage() {
-        const usage = getUsage();
-        usage.count++;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(usage));
+    function saveCredits(creditData) {
+        localStorage.setItem(CREDIT_KEY, JSON.stringify(creditData));
+    }
+
+    function spendCredit() {
+        const data = getCredits();
+        if (data.credits <= 0) return false;
+        data.credits--;
+        data.lastCheck = Date.now(); // Anchor to now after spending
+        // Recalculate: we need to preserve fractional accrual
+        // Reset lastCheck to now so future accrual starts from this spend
+        saveCredits(data);
         updateCounter();
+        return true;
+    }
+
+    function incrementUsage() {
+        spendCredit();
     }
 
     function updateCounter() {
-        const usage = getUsage();
-        const remaining = Math.max(0, DAILY_LIMIT - usage.count);
+        const data = getCredits();
+        // Save the recalculated credits (with accrual) back
+        saveCredits(data);
+        const credits = data.credits;
         const counter = document.getElementById('renderCounter');
-        if (remaining > 0) {
-            counter.textContent = `${remaining} render${remaining !== 1 ? 's' : ''} today`;
+
+        if (credits >= CREDIT_MAX) {
+            counter.textContent = `${credits} credits (full!)`;
+            counter.style.color = 'var(--green-soft)';
+            counter.style.background = 'rgba(74,124,94,0.1)';
+        } else if (credits > 0) {
+            // Show when next credit arrives
+            const raw = JSON.parse(localStorage.getItem(CREDIT_KEY) || '{}');
+            const elapsed = Date.now() - (raw.lastCheck || Date.now());
+            const msUntilNext = Math.max(0, MS_PER_CREDIT - elapsed);
+            const minsUntilNext = Math.ceil(msUntilNext / 60000);
+            counter.textContent = `${credits} credit${credits !== 1 ? 's' : ''} · +1 in ${minsUntilNext}m`;
             counter.style.color = '';
             counter.style.background = '';
         } else {
-            counter.textContent = 'daily limit reached';
+            // Empty — show time until next credit
+            const raw = JSON.parse(localStorage.getItem(CREDIT_KEY) || '{}');
+            const elapsed = Date.now() - (raw.lastCheck || Date.now());
+            const msUntilNext = Math.max(0, MS_PER_CREDIT - elapsed);
+            const minsUntilNext = Math.ceil(msUntilNext / 60000);
+            counter.textContent = `0 credits · +1 in ${minsUntilNext}m`;
             counter.style.color = 'var(--clay-rust)';
             counter.style.background = 'rgba(160,94,58,0.1)';
         }
     }
 
     function canGenerate() {
-        const usage = getUsage();
-        return usage.count < DAILY_LIMIT;
+        return getCredits().credits > 0;
     }
 
-    // Init counter
+    // Init counter + refresh every 30s so the timer ticks down live
     updateCounter();
+    setInterval(updateCounter, 30000);
 
     // ── HELPERS ──
     function getSelected(containerId) {
@@ -733,7 +773,7 @@
     // ── GENERATE ──
     async function generateVision() {
         if (!canGenerate()) {
-            showError('You\'ve hit your daily render limit. Come back tomorrow!');
+            showError('Out of credits — you earn 2 per hour. Check back soon!');
             return;
         }
 
