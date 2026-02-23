@@ -772,7 +772,7 @@
             <li><a href="about.html">About</a></li>
             <li><a href="safety.html">Safety</a></li>
             <li><a href="login.html" id="nav-signin-link" style="opacity:0.75;">Sign In</a></li>
-            <li><a href="join.html" class="nav-join">Join</a></li>
+            <li><a href="join.html" class="nav-join" id="nav-join-link">Join</a></li>
         </ul>
         <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
             <span></span><span></span><span></span>
@@ -1326,15 +1326,22 @@ document.querySelectorAll('.mobile-nav-overlay a').forEach(function(a) {
     const sb = supabase.createClient('https://yptktmzagctusbeqdaty.supabase.co', 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC');
     const { data: { session } } = await sb.auth.getSession();
     const link = document.getElementById('nav-signin-link');
-    if (session && link) {
-      link.textContent = 'Sign Out';
-      link.href = '#';
-      link.style.opacity = '1';
-      link.addEventListener('click', async function(e) {
-        e.preventDefault();
-        await sb.auth.signOut();
-        window.location.reload();
-      });
+    const joinLink = document.getElementById('nav-join-link');
+    if (session) {
+      if (link) {
+        link.textContent = 'Sign Out';
+        link.href = '#';
+        link.style.opacity = '1';
+        link.addEventListener('click', async function(e) {
+          e.preventDefault();
+          await sb.auth.signOut();
+          window.location.reload();
+        });
+      }
+      if (joinLink) {
+        joinLink.textContent = 'My Feed';
+        joinLink.href = 'feed.html';
+      }
     }
   } catch(e) { /* silent fail — sign in link stays as-is */ }
 })();
