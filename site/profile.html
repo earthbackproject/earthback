@@ -424,37 +424,7 @@
 </head>
 <body>
 
-<!-- ── APP TOPBAR ── -->
-<nav class="topbar">
-  <a class="topbar-brand" href="index.html">
-    <span class="topbar-brand-mark">🌿</span>
-    <span class="topbar-brand-name"><span class="topbar-the">the</span> Earthback <span class="brand-sub">Project</span></span>
-  </a>
-  <div class="topbar-nav">
-    <a href="feed.html" class="topbar-nav-link">Home</a>
-    <a href="projects.html" class="topbar-nav-link">Projects</a>
-    <a href="#media" class="topbar-nav-link">Media</a>
-    <a href="#" class="topbar-nav-link coming-soon" title="Coming soon">Marketplace</a>
-    <a href="circles.html" class="topbar-nav-link">Circles</a>
-  </div>
-  <div class="topbar-right">
-    <a href="messages.html" title="Messages" style="color:rgba(255,255,255,0.7);font-size:1rem;text-decoration:none;padding:4px 8px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.background='none'">💬</a>
-    <a href="profile.html" title="View your profile" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sage));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:none;" id="header-avatar">?</a>
-    <button onclick="handleSignOut()" title="Sign out" style="background:none; border:1px solid rgba(255,255,255,0.25); border-radius:8px; padding:7px 14px; color:rgba(255,255,255,0.7); font-size:0.8rem; font-weight:500; font-family:var(--font-sans); cursor:pointer; white-space:nowrap; transition:all 0.2s;" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.25)'">Sign Out</button>
-    <div class="topbar-hamburger" onclick="this.classList.toggle('open'); document.querySelector('.topbar-mobile-menu').classList.toggle('open');">
-      <span></span><span></span><span></span>
-    </div>
-  </div>
-</nav>
-<div class="topbar-mobile-menu">
-  <a href="feed.html">Home</a>
-  <a href="projects.html">Projects</a>
-  <a href="#media">Media</a>
-  <a href="#">Marketplace (Coming Soon)</a>
-  <a href="circles.html">Circles</a>
-  <a href="messages.html">Messages</a>
-  <a href="profile.html">My Profile</a>
-</div>
+<div id="app-nav"></div>
 
 <!-- ── PAGE ── -->
 <div class="page-wrap">
@@ -970,6 +940,7 @@
 
 <!-- Supabase JS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="assets/js/app-nav.js"></script>
 <script>
 const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';

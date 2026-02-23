@@ -212,37 +212,7 @@
 </head>
 <body>
 
-<nav>
-    <div class="nav-inner">
-        <a href="index.html" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
-        <ul>
-            <li><a href="explore.html" class="nav-active">Circles</a></li>
-            <li><a href="profile.html">People</a></li>
-            <li><a href="index.html#community">The Feed</a></li>
-            <li><a href="how-it-works.html">How It Works</a></li>
-            <li><a href="use-cases.html">Use Cases</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="safety.html">Safety</a></li>
-                        <li><a href="login.html" id="nav-signin-link" style="opacity:0.75;">Sign In</a></li>
-            <li><a href="join.html" class="nav-join" id="nav-join-link">Join</a></li>
-        </ul>
-        <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-</nav>
-
-<div class="mobile-nav-overlay" id="mobile-nav-overlay">
-    <button class="mobile-close" onclick="toggleMobileNav()">✕</button>
-    <a href="explore.html" onclick="toggleMobileNav()">Circles</a>
-    <a href="profile.html" onclick="toggleMobileNav()">People</a>
-    <a href="index.html#community" onclick="toggleMobileNav()">The Feed</a>
-    <a href="how-it-works.html" onclick="toggleMobileNav()">How It Works</a>
-    <a href="use-cases.html" onclick="toggleMobileNav()">Use Cases</a>
-    <a href="about.html" onclick="toggleMobileNav()">About</a>
-    <a href="safety.html" onclick="toggleMobileNav()">Safety</a>
-    <a href="join.html" class="join-mobile">Join / Sign In &rarr;</a>
-</div>
+<div id="site-nav"></div>
 
 <!-- ── HERO ── -->
 <section class="explore-hero">
@@ -648,50 +618,9 @@
 </div>
 
 <!-- ── FOOTER ── -->
-<footer>
-    <div class="footer-inner">
-        <div class="footer-top">
-            <div class="footer-brand">
-                <a href="index.html" class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
-                <p>A community for anyone curious about building a better world.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Community</h4>
-                <ul>
-                    <li><a href="index.html#community">The Feed</a></li>
-                    <li><a href="explore.html">Circles</a></li>
-                    <li><a href="use-cases.html">Use Cases</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Earthback</h4>
-                <ul>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="how-it-works.html">How It Works</a></li>
-                    <li><a href="safety.html">Safety &amp; Trust</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Contact</h4>
-                <ul>
-                    <li><a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a></li>
-                    <li><a href="join.html">Join the community</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <span class="footer-copy">© 2026 the Earthback Project. All rights reserved. &nbsp;·&nbsp; <a href="terms.html" style="color:inherit;text-decoration:underline;opacity:0.7;">Terms</a> &nbsp;·&nbsp; <a href="privacy.html" style="color:inherit;text-decoration:underline;opacity:0.7;">Privacy</a></span>
-            <span class="footer-copy" style="font-style:italic;">When the pieces connect, the work gets done.</span>
-        </div>
-    </div>
-</footer>
+<div id="site-footer"></div>
 
 <script>
-function toggleMobileNav() {
-    const overlay = document.getElementById('mobile-nav-overlay');
-    overlay.classList.toggle('open');
-}
-
 function findNearby() {
     const loc = document.getElementById('heroLocation').value.trim();
     if (!loc) return;
@@ -744,33 +673,8 @@ if (!SHOW_DEMO_MEMBERS) {
 }
 </script>
 
-<!-- Auth state check -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script>
-(async function() {
-  try {
-    const sb = supabase.createClient('https://yptktmzagctusbeqdaty.supabase.co', 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC');
-    const { data: { session } } = await sb.auth.getSession();
-    const link = document.getElementById('nav-signin-link');
-    if (session) {
-      if (link) {
-        link.textContent = 'Sign Out';
-        link.href = '#';
-        link.style.opacity = '1';
-        link.addEventListener('click', async function(e) {
-          e.preventDefault();
-          await sb.auth.signOut();
-          window.location.reload();
-        });
-      }
-      var joinLink = document.getElementById('nav-join-link');
-      if (joinLink) {
-        joinLink.textContent = 'My Feed';
-        joinLink.href = 'feed.html';
-      }
-    }
-  } catch(e) { /* silent fail — sign in link stays as-is */ }
-})();
-</script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/footer.js"></script>
 </body>
 </html>

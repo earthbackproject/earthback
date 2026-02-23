@@ -759,26 +759,7 @@
 </head>
 <body>
 
-<!-- ── NAV ── -->
-<nav>
-    <div class="nav-inner">
-        <a href="/" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
-        <ul>
-            <li><a href="#community">The Feed</a></li>
-            <li><a href="circles.html">Circles</a></li>
-            <li><a href="how-it-works.html">How It Works</a></li>
-            <li><a href="use-cases.html">Use Cases</a></li>
-            <li><a href="visualizer.html">Visualizer</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="safety.html">Safety</a></li>
-            <li><a href="login.html" id="nav-signin-link" style="opacity:0.75;">Sign In</a></li>
-            <li><a href="join.html" class="nav-join" id="nav-join-link">Join</a></li>
-        </ul>
-        <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-</nav>
+<div id="site-nav"></div>
 
 <!-- ── HERO ── -->
 <section class="hero" id="top">
@@ -1203,44 +1184,7 @@
     </div>
 </section>
 
-<!-- ── FOOTER ── -->
-<footer>
-    <div class="footer-inner">
-        <div class="footer-top">
-            <div class="footer-brand">
-                <div class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></div>
-                <p>A community for anyone curious about building a better world. Your circles, your feed, your people.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Community</h4>
-                <ul>
-                    <li><a href="#community">The Feed</a></li>
-                    <li><a href="circles.html">Circles</a></li>
-                    <li><a href="use-cases.html">Use Cases</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Earthback</h4>
-                <ul>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="how-it-works.html">How It Works</a></li>
-                    <li><a href="safety.html">Safety &amp; Trust</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Contact</h4>
-                <ul>
-                    <li><a href="mailto:earthbackproject@gmail.com">earthbackproject@gmail.com</a></li>
-                    <li><a href="join.html">Join the community</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <span>© 2026 Earthback. All rights reserved. &nbsp;·&nbsp; <a href="terms.html" style="color:inherit;text-decoration:underline;opacity:0.7;">Terms</a> &nbsp;·&nbsp; <a href="privacy.html" style="color:inherit;text-decoration:underline;opacity:0.7;">Privacy</a></span>
-            <span class="footer-tagline">When the pieces connect, the work gets done.</span>
-        </div>
-    </div>
-</footer>
+<div id="site-footer"></div>
 
 <script>
     // Nav darkens on scroll
@@ -1278,33 +1222,7 @@
     }
 </script>
 
-<div class="mobile-nav-overlay" id="mobile-nav-overlay">
-    <a href="#community">The Feed</a>
-    <a href="circles.html">Circles</a>
-    <a href="how-it-works.html">How It Works</a>
-    <a href="use-cases.html">Use Cases</a>
-    <a href="visualizer.html">Visualizer</a>
-    <a href="about.html">About</a>
-    <a href="safety.html">Safety</a>
-
-    <a href="join.html" class="join-mobile">Join / Sign In &rarr;</a>
-</div>
 <script>
-function toggleMobileNav() {
-    var btn = document.getElementById('nav-hamburger');
-    var overlay = document.getElementById('mobile-nav-overlay');
-    btn.classList.toggle('open');
-    overlay.classList.toggle('open');
-    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
-}
-document.querySelectorAll('.mobile-nav-overlay a').forEach(function(a) {
-    a.addEventListener('click', function() {
-        document.getElementById('nav-hamburger').classList.remove('open');
-        document.getElementById('mobile-nav-overlay').classList.remove('open');
-        document.body.style.overflow = '';
-    });
-});
-
     // ── Create Post Demo ──
     function setPostType(btn) {
         document.querySelectorAll('.ptype-btn').forEach(b => b.classList.remove('active'));
@@ -1318,32 +1236,7 @@ document.querySelectorAll('.mobile-nav-overlay a').forEach(function(a) {
     }
 </script>
 
-<!-- Auth state check -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script>
-(async function() {
-  try {
-    const sb = supabase.createClient('https://yptktmzagctusbeqdaty.supabase.co', 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC');
-    const { data: { session } } = await sb.auth.getSession();
-    const link = document.getElementById('nav-signin-link');
-    const joinLink = document.getElementById('nav-join-link');
-    if (session) {
-      if (link) {
-        link.textContent = 'Sign Out';
-        link.href = '#';
-        link.style.opacity = '1';
-        link.addEventListener('click', async function(e) {
-          e.preventDefault();
-          await sb.auth.signOut();
-          window.location.reload();
-        });
-      }
-      if (joinLink) {
-        joinLink.textContent = 'My Feed';
-        joinLink.href = 'feed.html';
-      }
-    }
-  } catch(e) { /* silent fail — sign in link stays as-is */ }
-})();
-</script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/footer.js"></script>
 </body>
