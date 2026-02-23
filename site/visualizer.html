@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Visualizer — Earthback</title>
+    <meta name="description" content="Describe the home, workshop, or community space you're imagining — our AI renders it in the materials and methods this community actually uses.">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        /* ─────────────────────────────────────
+           EARTHBACK · AI Visualizer
+           Consistent with v2.0 brand system
+        ───────────────────────────────────── */
+
+        :root {
+            --green:      #1F3A2E;
+            --green-mid:  #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay:       #C2A56C;
+            --clay-dark:  #8A5B3F;
+            --clay-rust:  #A05E3A;
+            --moss:       #7e9b73;
+            --parchment:  #F2EFE6;
+            --parchment2: #EAE3D3;
+            --ink:        #2B2E30;
+            --ink-soft:   #555A5C;
+            --white:      #FFFFFF;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+            --max:        1200px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(20, 38, 28, 0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194, 165, 108, 0.12);
+        }
+        .nav-inner {
+            max-width: var(--max); margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--parchment); text-decoration: none;
+            letter-spacing: 0.1em; text-transform: uppercase;
+        }
+        .nav-logo .brand-back { color: var(--clay); }
+        .brand-the {
+            font-size: 0.5em; font-weight: 300;
+            color: rgba(242,239,230,0.52); text-transform: lowercase;
+            letter-spacing: 0.03em; vertical-align: 0.22em; margin-right: 0.18em;
+        }
+        .brand-back { color: var(--clay); }
+        .brand-project {
+            font-size: 0.46em; font-weight: 400;
+            color: rgba(242,239,230,0.35); text-transform: uppercase;
+            letter-spacing: 0.25em; vertical-align: 0.24em;
+        }
+        nav ul { display: flex; gap: 1.75rem; list-style: none; align-items: center; }
+        nav a {
+            color: rgba(242,239,230,0.78); text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            transition: color 0.2s var(--ease);
+        }
+        nav a:hover { color: var(--clay); }
+        nav a.active { color: var(--clay); font-weight: 600; }
+        .nav-join {
+            background: var(--clay); color: var(--green) !important;
+            padding: 0.55rem 1.35rem; border-radius: 3px;
+            font-weight: 700 !important;
+            transition: background 0.2s var(--ease) !important;
+        }
+        .nav-join:hover { background: var(--parchment) !important; }
+
+        /* ── MOBILE NAV ── */
+        .nav-hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer; padding: 4px;
+        }
+        .nav-hamburger span {
+            display: block; width: 22px; height: 2px;
+            background: var(--parchment); border-radius: 2px;
+            transition: all 0.25s;
+        }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .mobile-nav-overlay {
+            display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+            background: rgba(9,18,13,0.98); z-index: 999;
+            flex-direction: column; padding: 2rem; gap: 0;
+        }
+        .mobile-nav-overlay.open { display: flex; }
+        .mobile-nav-overlay a {
+            font-size: 1.4rem; color: rgba(242,239,230,0.8);
+            text-decoration: none; padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            font-family: 'Cormorant Garamond', serif; font-weight: 600;
+            transition: color 0.15s;
+        }
+        .mobile-nav-overlay a:hover { color: var(--clay); }
+        .mobile-nav-overlay a.join-mobile {
+            margin-top: 1.5rem; border: none;
+            background: var(--clay); color: var(--green) !important;
+            text-align: center; border-radius: 3px;
+            font-family: 'Inter', sans-serif; font-size: 1rem;
+            font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+            padding: 1rem;
+        }
+        @media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
+
+        /* ── PAGE ── */
+        .page-container {
+            max-width: var(--max); margin: 0 auto;
+            padding: 7rem 2rem 4rem;
+        }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--parchment2);
+        }
+        .badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            background: rgba(74,124,94,0.12); color: var(--green-soft);
+            padding: 0.35rem 0.9rem; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .badge .dot {
+            width: 6px; height: 6px;
+            background: var(--green-soft); border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .page-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 700; color: var(--ink);
+            line-height: 1.15; margin-bottom: 0.6rem;
+        }
+        .page-header h1 em { font-style: italic; color: var(--green-soft); }
+        .page-header p {
+            color: var(--ink-soft); font-size: 1.05rem;
+            max-width: 560px; margin: 0 auto;
+        }
+
+        /* ── MAIN GRID ── */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem; align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--parchment2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--parchment2);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .card-header h3 {
+            font-size: 0.88rem; font-weight: 600; color: var(--ink);
+        }
+        .free-counter {
+            font-size: 0.72rem; color: var(--green-soft);
+            background: rgba(74,124,94,0.1);
+            padding: 0.25rem 0.65rem; border-radius: 10px; font-weight: 600;
+        }
+        .card-body { padding: 1.25rem; }
+
+        /* ── FORM FIELDS ── */
+        .field-group { margin-bottom: 1.25rem; }
+        .field-label {
+            display: block; font-size: 0.72rem; font-weight: 600;
+            color: var(--ink-soft); text-transform: uppercase;
+            letter-spacing: 0.08em; margin-bottom: 0.5rem;
+        }
+        .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .chip {
+            padding: 0.35rem 0.75rem; border-radius: 4px;
+            border: 1px solid var(--parchment2); background: var(--parchment);
+            font-size: 0.82rem; color: var(--ink-soft); cursor: pointer;
+            transition: all 0.15s ease; font-weight: 500; user-select: none;
+        }
+        .chip:hover { border-color: var(--green-soft); color: var(--green); }
+        .chip.selected {
+            border-color: var(--green-soft); background: rgba(74,124,94,0.1);
+            color: var(--green); font-weight: 600;
+        }
+
+        .prompt-input {
+            width: 100%; min-height: 130px;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--parchment2); border-radius: 6px;
+            font-family: 'Inter', sans-serif; font-size: 0.92rem;
+            color: var(--ink); background: var(--parchment);
+            resize: vertical; line-height: 1.6;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .prompt-input:focus {
+            outline: none; border-color: var(--green-soft);
+            box-shadow: 0 0 0 3px rgba(74,124,94,0.1);
+        }
+        .prompt-input::placeholder { color: #aaa; }
+
+        .style-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+        .style-option {
+            padding: 0.65rem 0.5rem; border-radius: 6px;
+            border: 1px solid var(--parchment2); background: var(--white);
+            text-align: center; cursor: pointer; transition: all 0.15s ease;
+        }
+        .style-option:hover { border-color: var(--green-soft); }
+        .style-option.selected {
+            border-color: var(--green-soft); background: rgba(74,124,94,0.1);
+        }
+        .style-option .icon { font-size: 1.3rem; margin-bottom: 0.2rem; }
+        .style-option .label { display: block; font-size: 0.75rem; font-weight: 600; }
+
+        .generate-btn {
+            width: 100%; padding: 0.85rem;
+            border: none; border-radius: 4px;
+            background: var(--green); color: var(--parchment);
+            font-family: 'Inter', sans-serif; font-size: 0.92rem;
+            font-weight: 700; cursor: pointer; letter-spacing: 0.03em;
+            transition: all 0.2s ease;
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            margin-top: 0.25rem; text-transform: uppercase;
+        }
+        .generate-btn:hover { background: var(--clay-rust); }
+        .generate-btn:disabled {
+            opacity: 0.5; cursor: not-allowed;
+        }
+        .generate-btn:disabled:hover { background: var(--green); }
+        .generate-btn svg { width: 16px; height: 16px; }
+
+        /* ── IMAGE PANEL ── */
+        .image-area {
+            aspect-ratio: 4 / 3;
+            background: var(--parchment);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .placeholder { text-align: center; padding: 2rem; }
+        .placeholder-ring {
+            width: 64px; height: 64px; margin: 0 auto 1rem;
+            border-radius: 50%; border: 2px dashed var(--parchment2);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .placeholder-ring svg { width: 24px; height: 24px; opacity: 0.35; color: var(--ink-soft); }
+        .placeholder h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .placeholder p { font-size: 0.82rem; color: var(--ink-soft); max-width: 280px; margin: 0 auto; }
+
+        .loading-overlay {
+            display: none; position: absolute; inset: 0;
+            background: rgba(31, 58, 46, 0.92);
+            align-items: center; justify-content: center;
+            flex-direction: column; gap: 1rem; z-index: 2;
+        }
+        .loading-overlay.active { display: flex; }
+        .spinner {
+            width: 36px; height: 36px;
+            border: 2.5px solid rgba(242,239,230,0.2);
+            border-top-color: var(--clay);
+            border-radius: 50%; animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-overlay span { color: rgba(242,239,230,0.75); font-size: 0.85rem; }
+
+        .generated-image {
+            display: none; width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .image-toolbar {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid var(--parchment2);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .toolbar-group { display: flex; gap: 0.4rem; }
+        .tool-btn {
+            padding: 0.4rem 0.7rem; border-radius: 4px;
+            border: 1px solid var(--parchment2); background: var(--white);
+            font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 500;
+            color: var(--ink-soft); cursor: pointer; transition: all 0.15s;
+            display: flex; align-items: center; gap: 0.3rem;
+        }
+        .tool-btn:hover { border-color: var(--green-soft); color: var(--green); }
+        .tool-btn.filled {
+            background: var(--green); color: var(--parchment); border-color: var(--green);
+        }
+        .tool-btn.filled:hover { background: var(--clay-rust); border-color: var(--clay-rust); }
+
+        /* ── REFINE BAR ── */
+        .refine-bar { margin-bottom: 2rem; }
+        .refine-inner {
+            background: var(--white);
+            border: 1px solid var(--parchment2); border-radius: 10px;
+            padding: 0.75rem 1rem;
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .refine-label {
+            font-size: 0.72rem; font-weight: 600;
+            color: var(--ink-soft); text-transform: uppercase;
+            letter-spacing: 0.08em; white-space: nowrap;
+        }
+        .refine-input {
+            flex: 1; padding: 0.5rem 0.75rem;
+            border: 1px solid var(--parchment2); border-radius: 4px;
+            font-family: 'Inter', sans-serif; font-size: 0.88rem;
+            background: var(--parchment); color: var(--ink); transition: border-color 0.2s;
+        }
+        .refine-input:focus { outline: none; border-color: var(--green-soft); }
+        .refine-input::placeholder { color: #aaa; }
+        .refine-send {
+            padding: 0.5rem 1rem; border: none; border-radius: 4px;
+            background: var(--green); color: var(--parchment);
+            font-family: 'Inter', sans-serif; font-size: 0.82rem;
+            font-weight: 600; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .refine-send:hover { background: var(--clay-rust); }
+
+        /* ── UPGRADE CTA ── */
+        .upgrade-cta {
+            background: var(--white);
+            border: 1px solid var(--parchment2); border-radius: 10px;
+            padding: 2rem 2.5rem;
+            display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+        }
+        .upgrade-cta h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 700; margin-bottom: 0.3rem;
+        }
+        .upgrade-cta p { color: var(--ink-soft); font-size: 0.92rem; }
+        .upgrade-btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--green); border-radius: 4px;
+            background: transparent; color: var(--green);
+            font-family: 'Inter', sans-serif; font-size: 0.88rem;
+            font-weight: 700; cursor: pointer; transition: all 0.2s;
+            white-space: nowrap; text-transform: uppercase; letter-spacing: 0.03em;
+        }
+        .upgrade-btn:hover { background: var(--green); color: var(--parchment); }
+
+        /* ── PROFILE HINT ── */
+        .profile-hint {
+            margin-top: 1.5rem; text-align: center;
+            padding: 1.25rem;
+            background: rgba(194,165,108,0.08);
+            border: 1px solid rgba(194,165,108,0.2);
+            border-radius: 10px;
+        }
+        .profile-hint p { font-size: 0.88rem; color: var(--ink-soft); }
+        .profile-hint strong { color: var(--clay-dark); }
+
+        /* ── ERROR MESSAGE ── */
+        .error-toast {
+            display: none; position: fixed; bottom: 2rem; left: 50%;
+            transform: translateX(-50%);
+            background: var(--clay-rust); color: var(--white);
+            padding: 0.75rem 1.5rem; border-radius: 6px;
+            font-size: 0.88rem; font-weight: 500; z-index: 2000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .error-toast.active { display: block; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: #0e1e15; padding: 3rem 2rem; text-align: center;
+        }
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 700;
+            color: var(--parchment); text-decoration: none;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            display: block; margin-bottom: 1rem;
+        }
+        .footer-logo .brand-back { color: var(--clay); }
+        .footer-links {
+            list-style: none; display: flex; justify-content: center;
+            gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+        }
+        .footer-links a {
+            color: rgba(242,239,230,0.55); text-decoration: none;
+            font-size: 0.82rem; transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--clay); }
+        .footer-copy { font-size: 0.78rem; color: rgba(242,239,230,0.3); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 1.75rem; }
+            .upgrade-cta { flex-direction: column; text-align: center; }
+            .page-container { padding: 6rem 1rem 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+    <div class="nav-inner">
+        <a href="/" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+        <ul>
+            <li><a href="feed.html">The Feed</a></li>
+            <li><a href="circles.html">Circles</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="use-cases.html">Use Cases</a></li>
+            <li><a href="visualizer.html" class="active">Visualizer</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="login.html" id="nav-signin-link" style="opacity:0.75;">Sign In</a></li>
+            <li><a href="join.html" class="nav-join">Join</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Mobile nav overlay -->
+<div class="mobile-nav-overlay" id="mobile-nav">
+    <a href="feed.html">The Feed</a>
+    <a href="circles.html">Circles</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="use-cases.html">Use Cases</a>
+    <a href="visualizer.html">Visualizer</a>
+    <a href="about.html">About</a>
+    <a href="login.html">Sign In</a>
+    <a href="join.html" class="join-mobile">Join</a>
+</div>
+
+<div class="page-container">
+
+    <div class="page-header">
+        <div class="badge"><span class="dot"></span> AI Preview</div>
+        <h1>Envision your <em>build.</em></h1>
+        <p>Describe the home, workshop, or community space you're imagining — our AI renders it in the materials and methods this community actually uses.</p>
+    </div>
+
+    <div class="main-grid">
+
+        <!-- LEFT: PROMPT -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Describe your project</h3>
+                <span class="free-counter" id="renderCounter">20 renders today</span>
+            </div>
+            <div class="card-body">
+                <div class="field-group">
+                    <span class="field-label">Structure</span>
+                    <div class="chips" id="structureChips">
+                        <span class="chip selected" data-value="single-home">Single Home</span>
+                        <span class="chip" data-value="duplex">Duplex</span>
+                        <span class="chip" data-value="community-hub">Community Hub</span>
+                        <span class="chip" data-value="workshop">Workshop</span>
+                        <span class="chip" data-value="full-village">Full Village</span>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <span class="field-label">Climate / Region</span>
+                    <div class="chips" id="climateChips">
+                        <span class="chip selected" data-value="high-desert">High Desert</span>
+                        <span class="chip" data-value="prairie">Prairie</span>
+                        <span class="chip" data-value="forest">Forest</span>
+                        <span class="chip" data-value="coastal">Coastal</span>
+                        <span class="chip" data-value="mountain">Mountain</span>
+                        <span class="chip" data-value="tropical">Tropical</span>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <span class="field-label">Your vision</span>
+                    <textarea class="prompt-input" id="promptInput" placeholder="A 1,200 sq ft rammed earth home with a living roof, passive solar orientation, large south-facing windows, a shaded courtyard with rainwater cisterns, native xeriscape plantings and a small hemp garden..."></textarea>
+                </div>
+
+                <div class="field-group">
+                    <span class="field-label">Render style</span>
+                    <div class="style-row" id="styleRow">
+                        <div class="style-option selected" data-value="photorealistic">
+                            <div class="icon">&#x1f4f7;</div>
+                            <span class="label">Photorealistic</span>
+                        </div>
+                        <div class="style-option" data-value="sketch">
+                            <div class="icon">&#x270f;&#xfe0f;</div>
+                            <span class="label">Sketch</span>
+                        </div>
+                        <div class="style-option" data-value="blueprint">
+                            <div class="icon">&#x1f4d0;</div>
+                            <span class="label">Blueprint</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="generate-btn" id="generateBtn" onclick="generateVision()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z"/></svg>
+                    Generate vision
+                </button>
+            </div>
+        </div>
+
+        <!-- RIGHT: IMAGE -->
+        <div class="card">
+            <div class="image-area" id="imageArea">
+                <div class="placeholder" id="placeholderState">
+                    <div class="placeholder-ring">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.41a2.25 2.25 0 013.182 0l2.909 2.91M6.75 7.5a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18 7.5a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"/></svg>
+                    </div>
+                    <h4>Your vision will appear here</h4>
+                    <p>Describe your project and hit generate to see it rendered in earth, hemp, and timber.</p>
+                </div>
+
+                <div class="loading-overlay" id="loadingState">
+                    <div class="spinner"></div>
+                    <span>Rendering your vision...</span>
+                </div>
+
+                <img class="generated-image" id="generatedImage" alt="AI-generated architectural visualization" />
+            </div>
+
+            <div class="image-toolbar">
+                <div class="toolbar-group">
+                    <button class="tool-btn" id="regenerateBtn" onclick="generateVision()">Regenerate</button>
+                    <button class="tool-btn" id="variationsBtn" title="Coming with Pro">Variations</button>
+                </div>
+                <div class="toolbar-group">
+                    <button class="tool-btn" id="downloadBtn" onclick="downloadImage()">Download</button>
+                    <button class="tool-btn filled" id="saveBtn" onclick="saveToProfile()">Save to profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REFINE BAR -->
+    <div class="refine-bar">
+        <div class="refine-inner">
+            <span class="refine-label">Refine</span>
+            <input type="text" class="refine-input" id="refineInput" placeholder="Add a greenhouse on the south side, make the roof steeper...">
+            <button class="refine-send" onclick="refineVision()">Update</button>
+        </div>
+    </div>
+
+    <!-- UPGRADE -->
+    <div class="upgrade-cta">
+        <div>
+            <h3>Unlock unlimited visions</h3>
+            <p>Unlimited renders, HD downloads, all three styles, and early access to the interactive builder. $9/month — cancel anytime.</p>
+        </div>
+        <button class="upgrade-btn">Coming soon</button>
+    </div>
+
+    <!-- PROFILE BRIDGE -->
+    <div class="profile-hint">
+        <p><strong>Coming soon:</strong> Save your generated visions directly to your Earthback profile. Your builds become part of your story — visible to your circles, linked to your projects.</p>
+    </div>
+</div>
+
+<!-- ERROR TOAST -->
+<div class="error-toast" id="errorToast"></div>
+
+<!-- FOOTER -->
+<footer>
+    <a href="index.html" class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+    <ul class="footer-links">
+        <li><a href="feed.html">The Feed</a></li>
+        <li><a href="circles.html">Circles</a></li>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="safety.html">Safety &amp; Trust</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+    <div class="footer-copy">&copy; 2026 Earthback. Built by the community, for the community.</div>
+</footer>
+
+<script>
+    // ── MOBILE NAV ──
+    function toggleMobileNav() {
+        const btn = document.getElementById('nav-hamburger');
+        const overlay = document.getElementById('mobile-nav');
+        btn.classList.toggle('open');
+        overlay.classList.toggle('open');
+    }
+
+    // ── CHIP SELECTION ──
+    document.querySelectorAll('.chips').forEach(group => {
+        group.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+                chip.classList.add('selected');
+            });
+        });
+    });
+
+    document.querySelectorAll('.style-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            document.querySelectorAll('.style-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+        });
+    });
+
+    // ── RATE LIMITING (localStorage) ──
+    const STORAGE_KEY = 'earthback_viz_renders';
+    const DAILY_LIMIT = 20;
+
+    function getUsage() {
+        try {
+            const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            // Reset daily
+            const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+            if (data.day !== today) {
+                return { day: today, count: 0 };
+            }
+            return data;
+        } catch {
+            return { day: '', count: 0 };
+        }
+    }
+
+    function incrementUsage() {
+        const usage = getUsage();
+        usage.count++;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(usage));
+        updateCounter();
+    }
+
+    function updateCounter() {
+        const usage = getUsage();
+        const remaining = Math.max(0, DAILY_LIMIT - usage.count);
+        const counter = document.getElementById('renderCounter');
+        if (remaining > 0) {
+            counter.textContent = `${remaining} render${remaining !== 1 ? 's' : ''} today`;
+            counter.style.color = '';
+            counter.style.background = '';
+        } else {
+            counter.textContent = 'daily limit reached';
+            counter.style.color = 'var(--clay-rust)';
+            counter.style.background = 'rgba(160,94,58,0.1)';
+        }
+    }
+
+    function canGenerate() {
+        const usage = getUsage();
+        return usage.count < DAILY_LIMIT;
+    }
+
+    // Init counter
+    updateCounter();
+
+    // ── HELPERS ──
+    function getSelected(containerId) {
+        const el = document.querySelector(`#${containerId} .selected`);
+        return el ? el.dataset.value : null;
+    }
+
+    function getStyleSelected() {
+        const el = document.querySelector('#styleRow .selected');
+        return el ? el.dataset.value : 'photorealistic';
+    }
+
+    function showError(msg) {
+        const toast = document.getElementById('errorToast');
+        toast.textContent = msg;
+        toast.classList.add('active');
+        setTimeout(() => toast.classList.remove('active'), 4000);
+    }
+
+    // ── KEEP TRACK OF LAST PROMPT FOR REFINEMENTS ──
+    let lastPrompt = '';
+    let lastImageUrl = '';
+
+    // ── GENERATE ──
+    async function generateVision() {
+        if (!canGenerate()) {
+            showError('You\'ve hit your daily render limit. Come back tomorrow!');
+            return;
+        }
+
+        const prompt = document.getElementById('promptInput').value.trim();
+        if (!prompt || prompt.length < 10) {
+            showError('Describe your vision in at least a few words.');
+            return;
+        }
+
+        const structure = getSelected('structureChips');
+        const climate = getSelected('climateChips');
+        const style = getStyleSelected();
+
+        // UI states
+        const btn = document.getElementById('generateBtn');
+        const placeholder = document.getElementById('placeholderState');
+        const loading = document.getElementById('loadingState');
+        const img = document.getElementById('generatedImage');
+
+        btn.disabled = true;
+        btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;"></div> Generating...';
+        placeholder.style.display = 'none';
+        img.style.display = 'none';
+        loading.classList.add('active');
+
+        try {
+            const res = await fetch('/.netlify/functions/generate-vision', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt, structure, climate, style })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || 'Generation failed');
+            }
+
+            // Show the image
+            img.src = data.image_url;
+            img.onload = () => {
+                loading.classList.remove('active');
+                img.style.display = 'block';
+            };
+            img.onerror = () => {
+                loading.classList.remove('active');
+                placeholder.style.display = 'block';
+                showError('Image failed to load. Try again.');
+            };
+
+            lastPrompt = prompt;
+            lastImageUrl = data.image_url;
+            incrementUsage();
+
+        } catch (err) {
+            loading.classList.remove('active');
+            placeholder.style.display = 'block';
+            showError(err.message || 'Something went wrong. Please try again.');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z"/></svg> Generate vision';
+        }
+    }
+
+    // ── REFINE ──
+    async function refineVision() {
+        const refinement = document.getElementById('refineInput').value.trim();
+        if (!refinement) return;
+
+        // Append refinement to the original prompt and regenerate
+        const promptInput = document.getElementById('promptInput');
+        promptInput.value = lastPrompt + '. ' + refinement;
+        document.getElementById('refineInput').value = '';
+        await generateVision();
+    }
+
+    // ── DOWNLOAD ──
+    function downloadImage() {
+        if (!lastImageUrl) {
+            showError('Generate an image first.');
+            return;
+        }
+        const a = document.createElement('a');
+        a.href = lastImageUrl;
+        a.download = 'earthback-vision.webp';
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    // ── SAVE TO PROFILE (placeholder) ──
+    function saveToProfile() {
+        showError('Profile save coming soon! Sign up to be notified.');
+    }
+
+    // ── NAV SCROLL EFFECT ──
+    const navEl = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+        navEl.style.background = window.scrollY > 40
+            ? 'rgba(9, 18, 13, 0.99)'
+            : 'rgba(20, 38, 28, 0.97)';
+    });
+</script>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 [build]
   publish = "site/"
+  functions = "netlify/functions"
 
 # Redirect rules (backup — _redirects in site/ takes priority)
 # [[redirects]]
