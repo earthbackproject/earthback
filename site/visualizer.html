@@ -547,7 +547,7 @@
     <div class="upgrade-cta">
         <div>
             <h3>Unlock unlimited visions</h3>
-            <p>Unlimited renders, HD downloads, all three styles, and early access to the interactive builder. $9/month — cancel anytime.</p>
+            <p>Unlimited renders, HD downloads, all three styles, and early access to the interactive builder.</p>
         </div>
         <button class="upgrade-btn">Coming soon</button>
     </div>
@@ -756,6 +756,40 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/footer.js"></script>
+<script>
+    // ── AUTH GATE ──
+    // Visitors can see the page but must sign in to generate
+    (function() {
+        var SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+        var SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+        var _sb;
+        try { _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { return; }
+
+        _sb.auth.getSession().then(function(result) {
+            var session = result.data.session;
+            if (!session) {
+                // Override generate to require auth
+                window._vizAuthGated = true;
+                var btn = document.getElementById('generateBtn');
+                if (btn) {
+                    btn.onclick = function(e) {
+                        e.preventDefault();
+                        showError('Sign in to generate visions.');
+                        setTimeout(function() {
+                            window.location.href = 'join.html?redirect=visualizer.html';
+                        }, 1500);
+                    };
+                }
+                // Update counter to show sign-in message
+                var counter = document.getElementById('renderCounter');
+                if (counter) {
+                    counter.textContent = 'sign in to generate';
+                    counter.style.color = 'var(--clay-rust)';
+                }
+            }
+        });
+    })();
+</script>
 
 </body>
 </html>

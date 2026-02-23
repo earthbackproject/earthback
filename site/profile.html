@@ -469,7 +469,7 @@
     <!-- SIDEBAR -->
     <div>
       <!-- Skills -->
-      <div class="sidebar-panel">
+      <div class="sidebar-panel" id="panel-skills">
         <div class="panel-title">Skills & Expertise</div>
         <div class="skills-group">
           <div class="skills-group-label">I can teach / lead</div>
@@ -499,7 +499,7 @@
       </div>
 
       <!-- Circles -->
-      <div class="sidebar-panel">
+      <div class="sidebar-panel" id="panel-circles">
         <div class="panel-title">Circles</div>
         <a href="circles.html" class="circle-item">
           <span class="circle-icon">🛖</span>
@@ -531,7 +531,7 @@
       </div>
 
       <!-- Earth Score -->
-      <div class="sidebar-panel">
+      <div class="sidebar-panel" id="panel-score">
         <div class="panel-title">Earth Score</div>
         <div class="earth-score-bar">
           <div class="score-row">
@@ -544,7 +544,7 @@
       </div>
 
       <!-- Certifications -->
-      <div class="sidebar-panel">
+      <div class="sidebar-panel" id="panel-certs">
         <div class="panel-title">Certifications & Credentials</div>
         <div class="cert-item">
           <div class="cert-row">
@@ -583,7 +583,7 @@
       </div>
 
       <!-- Projects & Companies -->
-      <div class="sidebar-panel">
+      <div class="sidebar-panel" id="panel-projects">
         <div class="panel-title">Projects & Companies</div>
         <a href="project.html" class="proj-link-card">
           <div class="proj-link-avatar" style="background:linear-gradient(135deg,#b8902a,#8a6a18);">DS</div>
@@ -615,7 +615,7 @@
       </div>
 
       <!-- Contact -->
-      <div class="sidebar-panel">
+      <div class="sidebar-panel" id="panel-connect">
         <div class="panel-title">Connect</div>
         <div class="contact-item"><span class="contact-icon">📍</span><div>Taos, New Mexico (can travel within NM for build days)</div></div>
         <div class="contact-item"><span class="contact-icon">🌐</span><div><a href="join.html">Send a message through Earthback</a></div></div>
@@ -1380,7 +1380,7 @@ function enableEditMode(profile, session) {
   locEl.outerHTML = `<span class="pmeta-item">📍 <input type="text" id="edit-location" class="edit-input" value="${originalLoc}" placeholder="City, State" style="font-size:0.82rem;display:inline;width:auto;padding:4px 8px;"></span>`;
 
   // Make skills editable
-  const skillsPanel = document.querySelector('.sidebar-panel');
+  const skillsPanel = document.getElementById('panel-skills');
   if (skillsPanel) {
     const currentSkills = profile.skills || [];
     const skillsHTML = `
@@ -1402,6 +1402,22 @@ function enableEditMode(profile, session) {
       </div>
     `;
     skillsPanel.innerHTML = skillsHTML;
+  }
+
+  // Make what_bring and what_seek editable in connect panel
+  const connectPanel = document.getElementById('panel-connect');
+  if (connectPanel) {
+    connectPanel.innerHTML = `
+      <div class="panel-title">Connect</div>
+      <div style="margin-bottom:10px;">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">What I bring</div>
+        <textarea id="edit-what-bring" class="edit-textarea" style="width:100%;min-height:60px;font-size:0.84rem;" placeholder="Skills, tools, experience you can offer…">${profile.what_bring || ''}</textarea>
+      </div>
+      <div>
+        <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">What I'm looking for</div>
+        <textarea id="edit-what-seek" class="edit-textarea" style="width:100%;min-height:60px;font-size:0.84rem;" placeholder="Help, connections, resources you need…">${profile.what_seek || ''}</textarea>
+      </div>
+    `;
   }
 
   // Replace action buttons with Save/Cancel
@@ -1437,12 +1453,17 @@ async function saveProfileChanges() {
     ...parseSkills('edit-skills-learn', 'learning'),
   ];
 
+  const whatBringVal = document.getElementById('edit-what-bring')?.value || '';
+  const whatSeekVal = document.getElementById('edit-what-seek')?.value || '';
+
   const updates = {
     display_name: nameVal,
     tagline: taglineVal,
     bio: bioVal,
     location: locVal,
     skills: skills,
+    what_bring: whatBringVal,
+    what_seek: whatSeekVal,
   };
 
   const saveBtn = document.querySelector('.btn-collab');
@@ -1459,16 +1480,19 @@ async function saveProfileChanges() {
 
 async function loadProfile() {
   const params = new URLSearchParams(window.location.search);
-  const userId = params.get('id');
+  let profileId = params.get('id');
 
-  // No ID param → keep Maya Redhawk demo as-is
-  if (!userId) {
+  // No ID param → load current user's own profile
+  if (!profileId) {
     const { data: { session } } = await sb.auth.getSession();
-    if (session) {
-      addSignedInNav(session);
+    if (!session) {
+      window.location.href = 'join.html';
+      return;
     }
-    return;
+    profileId = session.user.id;
   }
+
+  const userId = profileId;
 
   // Load real profile from Supabase
   const { data: profile, error } = await sb
@@ -1496,10 +1520,26 @@ async function loadProfile() {
     .select('*')
     .eq('profile_id', userId);
 
-  const { data: projects } = await sb
+  // Fetch owned projects + projects user is a member of
+  const { data: ownedProjects } = await sb
     .from('projects')
     .select('*')
     .eq('owner_id', userId);
+
+  const { data: memberRows } = await sb
+    .from('project_members')
+    .select('project_id, role, projects(*)')
+    .eq('profile_id', userId);
+
+  // Merge and dedupe — owned projects first, then member projects
+  const ownedIds = new Set((ownedProjects || []).map(p => p.id));
+  const memberProjects = (memberRows || [])
+    .filter(r => r.projects && !ownedIds.has(r.projects.id))
+    .map(r => ({ ...r.projects, member_role: r.role }));
+  const projects = [
+    ...(ownedProjects || []).map(p => ({ ...p, member_role: 'Owner' })),
+    ...memberProjects
+  ];
 
   const { data: posts } = await sb
     .from('posts')
@@ -1548,14 +1588,37 @@ async function loadProfile() {
 
   // Earth score
   const score = profile.earth_score || 0;
-  const scoreNum = document.querySelector('.score-num');
-  if (scoreNum) scoreNum.textContent = score;
-  const fill = document.querySelector('.progress-fill');
-  if (fill) fill.style.width = Math.min(score, 200) / 2 + '%';
+  const scorePanel = document.getElementById('panel-score');
+  if (scorePanel) {
+    const projCount = projects ? projects.length : 0;
+    const postCount = posts ? posts.length : 0;
+    const helpfulTotal = posts ? posts.reduce((sum, p) => sum + (p.helpful_count || 0), 0) : 0;
+    const mediaCount = mediaLinks ? mediaLinks.length : 0;
+    scorePanel.innerHTML = `
+      <div class="panel-title">Earth Score</div>
+      <div class="earth-score-bar">
+        <div class="score-row">
+          <span class="score-label">Contribution score</span>
+          <span class="score-num">${score}</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:${Math.min(score, 200) / 2}%;"></div></div>
+        <div class="score-breakdown">${projCount} project${projCount !== 1 ? 's' : ''} · ${postCount} post${postCount !== 1 ? 's' : ''} · ${helpfulTotal} helpful mark${helpfulTotal !== 1 ? 's' : ''} · ${mediaCount} resource${mediaCount !== 1 ? 's' : ''} shared.</div>
+      </div>
+    `;
+  }
 
-  // Connect sidebar location
-  const contactLoc = document.querySelector('.contact-item div');
-  if (contactLoc) contactLoc.textContent = profile.location || 'Location not set';
+  // Connect sidebar
+  const connectPanel = document.getElementById('panel-connect');
+  if (connectPanel) {
+    connectPanel.innerHTML = `
+      <div class="panel-title">Connect</div>
+      <div class="contact-item"><span class="contact-icon">📍</span><div>${profile.location || 'Location not set'}</div></div>
+      <div class="contact-item"><span class="contact-icon">🌐</span><div><a href="messages.html">Send a message through Earthback</a></div></div>
+      <div class="contact-item"><span class="contact-icon">📅</span><div>Available for collaboration</div></div>
+      ${profile.what_bring ? `<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-lt);"><div style="font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">What I bring</div><p style="font-size:0.84rem;color:var(--text);line-height:1.6;">${profile.what_bring}</p></div>` : ''}
+      ${profile.what_seek ? `<div style="margin-top:10px;"><div style="font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">What I'm looking for</div><p style="font-size:0.84rem;color:var(--text);line-height:1.6;">${profile.what_seek}</p></div>` : ''}
+    `;
+  }
 
   // Update stats
   const statItems = document.querySelectorAll('.stat-item');
@@ -1565,25 +1628,42 @@ async function loadProfile() {
   if (statItems[3]) statItems[3].querySelector('.stat-num').textContent = posts ? posts.reduce((sum, p) => sum + (p.helpful_count || 0), 0) : 0;
   if (statItems[4]) statItems[4].querySelector('.stat-num').textContent = score;
 
-  // Populate sidebars
-  document.querySelector('.skills-group').innerHTML = profile.skills ? profile.skills.map(skill => {
-    const level = skill.level || 'learning';
-    const levelClass = level === 'lead' ? 'skill-lead' : level === 'experienced' ? 'skill-exp' : 'skill-learn';
-    return `<span class="skill-pill ${levelClass}">${skill.name}</span>`;
-  }).join('') : '<p style="font-size:0.82rem;color:var(--text-muted);">No skills listed.</p>';
+  // Populate skills sidebar — grouped by tier
+  const skillsPanel = document.getElementById('panel-skills');
+  if (skillsPanel) {
+    const skills = profile.skills || [];
+    const leadSkills = skills.filter(s => s.level === 'lead');
+    const expSkills = skills.filter(s => s.level === 'experienced');
+    const learnSkills = skills.filter(s => s.level === 'learning');
+
+    const renderGroup = (label, items, cls) => {
+      if (items.length === 0) return '';
+      return `<div class="skills-group">
+        <div class="skills-group-label">${label}</div>
+        <div class="skills-list">${items.map(s => `<span class="skill-pill ${cls}">${s.name}</span>`).join('')}</div>
+      </div>`;
+    };
+
+    const skillsHTML = renderGroup('I can teach / lead', leadSkills, 'skill-lead') +
+      renderGroup('Experienced', expSkills, 'skill-exp') +
+      renderGroup('Actively learning', learnSkills, 'skill-learn');
+
+    skillsPanel.innerHTML = `<div class="panel-title">Skills & Expertise</div>` +
+      (skillsHTML || '<p style="font-size:0.82rem;color:var(--text-muted);padding:6px 0;">No skills listed yet.</p>');
+  }
 
   // Certifications panel
-  const certsPanel = document.querySelector('.sidebar-panel:nth-child(4)');
+  const certsPanel = document.getElementById('panel-certs');
   if (certsPanel) {
-    const certsContent = certsPanel.querySelector('div:last-child') || certsPanel;
-    certsContent.innerHTML = buildCertsHTML(certifications);
+    certsPanel.innerHTML = '<div class="panel-title">Certifications & Credentials</div>' +
+      buildCertsHTML(certifications);
   }
 
   // Projects panel
-  const projPanel = document.querySelector('.sidebar-panel:nth-child(5)');
+  const projPanel = document.getElementById('panel-projects');
   if (projPanel) {
-    const projContent = projPanel.querySelector('div:last-child') || projPanel;
-    projContent.innerHTML = buildProjectsHTML(projects);
+    projPanel.innerHTML = '<div class="panel-title">Projects & Companies</div>' +
+      buildProjectsHTML(projects);
   }
 
   // Store profile for media import
@@ -1609,12 +1689,49 @@ async function loadProfile() {
     }
   }
 
-  // Activity tab
-  const activityPanel = document.querySelector('#tab-activity');
-  if (activityPanel && posts) {
-    const actContainer = activityPanel.querySelector('div:first-child');
-    if (actContainer) {
-      actContainer.parentNode.innerHTML = buildActivityHTML(posts);
+  // Activity tab — replace hardcoded content with real posts
+  const activityPanel = document.getElementById('tab-activity');
+  if (activityPanel) {
+    activityPanel.innerHTML = buildActivityHTML(posts || []);
+  }
+
+  // Resources tab — show resource-type posts
+  const resourcesPanel = document.getElementById('tab-resources');
+  if (resourcesPanel) {
+    const resourcePosts = (posts || []).filter(p => p.post_type === 'resource');
+    if (resourcePosts.length > 0) {
+      resourcesPanel.innerHTML = buildActivityHTML(resourcePosts);
+    } else {
+      resourcesPanel.innerHTML = '<p style="font-size:0.88rem; color:var(--text-muted); padding:24px; text-align:center;">No shared resources yet.</p>';
+    }
+  }
+
+  // Projects tab — show full project cards
+  const projectsPanel = document.getElementById('tab-projects');
+  if (projectsPanel) {
+    if (projects && projects.length > 0) {
+      projectsPanel.innerHTML = projects.map(proj => {
+        const statusMap = { active: 'status-active', forming: 'status-forming', complete: 'status-complete' };
+        const statusEmoji = { active: '🔨', forming: '🌱', complete: '✓' };
+        const statusLabel = { active: 'In Progress', forming: 'Forming', complete: 'Complete' };
+        const st = proj.status || 'active';
+        return `
+          <div class="project-card" style="cursor:pointer;" onclick="window.location.href='project.html?id=${proj.id}'">
+            <div class="proj-header">
+              <div class="proj-title">${proj.name || 'Untitled Project'}</div>
+              <span class="proj-status ${statusMap[st] || 'status-active'}">${statusEmoji[st] || '🔨'} ${statusLabel[st] || st}</span>
+            </div>
+            <div class="proj-meta">
+              ${proj.location ? `<span class="proj-meta-item">📍 ${proj.location}</span>` : ''}
+              ${proj.project_type ? `<span class="proj-meta-item">🛖 ${proj.project_type}</span>` : ''}
+              ${proj.created_at ? `<span class="proj-meta-item">📅 Started ${new Date(proj.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>` : ''}
+            </div>
+            ${proj.description ? `<p class="proj-desc">${proj.description}</p>` : ''}
+          </div>
+        `;
+      }).join('');
+    } else {
+      projectsPanel.innerHTML = '<p style="font-size:0.88rem; color:var(--text-muted); padding:24px; text-align:center;">No projects yet.</p>';
     }
   }
 
