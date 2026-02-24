@@ -80,7 +80,7 @@
   // ── INJECT BANNER + NAV ──
   const navTarget = document.getElementById('site-nav');
   if (navTarget) {
-    navTarget.innerHTML = bannerHTML + navHTML;
+    navTarget.innerHTML = navHTML + bannerHTML;
   }
 
   // ── HAMBURGER TOGGLE ──
