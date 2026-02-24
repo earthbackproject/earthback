@@ -285,6 +285,14 @@
             font-weight: 600;
         }
         .gcard-like-btn.liked .heart-icon { fill: var(--clay-rust); }
+        .gcard-like-btn.own-vision {
+            cursor: default;
+            opacity: 0.4;
+        }
+        .gcard-like-btn.own-vision:hover {
+            background: none;
+            color: var(--ink-soft);
+        }
         .heart-icon {
             width: 16px;
             height: 16px;
@@ -656,6 +664,7 @@
                 : '<div class="gcard-avatar">' + initials + '</div>';
             var promptSnippet = (v.prompt || '').substring(0, 120);
             var isLiked = likedSet.has(v.id);
+            var isOwn = currentSession && v.user_id === currentSession.user.id;
             var heartSvg = '<svg class="heart-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
             return '<div class="gcard" data-idx="' + idx + '">' +
@@ -674,9 +683,13 @@
                         '<span class="gcard-chip">' + (v.style || '') + '</span>' +
                     '</div>' +
                     '<div class="gcard-actions">' +
-                        '<button class="gcard-like-btn' + (isLiked ? ' liked' : '') + '" data-action="like" data-vision-id="' + v.id + '">' +
-                            heartSvg + ' <span class="like-count">' + (v.like_count || 0) + '</span>' +
-                        '</button>' +
+                        (isOwn
+                            ? '<span class="gcard-like-btn own-vision" title="You can\'t like your own vision">' +
+                                heartSvg + ' <span class="like-count">' + (v.like_count || 0) + '</span>' +
+                              '</span>'
+                            : '<button class="gcard-like-btn' + (isLiked ? ' liked' : '') + '" data-action="like" data-vision-id="' + v.id + '">' +
+                                heartSvg + ' <span class="like-count">' + (v.like_count || 0) + '</span>' +
+                              '</button>') +
                         '<button class="gcard-report-btn" data-action="report" data-vision-id="' + v.id + '" title="Report">⋯</button>' +
                     '</div>' +
                 '</div>' +
@@ -750,6 +763,10 @@
         }
 
         var visionId = btn.dataset.visionId;
+        // Block self-likes
+        var vision = allVisions.find(function(v) { return v.id === visionId; });
+        if (vision && vision.user_id === currentSession.user.id) return;
+
         var countEl = btn.querySelector('.like-count');
         var currentCount = parseInt(countEl.textContent) || 0;
         var isLiked = likedSet.has(visionId);

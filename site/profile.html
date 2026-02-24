@@ -1830,6 +1830,7 @@ async function loadProfileVisions(profileUserId) {
     const promptSnippet = (v.prompt || '').substring(0, 100);
     const isLiked = likedSet.has(v.id);
     const likeCount = v.like_count || 0;
+    const isOwnProfile = session && session.user.id === profileUserId;
 
     return `<div class="profile-vision-card" data-vidx="${idx}" style="background:var(--card); border:1px solid var(--border-lt); border-radius:12px; overflow:hidden; box-shadow:0 1px 6px var(--shadow); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
       ${v.image_url ? `<img src="${v.image_url}" alt="Vision render" loading="lazy" style="width:100%;height:160px;object-fit:cover;display:block;">` :
@@ -1842,18 +1843,18 @@ async function loadProfileVisions(profileUserId) {
           <span style="font-size:0.66rem; padding:2px 7px; background:var(--bg); border-radius:20px; color:var(--text-muted);">${v.style || ''}</span>
         </div>
         <div style="display:flex; align-items:center; justify-content:space-between; padding-top:6px; border-top:1px solid var(--border-lt);">
-          <button class="profile-like-btn" data-vision-id="${v.id}" style="display:flex;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-size:0.78rem;color:${isLiked ? 'var(--clay-rust,#A05E3A)' : 'var(--text-muted)'};font-weight:${isLiked ? '600' : '400'};padding:3px 6px;border-radius:6px;">
+          <${isOwnProfile ? 'span' : 'button'} class="profile-like-btn" data-vision-id="${v.id}" style="display:flex;align-items:center;gap:4px;background:none;border:none;${isOwnProfile ? 'cursor:default;opacity:0.4;' : 'cursor:pointer;'}font-size:0.78rem;color:${isLiked ? 'var(--clay-rust,#A05E3A)' : 'var(--text-muted)'};font-weight:${isLiked ? '600' : '400'};padding:3px 6px;border-radius:6px;"${isOwnProfile ? ' title="You can\'t like your own vision"' : ''}>
             ${heartSvg} <span class="pv-like-count">${likeCount}</span>
-          </button>
+          </${isOwnProfile ? 'span' : 'button'}>
           <span style="font-size:0.72rem; color:var(--text-muted);">${dateStr}</span>
         </div>
       </div>
     </div>`;
   }).join('');
 
-  // Attach like handlers
-  if (session) {
-    grid.querySelectorAll('.profile-like-btn').forEach(btn => {
+  // Attach like handlers (not on own profile)
+  if (session && session.user.id !== profileUserId) {
+    grid.querySelectorAll('button.profile-like-btn').forEach(btn => {
       btn.addEventListener('click', async function(e) {
         e.stopPropagation();
         const visionId = this.dataset.visionId;
