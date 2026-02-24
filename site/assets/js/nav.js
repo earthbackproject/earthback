@@ -24,26 +24,7 @@
     return isActive(href) ? ' class="active"' : '';
   }
 
-  // ── PRE-LAUNCH BANNER ──
-  const bannerHTML = `
-<div id="prelaunch-banner" style="
-  background: linear-gradient(90deg, #1F3A2E 0%, #2d5a27 50%, #1F3A2E 100%);
-  color: rgba(255,255,255,0.88);
-  text-align: center;
-  padding: 6px 16px;
-  font-size: 0.72rem;
-  font-family: 'Inter', system-ui, sans-serif;
-  letter-spacing: 0.03em;
-  line-height: 1.4;
-  z-index: 10001;
-  position: relative;
-">
-  <span style="font-weight:600;color:#C2A56C;margin-right:6px">PRE-LAUNCH</span>
-  <span>You're viewing an early build — features are in development, content is placeholder, and data may reset.</span>
-  <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:8px">Feedback →</a>
-</div>`;
-
-  // ── NAV HTML ──
+  // ── NAV HTML (includes pre-launch banner below nav-inner) ──
   const navHTML = `
 <nav>
   <div class="nav-inner">
@@ -64,6 +45,21 @@
       <span></span><span></span><span></span>
     </button>
   </div>
+  <div id="prelaunch-banner" style="
+    background: linear-gradient(90deg, #1a3026 0%, #243d1e 50%, #1a3026 100%);
+    color: rgba(255,255,255,0.85);
+    text-align: center;
+    padding: 5px 16px;
+    font-size: 0.7rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  ">
+    <span style="font-weight:600;color:#C2A56C;margin-right:6px">PRE-LAUNCH</span>
+    <span>You're viewing an early build — features are in development, content is placeholder, and data may reset.</span>
+    <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:8px">Feedback &rarr;</a>
+  </div>
 </nav>
 <div class="mobile-nav-overlay" id="mobile-nav-overlay">
   <a href="feed.html">The Feed</a>
@@ -80,7 +76,7 @@
   // ── INJECT BANNER + NAV ──
   const navTarget = document.getElementById('site-nav');
   if (navTarget) {
-    navTarget.innerHTML = navHTML + bannerHTML;
+    navTarget.innerHTML = navHTML;
   }
 
   // ── HAMBURGER TOGGLE ──
