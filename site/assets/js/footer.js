@@ -33,6 +33,7 @@
           <li><a href="how-it-works.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">How It Works</a></li>
           <li><a href="use-cases.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Use Cases</a></li>
           <li><a href="about.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">About</a></li>
+          <li><a href="training.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Training Partners</a></li>
         </ul>
       </div>
       <div>

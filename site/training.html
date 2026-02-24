@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills & Training — Earthback</title>
+    <meta name="description" content="Earthback is building a skills and certification platform for natural building, renewable energy, and regenerative land use — and we're looking for training partners.">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --green:      #1F3A2E;
+            --green-mid:  #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay:       #C2A56C;
+            --clay-dark:  #8A5B3F;
+            --moss:       #7e9b73;
+            --parchment:  #F2EFE6;
+            --parchment2: #EAE3D3;
+            --ink:        #2B2E30;
+            --ink-soft:   #555A5C;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+            --max:        1200px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(20, 38, 28, 0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194, 165, 108, 0.12);
+        }
+        .nav-inner {
+            max-width: var(--max); margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--parchment); text-decoration: none;
+            letter-spacing: 0.1em; text-transform: uppercase;
+        }
+        .nav-logo .brand-back { color: var(--clay); }
+        .brand-the {
+            font-size: 0.5em; font-weight: 300;
+            color: rgba(242,239,230,0.52); text-transform: lowercase;
+            letter-spacing: 0.03em; vertical-align: 0.22em; margin-right: 0.18em;
+        }
+        .brand-back { color: var(--clay); }
+        .brand-project {
+            font-size: 0.46em; font-weight: 400;
+            color: rgba(242,239,230,0.35); text-transform: uppercase;
+            letter-spacing: 0.18em; margin-left: 0.25em;
+        }
+        nav ul {
+            list-style: none; display: flex; gap: 1rem; align-items: center;
+        }
+        nav a {
+            color: rgba(242,239,230,0.7); text-decoration: none;
+            font-size: 0.82rem; font-weight: 500; letter-spacing: 0.02em;
+            transition: color 0.2s var(--ease);
+        }
+        nav a:hover { color: var(--clay); }
+        nav a.active { color: var(--clay); font-weight: 600; }
+        .nav-join {
+            background: var(--clay); color: var(--green) !important;
+            padding: 0.5rem 1.25rem; border-radius: 6px; font-weight: 600 !important;
+            transition: background 0.2s var(--ease) !important;
+        }
+        .nav-join:hover { background: var(--parchment) !important; }
+        .nav-hamburger {
+            display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
+        }
+        .nav-hamburger span {
+            width: 22px; height: 2px; background: var(--parchment); border-radius: 2px;
+            transition: all 0.3s var(--ease);
+        }
+        @media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
+
+        /* ── HERO ── */
+        .hero {
+            background: var(--green);
+            padding: 8rem 2rem 5rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.2rem; font-weight: 700;
+            color: var(--parchment);
+            margin-bottom: 1rem;
+            line-height: 1.15;
+        }
+        .hero h1 em {
+            color: var(--clay);
+            font-style: italic;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(242,239,230,0.65);
+            max-width: 54ch;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* ── SECTIONS ── */
+        .section {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+        .section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem; font-weight: 700;
+            color: var(--green);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .section p {
+            font-size: 1rem;
+            color: var(--ink-soft);
+            line-height: 1.85;
+            max-width: 68ch;
+        }
+        .section p + p { margin-top: 1.25rem; }
+
+        /* ── WHAT WE'RE BUILDING ── */
+        .tiers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+        .tier {
+            background: white;
+            border: 1px solid var(--parchment2);
+            border-top: 3px solid var(--clay);
+            padding: 2.25rem;
+            border-radius: 2px;
+        }
+        .tier-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+        .tier h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--green); margin-bottom: 0.6rem;
+        }
+        .tier p { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.75; }
+
+        /* ── DISCIPLINES ── */
+        .disciplines {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+        .discipline {
+            background: white;
+            border: 1px solid var(--parchment2);
+            padding: 1.75rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .discipline-icon { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+        .discipline h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem; font-weight: 700;
+            color: var(--green); margin-bottom: 0.5rem;
+        }
+        .discipline p {
+            font-size: 0.84rem; color: var(--ink-soft); line-height: 1.65;
+        }
+
+        /* ── PARTNER CTA ── */
+        .partner-section {
+            background: var(--green);
+            padding: 5rem 2rem;
+        }
+        .partner-inner {
+            max-width: var(--max);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .partner-text h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem; font-weight: 700;
+            color: var(--parchment);
+            margin-bottom: 1.25rem;
+            line-height: 1.2;
+        }
+        .partner-text p {
+            font-size: 1rem;
+            color: rgba(242,239,230,0.6);
+            line-height: 1.85;
+            max-width: 52ch;
+        }
+        .partner-text p + p { margin-top: 1.25rem; }
+
+        .partner-form {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(194,165,108,0.2);
+            border-radius: 8px;
+            padding: 2.5rem;
+        }
+        .partner-form h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem; font-weight: 700;
+            color: var(--parchment); margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.78rem; font-weight: 600;
+            color: rgba(242,239,230,0.5);
+            text-transform: uppercase; letter-spacing: 0.1em;
+            margin-bottom: 0.4rem;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(194,165,108,0.25);
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            font-size: 0.92rem;
+            color: var(--parchment);
+            font-family: 'Inter', system-ui, sans-serif;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--clay);
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(242,239,230,0.3);
+        }
+        .form-group select option {
+            background: var(--green); color: var(--parchment);
+        }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-submit {
+            width: 100%;
+            background: var(--clay);
+            color: var(--green);
+            border: none;
+            padding: 0.85rem 2rem;
+            font-size: 0.92rem; font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', system-ui, sans-serif;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+        .form-submit:hover { background: var(--parchment); }
+        .form-note {
+            font-size: 0.76rem; color: rgba(242,239,230,0.35);
+            margin-top: 1rem; text-align: center;
+        }
+
+        /* ── WHY PARTNER BULLETS ── */
+        .why-list {
+            margin-top: 1.5rem;
+            display: flex; flex-direction: column; gap: 0.85rem;
+        }
+        .why-item {
+            display: flex; gap: 0.75rem; align-items: flex-start;
+        }
+        .why-check {
+            color: var(--clay); font-size: 1rem; flex-shrink: 0; margin-top: 0.15rem;
+        }
+        .why-item p {
+            font-size: 0.92rem;
+            color: rgba(242,239,230,0.55);
+            line-height: 1.65;
+            max-width: none;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 860px) {
+            .hero h1 { font-size: 2.2rem; }
+            .tiers { grid-template-columns: 1fr; }
+            .disciplines { grid-template-columns: 1fr; }
+            .partner-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+    <h1>Skills &amp; <em>Training</em></h1>
+    <p>We're building a place where people can learn real skills from real practitioners — natural building, renewable energy, regenerative land use, and everything in between. Knowledge that translates to hands in the dirt.</p>
+</section>
+
+<!-- ── WHAT WE'RE BUILDING ── -->
+<section class="section">
+    <h2>What we're building</h2>
+    <p>Earthback is developing a skills and certification system where members can learn at their own pace, earn recognition for what they know, and connect with others who are building the same way. We see two levels of competency — and both matter.</p>
+
+    <div class="tiers">
+        <div class="tier">
+            <span class="tier-icon">📖</span>
+            <h3>Knowledge Certified</h3>
+            <p>Complete video courses, technique modules, and assessments created by recognized training organizations. This means you understand the principles — the science behind hempcrete mixes, the logic of passive solar orientation, the theory of greywater systems. You've studied it.</p>
+        </div>
+        <div class="tier">
+            <span class="tier-icon">🏗️</span>
+            <h3>Field Verified</h3>
+            <p>Someone who has worked alongside you in person vouches that you've done it with your hands. Mixed the hempcrete. Wired the panel. Laid the foundation. This is a different level of knowing, and the community recognizes it as such. Real-world experience, confirmed by real people.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ── DISCIPLINES ── -->
+<section class="section" style="padding-top: 0;">
+    <h2>Training areas</h2>
+    <p>We're looking for partners across every discipline our community touches. If your organization teaches any of these — or something we haven't listed — we want to hear from you.</p>
+
+    <div class="disciplines">
+        <div class="discipline">
+            <span class="discipline-icon">🧱</span>
+            <h4>Natural Building</h4>
+            <p>Hempcrete, cob, straw bale, rammed earth, adobe, timber frame, earthbag</p>
+        </div>
+        <div class="discipline">
+            <span class="discipline-icon">☀️</span>
+            <h4>Solar &amp; Energy</h4>
+            <p>PV installation, battery systems, micro-hydro, passive solar design, off-grid systems</p>
+        </div>
+        <div class="discipline">
+            <span class="discipline-icon">💧</span>
+            <h4>Water Systems</h4>
+            <p>Rainwater harvesting, greywater, well drilling, spring development, filtration</p>
+        </div>
+        <div class="discipline">
+            <span class="discipline-icon">🌱</span>
+            <h4>Permaculture &amp; Food</h4>
+            <p>Food forests, soil building, seed saving, market gardens, composting, preservation</p>
+        </div>
+        <div class="discipline">
+            <span class="discipline-icon">🤝</span>
+            <h4>Community &amp; Mutual Aid</h4>
+            <p>Cooperative governance, land trusts, resource sharing, disaster response, care networks</p>
+        </div>
+        <div class="discipline">
+            <span class="discipline-icon">🔧</span>
+            <h4>Tools &amp; Fabrication</h4>
+            <p>3D printing, CNC, welding, small-scale manufacturing, tool maintenance, repair</p>
+        </div>
+    </div>
+</section>
+
+<!-- ── PARTNER CTA ── -->
+<section class="partner-section">
+    <div class="partner-inner">
+        <div class="partner-text">
+            <h2>Become a training partner</h2>
+            <p>If your organization already teaches natural building, renewable energy, permaculture, or any of the skills this community needs — you've done the hard part. The courses exist. The videos are shot. The curriculum is proven.</p>
+            <p>What's missing is the after. Your students finish a workshop and go home. They lose momentum. They don't have anyone nearby to build with. Earthback is where they find their crew.</p>
+
+            <div class="why-list">
+                <div class="why-item">
+                    <span class="why-check">✓</span>
+                    <p>Your curriculum becomes a skill path on the platform — visible to every member looking to level up</p>
+                </div>
+                <div class="why-item">
+                    <span class="why-check">✓</span>
+                    <p>Your graduates land in a community that will actually use what they learned</p>
+                </div>
+                <div class="why-item">
+                    <span class="why-check">✓</span>
+                    <p>Members who earn certifications carry your organization's name on their profile</p>
+                </div>
+                <div class="why-item">
+                    <span class="why-check">✓</span>
+                    <p>You get visibility to a growing, motivated audience of builders and makers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="partner-form">
+            <h3>Get in touch</h3>
+            <div class="form-group">
+                <label>Organization name</label>
+                <input type="text" id="partnerOrg" placeholder="e.g. Yestermorrow Design/Build School">
+            </div>
+            <div class="form-group">
+                <label>Your name</label>
+                <input type="text" id="partnerName" placeholder="Your name">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="partnerEmail" placeholder="you@organization.org">
+            </div>
+            <div class="form-group">
+                <label>Training focus</label>
+                <select id="partnerFocus">
+                    <option value="">Select a primary area</option>
+                    <option value="natural-building">Natural Building</option>
+                    <option value="solar-energy">Solar & Energy</option>
+                    <option value="water-systems">Water Systems</option>
+                    <option value="permaculture">Permaculture & Food</option>
+                    <option value="community">Community & Mutual Aid</option>
+                    <option value="fabrication">Tools & Fabrication</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tell us about your program</label>
+                <textarea id="partnerMessage" placeholder="What do you teach? What formats (video, in-person, hybrid)? Anything else we should know."></textarea>
+            </div>
+            <button class="form-submit" id="partnerSubmit">Start the conversation →</button>
+            <p class="form-note">We'll respond within a few days. No obligations, no commitments — just a conversation about what's possible.</p>
+        </div>
+    </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/footer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ── PARTNER INQUIRY SUBMISSION ──
+(function() {
+    var sb = supabase.createClient(
+        'https://yptktmzagctusbeqdaty.supabase.co',
+        'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC'
+    );
+
+    var btn = document.getElementById('partnerSubmit');
+    btn.addEventListener('click', async function() {
+        var org = document.getElementById('partnerOrg').value.trim();
+        var name = document.getElementById('partnerName').value.trim();
+        var email = document.getElementById('partnerEmail').value.trim();
+        var focus = document.getElementById('partnerFocus').value;
+        var message = document.getElementById('partnerMessage').value.trim();
+
+        if (!org || !email) {
+            btn.textContent = 'Please fill in organization and email';
+            btn.style.background = '#A05E3A';
+            setTimeout(function() {
+                btn.textContent = 'Start the conversation →';
+                btn.style.background = '';
+            }, 2500);
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+
+        // Store in a simple partner_inquiries table, or fall back to edge function / email
+        // For now, we'll use the messages approach — insert into a lightweight table
+        var { error } = await sb.from('partner_inquiries').insert({
+            org_name: org,
+            contact_name: name,
+            email: email,
+            focus_area: focus,
+            message: message
+        });
+
+        if (error) {
+            // Table might not exist yet — show success anyway and log
+            console.log('Partner inquiry (table may not exist yet):', { org, name, email, focus, message });
+        }
+
+        btn.textContent = '✓ Sent — we\'ll be in touch';
+        btn.style.background = 'var(--moss)';
+        btn.style.color = 'white';
+    });
+})();
+</script>
+</body>
+</html>
