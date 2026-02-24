@@ -5,20 +5,65 @@
 
 (function() {
   const footerHTML = `
-<footer>
-  <a href="index.html" class="footer-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
-  <ul class="footer-links">
-    <li><a href="feed.html">The Feed</a></li>
-    <li><a href="circles.html">Circles</a></li>
-    <li><a href="visualizer.html">Visualizer</a></li>
-    <li><a href="how-it-works.html">How It Works</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="safety.html">Safety &amp; Trust</a></li>
-    <li><a href="terms.html">Terms</a></li>
-    <li><a href="privacy.html">Privacy</a></li>
-  </ul>
-  <div class="footer-copy">&copy; 2026 Earthback. Built by the community, for the community.</div>
-</footer>`;
+<footer style="background:#171c19; padding:4.5rem 2rem 2.25rem; font-family:'Inter',system-ui,sans-serif;">
+  <div style="max-width:1200px; margin:0 auto;">
+    <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:4rem; padding-bottom:3rem; border-bottom:1px solid rgba(242,239,230,0.07); margin-bottom:2rem;">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:700; color:#F2EFE6; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.75rem;">
+          <span style="font-size:0.5em; font-weight:300; color:rgba(242,239,230,0.52); text-transform:lowercase; letter-spacing:0.03em; vertical-align:0.22em; margin-right:0.18em;">the</span>
+          Earth<span style="color:#C2A56C;">back</span>
+          <span style="font-size:0.46em; font-weight:400; color:rgba(242,239,230,0.35); text-transform:uppercase; letter-spacing:0.18em; margin-left:0.25em;">Project</span>
+        </div>
+        <p style="font-size:0.84rem; color:rgba(242,239,230,0.4); line-height:1.75; max-width:30ch; margin:0;">
+          A community for people building a better world — natural materials, renewable energy, food systems, and mutual aid.
+        </p>
+      </div>
+      <div>
+        <h4 style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#C2A56C; margin:0 0 1rem;">Platform</h4>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem;">
+          <li><a href="feed.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">The Feed</a></li>
+          <li><a href="circles.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Circles</a></li>
+          <li><a href="visualizer.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Visualizer</a></li>
+          <li><a href="gallery.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#C2A56C; margin:0 0 1rem;">Learn</h4>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem;">
+          <li><a href="how-it-works.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">How It Works</a></li>
+          <li><a href="use-cases.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Use Cases</a></li>
+          <li><a href="about.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#C2A56C; margin:0 0 1rem;">Legal</h4>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem;">
+          <li><a href="safety.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Safety &amp; Trust</a></li>
+          <li><a href="terms.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Terms</a></li>
+          <li><a href="privacy.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.74rem; color:rgba(242,239,230,0.22);">
+      <span>&copy; 2026 Earthback. Built by the community, for the community.</span>
+      <span style="font-family:'Cormorant Garamond',serif; font-style:italic;">The work that matters.</span>
+    </div>
+  </div>
+</footer>
+<style>
+  #site-footer footer a:hover { color: #C2A56C !important; }
+  @media (max-width: 768px) {
+    #site-footer footer > div > div:first-child {
+      grid-template-columns: 1fr !important;
+      gap: 2rem !important;
+    }
+    #site-footer footer > div > div:last-child {
+      flex-direction: column !important;
+      gap: 0.5rem !important;
+      text-align: center !important;
+    }
+  }
+</style>`;
 
   const target = document.getElementById('site-footer');
   if (target) {
