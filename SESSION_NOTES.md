@@ -4,7 +4,151 @@
 ---
 
 ## Last Updated
-2026-02-24 — Session 18 with Nicco via Cowork
+2026-02-24 — Session 20 with Nicco via Cowork
+
+---
+
+## What Was Done in Session 20 (2026-02-24)
+
+*Shared gallery, training partners page, sitemap, 3D project designer, shared nav/footer components.*
+
+### Shared Gallery — gallery.html (NEW)
+- Public gallery page showing community-shared AI visions from the visualizer
+- Vision cards: thumbnail, creator name (linked to profile), prompt snippet, structure/climate/style chips, like count + heart button
+- Like system: toggle INSERT/DELETE on `vision_likes` table, increments/decrements `like_count`
+- **Self-like prevention**: users cannot like their own visions (button hidden or disabled)
+- Report system: flag button opens modal with reason radio + optional details, submits to `vision_flags`
+- Auth-gated interactions: "Sign in to like" for unauthenticated users
+- Credit award: likes earn credits for the vision creator (max 5 per vision)
+- Loads shared, non-flagged visions sorted newest first with creator info via Supabase join
+
+### SCHEMA_V6_gallery.sql — NEW (✅ Run in Supabase)
+- Added sharing/engagement columns to `visions`: `is_shared`, `is_circle_only`, `circle_slugs`, `like_count`, `credit_earned`, `is_flagged`
+- New `vision_likes` table with unique constraint on `(vision_id, user_id)`
+- New `vision_flags` table with reason, details, is_reviewed
+- RLS policies: public read on shared+unflagged visions, authenticated like/flag
+
+### Shared Nav & Footer Components
+- **nav.js** (`site/assets/js/nav.js`) — shared navigation component injected into `<div id="site-nav">` on all pages
+  - Handles: nav links, mobile hamburger menu, auth state (Sign In ↔ Sign Out swap), active page highlighting
+  - Brand treatment: "the Earthback Project" typography
+  - Scroll effect: background opacity change on scroll
+- **footer.js** (`site/assets/js/footer.js`) — shared footer component injected into `<div id="site-footer">`
+  - 4-column grid: brand blurb, Platform links, Learn links, Legal links
+  - Responsive: stacks on mobile
+  - Added Designer + Site Map links
+
+### Training Partners Page — training.html (NEW)
+- "Skills & Training" page for certification pathway partners
+- Contact form: org name, contact name, email, focus area (dropdown), website URL, message
+- Submits to `partner_inquiries` table in Supabase
+- Content assurance: "We will never use your media, content, or branding without your explicit approval."
+- Added to nav and footer links
+
+### SCHEMA_V7_partner_inquiries.sql — NEW (✅ Run in Supabase)
+- New `partner_inquiries` table: org_name, contact_name, email, focus_area, message, status, created_at
+- RLS: authenticated INSERT, no public read
+
+### SCHEMA_V7b_partner_url.sql — NEW (✅ Run in Supabase)
+- `ALTER TABLE partner_inquiries ADD COLUMN website_url TEXT`
+
+### Sitemap Page — sitemap.html (NEW)
+- Full site map organized into 6 sections: Discover, Platform, Creative Tools, Learn, Account, Legal
+- Each entry has page name + description
+- Matches site design language (parchment background, Cormorant Garamond headings, clay accents)
+
+### 3D Project Designer — designer.html (NEW, MAJOR BUILD)
+- **Three.js parametric building configurator** with live 3D preview
+- 5-step wizard: Foundation & Type → Interior Layout → Roof & Energy → Materials & Finish → Export
+- Three.js scene: PerspectiveCamera, OrbitControls, shadow-casting sunlight, fog, ground plane with grid
+- Parametric building model: foundation slab, 4 walls with configurable thickness, windows (auto-spaced), door, gable roof with pitch slider, solar panels, optional porch
+- **5 construction methods** with distinct material/cost/carbon profiles:
+  - 3D Printed Hempcrete (carbon-negative, ~$85-105/sqft)
+  - 3D Printed Concrete (carbon-positive, ~$90-110/sqft)
+  - Manual Hempcrete (carbon-negative, ~$75-95/sqft)
+  - Conventional Build (carbon-positive, ~$120-160/sqft)
+  - Hybrid (mixed, ~$95-125/sqft)
+- Live material calculations panel (R-values, carbon impact, cost estimates, BOM)
+- Auto-generated needs list based on construction method
+- 4 camera presets (3D, Front, Top, Side)
+- Working exports: glTF/GLB 3D model, CSV Bill of Materials, JSON config
+- Wall colors vary by construction method in 3D view
+
+### Nav CSS Fix for Designer
+- designer.html was missing all nav CSS — rendered as unstyled text links
+- Added ~80 lines of nav styles matching other pages (nav, .nav-inner, .nav-logo, brand classes, hamburger, mobile overlay, 860px breakpoint)
+- User confirmed fix working on both Firefox and Chrome
+
+### Site updates
+- Footer: added Designer + Site Map links
+- Sitemap: added Project Designer entry under Creative Tools
+- Nav: gallery.html and visualizer.html links present in shared nav
+
+### Commits this session
+1. Training form URL field + V7b schema
+2. `6437e8a` — Project Designer with Three.js configurator
+3. `d5811c6` — Construction method additions (5 methods)
+4. `e28f16a` — Nav CSS fix for designer page
+5. Session notes + tracker + command center updates
+
+### Database migrations run this session
+- V5 (visions) — run in prior sub-session
+- V6 (gallery — vision_likes, vision_flags, sharing columns) — ✅ run
+- V7 (partner_inquiries) — ✅ run
+- V7b (partner_inquiries website_url) — ✅ run
+
+### Immediate next (tomorrow)
+- [ ] **Review Flux overnight output** — charsheets + site assets + T4 re-run in `comfyui-output/`
+- [ ] **Pick PuLID reference faces** — best charsheet panel per character → `faces-reference/CharacterName.png`
+- [ ] **Download PuLID models** — `python setup-pulid.py`
+- [ ] **Integrate Flux assets into site pages** — use rendered images for heroes, sections, textures
+- [ ] **Run pending SQL migrations** — PROFILE_MIGRATION, SCHEMA_V3 (messages), V4 (post images)
+- [ ] **Profile nav link** — add link to own profile from every page
+- [ ] **og:image** — design the 1200×630 social sharing card
+
+---
+
+## What Was Done in Session 19 (2026-02-24)
+
+*Character reference sheets, big site asset batch, overnight queue.*
+
+### Face consistency approach — triptych reference sheets
+- Problem: face seeds wander too much across separate images; characters don't look like the same person across batches
+- Solution: wide single-image triptychs (3 panels per image) — Flux locks one face across all 3 panels in one generation
+- Built `queue-charsheets.py` — 12 chars × 3 sheet types × 2 seed sets = **72 images**
+- Dimensions: 1536×640 wide landscape (~512×640 per panel, stays near 1MP)
+- Sheet A: front / 3-quarter-left / 3-quarter-right (neutral angles)
+- Sheet B: thinking / mid-sentence / warm smile (expressions)
+- Sheet C: tight eye crop / standard face / wider shoulders (crop variations)
+- 2 seed sets per char: `char_seed` and `char_seed + 7` — same face neighborhood, subtle variation
+- Use sheets to pick best face for PuLID reference images
+
+### Site asset batch — big overnight run
+- Built `queue-site-assets.py` — 14 themed categories, ~80 prompts, default batch_size=2
+- All documentary/photojournalistic style matching character imagery
+- Wide (1344×896) for: establishing, landscape, cohousing — portrait (896×1152) for everything else
+- Categories: establishing, hempcrete, earthen, strawbale, timber, solar, water, food, community, ecology, shelter, texture, hands, landscape, fabrication, mycology, cohousing
+- Supports `--list`, `--batch theme1,theme2`, `--batch-size N`, `--dry-run`
+
+### Overnight queue running
+- **101 jobs queued** — charsheets + site assets running through the night
+- PowerShell note: use `;` not `&&` to chain commands (Windows PS 5 doesn't support `&&`)
+- Command used: `python queue-charsheets.py; python queue-site-assets.py`
+
+### Site asset strategy discussion
+- Flux: great for photographic assets (heroes, sections, textures, community scenes)
+- Not Flux: icons, logos, badges, social cards, UI elements — those need design work
+- og:image (1200×630 social card) still outstanding — needs design, not Flux
+- Visual treatment: consistent documentary/photojournalism across all site imagery
+
+### Immediate next (tomorrow)
+- [ ] **Review overnight output** — charsheets in `comfyui-output/` named `charsheet-NAME-A/B/C_*`; site assets named `site-THEME-NN_*`
+- [ ] **Pick PuLID reference faces** — best sheet panel per character → `faces-reference/CharacterName.png`
+- [ ] **Download PuLID models** — `python setup-pulid.py`
+- [ ] **Run PuLID** — `python queue-pulid-faces.py`
+- [ ] **Review T4 re-run** — pick best character scenario shots
+- [ ] **Run hempcrete LoRA batch** — `python queue-hempcrete-lora.py` (still 0 images)
+- [ ] **og:image** — design the 1200×630 social sharing card
 
 ---
 

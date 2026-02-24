@@ -3,7 +3,7 @@
 *To resume: "Read TRACKER.md and SESSION_NOTES.md and pick up where we left off."*
 *Visual version: `/tracker/index.html` — open in browser for the full dashboard.*
 
-**Last updated:** 2026-02-20 (session 14 — folder reorganization, .gitignore update, QUICKSTART.md, post images from Flux, git workflow)
+**Last updated:** 2026-02-24 (session 20 — shared gallery, training partners, sitemap, 3D designer, shared nav/footer, V5-V7b migrations run)
 
 ---
 
@@ -11,15 +11,16 @@
 
 | Workstream | Status | Blocking? |
 |---|---|---|
-| Marketing Site (HTML) | 🟢 Live | earthbackproject.org · all pages deployed |
-| Platform / App | 🟡 In progress | Auth live · feed with compose · projects hub · create-project wizard · messaging (demo) · circles hub · company profiles · post images |
-| Database Migrations | 🟡 Pending | PROFILE_MIGRATION, SCHEMA_V3 (messages), V4 (post images) — all in `db/` folder |
-| Source Control | 🟢 Set up | GitHub repo connected, git push → Netlify auto-deploy |
+| Marketing Site (HTML) | 🟢 Live | earthbackproject.org · all pages deployed · 20+ pages |
+| Platform / App | 🟡 In progress | Auth live · feed · gallery · visualizer · designer · training · projects · circles · messaging (demo) |
+| Database Migrations | 🟡 Partial | V1-V2, V5-V7b run ✅ · PROFILE_MIGRATION, V3 (messages), V4 (post images) still pending |
+| Source Control | 🟢 Current | GitHub repo connected, git push → Netlify auto-deploy · all pushed |
 | Folder Organization | 🟢 Done | SQL→db/, brand assets→branding/, governance→governance/, archive→reference/, QUICKSTART.md at root |
 | Org, Legal & Naming | 🟡 In progress | Trademark research still pending |
 | Branding | 🟡 In progress | Typography done · logo still needed · og:image + favicons done |
 | Hosting & Launch | 🟢 Live | earthbackproject.org on Netlify · git-based deploys |
-| Documentation | 🟢 Done | Setup reference (HTML + DOCX), startup script, session notes, tracker |
+| Documentation | 🟢 Done | CLAUDE.md (auto-loaded), QUICKSTART.md, command-center.html, session notes, tracker |
+| AI Image Generation | 🟡 In progress | Charsheets + site assets + T4 re-run overnight · PuLID next · hempcrete LoRA pending |
 
 ---
 
@@ -37,6 +38,20 @@ The public-facing community site. Goal: live and functional before platform buil
 - [x] `feed.html` — Community dashboard/feed (served at /community via Netlify rewrite)
 - [x] `terms.html` — Terms of Service (plain language, 10 sections)
 - [x] `privacy.html` — Privacy Policy (explicit what we collect / don't collect / never do)
+- [x] `login.html` — Returning user sign-in (magic link + Google OAuth)
+- [x] `auth-callback.html` — Magic link / OAuth redirect handler
+- [x] `profile.html` — Member profile page with edit mode, avatar upload, skills, activity
+- [x] `explore.html` — Browse circles, people, projects
+- [x] `circles.html` — Circle hubs (geographic + thematic)
+- [x] `projects.html` — Projects hub with cards
+- [x] `project.html` — Individual project/company page
+- [x] `create-project.html` — 5-step project creation wizard
+- [x] `messages.html` — Split-pane messaging inbox (demo, needs V3 migration)
+- [x] `visualizer.html` — AI vision generator with credits + personal gallery + sharing
+- [x] `gallery.html` — Community shared visions gallery with likes + reporting
+- [x] `designer.html` — Three.js parametric building configurator with 5 construction methods + exports
+- [x] `training.html` — Skills & Training partner inquiry page with contact form
+- [x] `sitemap.html` — Full site map organized by section
 
 ### What's still needed on the site
 
@@ -118,6 +133,42 @@ Per v1 scope freeze (2026-02-18): everything below is required for v1.
 - [x] 'media' post_type added to posts table CHECK constraint ✓
 - [ ] URL paste → auto-populate title/thumbnail (oEmbed or Open Graph scraping)
 - [ ] Auto-create feed post from imported media link
+
+### AI Visualizer & Gallery (new v5-v6)
+- [x] `visualizer.html` — AI-powered vision generator with Flux image generation
+- [x] `visions` table schema — user_id, prompt, structure, climate, style, image_url, is_shared, like_count, credit_earned, is_flagged ✓
+- [x] `visions` Supabase Storage bucket — public, with user-folder upload policy ✓
+- [x] Vision persistence — render → save → upload to Storage → insert DB row → gallery reload ✓
+- [x] Rotating credit system — 1 credit/render, earn 1 every 2h, cap 25, localStorage-based ✓
+- [x] Personal gallery — saved visions shown below generator with image, prompt, chips, date ✓
+- [x] Share to gallery — "Share" button on personal vision cards, sets `is_shared = true` ✓
+- [x] `gallery.html` — public shared gallery page with vision cards, creator links ✓
+- [x] Like system — toggle like with `vision_likes` table, unique per user per vision ✓
+- [x] Self-like prevention — users cannot like their own visions ✓
+- [x] Report system — flag visions with reason + details via `vision_flags` table ✓
+- [x] Credit award on like — likes earn credits for creator (max 5 per vision) ✓
+- [x] SCHEMA_V5 (visions) — ✅ run in Supabase
+- [x] SCHEMA_V6 (gallery — vision_likes, vision_flags, sharing columns) — ✅ run in Supabase
+
+### 3D Project Designer (new v20)
+- [x] `designer.html` — Three.js parametric building configurator ✓
+- [x] 5-step wizard: Foundation & Type → Interior Layout → Roof & Energy → Materials & Finish → Export ✓
+- [x] 3D preview with OrbitControls, shadows, fog, ground plane ✓
+- [x] 5 construction methods: 3D Printed Hemp, 3D Printed Concrete, Manual Hemp, Conventional, Hybrid ✓
+- [x] Live material/cost/carbon calculations ✓
+- [x] Working exports: glTF/GLB, CSV BOM, JSON config ✓
+- [x] Auto-generated needs list per construction method ✓
+- [ ] Wire to Supabase — save/load project configs per user
+- [ ] Community project gallery — browse shared designs
+
+### Training Partners (new v7)
+- [x] `training.html` — Skills & Training page with partner contact form ✓
+- [x] `partner_inquiries` table — org_name, contact_name, email, focus_area, website_url, message ✓
+- [x] SCHEMA_V7 + V7b — ✅ run in Supabase
+
+### Shared Components
+- [x] `assets/js/nav.js` — shared nav component for all public pages (HTML injection + auth state + mobile menu) ✓
+- [x] `assets/js/footer.js` — shared footer component for all public pages ✓
 
 ### Core User Flow (v1 required)
 - [ ] Create Project
@@ -268,10 +319,64 @@ Given current state, this is the recommended sequence:
 - [x] 12d. **Google OAuth sign-in** — "Continue with Google" on join + login pages; auth-callback extracts Google name/avatar ✓
 - [ ] 12e. **Social media accounts** — Set up official Earthback accounts (Instagram, YouTube, TikTok, LinkedIn, etc.); link from site footer
 - [x] 13. **Profile editing + avatar upload** — inline editing for name, tagline, bio, location, skills (3 levels); avatar upload to Supabase Storage; feed shows uploaded avatar; cover band slimmed down ✓
-- [ ] 14. **Project creation flow** — form to create a project/company page, link to profile
-- [ ] 15. **Media import pipeline** — paste URL → scrape oEmbed/OG → auto-populate title + thumbnail → create post
-- [ ] 16. **Verification + rate limiting** — safety layer before public launch
-- [ ] 17. **Operations tooling** — monitoring, incident pipeline, digest
+- [x] 14. **AI Visualizer** — Flux-powered vision generator with credit system, personal gallery, save to Supabase Storage ✓
+- [x] 15. **Shared Gallery** — gallery.html with likes, self-like prevention, reporting, credit rewards ✓
+- [x] 16. **3D Project Designer** — Three.js parametric building configurator with 5 construction methods, live calculations, GLB/CSV/JSON exports ✓
+- [x] 17. **Training Partners** — training.html with contact form, partner_inquiries table ✓
+- [x] 18. **Shared nav/footer components** — nav.js + footer.js injected on all public pages ✓
+- [x] 19. **Sitemap** — sitemap.html with all pages organized by section ✓
+- [ ] 20. **Integrate Flux assets** — use rendered images for site heroes, sections, textures
+- [ ] 21. **Project creation flow** — form to create a project/company page, link to profile
+- [ ] 22. **Media import pipeline** — paste URL → scrape oEmbed/OG → auto-populate title + thumbnail → create post
+- [ ] 23. **Verification + rate limiting** — safety layer before public launch
+- [ ] 24. **Operations tooling** — monitoring, incident pipeline, digest
+
+---
+
+## 7 — AI Image Generation (ComfyUI / Flux)
+
+All scripts in `/Earthback/` root. ComfyUI at `http://127.0.0.1:8188`. Output: `comfyui-output/`.
+**File naming convention:** `chars-NAME-TYPE_NNNNN_.png` (character-first for Explorer curation)
+
+### Character Images (12 characters × shots)
+- [x] 12 characters defined in `docs/CHARACTERS.md` with fixed seeds
+- [x] Face angle batches built — front / left / right / down / talk (36 images generated, keepers in `comfyui-output/`)
+- [x] T5 literal scenes built — 5 scenes × 12 characters (162 images generated, keepers in `comfyui-output/`)
+- [x] T4 scenario batches built — 5 prompts × 12 characters (T4-01 through T4-05)
+- [x] T1-T4 images from fixed seeds — all 237 rejected (near-duplicates); moved to `comfyui-output/_rejected/`
+- [x] File naming overhaul — all keeper files renamed to `chars-NAME-*` convention
+- [x] `queue-batches.py` prefixes updated to match new naming
+- [x] T4 re-run queued with `--reseed --batch-size 3` (180 images, random seeds, genuine variety)
+- [x] Character triptych reference sheets — `queue-charsheets.py` (72 images, 3 sheets × 2 seeds × 12 chars)
+- [x] Site asset batch — `queue-site-assets.py` (14 themes, ~80 prompts, ~160 images)
+- [ ] **Review overnight output** — charsheets, site assets, T4 re-run in `comfyui-output/`
+- [ ] **Pick PuLID reference faces** — best charsheet panel per character → `faces-reference/CharacterName.png`
+
+### PuLID Face-Locked Generation
+- [x] PuLID node installed at `ComfyUI/custom_nodes/ComfyUI-PuLID-Flux`
+- [ ] **Download PuLID models** — `python setup-pulid.py` (pulid_flux_v0.9.1.safetensors + EVA CLIP)
+- [ ] **Place reference images** — best face-front shot per character → `faces-reference/CharacterName.png`
+- [ ] **Run PuLID generation** — `python queue-pulid-faces.py`
+
+### Hempcrete LoRA (Nadia Benali character)
+- [x] Script built: `queue-hempcrete-lora.py`
+- [ ] **Run batch** — 0 images generated so far; run `python queue-hempcrete-lora.py`
+
+### Circle Category Images (39 categories × 3 prompts)
+- [x] `queue-circles.py` script built
+- [x] 363 circle images generated in `comfyui-output/` — review pending
+
+### 3D Printer LoRA Pipeline
+- [x] `collect-3dprinter-images.py` — downloads CC0 photos from Pexels + Pixabay (15 search terms)
+- [x] `curate-3dprinter-images.py` — smart center-crop to 1024×1024, quality filtering
+- [x] `caption-3dprinter-images.py` — template or BLIP-2 captions, Kohya `.txt` format
+- [x] `train-3dprinter-lora.bat` — Kohya SS Flux LoRA training command (rank 16, 1500 steps)
+- [x] `docs/HANDOFF-3D-PRINTER-LORA.md` — full plan, visual grammar, pipeline, eval prompts
+- [ ] **Get API keys** — Pexels (free) + Pixabay (free); add to script flags
+- [ ] **Run collection** — `python collect-3dprinter-images.py --pexels-key KEY --pixabay-key KEY`
+- [ ] **Curate + caption dataset**
+- [ ] **Confirm Kohya SS path** — assumed at `D:\AI\kohya_ss\` — verify before training
+- [ ] **Run training**
 
 ---
 

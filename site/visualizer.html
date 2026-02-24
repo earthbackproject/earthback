@@ -264,6 +264,120 @@
         .generate-btn:disabled:hover { background: var(--green); }
         .generate-btn svg { width: 16px; height: 16px; }
 
+        /* ── PROMPT HINTS ── */
+        .hints-toggle {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            background: none; border: 1px solid rgba(194,165,108,0.3);
+            border-radius: 20px; padding: 0.25rem 0.75rem;
+            font-family: 'Inter', sans-serif; font-size: 0.72rem;
+            font-weight: 600; color: var(--clay-dark); cursor: pointer;
+            transition: all 0.2s; letter-spacing: 0.02em;
+        }
+        .hints-toggle:hover { border-color: var(--clay); color: var(--clay-rust); background: rgba(194,165,108,0.06); }
+        .hints-toggle.active { border-color: var(--green-soft); color: var(--green); background: rgba(74,124,94,0.06); }
+        .hints-toggle svg { width: 13px; height: 13px; transition: transform 0.2s; }
+        .hints-toggle.active svg { transform: rotate(180deg); }
+
+        .hints-panel {
+            display: none; margin-top: 0.75rem;
+            background: linear-gradient(135deg, rgba(31,58,46,0.04) 0%, rgba(194,165,108,0.06) 100%);
+            border: 1px solid rgba(194,165,108,0.2);
+            border-radius: 10px; overflow: hidden;
+            animation: hintsSlideIn 0.25s ease;
+        }
+        .hints-panel.open { display: block; }
+        @keyframes hintsSlideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hints-tabs {
+            display: flex; gap: 0; border-bottom: 1px solid rgba(194,165,108,0.15);
+            overflow-x: auto; -webkit-overflow-scrolling: touch;
+        }
+        .hints-tab {
+            padding: 0.55rem 0.85rem; border: none; background: none;
+            font-family: 'Inter', sans-serif; font-size: 0.7rem;
+            font-weight: 600; color: var(--ink-soft); cursor: pointer;
+            white-space: nowrap; transition: all 0.15s;
+            border-bottom: 2px solid transparent;
+            letter-spacing: 0.03em;
+        }
+        .hints-tab:hover { color: var(--green); }
+        .hints-tab.active {
+            color: var(--green); border-bottom-color: var(--green-soft);
+            background: rgba(74,124,94,0.04);
+        }
+
+        .hints-content { padding: 0.85rem 1rem; min-height: 140px; }
+        .hints-card {
+            display: none; animation: hintFade 0.3s ease;
+        }
+        .hints-card.active { display: block; }
+        @keyframes hintFade {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+        .hint-tip {
+            display: flex; gap: 0.65rem; align-items: flex-start;
+            padding: 0.55rem 0; border-bottom: 1px solid rgba(194,165,108,0.1);
+        }
+        .hint-tip:last-child { border-bottom: none; }
+        .hint-icon {
+            width: 22px; height: 22px; border-radius: 6px;
+            background: rgba(74,124,94,0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; flex-shrink: 0; margin-top: 1px;
+        }
+        .hint-text { font-size: 0.8rem; color: var(--ink); line-height: 1.5; }
+        .hint-text strong { color: var(--green); font-weight: 600; }
+        .hint-text code {
+            font-size: 0.74rem; background: rgba(31,58,46,0.06);
+            padding: 0.1rem 0.35rem; border-radius: 3px;
+            color: var(--clay-dark); font-family: 'Inter', sans-serif;
+            font-style: italic;
+        }
+
+        .hint-example {
+            margin-top: 0.6rem; padding: 0.6rem 0.75rem;
+            background: rgba(31,58,46,0.05); border-radius: 6px;
+            border-left: 3px solid var(--green-soft);
+        }
+        .hint-example-label {
+            font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--green-soft); margin-bottom: 0.3rem;
+        }
+        .hint-example-text {
+            font-size: 0.78rem; color: var(--ink); line-height: 1.5;
+            font-style: italic;
+        }
+        .hint-try-btn {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            margin-top: 0.4rem; padding: 0.25rem 0.6rem;
+            background: var(--green); color: var(--parchment);
+            border: none; border-radius: 4px;
+            font-family: 'Inter', sans-serif; font-size: 0.68rem;
+            font-weight: 600; cursor: pointer; transition: background 0.15s;
+        }
+        .hint-try-btn:hover { background: var(--clay-rust); }
+
+        .hints-footer {
+            padding: 0.5rem 1rem;
+            border-top: 1px solid rgba(194,165,108,0.12);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .hints-shuffle {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            background: none; border: none; font-family: 'Inter', sans-serif;
+            font-size: 0.72rem; font-weight: 600; color: var(--green-soft);
+            cursor: pointer; transition: color 0.15s; padding: 0.2rem 0;
+        }
+        .hints-shuffle:hover { color: var(--clay-rust); }
+        .hints-shuffle svg { width: 14px; height: 14px; }
+        .hints-counter {
+            font-size: 0.68rem; color: var(--ink-soft);
+        }
+
         /* ── IMAGE PANEL ── */
         .image-area {
             aspect-ratio: 4 / 3;
@@ -587,7 +701,26 @@
                 </div>
 
                 <div class="field-group">
-                    <span class="field-label">Your vision</span>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
+                        <span class="field-label" style="margin-bottom:0;">Your vision</span>
+                        <button class="hints-toggle" id="hintsToggle" onclick="toggleHints()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Prompt tips
+                        </button>
+                    </div>
+
+                    <div class="hints-panel" id="hintsPanel">
+                        <div class="hints-tabs" id="hintsTabs"></div>
+                        <div class="hints-content" id="hintsContent"></div>
+                        <div class="hints-footer">
+                            <button class="hints-shuffle" onclick="shuffleHints()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                More tips
+                            </button>
+                            <span class="hints-counter" id="hintsCounter"></span>
+                        </div>
+                    </div>
+
                     <textarea class="prompt-input" id="promptInput" placeholder="A 1,200 sq ft rammed earth home with a living roof, passive solar orientation, large south-facing windows, a shaded courtyard with rainwater cisterns, native xeriscape plantings and a small hemp garden..."></textarea>
                 </div>
 
@@ -903,6 +1036,283 @@
         promptInput.value = lastPrompt + '. ' + refinement;
         document.getElementById('refineInput').value = '';
         await generateVision();
+    }
+
+    // ── PROMPT HINTS SYSTEM ──
+    const HINT_CATEGORIES = [
+        {
+            id: 'basics',
+            label: 'Basics',
+            tips: [
+                {
+                    icon: '📐',
+                    text: '<strong>Be specific about size.</strong> Mention square footage, number of rooms, and story count. The AI builds a much clearer image from <code>1,200 sq ft, 2 bed / 1 bath</code> than from "a small house."',
+                    example: 'A 1,400 sq ft single-story hempcrete home with 3 bedrooms, open kitchen, and covered porch'
+                },
+                {
+                    icon: '🧭',
+                    text: '<strong>Describe the setting, not just the building.</strong> Place your structure in a landscape. What\'s around it? What time of day? What season? Context makes the render feel real.',
+                    example: 'A rammed earth workshop nestled among pinon pines at the base of a mesa, golden hour light, late autumn'
+                },
+                {
+                    icon: '📷',
+                    text: '<strong>Suggest a camera angle.</strong> Words like "aerial view," "street-level," "interior looking out through windows" dramatically change the composition.',
+                    example: 'Aerial view of a full permaculture village with 8 hempcrete cottages around a central food forest and community kitchen'
+                },
+                {
+                    icon: '✏️',
+                    text: '<strong>One sentence is enough to start.</strong> You don\'t need a paragraph. Start with a clear core idea and use the Refine bar to iterate. Short + specific beats long + vague.',
+                    example: 'A tiny hempcrete cabin with a living roof, south-facing greenhouse wall, high desert'
+                },
+                {
+                    icon: '🎨',
+                    text: '<strong>Mention materials by name.</strong> The AI knows hempcrete, rammed earth, cob, straw bale, reclaimed timber, lime plaster, earthen floors, and living roofs. Naming them brings out accurate textures.',
+                    example: 'Cob walls with lime plaster finish, reclaimed Douglas fir beams, earthen floor with radiant heat'
+                },
+                {
+                    icon: '🔄',
+                    text: '<strong>Use the Refine bar below the image.</strong> After your first render, tweak without starting over. Add details, change the angle, swap materials — each refinement builds on what you\'ve got.',
+                    example: null
+                }
+            ]
+        },
+        {
+            id: 'materials',
+            label: 'Materials',
+            tips: [
+                {
+                    icon: '🧱',
+                    text: '<strong>Hempcrete shows best with wall thickness.</strong> Mention "thick hempcrete walls" or "12-inch hempcrete infill" — it helps the AI render that distinctive chunky, organic texture.',
+                    example: 'A two-story home with 12-inch hempcrete walls, exposed timber frame, deep window reveals, lime plaster exterior'
+                },
+                {
+                    icon: '🏔️',
+                    text: '<strong>Rammed earth loves horizontal layers.</strong> Say "rammed earth with visible strata" or "layered desert tones" to get those beautiful sedimentary bands.',
+                    example: 'Rammed earth walls with red and ochre strata, passive solar orientation, clerestory windows, flat roof with PV panels'
+                },
+                {
+                    icon: '🌾',
+                    text: '<strong>Straw bale reads as soft and thick.</strong> Mention "deep windowsills" and "rounded plaster edges" for that authentic straw bale look — soft curves, deep reveals, massive walls.',
+                    example: 'A straw bale guest house with deep rounded windowsills, earthen plaster, wildflower green roof, timber lintels'
+                },
+                {
+                    icon: '🪵',
+                    text: '<strong>Mix materials for realism.</strong> Real green buildings combine systems. Try "hempcrete walls with timber frame, stone foundation, and metal roof" — the AI renders hybrid construction well.',
+                    example: 'Post-and-beam timber frame with hempcrete infill, stone stem wall, standing seam metal roof, south-facing glazing'
+                },
+                {
+                    icon: '🌿',
+                    text: '<strong>Living roofs need plant details.</strong> Say "sedum green roof" or "wildflower meadow roof" or "native grasses" — generic "green roof" often renders plain grass.',
+                    example: 'An earthen workshop with a wildflower meadow roof, exposed round timber rafters, large barn doors, gravel courtyard'
+                },
+                {
+                    icon: '♻️',
+                    text: '<strong>Salvage and reclaimed materials add character.</strong> Mention "reclaimed barn wood siding," "salvaged windows," or "repurposed shipping containers" for that authentic builder aesthetic.',
+                    example: 'A community tool library built from two repurposed shipping containers with reclaimed wood cladding and a butterfly roof'
+                }
+            ]
+        },
+        {
+            id: 'systems',
+            label: 'Systems',
+            tips: [
+                {
+                    icon: '☀️',
+                    text: '<strong>Solar works best with specifics.</strong> Try "rooftop PV array," "solar thermal tubes on south wall," or "building-integrated PV shingles" rather than just "solar panels."',
+                    example: 'An off-grid desert homestead with rooftop PV array, battery shed, solar water heater, and shaded outdoor kitchen'
+                },
+                {
+                    icon: '💧',
+                    text: '<strong>Water systems are visually rich.</strong> Mention "rainwater cisterns," "greywater reed bed," "rain chains," or "rooftop catchment" — they add interesting structural elements.',
+                    example: 'A hempcrete home with corrugated metal roof feeding twin stone rainwater cisterns, greywater garden beds along south wall'
+                },
+                {
+                    icon: '🌱',
+                    text: '<strong>Food systems around buildings look incredible.</strong> Try "food forest perimeter," "raised bed kitchen garden," "espalier fruit wall," or "aquaponics greenhouse attached."',
+                    example: 'A community housing cluster surrounded by raised bed gardens, fruit tree guild, chicken run, and herb spiral near the kitchen'
+                },
+                {
+                    icon: '🌬️',
+                    text: '<strong>Passive design features are renderable.</strong> "Thermal mass wall," "cross ventilation clerestory," "earth-bermed north wall," "Trombe wall" — these create distinctive architectural features.',
+                    example: 'A passive solar cob home with Trombe wall, earth-bermed north side, clerestory windows, thermal mass floor'
+                },
+                {
+                    icon: '🔋',
+                    text: '<strong>Include infrastructure details.</strong> Battery banks, composting toilets, rocket mass heaters, outdoor bread ovens — these practical elements ground the vision in reality.',
+                    example: 'An off-grid workshop with rocket mass heater, tool wall, large workbench, battery bank corner, natural light from north clerestory'
+                }
+            ]
+        },
+        {
+            id: 'composition',
+            label: 'Composition',
+            tips: [
+                {
+                    icon: '🌅',
+                    text: '<strong>Lighting sets the mood.</strong> "Golden hour," "morning mist," "dappled shade," "overcast diffused light" — the AI responds strongly to lighting cues and renders them beautifully.',
+                    example: 'A timber-frame community hall at golden hour, warm light streaming through clerestory windows, wood smoke from the chimney'
+                },
+                {
+                    icon: '👥',
+                    text: '<strong>Add people for scale and life.</strong> "A family on the porch," "builders working on the walls," "children in the garden" — human figures make renders feel lived-in.',
+                    example: 'A hempcrete build day with volunteers mixing hemp-lime, timber forms in place, partially completed walls, sunny afternoon'
+                },
+                {
+                    icon: '🏡',
+                    text: '<strong>Interior views work too.</strong> Describe the inside: "open-plan kitchen with earthen plaster walls, exposed beams, south light pouring across a cob bench seat."',
+                    example: 'Interior of a straw bale home, lime plastered walls, salvaged wood shelving, morning light through deep-set east window, handmade tile floor'
+                },
+                {
+                    icon: '🗺️',
+                    text: '<strong>Site plans and village layouts.</strong> You can render from above: "site plan showing 6 hempcrete homes around a central green, community building at north end, parking grove."',
+                    example: 'Aerial view of an intentional community: 12 small hempcrete homes in a horseshoe around a food forest, community barn, and pond'
+                },
+                {
+                    icon: '🔍',
+                    text: '<strong>Zoom into details.</strong> Try "close-up of hempcrete wall texture," "detail of timber joinery," or "macro shot of living roof plants" for material-focused renders.',
+                    example: 'Close-up detail of a rammed earth wall corner meeting a timber beam, showing the layered earth tones and grain of reclaimed oak'
+                },
+                {
+                    icon: '🌙',
+                    text: '<strong>Night scenes create atmosphere.</strong> "Warm light glowing from windows at dusk," "string lights over the courtyard," "stars above the desert homestead" — nighttime renders are striking.',
+                    example: 'A hempcrete village at dusk, warm window glow, string lights over the courtyard, people gathered around an outdoor fire pit, stars emerging'
+                }
+            ]
+        },
+        {
+            id: 'styles',
+            label: 'Style Tips',
+            tips: [
+                {
+                    icon: '📸',
+                    text: '<strong>Photorealistic works best for presentations.</strong> Use it when you want to show someone what your build could actually look like. Add "documentary photography style" for extra realism.',
+                    example: 'Documentary photograph of a completed hempcrete home in rural New Mexico, family on porch, vegetable garden, mountain backdrop'
+                },
+                {
+                    icon: '✏️',
+                    text: '<strong>Sketch mode is great for early concepts.</strong> Use it when you\'re still exploring ideas. It feels less "final" and invites conversation — good for sharing with collaborators.',
+                    example: 'Architectural sketch of a strawbale community center with large gathering hall, commercial kitchen, and covered outdoor workspace'
+                },
+                {
+                    icon: '📐',
+                    text: '<strong>Blueprint style for technical thinking.</strong> Good when you need to think about layout and proportions rather than aesthetics. Pair with "floor plan" or "section view."',
+                    example: 'Blueprint floor plan of a 2-bedroom hempcrete home with passive solar orientation, root cellar, and attached greenhouse'
+                },
+                {
+                    icon: '🎭',
+                    text: '<strong>Combine style with mood words.</strong> Even within photorealistic, "warm and inviting" vs "stark and minimal" vs "lush and overgrown" produces very different results.',
+                    example: 'A cozy, well-loved cob cottage overgrown with climbing roses, weathered wooden gate, herb garden path, warm smoke from chimney'
+                },
+                {
+                    icon: '📊',
+                    text: '<strong>For the Designer tool, start here.</strong> Use the Visualizer to explore the look and feel, then jump to the <a href="designer.html" style="color:var(--green-soft);">Project Designer</a> for real 3D modeling with cost estimates and material calculations.',
+                    example: null
+                }
+            ]
+        }
+    ];
+
+    let currentCategory = 0;
+    let tipIndices = {};
+
+    // Initialize: shuffle tip order per category
+    function initHintIndices() {
+        HINT_CATEGORIES.forEach(cat => {
+            tipIndices[cat.id] = shuffleArray([...Array(cat.tips.length).keys()]);
+            tipIndices[cat.id]._pos = 0;
+        });
+    }
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function toggleHints() {
+        const panel = document.getElementById('hintsPanel');
+        const toggle = document.getElementById('hintsToggle');
+        const isOpen = panel.classList.contains('open');
+
+        if (isOpen) {
+            panel.classList.remove('open');
+            toggle.classList.remove('active');
+        } else {
+            panel.classList.add('open');
+            toggle.classList.add('active');
+            if (!tipIndices || Object.keys(tipIndices).length === 0) {
+                initHintIndices();
+            }
+            renderHintsTabs();
+            renderHintsForCategory(currentCategory);
+        }
+    }
+
+    function renderHintsTabs() {
+        const tabsEl = document.getElementById('hintsTabs');
+        tabsEl.innerHTML = HINT_CATEGORIES.map((cat, i) =>
+            '<button class="hints-tab' + (i === currentCategory ? ' active' : '') + '" onclick="switchHintCategory(' + i + ')">' + cat.label + '</button>'
+        ).join('');
+    }
+
+    function switchHintCategory(idx) {
+        currentCategory = idx;
+        renderHintsTabs();
+        renderHintsForCategory(idx);
+    }
+
+    function renderHintsForCategory(catIdx) {
+        const cat = HINT_CATEGORIES[catIdx];
+        const indices = tipIndices[cat.id];
+        const pos = indices._pos || 0;
+
+        // Show 3 tips at a time
+        const visibleTips = [];
+        for (let i = 0; i < 3; i++) {
+            const tipIdx = indices[(pos + i) % cat.tips.length];
+            visibleTips.push(cat.tips[tipIdx]);
+        }
+
+        const contentEl = document.getElementById('hintsContent');
+        contentEl.innerHTML = '<div class="hints-card active">' +
+            visibleTips.map(tip => {
+                let html = '<div class="hint-tip">' +
+                    '<div class="hint-icon">' + tip.icon + '</div>' +
+                    '<div><div class="hint-text">' + tip.text + '</div>';
+                if (tip.example) {
+                    html += '<div class="hint-example">' +
+                        '<div class="hint-example-label">Try this</div>' +
+                        '<div class="hint-example-text">' + tip.example + '</div>' +
+                        '<button class="hint-try-btn" onclick="useExample(this)">Use this prompt</button>' +
+                    '</div>';
+                }
+                html += '</div></div>';
+                return html;
+            }).join('') +
+        '</div>';
+
+        const counter = document.getElementById('hintsCounter');
+        counter.textContent = cat.tips.length + ' tips in ' + cat.label;
+    }
+
+    function shuffleHints() {
+        const cat = HINT_CATEGORIES[currentCategory];
+        const indices = tipIndices[cat.id];
+        indices._pos = ((indices._pos || 0) + 3) % cat.tips.length;
+        renderHintsForCategory(currentCategory);
+    }
+
+    function useExample(btn) {
+        const exampleText = btn.previousElementSibling.textContent;
+        document.getElementById('promptInput').value = exampleText;
+        document.getElementById('promptInput').focus();
+        // Flash the textarea briefly
+        const ta = document.getElementById('promptInput');
+        ta.style.borderColor = 'var(--green-soft)';
+        ta.style.boxShadow = '0 0 0 3px rgba(74,124,94,0.15)';
+        setTimeout(() => { ta.style.borderColor = ''; ta.style.boxShadow = ''; }, 1200);
     }
 
     // ── DOWNLOAD ──
