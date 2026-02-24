@@ -321,6 +321,20 @@
         }
         .tool-btn.filled:hover { background: var(--clay-rust); border-color: var(--clay-rust); }
 
+        .save-hint {
+            font-size: 0.78rem;
+            color: var(--ink-soft);
+            text-align: right;
+            margin-top: 0.4rem;
+            line-height: 1.4;
+        }
+        .save-hint a {
+            color: var(--green-soft);
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 2px;
+        }
+
         /* ── REFINE BAR ── */
         .refine-bar { margin-bottom: 2rem; }
         .refine-inner {
@@ -605,6 +619,7 @@
                     <button class="tool-btn filled" id="saveBtn" onclick="saveToProfile()">Save to profile</button>
                 </div>
             </div>
+            <p class="save-hint" id="saveHint">Images aren't kept unless you save them. Saved visions appear in <a href="#visionsGallery" onclick="document.getElementById('visionsGallery').scrollIntoView({behavior:'smooth'})">your gallery</a> below.</p>
         </div>
     </div>
 
