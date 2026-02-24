@@ -240,11 +240,162 @@
         }
         .empty-state .empty-icon { font-size: 2rem; margin-bottom: 0.5rem; }
 
+        /* ── TWO-COL GRID ── */
+        .two-col {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1.25rem; margin-bottom: 2rem;
+        }
+
+        /* ── PANEL ── */
+        .panel {
+            background: rgba(31,58,46,0.2);
+            border: 1px solid rgba(194,165,108,0.06);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+        }
+        .panel-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem; font-weight: 600;
+            color: var(--parchment);
+            margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+
+        /* ── HEALTH CHECKS ── */
+        .health-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.75rem; margin-bottom: 2rem;
+        }
+        .health-item {
+            background: rgba(31,58,46,0.3);
+            border: 1px solid rgba(194,165,108,0.06);
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            border-left: 3px solid rgba(255,255,255,0.1);
+            transition: border-color 0.3s;
+        }
+        .health-item.ok { border-left-color: #4ade80; }
+        .health-item.warn { border-left-color: #fbbf24; }
+        .health-item.err { border-left-color: #f87171; }
+        .health-item.checking { border-left-color: rgba(255,255,255,0.15); }
+        .health-label2 {
+            font-size: 0.62rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.1em; color: rgba(242,239,230,0.4);
+            margin-bottom: 0.25rem;
+        }
+        .health-status {
+            font-size: 0.82rem; font-weight: 600;
+            color: rgba(242,239,230,0.8);
+        }
+        .health-detail {
+            font-size: 0.68rem; color: rgba(242,239,230,0.35);
+            margin-top: 0.15rem;
+        }
+
+        /* ── SERVICE LINKS ── */
+        .svc-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        .svc {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.6rem 0.8rem; border-radius: 6px;
+            background: rgba(31,58,46,0.4);
+            border: 1px solid rgba(255,255,255,0.04);
+            text-decoration: none; color: inherit;
+            transition: all 0.15s;
+        }
+        .svc:hover { border-color: rgba(194,165,108,0.25); background: rgba(31,58,46,0.55); }
+        .svc-icon {
+            width: 30px; height: 30px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.65rem; font-weight: 700; color: white;
+            flex-shrink: 0;
+        }
+        .svc-name { font-size: 0.78rem; font-weight: 600; color: var(--parchment); }
+        .svc-desc { font-size: 0.65rem; color: rgba(242,239,230,0.4); }
+
+        .sb-links {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 0.35rem; margin-top: 0.75rem;
+            padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .sb-link {
+            font-size: 0.7rem; color: var(--moss); text-decoration: none;
+            padding: 0.35rem 0.5rem; border-radius: 4px; text-align: center;
+            background: rgba(74,124,94,0.08); transition: all 0.15s;
+        }
+        .sb-link:hover { background: rgba(74,124,94,0.18); color: var(--parchment); }
+
+        /* ── ACTION LIST ── */
+        .action-list { list-style: none; }
+        .action-item {
+            display: flex; align-items: flex-start; gap: 0.65rem;
+            padding: 0.5rem 0.65rem; border-radius: 6px;
+            margin-bottom: 0.3rem;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.15s;
+        }
+        .action-item:hover { border-color: rgba(194,165,108,0.15); }
+        .action-item.urgent { background: rgba(251,191,36,0.04); border-color: rgba(251,191,36,0.12); }
+        .action-item.blocked { background: rgba(248,113,113,0.04); border-color: rgba(248,113,113,0.1); }
+        .action-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            flex-shrink: 0; margin-top: 6px;
+        }
+        .action-dot.next { background: var(--clay); }
+        .action-dot.soon { background: var(--moss); }
+        .action-dot.blocked { background: #f87171; }
+        .action-dot.urgent { background: #fbbf24; }
+        .action-text { font-size: 0.78rem; color: rgba(242,239,230,0.75); }
+        .action-text strong { color: var(--parchment); }
+        .action-note { font-size: 0.67rem; color: rgba(242,239,230,0.35); margin-top: 0.1rem; }
+        .action-tag {
+            font-size: 0.57rem; font-weight: 700; letter-spacing: 0.06em;
+            text-transform: uppercase; padding: 0.12rem 0.4rem; border-radius: 12px;
+            flex-shrink: 0; margin-top: 3px; margin-left: auto;
+        }
+        .action-tag.next-tag { background: rgba(194,165,108,0.15); color: var(--clay); }
+        .action-tag.urgent-tag { background: rgba(251,191,36,0.12); color: #fbbf24; }
+        .action-tag.blocked-tag { background: rgba(248,113,113,0.1); color: #f87171; }
+
+        /* ── PLATFORM ACTIVITY ── */
+        .platform-item {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.45rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.78rem;
+        }
+        .platform-item:last-child { border-bottom: none; }
+        .platform-icon {
+            width: 24px; height: 24px; border-radius: 5px;
+            background: rgba(31,58,46,0.5);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; flex-shrink: 0;
+        }
+        .platform-text { color: rgba(242,239,230,0.65); }
+        .platform-text strong { color: var(--parchment); }
+        .platform-time { font-size: 0.65rem; color: rgba(242,239,230,0.25); margin-left: auto; white-space: nowrap; }
+
+        /* ── DEPLOY BOX ── */
+        .deploy-box {
+            background: rgba(31,58,46,0.4);
+            border-radius: 6px; padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.72rem; color: var(--moss);
+            line-height: 1.8;
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 768px) {
             .admin-body { padding: 1rem; }
             .stats-row { grid-template-columns: 1fr 1fr; }
             .member-table { display: block; overflow-x: auto; }
+            .two-col { grid-template-columns: 1fr; }
+            .svc-grid { grid-template-columns: 1fr; }
+            .sb-links { grid-template-columns: 1fr 1fr; }
+            .health-row { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -292,6 +443,155 @@
             <div class="stat-card">
                 <div class="stat-label">Member Types</div>
                 <div class="stat-value" id="stat-types" style="font-size:1rem;font-family:'Inter',sans-serif;line-height:1.8;">—</div>
+            </div>
+        </div>
+
+        <!-- ══════ HEALTH CHECKS ══════ -->
+        <div class="section-header">
+            <div class="section-title">System Health</div>
+            <div class="section-count" id="health-time" style="cursor:pointer;" onclick="runHealthChecks()">Click to check</div>
+        </div>
+        <div class="health-row">
+            <div class="health-item checking" id="hc-site">
+                <div class="health-label2">Live Site</div>
+                <div class="health-status" id="hc-site-status">—</div>
+                <div class="health-detail" id="hc-site-detail">earthbackproject.org</div>
+            </div>
+            <div class="health-item checking" id="hc-db">
+                <div class="health-label2">Database</div>
+                <div class="health-status" id="hc-db-status">—</div>
+                <div class="health-detail" id="hc-db-detail">Supabase</div>
+            </div>
+            <div class="health-item checking" id="hc-auth">
+                <div class="health-label2">Auth</div>
+                <div class="health-status" id="hc-auth-status">—</div>
+                <div class="health-detail" id="hc-auth-detail">Session active</div>
+            </div>
+            <div class="health-item checking" id="hc-visions">
+                <div class="health-label2">Visualizer</div>
+                <div class="health-status" id="hc-visions-status">—</div>
+                <div class="health-detail" id="hc-visions-detail">Visions table</div>
+            </div>
+        </div>
+
+        <!-- ══════ SERVICES + PRIORITIES ══════ -->
+        <div class="two-col">
+
+            <!-- Services -->
+            <div class="panel">
+                <div class="panel-title"><span>&#128279;</span> Services</div>
+                <div class="svc-grid">
+                    <a href="https://earthbackproject.org" target="_blank" class="svc">
+                        <div class="svc-icon" style="background:#1F3A2E;">Eb</div>
+                        <div><div class="svc-name">Live Site</div><div class="svc-desc">earthbackproject.org</div></div>
+                    </a>
+                    <a href="https://github.com/earthbackproject/earthback" target="_blank" class="svc">
+                        <div class="svc-icon" style="background:#24292e;">GH</div>
+                        <div><div class="svc-name">GitHub</div><div class="svc-desc">earthbackproject/earthback</div></div>
+                    </a>
+                    <a href="https://supabase.com/dashboard" target="_blank" class="svc">
+                        <div class="svc-icon" style="background:#3ecf8e;">SB</div>
+                        <div><div class="svc-name">Supabase</div><div class="svc-desc">Database + Auth + Storage</div></div>
+                    </a>
+                    <a href="https://app.netlify.com" target="_blank" class="svc">
+                        <div class="svc-icon" style="background:#00c7b7;">NL</div>
+                        <div><div class="svc-name">Netlify</div><div class="svc-desc">Hosting + Forms + Deploys</div></div>
+                    </a>
+                </div>
+                <div style="font-size:0.68rem;color:rgba(242,239,230,0.3);margin-top:0.6rem;text-align:center;">Deep links in Command Center (local only)</div>
+
+                <!-- Deploy -->
+                <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.04);">
+                    <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--clay);margin-bottom:0.4rem;">Deploy</div>
+                    <div style="font-size:0.75rem;color:rgba(242,239,230,0.5);margin-bottom:0.4rem;">Push to GitHub &rarr; Netlify auto-deploys <code style="font-size:0.7rem;background:rgba(31,58,46,0.4);padding:0.1rem 0.35rem;border-radius:3px;color:var(--moss);">site/</code></div>
+                    <div class="deploy-box">
+                        git status<br>
+                        git add -A<br>
+                        git commit -m "describe changes"<br>
+                        git push
+                    </div>
+                </div>
+            </div>
+
+            <!-- What's Next -->
+            <div class="panel">
+                <div class="panel-title"><span>&#127919;</span> What's Next</div>
+
+                <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:0.35rem;">Immediate</div>
+                <ul class="action-list">
+                    <li class="action-item urgent">
+                        <div class="action-dot urgent"></div>
+                        <div>
+                            <div class="action-text"><strong>Review Flux overnight output</strong> — charsheets + site assets + T4 re-run</div>
+                            <div class="action-note">Pick PuLID reference faces, select best shots per character</div>
+                        </div>
+                        <span class="action-tag urgent-tag">Next</span>
+                    </li>
+                    <li class="action-item urgent">
+                        <div class="action-dot urgent"></div>
+                        <div>
+                            <div class="action-text"><strong>Run 3 SQL migrations</strong> in Supabase SQL Editor</div>
+                            <div class="action-note">PROFILE_MIGRATION &rarr; SCHEMA_V3 &rarr; SCHEMA_V4</div>
+                        </div>
+                        <span class="action-tag urgent-tag">Now</span>
+                    </li>
+                    <li class="action-item urgent">
+                        <div class="action-dot urgent"></div>
+                        <div>
+                            <div class="action-text"><strong>Integrate Flux assets</strong> into site — heroes, sections, textures</div>
+                        </div>
+                        <span class="action-tag urgent-tag">Next</span>
+                    </li>
+                </ul>
+
+                <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--clay);margin:0.7rem 0 0.35rem;">Build Queue</div>
+                <ul class="action-list">
+                    <li class="action-item">
+                        <div class="action-dot next"></div>
+                        <div><div class="action-text"><strong>PuLID face-locked generation</strong> — setup-pulid.py then queue-pulid-faces.py</div></div>
+                        <span class="action-tag next-tag">Next</span>
+                    </li>
+                    <li class="action-item">
+                        <div class="action-dot next"></div>
+                        <div><div class="action-text"><strong>Profile nav link</strong> — add link to own profile from every page</div></div>
+                    </li>
+                    <li class="action-item">
+                        <div class="action-dot soon"></div>
+                        <div><div class="action-text"><strong>Settings page</strong> — account settings, avatar, MFA</div></div>
+                    </li>
+                    <li class="action-item">
+                        <div class="action-dot soon"></div>
+                        <div><div class="action-text"><strong>og:image social card</strong> — 1200&times;630 for link previews</div></div>
+                    </li>
+                </ul>
+
+                <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#f87171;margin:0.7rem 0 0.35rem;">Blocked</div>
+                <ul class="action-list">
+                    <li class="action-item blocked">
+                        <div class="action-dot blocked"></div>
+                        <div>
+                            <div class="action-text"><strong>Trademark research</strong> — other "Earthbacks"</div>
+                            <div class="action-note">Blocks: naming, title tags, meta, 501(c)(3)</div>
+                        </div>
+                        <span class="action-tag blocked-tag">Nicco</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ══════ PLATFORM ACTIVITY ══════ -->
+        <div class="two-col">
+            <div class="panel">
+                <div class="panel-title"><span>&#9889;</span> Recent Platform Activity</div>
+                <div id="platform-activity">
+                    <div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">Loading...</div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-title"><span>&#127912;</span> Recent Visions</div>
+                <div id="recent-visions">
+                    <div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">Loading...</div>
+                </div>
             </div>
         </div>
 
@@ -515,6 +815,130 @@
             'Updated ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     }
 
+    // ── HEALTH CHECKS ──
+    async function runHealthChecks() {
+        document.getElementById('health-time').textContent = 'Checking...';
+        addLog('Running health checks...');
+
+        // Site ping
+        try {
+            const t0 = Date.now();
+            const resp = await fetch('https://earthbackproject.org/assets/img/favicon.ico', { mode: 'no-cors', cache: 'no-store' });
+            const ms = Date.now() - t0;
+            setHealth('hc-site', 'ok', 'Online', ms + 'ms response');
+            addLog('Site ping: ' + ms + 'ms');
+        } catch(e) {
+            setHealth('hc-site', 'err', 'Down', e.message);
+            addLog('Site ping FAILED: ' + e.message);
+        }
+
+        // Database
+        try {
+            const t0 = Date.now();
+            const { data, error } = await sb.from('profiles').select('id', { count: 'exact', head: true });
+            const ms = Date.now() - t0;
+            if (error) throw error;
+            setHealth('hc-db', 'ok', 'Connected', ms + 'ms · profiles table OK');
+            addLog('Database check: ' + ms + 'ms');
+        } catch(e) {
+            setHealth('hc-db', 'err', 'Error', e.message);
+            addLog('Database check FAILED: ' + e.message);
+        }
+
+        // Auth
+        try {
+            const { data: { session } } = await sb.auth.getSession();
+            setHealth('hc-auth', session ? 'ok' : 'warn', session ? 'Active' : 'No session', session ? session.user.email : 'Not signed in');
+        } catch(e) {
+            setHealth('hc-auth', 'err', 'Error', e.message);
+        }
+
+        // Visions table
+        try {
+            const { count, error } = await sb.from('visions').select('*', { count: 'exact', head: true });
+            if (error) throw error;
+            setHealth('hc-visions', 'ok', count + ' visions', 'Table accessible');
+        } catch(e) {
+            setHealth('hc-visions', e.message.includes('does not exist') ? 'warn' : 'err',
+                       e.message.includes('does not exist') ? 'Not created' : 'Error', e.message);
+        }
+
+        document.getElementById('health-time').textContent = 'Checked ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function setHealth(id, status, label, detail) {
+        const el = document.getElementById(id);
+        el.className = 'health-item ' + status;
+        document.getElementById(id + '-status').textContent = label;
+        document.getElementById(id + '-detail').textContent = detail;
+    }
+
+    // ── PLATFORM ACTIVITY ──
+    async function loadPlatformActivity() {
+        const items = [];
+
+        // Recent profile updates
+        try {
+            const { data: profiles } = await sb.from('profiles')
+                .select('display_name, first_name, updated_at, created_at')
+                .order('updated_at', { ascending: false })
+                .limit(8);
+            if (profiles) {
+                profiles.forEach(p => {
+                    const name = p.display_name || p.first_name || 'Someone';
+                    const isNew = Math.abs(new Date(p.updated_at) - new Date(p.created_at)) < 60000;
+                    items.push({
+                        icon: isNew ? '&#128075;' : '&#9998;',
+                        text: `<strong>${name}</strong> ${isNew ? 'joined Earthback' : 'updated profile'}`,
+                        time: p.updated_at
+                    });
+                });
+            }
+        } catch(e) {}
+
+        // Sort by time, take 10
+        items.sort((a,b) => new Date(b.time) - new Date(a.time));
+        const el = document.getElementById('platform-activity');
+        if (items.length === 0) {
+            el.innerHTML = '<div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">No activity yet</div>';
+            return;
+        }
+        el.innerHTML = items.slice(0,10).map(i => `
+            <div class="platform-item">
+                <div class="platform-icon">${i.icon}</div>
+                <div class="platform-text">${i.text}</div>
+                <div class="platform-time">${formatDate(i.time)}</div>
+            </div>
+        `).join('');
+    }
+
+    // ── RECENT VISIONS ──
+    async function loadRecentVisions() {
+        const el = document.getElementById('recent-visions');
+        try {
+            const { data: visions, error } = await sb.from('visions')
+                .select('prompt, style, created_at, likes')
+                .order('created_at', { ascending: false })
+                .limit(8);
+            if (error) throw error;
+            if (!visions || visions.length === 0) {
+                el.innerHTML = '<div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">No visions yet</div>';
+                return;
+            }
+            el.innerHTML = visions.map(v => `
+                <div class="platform-item">
+                    <div class="platform-icon">&#127912;</div>
+                    <div class="platform-text" style="flex:1;"><strong>${truncate(v.prompt || 'Untitled', 60)}</strong><br>
+                        <span style="font-size:0.68rem;color:rgba(242,239,230,0.35);">${v.style || 'default'} · ${v.likes || 0} likes</span>
+                    </div>
+                    <div class="platform-time">${formatDate(v.created_at)}</div>
+                </div>
+            `).join('');
+        } catch(e) {
+            el.innerHTML = '<div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.75rem;">' + (e.message.includes('does not exist') ? 'Visions table not created yet' : e.message) + '</div>';
+        }
+    }
+
     // ── INIT ──
     async function init() {
         // Request notification permission
@@ -527,9 +951,15 @@
 
         await loadMembers();
         subscribeToChanges();
+        runHealthChecks();
+        loadPlatformActivity();
+        loadRecentVisions();
 
-        // Periodic refresh every 5 minutes as backup
+        // Periodic refresh every 5 minutes
         setInterval(loadMembers, 5 * 60 * 1000);
+        setInterval(runHealthChecks, 5 * 60 * 1000);
+        setInterval(loadPlatformActivity, 2 * 60 * 1000);
+        setInterval(loadRecentVisions, 2 * 60 * 1000);
     }
 
     init();
