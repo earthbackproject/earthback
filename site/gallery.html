@@ -617,7 +617,7 @@
 
         var { data: visions, error } = await sb
             .from('visions')
-            .select('*, profiles:user_id(display_name, first_name, last_name, avatar_url)')
+            .select('*')
             .eq('is_shared', true)
             .eq('is_flagged', false)
             .order('created_at', { ascending: false })
@@ -629,6 +629,16 @@
             empty.style.display = 'block';
             return;
         }
+
+        // Fetch creator profiles separately (visions.user_id → auth.users, not profiles directly)
+        var userIds = [...new Set(visions.map(function(v) { return v.user_id; }))];
+        var { data: profiles } = await sb
+            .from('profiles')
+            .select('id, display_name, first_name, last_name, avatar_url')
+            .in('id', userIds);
+        var profileMap = {};
+        (profiles || []).forEach(function(p) { profileMap[p.id] = p; });
+        visions.forEach(function(v) { v.profiles = profileMap[v.user_id] || {}; });
 
         allVisions = visions;
         grid.style.display = 'grid';
