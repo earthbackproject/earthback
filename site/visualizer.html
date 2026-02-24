@@ -985,16 +985,10 @@
         gallery.style.display = 'block';
         countEl.textContent = visions.length + ' vision' + (visions.length !== 1 ? 's' : '');
 
-        grid.innerHTML = visions.map(function(v) {
+        grid.innerHTML = visions.map(function(v, idx) {
             var dateStr = new Date(v.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             var promptSnippet = (v.prompt || '').substring(0, 100);
-            return '<div class="vision-card" onclick="repopulateVision(' + JSON.stringify(JSON.stringify({
-                prompt: v.prompt || '',
-                structure: v.structure || 'single-home',
-                climate: v.climate || 'high-desert',
-                style: v.style || 'photorealistic',
-                image_url: v.image_url || ''
-            })) + ')">' +
+            return '<div class="vision-card" data-vision-idx="' + idx + '">' +
                 (v.image_url ? '<img src="' + v.image_url + '" alt="Vision render" loading="lazy">' :
                     '<div style="height:160px;background:linear-gradient(135deg,#2a3a2a,#3a5a3a);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🏗</div>') +
                 '<div class="vision-card-body">' +
@@ -1011,6 +1005,22 @@
                 '<button class="vision-card-delete" onclick="event.stopPropagation();deleteVision(\'' + v.id + '\')" title="Delete">×</button>' +
             '</div>';
         }).join('');
+
+        // Attach click handlers via JS (avoids HTML attribute escaping issues)
+        grid.querySelectorAll('.vision-card').forEach(function(card) {
+            var idx = parseInt(card.dataset.visionIdx);
+            var v = visions[idx];
+            card.addEventListener('click', function() {
+                repopulateVision(JSON.stringify({
+                    prompt: v.prompt || '',
+                    structure: v.structure || 'single-home',
+                    climate: v.climate || 'high-desert',
+                    style: v.style || 'photorealistic',
+                    image_url: v.image_url || '',
+                    full_prompt: v.full_prompt || ''
+                }));
+            });
+        });
     }
 
     // Expose for use outside IIFE
