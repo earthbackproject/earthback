@@ -1,0 +1,90 @@
+# ============================================================
+# Earthback — Flux1-dev LoRA training config (Kohya SS)
+# One copy per character — change output_name and image_dir
+# ============================================================
+#
+# Kohya SS GUI: "Flux LoRA" tab → "Import config" → load this file
+# Or CLI:  python flux_train_network.py --config_file this_file.toml
+#
+# PATHS TO CONFIRM BEFORE RUNNING:
+#   pretrained_model_name_or_path  → your flux1-dev-fp8.safetensors
+#   clip_l                          → your clip_l.safetensors
+#   t5xxl                           → your t5xxl_fp16.safetensors
+#   ae                              → your ae.safetensors (Flux VAE)
+#   train_data_dir                  → dataset folder for THIS character
+#   output_dir                      → where .safetensors lora lands
+# ============================================================
+
+[general]
+enable_bucket            = true
+bucket_reso_steps        = 64
+bucket_no_upscale        = true
+caption_extension        = ".txt"
+shuffle_caption          = false
+keep_tokens              = 1         # keep trigger word first always
+
+[[datasets]]
+resolution               = 1024
+batch_size               = 1
+
+  [[datasets.subsets]]
+  # SET PER CHARACTER — use the images/ subfolder
+  image_dir              = "C:/users/adrxi/Earthback/lora-training/datasets/CHAR_SLUG/images"
+  num_repeats            = 15        # × ~18 images ≈ 270 steps per epoch
+
+[model_arguments]
+# ── Flux model files ── confirm these paths match your install ──
+pretrained_model_name_or_path = "D:/AI/models/flux1-dev-fp8.safetensors"
+clip_l                         = "D:/AI/models/clip_l.safetensors"
+t5xxl                          = "D:/AI/models/t5xxl_fp16.safetensors"
+ae                             = "D:/AI/models/ae.safetensors"
+
+[network_arguments]
+network_module           = "networks.lora_flux"
+network_dim              = 16        # rank — good quality/size balance
+network_alpha            = 16        # same as dim = full-rank alpha
+# network_train_unet_only = true      # uncomment to skip text encoder
+# network_weights        = ""        # resume from existing LoRA
+
+[optimizer_arguments]
+optimizer_type           = "AdamW8bit"
+learning_rate            = 0.0001    # 1e-4 — standard for rank-16 flux
+lr_scheduler             = "cosine_with_restarts"
+lr_warmup_steps          = 50
+lr_scheduler_num_cycles  = 3
+
+[training_arguments]
+# ── Output ──
+output_dir               = "C:/users/adrxi/Earthback/lora-training/output"
+output_name              = "CHAR_SLUG-v1"   # e.g. james-osei-v1
+save_model_as            = "safetensors"
+save_every_n_steps       = 250
+
+# ── Steps ──
+# 18 images × 15 repeats = 270 per epoch × 4 epochs ≈ 1080 steps
+max_train_steps          = 1000
+# max_train_epochs       = 4        # alternative: train by epoch count
+
+# ── Precision / memory ──
+mixed_precision          = "bf16"
+full_fp16                = false
+full_bf16                = true
+gradient_checkpointing   = true
+cache_latents            = true
+cache_latents_to_disk    = false
+cache_text_encoder_outputs      = true
+cache_text_encoder_outputs_to_disk = false
+
+# ── Logging ──
+logging_dir              = "C:/users/adrxi/Earthback/lora-training/logs"
+log_with                 = "tensorboard"   # optional — tensorboard --logdir logs
+
+# ── Sampling (preview images during training) ──
+sample_every_n_steps     = 250
+sample_sampler           = "euler"
+# sample_prompts        = "C:/users/adrxi/Earthback/lora-training/configs/sample-prompts.txt"
+
+# ── Misc ──
+seed                     = 42
+max_data_loader_n_workers = 0
+persistent_data_loader_workers = true

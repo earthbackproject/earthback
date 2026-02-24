@@ -1,0 +1,23 @@
+this thread got interrupted again with the error: RPC error -1: process with name "festive-sweet-mendel" already running (id: 7165e5c9-6ba7-4b1b-a2a6-c7aac6d6a857)
+What does that mean? What is festive sweet mendel???
+
+i have Claude cowork installed and have been getting great results. We have it connected into chrome so it can work there and it's working directly with my local comfyui/Flux generating images for earthback but twice now the thread has been interrupted with the error: RPC error -1: process with name "festive-sweet-mendel" already running (id: 7165e5c9-6ba7-4b1b-a2a6-c7aac6d6a857)
+What does that mean? What is festive sweet mendel???
+When it happens i have to reboot to fix it and there are 4 hours of images queued that i don't want to cancel. How do i fix it?
+10:29 AM
+
+The "festive-sweet-mendel" is just a randomly generated container/process name — Cowork assigns whimsical names (adjective-adjective-surname pattern) to its background processes. It's not a specific feature or anything meaningful, just an identifier like Docker containers get.
+
+The error itself means Cowork is trying to start a new instance of its background worker process, but a previous one is still running (or thinks it is). Essentially a stale process lock.
+
+To fix it without rebooting (and without losing your ComfyUI queue), you just need to kill that specific stuck Cowork process. Since it gives you the process name and ID, you can try:
+
+Open a terminal and look for the stuck process. Depending on how Cowork manages its processes, try something like ps aux | grep festive-sweet-mendel or search by the UUID. Then kill just that process (kill <PID>). Alternatively, you can check if Cowork has a task manager or process list in its UI where you can stop that specific worker.
+
+The key thing: killing the Cowork RPC process shouldn't touch your ComfyUI queue at all — ComfyUI runs as its own separate server. Your 4 hours of queued images will keep processing independently. The two are separate processes; Cowork just sends requests to ComfyUI's API.
+
+If you want to be extra safe, before killing anything, check that ComfyUI's server is still running in its own terminal/tab and that the queue is progressing. Then deal with the Cowork process separately.
+
+If this keeps recurring, it likely means Cowork isn't cleanly shutting down its worker when you close a session or tab. Worth checking if there's an update available, or filing a bug with the Cowork team since this seems like a process lifecycle issue on their end.
+
+
