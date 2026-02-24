@@ -436,11 +436,16 @@
                 </select>
             </div>
             <div class="form-group">
+                <label>Website or channel</label>
+                <input type="url" id="partnerUrl" placeholder="https://yoursite.org or YouTube channel, etc.">
+            </div>
+            <div class="form-group">
                 <label>Tell us about your program</label>
                 <textarea id="partnerMessage" placeholder="What do you teach? What formats (video, in-person, hybrid)? Anything else we should know."></textarea>
             </div>
             <button class="form-submit" id="partnerSubmit">Start the conversation →</button>
             <p class="form-note">We'll respond within a few days. No obligations, no commitments — just a conversation about what's possible.</p>
+            <p class="form-note" style="margin-top:6px;">We will never use your media, content, or branding without your explicit approval.</p>
         </div>
     </div>
 </section>
@@ -464,6 +469,7 @@
         var name = document.getElementById('partnerName').value.trim();
         var email = document.getElementById('partnerEmail').value.trim();
         var focus = document.getElementById('partnerFocus').value;
+        var url = document.getElementById('partnerUrl').value.trim();
         var message = document.getElementById('partnerMessage').value.trim();
 
         if (!org || !email) {
@@ -486,6 +492,7 @@
             contact_name: name,
             email: email,
             focus_area: focus,
+            website_url: url || null,
             message: message
         });
 
