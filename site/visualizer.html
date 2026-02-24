@@ -1052,6 +1052,14 @@ function repopulateVision(jsonStr) {
         img.style.display = 'block';
         window.lastImageUrl = v.image_url;
         window.lastPrompt = v.prompt;
+        window.lastFullPrompt = v.full_prompt || '';
+    }
+
+    // Mark save button as already saved (this vision came from the gallery)
+    var saveBtn = document.getElementById('saveBtn');
+    if (saveBtn) {
+        saveBtn.textContent = '✓ Saved';
+        saveBtn.disabled = true;
     }
 
     // Scroll to top of form
