@@ -388,10 +388,11 @@ input[type="range"]::-webkit-slider-thumb {
         <div class="field">
           <label class="field-label">Construction Method</label>
           <div class="chip-group" data-key="constructionMethod" data-mode="single">
-            <span class="chip selected" data-val="3d-printed">3D Printed Hempcrete</span>
-            <span class="chip" data-val="manual">Manual Hempcrete</span>
+            <span class="chip selected" data-val="3d-printed-hemp">3D Printed Hempcrete</span>
+            <span class="chip" data-val="3d-printed-concrete">3D Printed Concrete</span>
+            <span class="chip" data-val="manual-hemp">Manual Hempcrete</span>
+            <span class="chip" data-val="conventional">Conventional Build</span>
             <span class="chip" data-val="hybrid">Hybrid</span>
-            <span class="chip" data-val="conventional">Conventional+Hemp</span>
           </div>
         </div>
 
@@ -650,9 +651,9 @@ input[type="range"]::-webkit-slider-thumb {
 
       <div class="output-block">
         <div class="output-title">Material Estimates</div>
-        <div class="output-row"><span>Hempcrete Volume</span><span class="val" id="outHempcrete">~38 yd³</span></div>
-        <div class="output-row"><span>Hemp Hurd</span><span class="val" id="outHurd">~8.4 tons</span></div>
-        <div class="output-row"><span>Lime Binder</span><span class="val" id="outLime">~4.2 tons</span></div>
+        <div class="output-row"><span id="outWallLabel">Hempcrete Volume</span><span class="val" id="outHempcrete">~38 yd³</span></div>
+        <div class="output-row"><span id="outMat2Label">Hemp Hurd</span><span class="val" id="outHurd">~8.4 tons</span></div>
+        <div class="output-row"><span id="outMat3Label">Lime Binder</span><span class="val" id="outLime">~4.2 tons</span></div>
         <div class="output-row"><span>Metal Roofing</span><span class="val" id="outRoof">~1,320 sq ft</span></div>
         <div class="output-row"><span>Solar Coverage</span><span class="val" id="outSolar">~480 sq ft</span></div>
       </div>
@@ -708,7 +709,7 @@ import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 // ═══════════════════════════════════════
 const config = {
   buildType: 'dwelling',
-  constructionMethod: '3d-printed',
+  constructionMethod: '3d-printed-hemp',
   foundationType: 'lime-slab',
   length: 40,
   width: 28,
@@ -882,7 +883,12 @@ function buildModel() {
   const W = config.width;
   const H = getWallHeight(config.stories);
   const T = config.wallThickness / 12;
-  const wallColor = COLORS.walls[config.exteriorFinish] || 0xd4c49a;
+  const method = config.constructionMethod;
+  const isConcreteMethod = method === '3d-printed-concrete';
+  const isConventionalMethod = method === 'conventional';
+  const wallColor = isConcreteMethod ? 0xb0b0a8 :
+                    isConventionalMethod ? 0xc8b898 :
+                    (COLORS.walls[config.exteriorFinish] || 0xd4c49a);
   const roofColor = COLORS.roof[config.roofType] || 0x6a7a6a;
 
   // ── Foundation ──
@@ -1070,9 +1076,23 @@ function updateCalculations() {
   const netWallVol = grossWallVol * 0.85; // 15% window deduction
   const wallVolYd = netWallVol / 27;
 
-  const hempHurd = wallVolYd * 0.22;
-  const limeBinder = wallVolYd * 0.11;
-  const rValue = Math.round(config.wallThickness * 2.4);
+  const method = config.constructionMethod;
+  const isHemp = method === '3d-printed-hemp' || method === 'manual-hemp' || method === 'hybrid';
+  const isConcrete = method === '3d-printed-concrete';
+  const isConventional = method === 'conventional';
+
+  // Material quantities vary by construction method
+  const hempHurd = isHemp ? wallVolYd * 0.22 : (method === 'hybrid' ? wallVolYd * 0.11 : 0);
+  const limeBinder = isHemp ? wallVolYd * 0.11 : 0;
+  const concreteVol = isConcrete ? wallVolYd : (isConventional ? wallVolYd * 0.4 : 0);
+  const lumberBF = isConventional ? Math.round(sqft * 6.5) : (method === 'hybrid' ? Math.round(sqft * 3) : 0);
+  const insulBatts = isConventional ? Math.round(perimeter * H * 0.9) : 0;
+
+  // R-value depends on wall material
+  const rValue = isHemp ? Math.round(config.wallThickness * 2.4) :
+                 isConcrete ? Math.round(config.wallThickness * 0.8) :
+                 isConventional ? Math.round(config.wallThickness * 1.1) :
+                 Math.round(config.wallThickness * 1.8); // hybrid
 
   const pitchRatio = config.roofPitch / 12;
   const roofRise = (W / 2) * pitchRatio;
@@ -1085,11 +1105,17 @@ function updateCalculations() {
   const solarArea = Math.round(roofArea * solarFrac);
   const solarKw = (solarArea * 0.02).toFixed(1);
 
-  const carbonStored = (wallVolYd * 0.37).toFixed(1);
+  // Carbon: hempcrete is carbon-negative, concrete is carbon-positive
+  const carbonStored = isHemp ? (wallVolYd * 0.37).toFixed(1) :
+                       isConcrete ? (-wallVolYd * 0.25).toFixed(1) :
+                       isConventional ? (-wallVolYd * 0.18).toFixed(1) :
+                       (wallVolYd * 0.18).toFixed(1); // hybrid
 
-  const matCost = Math.round(wallVolYd * 800 + roofArea * 12 + solarArea * 25 + sqft * 15);
-  const laborCost = Math.round(sqft * 20);
-  const equipCost = config.constructionMethod === '3d-printed' ? 15000 : 5000;
+  // Cost model varies by method
+  const wallCostPerYd = isHemp ? 800 : isConcrete ? 650 : isConventional ? 500 : 700;
+  const matCost = Math.round(wallVolYd * wallCostPerYd + roofArea * 12 + solarArea * 25 + sqft * 15 + lumberBF * 0.85 + insulBatts * 1.2);
+  const laborCost = Math.round(sqft * (isConventional ? 30 : 20));
+  const equipCost = method === '3d-printed-hemp' || method === '3d-printed-concrete' ? 15000 : (isConventional ? 3000 : 5000);
   const totalCost = matCost + laborCost + equipCost;
   const costSqft = Math.round(totalCost / sqft);
 
@@ -1099,13 +1125,20 @@ function updateCalculations() {
   $('sqftTag').textContent = sqft.toLocaleString() + ' sq ft';
   $('storyTag').textContent = stories + (stories === 1 ? ' Story' : ' Stories');
 
-  $('outHempcrete').textContent = '~' + Math.round(wallVolYd) + ' yd³';
-  $('outHurd').textContent = '~' + hempHurd.toFixed(1) + ' tons';
-  $('outLime').textContent = '~' + limeBinder.toFixed(1) + ' tons';
+  // Adapt labels + values to construction method
+  $('outWallLabel').textContent = isHemp ? 'Hempcrete Volume' : isConcrete ? 'Concrete Volume' : isConventional ? 'Framing Volume' : 'Wall Volume';
+  $('outHempcrete').textContent = isHemp ? '~' + Math.round(wallVolYd) + ' yd³' : isConcrete ? '~' + Math.round(concreteVol) + ' yd³' : isConventional ? '~' + Math.round(wallVolYd) + ' yd³' : '~' + Math.round(wallVolYd) + ' yd³';
+
+  $('outMat2Label').textContent = isHemp ? 'Hemp Hurd' : isConcrete ? 'Rebar' : isConventional ? 'Lumber' : 'Hemp Hurd';
+  $('outHurd').textContent = hempHurd > 0 ? '~' + hempHurd.toFixed(1) + ' tons' : lumberBF > 0 ? '~' + lumberBF.toLocaleString() + ' BF' : isConcrete ? '~' + Math.round(concreteVol * 0.15) + ' tons' : 'N/A';
+
+  $('outMat3Label').textContent = isHemp ? 'Lime Binder' : isConcrete ? 'Reinforcement' : isConventional ? 'Insulation' : 'Lime Binder';
+  $('outLime').textContent = limeBinder > 0 ? '~' + limeBinder.toFixed(1) + ' tons' : insulBatts > 0 ? '~' + insulBatts.toLocaleString() + ' sq ft' : isConcrete ? 'Mesh + fiber' : 'N/A';
   $('outRoof').textContent = '~' + roofArea.toLocaleString() + ' sq ft';
   $('outSolar').textContent = solarArea > 0 ? '~' + solarArea.toLocaleString() + ' sq ft' : 'None';
   $('outRval').textContent = 'R-' + rValue;
-  $('outCarbon').textContent = '-' + carbonStored + ' tCO₂';
+  const carbonNum = parseFloat(carbonStored);
+  $('outCarbon').textContent = (carbonNum > 0 ? '-' : '+') + Math.abs(carbonNum).toFixed(1) + ' tCO₂';
   $('outSolarKw').textContent = solarArea > 0 ? '~' + solarKw + ' kW' : 'N/A';
   $('outCostMat').textContent = '$' + matCost.toLocaleString();
   $('outCostLabor').textContent = '$' + laborCost.toLocaleString();
@@ -1119,7 +1152,8 @@ function updateCalculations() {
      config.roofType === 'living' ? 'Living Roof' :
      config.roofType === 'thatch' ? 'Hemp Thatch Roof' : 'Hybrid Roof') +
     (config.solarIntegration !== 'none' ? ' + Solar' : '');
-  $('annotWallLabel').textContent = config.wallThickness + '" Hempcrete — R-' + rValue;
+  const wallMaterial = isHemp ? 'Hempcrete' : isConcrete ? 'Printed Concrete' : isConventional ? 'Frame + Insulation' : 'Hybrid';
+  $('annotWallLabel').textContent = config.wallThickness + '" ' + wallMaterial + ' — R-' + rValue;
   $('annotFoundationLabel').textContent =
     config.foundationType === 'lime-slab' ? 'Lime Slab Foundation' :
     config.foundationType === 'pier-beam' ? 'Pier & Beam Foundation' :
@@ -1132,15 +1166,28 @@ function updateCalculations() {
 
 function updateNeeds(wallVol, hurd, lime, solarArea) {
   const needs = [];
-  if (config.constructionMethod === '3d-printed') {
-    needs.push({ icon: '🎓', type: 'skill', name: '3D Print Operator' });
+  const method = config.constructionMethod;
+  const isHemp = method === '3d-printed-hemp' || method === 'manual-hemp' || method === 'hybrid';
+  const isConcrete = method === '3d-printed-concrete';
+  const isConventional = method === 'conventional';
+  const is3D = method === '3d-printed-hemp' || method === '3d-printed-concrete';
+
+  if (is3D) needs.push({ icon: '🎓', type: 'skill', name: '3D Print Operator' });
+  if (isHemp) {
+    needs.push({ icon: '🌿', type: 'resource', name: hurd.toFixed(1) + ' tons Hemp Hurd' });
+    needs.push({ icon: '�ite', type: 'resource', name: lime.toFixed(1) + ' tons Lime Binder' });
   }
-  needs.push({ icon: '🌿', type: 'resource', name: hurd.toFixed(1) + ' tons Hemp Hurd' });
-  needs.push({ icon: '�ite', type: 'resource', name: lime.toFixed(1) + ' tons Lime Binder' });
+  if (isConcrete) {
+    needs.push({ icon: '🏗️', type: 'resource', name: Math.round(wallVol) + ' yd³ Concrete Mix' });
+    needs.push({ icon: '🔩', type: 'resource', name: 'Rebar + Reinforcement' });
+  }
+  if (isConventional) {
+    needs.push({ icon: '🪵', type: 'resource', name: 'Lumber + Framing' });
+    needs.push({ icon: '🧱', type: 'resource', name: 'Insulation Batts' });
+    needs.push({ icon: '🔨', type: 'skill', name: 'Framing Crew' });
+  }
   needs.push({ icon: '👷', type: 'people', name: 'Finish Crew (4-6)' });
-  if (solarArea > 0) {
-    needs.push({ icon: '⚡', type: 'skill', name: 'Solar Installer' });
-  }
+  if (solarArea > 0) needs.push({ icon: '⚡', type: 'skill', name: 'Solar Installer' });
   needs.push({ icon: '📐', type: 'skill', name: 'Structural Review' });
   needs.push({ icon: '🔩', type: 'resource', name: 'Metal Roofing' });
 
@@ -1300,14 +1347,31 @@ document.getElementById('exportBom').addEventListener('click', () => {
   const slopeLen = Math.sqrt((W / 2) ** 2 + roofRise ** 2);
   const roofArea = Math.round(2 * (L + 4) * slopeLen);
 
-  let csv = 'Material,Quantity,Unit\n';
-  csv += `Hempcrete,${wallVol.toFixed(1)},cubic yards\n`;
-  csv += `Hemp Hurd,${(wallVol * 0.22).toFixed(1)},tons\n`;
-  csv += `Lime Binder,${(wallVol * 0.11).toFixed(1)},tons\n`;
-  csv += `Roofing (${config.roofType}),${roofArea},sq ft\n`;
+  const method = config.constructionMethod;
+  const isHemp = method === '3d-printed-hemp' || method === 'manual-hemp' || method === 'hybrid';
+  const isConcrete = method === '3d-printed-concrete';
+  const isConventional = method === 'conventional';
+
+  let csv = 'Material,Quantity,Unit,Method\n';
+  csv += `Construction Method,${method},,\n`;
+  if (isHemp) {
+    csv += `Hempcrete,${wallVol.toFixed(1)},cubic yards,${method}\n`;
+    csv += `Hemp Hurd,${(wallVol * 0.22).toFixed(1)},tons,${method}\n`;
+    csv += `Lime Binder,${(wallVol * 0.11).toFixed(1)},tons,${method}\n`;
+  }
+  if (isConcrete) {
+    csv += `Concrete Mix,${wallVol.toFixed(1)},cubic yards,${method}\n`;
+    csv += `Rebar/Reinforcement,${Math.round(wallVol * 0.15)},tons,${method}\n`;
+  }
+  if (isConventional) {
+    csv += `Lumber,${Math.round(L * W * 6.5)},board feet,${method}\n`;
+    csv += `Insulation,${Math.round(2 * (L + W) * getWallHeight(config.stories) * 0.9)},sq ft,${method}\n`;
+    csv += `Sheathing/Drywall,${Math.round(2 * (L + W) * getWallHeight(config.stories) * 2)},sq ft,${method}\n`;
+  }
+  csv += `Roofing (${config.roofType}),${roofArea},sq ft,\n`;
   const sf = config.solarIntegration === 'full-array' ? 0.7 : config.solarIntegration === 'shingles' ? 0.4 : config.solarIntegration === 'panel-ready' ? 0.5 : 0;
-  if (sf > 0) csv += `Solar Panels,${Math.round(roofArea * sf)},sq ft\n`;
-  csv += `Foundation (${config.foundationType}),${Math.round(L * W)},sq ft\n`;
+  if (sf > 0) csv += `Solar Panels,${Math.round(roofArea * sf)},sq ft,\n`;
+  csv += `Foundation (${config.foundationType}),${Math.round(L * W)},sq ft,\n`;
 
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
