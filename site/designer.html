@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="assets/img/favicon.ico" sizes="any">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Designer — Earthback</title>
+<meta name="description" content="Design your green building project in 3D. Configure hempcrete structures, preview in real time, and export construction-ready files.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+  }
+}
+</script>
+
+<style>
+:root {
+  --green:      #1F3A2E;
+  --green-mid:  #2C4F3B;
+  --green-soft: #4A7C5E;
+  --clay:       #C2A56C;
+  --clay-dark:  #8A5B3F;
+  --moss:       #7e9b73;
+  --parchment:  #F2EFE6;
+  --parchment2: #EAE3D3;
+  --ink:        #2B2E30;
+  --ink-soft:   #555A5C;
+  --ink40:      rgba(43,46,48,0.4);
+  --line:       rgba(43,46,48,0.12);
+  --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+  --radius:     12px;
+  --radius-sm:  8px;
+  --shadow:     0 8px 32px rgba(0,0,0,0.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--parchment);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Page Hero ── */
+.page-hero {
+  background: linear-gradient(158deg, #0b1a12 0%, #1F3A2E 55%, #2a4d3a 100%);
+  padding: 7rem 2rem 2.5rem;
+  text-align: center;
+}
+.page-hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: var(--parchment);
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.page-hero p {
+  color: rgba(242,239,230,0.6);
+  font-size: 0.95rem;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+/* ── Designer Layout ── */
+.designer-layout {
+  max-width: 1400px;
+  margin: 1.25rem auto 0;
+  padding: 0 1rem 3rem;
+  display: grid;
+  grid-template-columns: 310px 1fr 270px;
+  gap: 1rem;
+  min-height: calc(100vh - 200px);
+}
+@media (max-width: 1100px) {
+  .designer-layout { grid-template-columns: 280px 1fr; }
+  .panel-right { display: none; }
+}
+@media (max-width: 780px) {
+  .designer-layout { grid-template-columns: 1fr; }
+  .viewport-wrap { min-height: 400px; }
+}
+
+/* ── Panels ── */
+.panel {
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.panel-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-label {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--ink40); font-weight: 600;
+}
+.panel-body {
+  padding: 14px 16px 16px;
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+}
+.panel-body::-webkit-scrollbar { width: 4px; }
+.panel-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+/* ── Stepper ── */
+.stepper { display: flex; gap: 2px; margin-bottom: 16px; }
+.step-dot {
+  flex: 1; height: 4px; border-radius: 2px;
+  background: var(--line); transition: 0.3s; cursor: pointer;
+}
+.step-dot.active { background: var(--green-mid); }
+.step-dot.done { background: var(--moss); opacity: 0.5; }
+.step-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-weight: 600; margin-bottom: 3px;
+}
+.step-desc { font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 14px; }
+.step-content { display: none; }
+.step-content.active { display: block; }
+
+/* ── Form Controls ── */
+.field { margin-bottom: 12px; }
+.field-label {
+  display: block; font-size: 0.7rem; font-weight: 600;
+  color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.field select, .field input[type="number"], .field input[type="text"] {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.6); font: inherit; font-size: 0.85rem;
+  color: var(--ink); transition: 0.2s;
+}
+.field select:focus, .field input:focus {
+  outline: none; border-color: var(--green-soft);
+  box-shadow: 0 0 0 3px rgba(74,124,94,0.12);
+}
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+/* Range */
+.range-wrap { position: relative; }
+.range-val {
+  position: absolute; right: 0; top: -2px;
+  font-size: 0.75rem; font-weight: 600; color: var(--green-mid);
+}
+input[type="range"] {
+  -webkit-appearance: none; width: 100%; height: 5px;
+  background: linear-gradient(90deg, var(--green-mid), var(--green-soft));
+  border-radius: 3px; outline: none; margin-top: 6px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px;
+  border-radius: 50%; background: #fff; border: 2px solid var(--green-mid);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15); cursor: pointer;
+}
+
+/* Chips */
+.chip-group { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: rgba(255,255,255,0.5);
+  font-size: 0.78rem; color: var(--ink-soft); cursor: pointer;
+  transition: 0.2s; user-select: none;
+}
+.chip:hover { border-color: var(--green-soft); background: rgba(74,124,94,0.08); }
+.chip.selected {
+  background: var(--green-mid); color: #fff; border-color: var(--green-mid);
+  box-shadow: 0 2px 8px rgba(45,91,69,0.2);
+}
+
+/* ── Viewport ── */
+.viewport-wrap {
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, #e4e8de, #d0d5c8);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  min-height: 520px;
+  position: relative;
+}
+.viewport-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.5);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.75rem; color: var(--ink-soft);
+  z-index: 2; position: relative;
+  flex-shrink: 0;
+}
+.vp-tools { display: flex; gap: 3px; }
+.vp-btn {
+  height: 30px; padding: 0 10px; border-radius: 6px;
+  border: 1px solid var(--line); background: rgba(255,255,255,0.6);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: 0.2s; font-size: 0.75rem; color: var(--ink-soft);
+}
+.vp-btn:hover { background: rgba(255,255,255,0.9); border-color: var(--green-soft); }
+.vp-btn.active { background: var(--green-mid); color: #fff; border-color: var(--green-mid); }
+#viewport-canvas {
+  flex: 1;
+  position: relative;
+  cursor: grab;
+}
+#viewport-canvas:active { cursor: grabbing; }
+#viewport-canvas canvas { display: block; }
+.viewport-info {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; gap: 10px;
+  background: rgba(255,255,255,0.5);
+  border-top: 1px solid var(--line);
+  font-size: 0.72rem; color: var(--ink-soft);
+  z-index: 2; position: relative;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.dim-tag {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 8px; border-radius: 5px;
+  background: rgba(45,91,69,0.08); color: var(--green-mid);
+  font-weight: 600; font-size: 0.7rem;
+}
+
+/* ── Right Panel Outputs ── */
+.output-block {
+  padding: 12px; margin-bottom: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.4);
+}
+.output-title {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--ink40); font-weight: 600; margin-bottom: 6px;
+}
+.output-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.78rem; padding: 2px 0;
+}
+.output-row .val { font-weight: 600; color: var(--green-mid); }
+.divider {
+  height: 1px; margin: 12px 0;
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
+}
+
+/* ── Nav Buttons ── */
+.step-nav { display: flex; gap: 8px; margin-top: 14px; }
+.step-btn {
+  flex: 1; padding: 10px 14px; border-radius: var(--radius-sm);
+  border: 1px solid var(--line); background: rgba(255,255,255,0.5);
+  font: inherit; font-size: 0.82rem; font-weight: 600;
+  color: var(--ink-soft); cursor: pointer; transition: 0.2s;
+}
+.step-btn:hover { background: rgba(255,255,255,0.8); border-color: var(--green-soft); }
+.step-btn.primary { background: var(--green-mid); color: #fff; border-color: var(--green-mid); }
+.step-btn.primary:hover { background: var(--green-soft); }
+
+/* ── Export Buttons ── */
+.export-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line); background: rgba(255,255,255,0.5);
+  font: inherit; font-size: 0.82rem; font-weight: 600;
+  color: var(--ink-soft); cursor: pointer; transition: 0.2s;
+  margin-bottom: 6px;
+}
+.export-btn:hover { background: rgba(255,255,255,0.8); border-color: var(--green-soft); }
+.export-btn.primary { background: var(--green-mid); color: #fff; border-color: var(--green-mid); }
+.export-btn.primary:hover { background: var(--green-soft); }
+
+/* ── Annotations ── */
+.annotation {
+  position: absolute; z-index: 5;
+  display: flex; align-items: center; gap: 5px;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.annot-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(45,91,69,0.2);
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(45,91,69,0.2); }
+  50% { box-shadow: 0 0 0 7px rgba(45,91,69,0.06); }
+}
+.annot-label {
+  font-size: 0.65rem; font-weight: 600;
+  background: rgba(255,255,255,0.88);
+  padding: 2px 7px; border-radius: 5px;
+  color: var(--ink-soft);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Need Items ── */
+.need-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; margin-bottom: 5px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.4);
+  font-size: 0.78rem;
+}
+.need-icon {
+  width: 26px; height: 26px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; flex-shrink: 0;
+}
+.need-icon.skill { background: #e0ecf7; }
+.need-icon.resource { background: #f0e6d7; }
+.need-icon.people { background: #e0f0e4; }
+.need-name { flex: 1; }
+.need-status {
+  font-size: 0.62rem; font-weight: 600; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 4px;
+}
+.need-status.open { background: rgba(212,160,74,0.15); color: var(--clay-dark); }
+
+/* ── Disclaimer ── */
+.disclaimer {
+  margin-top: 10px; padding: 10px;
+  background: rgba(160,64,64,0.06);
+  border: 1px solid rgba(160,64,64,0.12);
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem; color: var(--ink-soft);
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<!-- ── Hero ── -->
+<section class="page-hero">
+  <h1>Project Designer</h1>
+  <p>Configure your structure, preview in 3D, and generate construction-ready outputs.</p>
+</section>
+
+<!-- ── Designer Layout ── -->
+<div class="designer-layout">
+
+  <!-- ═══ LEFT PANEL: Configuration ═══ -->
+  <div class="panel panel-left">
+    <div class="panel-header">
+      <span class="panel-label">Configure</span>
+      <span class="panel-label" id="stepIndicator">Step 1 / 5</span>
+    </div>
+    <div class="panel-body">
+
+      <div class="stepper" id="stepper"></div>
+
+      <!-- Step 1: Foundation & Type -->
+      <div class="step-content active" data-step="1">
+        <div class="step-label">1 — Foundation & Type</div>
+        <div class="step-desc">Building archetype, construction method, and footprint</div>
+
+        <div class="field">
+          <label class="field-label">Building Type</label>
+          <select id="buildType">
+            <option value="dwelling">Single Dwelling (1-2 story)</option>
+            <option value="multi">Multi-Unit Housing</option>
+            <option value="community">Community Building</option>
+            <option value="workshop">Workshop / Maker Space</option>
+            <option value="greenhouse">Greenhouse / Growing</option>
+            <option value="tiny">Tiny Home / Emergency Shelter</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Construction Method</label>
+          <div class="chip-group" data-key="constructionMethod" data-mode="single">
+            <span class="chip selected" data-val="3d-printed">3D Printed Hempcrete</span>
+            <span class="chip" data-val="manual">Manual Hempcrete</span>
+            <span class="chip" data-val="hybrid">Hybrid</span>
+            <span class="chip" data-val="conventional">Conventional+Hemp</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Foundation Type</label>
+          <select id="foundationType">
+            <option value="lime-slab">Lime-Based Slab</option>
+            <option value="pier-beam">Pier & Beam (Hemp Timber)</option>
+            <option value="rubble-trench">Rubble Trench</option>
+            <option value="earthbag">Earthbag Stem Wall</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Length (ft)</label>
+            <input type="number" id="dimL" value="40" min="10" max="120">
+          </div>
+          <div class="field">
+            <label class="field-label">Width (ft)</label>
+            <input type="number" id="dimW" value="28" min="10" max="80">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Stories</label>
+          <div class="chip-group" data-key="stories" data-mode="single">
+            <span class="chip selected" data-val="1">1</span>
+            <span class="chip" data-val="1.5">1.5</span>
+            <span class="chip" data-val="2">2</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Wall Thickness</label>
+          <div class="range-wrap">
+            <span class="range-val" id="wallVal">12"</span>
+            <input type="range" id="wallThickness" min="8" max="24" value="12" step="2">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Interior Layout -->
+      <div class="step-content" data-step="2">
+        <div class="step-label">2 — Interior Layout</div>
+        <div class="step-desc">Room configuration and floor plan arrangement</div>
+
+        <div class="field">
+          <label class="field-label">Bedrooms</label>
+          <div class="chip-group" data-key="bedrooms" data-mode="single">
+            <span class="chip" data-val="0">Studio</span>
+            <span class="chip" data-val="1">1</span>
+            <span class="chip selected" data-val="2">2</span>
+            <span class="chip" data-val="3">3</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Bathrooms</label>
+          <div class="chip-group" data-key="bathrooms" data-mode="single">
+            <span class="chip selected" data-val="1">1</span>
+            <span class="chip" data-val="1.5">1.5</span>
+            <span class="chip" data-val="2">2</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Kitchen Style</label>
+          <select id="kitchenStyle">
+            <option value="open">Open to Living</option>
+            <option value="separated">Separated Kitchen</option>
+            <option value="galley">Galley</option>
+            <option value="outdoor">Outdoor / Summer Kitchen</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Additional Spaces</label>
+          <div class="chip-group" data-key="additionalSpaces" data-mode="multi">
+            <span class="chip" data-val="pantry">Pantry</span>
+            <span class="chip" data-val="mudroom">Mudroom</span>
+            <span class="chip selected" data-val="porch">Porch</span>
+            <span class="chip" data-val="root-cellar">Root Cellar</span>
+            <span class="chip" data-val="workshop">Workshop</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Roof & Energy -->
+      <div class="step-content" data-step="3">
+        <div class="step-label">3 — Roof & Energy</div>
+        <div class="step-desc">Roofing system, solar, and climate planning</div>
+
+        <div class="field">
+          <label class="field-label">Roof Type</label>
+          <div class="chip-group" data-key="roofType" data-mode="single">
+            <span class="chip selected" data-val="metal">Metal (100yr)</span>
+            <span class="chip" data-val="living">Living Roof</span>
+            <span class="chip" data-val="thatch">Hemp Thatch</span>
+            <span class="chip" data-val="hybrid">Hybrid</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Roof Pitch</label>
+          <div class="range-wrap">
+            <span class="range-val" id="pitchVal">6/12</span>
+            <input type="range" id="roofPitch" min="2" max="12" value="6">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Solar Integration</label>
+          <div class="chip-group" data-key="solarIntegration" data-mode="single">
+            <span class="chip" data-val="none">None</span>
+            <span class="chip selected" data-val="shingles">Solar Shingles</span>
+            <span class="chip" data-val="panel-ready">Panel-Ready Rails</span>
+            <span class="chip" data-val="full-array">Full Array</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Climate Zone</label>
+          <select id="climateZone">
+            <option value="hot-arid">Hot-Arid</option>
+            <option value="hot-humid">Hot-Humid</option>
+            <option value="mixed-humid" selected>Mixed-Humid</option>
+            <option value="cold">Cold</option>
+            <option value="very-cold">Very Cold</option>
+            <option value="marine">Marine</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Step 4: Materials & Finish -->
+      <div class="step-content" data-step="4">
+        <div class="step-label">4 — Materials & Finish</div>
+        <div class="step-desc">Interior and exterior material selections</div>
+
+        <div class="field">
+          <label class="field-label">Exterior Finish</label>
+          <div class="chip-group" data-key="exteriorFinish" data-mode="single">
+            <span class="chip selected" data-val="lime-plaster">Lime Plaster</span>
+            <span class="chip" data-val="exposed">Exposed Hempcrete</span>
+            <span class="chip" data-val="hemp-board">Hemp Board + Plaster</span>
+            <span class="chip" data-val="reclaimed-wood">Reclaimed Wood</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Interior Walls</label>
+          <div class="chip-group" data-key="interiorWalls" data-mode="single">
+            <span class="chip selected" data-val="clay-plaster">Clay Plaster</span>
+            <span class="chip" data-val="lime-plaster">Lime Plaster</span>
+            <span class="chip" data-val="hemp-panel">Hemp Paneling</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Flooring</label>
+          <div class="chip-group" data-key="flooring" data-mode="single">
+            <span class="chip selected" data-val="hemp-fiber">Hemp Fiber</span>
+            <span class="chip" data-val="concrete">Polished Concrete</span>
+            <span class="chip" data-val="hardwood">Reclaimed Hardwood</span>
+            <span class="chip" data-val="earthen">Earthen</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Window Style</label>
+          <select id="windowStyle">
+            <option value="double-hung">Standard Double-Hung</option>
+            <option value="casement" selected>Casement (passive ventilation)</option>
+            <option value="clerestory">Clerestory</option>
+            <option value="large-fixed">Large Fixed + Operable</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Step 5: Export -->
+      <div class="step-content" data-step="5">
+        <div class="step-label">5 — Export & Publish</div>
+        <div class="step-desc">Download your design files and create a project</div>
+
+        <button class="export-btn primary" id="exportGltf">
+          <span>&#x2B21;</span> Export 3D Model (glTF)
+        </button>
+        <button class="export-btn" id="exportBom">
+          <span>&#x1F4CB;</span> Export Bill of Materials (CSV)
+        </button>
+        <button class="export-btn" id="exportConfig">
+          <span>&#x1F4BE;</span> Save Design Config (JSON)
+        </button>
+
+        <div class="divider"></div>
+        <div class="output-title">Coming Soon</div>
+        <button class="export-btn" disabled style="opacity:0.5;">
+          <span>&#x2B21;</span> Export IFC (BIM Standard)
+        </button>
+        <button class="export-btn" disabled style="opacity:0.5;">
+          <span>&#x25C8;</span> Create Earthback Project
+        </button>
+        <button class="export-btn" disabled style="opacity:0.5;">
+          <span>&#x1F4D0;</span> Export Floor Plan (SVG)
+        </button>
+
+        <div class="disclaimer">
+          Estimates are for planning purposes only and are not structural engineering or professional quotes.
+          Always consult a licensed professional before construction.
+        </div>
+      </div>
+
+      <!-- Step Nav -->
+      <div class="step-nav">
+        <button class="step-btn" id="prevBtn" style="display:none;">&#8592; Back</button>
+        <button class="step-btn primary" id="nextBtn">Next &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CENTER: 3D Viewport ═══ -->
+  <div class="viewport-wrap">
+    <div class="viewport-toolbar">
+      <div class="vp-tools">
+        <button class="vp-btn active" data-view="3d">3D</button>
+        <button class="vp-btn" data-view="front">Front</button>
+        <button class="vp-btn" data-view="top">Top</button>
+        <button class="vp-btn" data-view="side">Side</button>
+      </div>
+      <div style="font-size:0.7rem; opacity:0.5;">Drag to orbit &middot; Scroll to zoom</div>
+    </div>
+    <div id="viewport-canvas">
+      <!-- Annotations overlaid here -->
+      <div class="annotation" id="annotRoof" style="top:18%;left:55%;">
+        <div class="annot-dot"></div>
+        <div class="annot-label" id="annotRoofLabel">Metal Roof + Solar Shingles</div>
+      </div>
+      <div class="annotation" id="annotWall" style="top:45%;left:15%;">
+        <div class="annot-dot"></div>
+        <div class="annot-label" id="annotWallLabel">12" Hempcrete — R-29</div>
+      </div>
+      <div class="annotation" id="annotFoundation" style="top:72%;left:50%;">
+        <div class="annot-dot"></div>
+        <div class="annot-label" id="annotFoundationLabel">Lime Slab Foundation</div>
+      </div>
+    </div>
+    <div class="viewport-info">
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <span class="dim-tag" id="dimTag">40' x 28'</span>
+        <span class="dim-tag" id="sqftTag">1,120 sq ft</span>
+        <span class="dim-tag" id="storyTag">1 Story</span>
+      </div>
+      <div style="display:flex; gap:4px;">
+        <span class="dim-tag" style="background:rgba(42,108,184,0.1); color:#2a6cb8;">glTF 2.0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ RIGHT PANEL: Summary ═══ -->
+  <div class="panel panel-right">
+    <div class="panel-header">
+      <span class="panel-label">Live Summary</span>
+    </div>
+    <div class="panel-body">
+
+      <div class="output-block">
+        <div class="output-title">Material Estimates</div>
+        <div class="output-row"><span>Hempcrete Volume</span><span class="val" id="outHempcrete">~38 yd³</span></div>
+        <div class="output-row"><span>Hemp Hurd</span><span class="val" id="outHurd">~8.4 tons</span></div>
+        <div class="output-row"><span>Lime Binder</span><span class="val" id="outLime">~4.2 tons</span></div>
+        <div class="output-row"><span>Metal Roofing</span><span class="val" id="outRoof">~1,320 sq ft</span></div>
+        <div class="output-row"><span>Solar Coverage</span><span class="val" id="outSolar">~480 sq ft</span></div>
+      </div>
+
+      <div class="output-block">
+        <div class="output-title">Performance</div>
+        <div class="output-row"><span>Wall R-Value</span><span class="val" id="outRval">R-29</span></div>
+        <div class="output-row"><span>Carbon Stored</span><span class="val" id="outCarbon">-14.2 tCO₂</span></div>
+        <div class="output-row"><span>Fire Rating</span><span class="val">2hr+</span></div>
+        <div class="output-row"><span>Est. Lifespan</span><span class="val">250+ yr</span></div>
+        <div class="output-row"><span>Solar Output</span><span class="val" id="outSolarKw">~6.4 kW</span></div>
+      </div>
+
+      <div class="output-block">
+        <div class="output-title">Cost Estimate</div>
+        <div class="output-row"><span>Materials</span><span class="val" id="outCostMat">$68,000</span></div>
+        <div class="output-row"><span>Labor (community)</span><span class="val" id="outCostLabor">$22,000</span></div>
+        <div class="output-row"><span>Equipment</span><span class="val" id="outCostEquip">$15,000</span></div>
+        <div class="output-row" style="border-top:1px solid var(--line); padding-top:5px; margin-top:3px;">
+          <span style="font-weight:600;">Total Estimate</span>
+          <span class="val" id="outCostTotal" style="font-size:0.9rem;">$105,000</span>
+        </div>
+        <div class="output-row"><span>Per sq ft</span><span class="val" id="outCostSqft">~$94</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="output-title">Auto-Generated Needs</div>
+      <div id="needsList">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="disclaimer">
+        Planning estimates only — not structural engineering or professional quotes.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/footer.js"></script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+
+// ═══════════════════════════════════════
+// CONFIG STATE
+// ═══════════════════════════════════════
+const config = {
+  buildType: 'dwelling',
+  constructionMethod: '3d-printed',
+  foundationType: 'lime-slab',
+  length: 40,
+  width: 28,
+  stories: 1,
+  wallThickness: 12,
+  bedrooms: 2,
+  bathrooms: 1,
+  kitchenStyle: 'open',
+  additionalSpaces: ['porch'],
+  roofType: 'metal',
+  roofPitch: 6,
+  solarIntegration: 'shingles',
+  climateZone: 'mixed-humid',
+  exteriorFinish: 'lime-plaster',
+  interiorWalls: 'clay-plaster',
+  flooring: 'hemp-fiber',
+  windowStyle: 'casement'
+};
+
+// ═══════════════════════════════════════
+// MATERIAL COLORS
+// ═══════════════════════════════════════
+const COLORS = {
+  walls: {
+    'lime-plaster':   0xe8dcc8,
+    'exposed':        0xd4c49a,
+    'hemp-board':     0xddd0b8,
+    'reclaimed-wood': 0x8b6e4e
+  },
+  roof: {
+    'metal':  0x6a7a6a,
+    'living': 0x5a7a4a,
+    'thatch': 0xb8a060,
+    'hybrid': 0x7a8a5a
+  },
+  foundation: 0x999999,
+  ground:     0x8aaa78,
+  glass:      0x88bbdd,
+  solar:      0x2a3a5a,
+  door:       0x5a3a2a,
+  interior:   0xf0e8d8
+};
+
+// ═══════════════════════════════════════
+// THREE.JS SCENE
+// ═══════════════════════════════════════
+let scene, camera, renderer, controls;
+let buildingGroup = null;
+const container = document.getElementById('viewport-canvas');
+
+function initScene() {
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xd8ddd0);
+  scene.fog = new THREE.Fog(0xd8ddd0, 120, 250);
+
+  camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.5, 500);
+  camera.position.set(55, 45, 55);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.1;
+  container.appendChild(renderer.domElement);
+
+  // Controls
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 8, 0);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.maxPolarAngle = Math.PI / 2.1;
+  controls.minDistance = 20;
+  controls.maxDistance = 150;
+  controls.update();
+
+  // Lights
+  const ambient = new THREE.AmbientLight(0xfff8f0, 0.5);
+  scene.add(ambient);
+
+  const sun = new THREE.DirectionalLight(0xfff5e0, 1.2);
+  sun.position.set(40, 60, 30);
+  sun.castShadow = true;
+  sun.shadow.mapSize.width = 2048;
+  sun.shadow.mapSize.height = 2048;
+  sun.shadow.camera.near = 1;
+  sun.shadow.camera.far = 200;
+  sun.shadow.camera.left = -80;
+  sun.shadow.camera.right = 80;
+  sun.shadow.camera.top = 80;
+  sun.shadow.camera.bottom = -80;
+  sun.shadow.bias = -0.001;
+  scene.add(sun);
+
+  const fill = new THREE.DirectionalLight(0xc8d8f0, 0.3);
+  fill.position.set(-20, 30, -20);
+  scene.add(fill);
+
+  // Ground
+  const groundGeo = new THREE.PlaneGeometry(200, 200);
+  const groundMat = new THREE.MeshStandardMaterial({
+    color: COLORS.ground,
+    roughness: 0.9, metalness: 0
+  });
+  const ground = new THREE.Mesh(groundGeo, groundMat);
+  ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  // Grid
+  const grid = new THREE.GridHelper(200, 100, 0x668855, 0x668855);
+  grid.material.opacity = 0.12;
+  grid.material.transparent = true;
+  grid.position.y = 0.01;
+  scene.add(grid);
+
+  // Resize
+  window.addEventListener('resize', onResize);
+  new ResizeObserver(onResize).observe(container);
+}
+
+function onResize() {
+  const w = container.clientWidth;
+  const h = container.clientHeight;
+  if (w === 0 || h === 0) return;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+// ═══════════════════════════════════════
+// BUILDING GENERATOR
+// ═══════════════════════════════════════
+function getWallHeight(stories) {
+  if (stories >= 2) return 18;
+  if (stories >= 1.5) return 13;
+  return 9;
+}
+
+function makeBox(w, h, d, color, x, y, z) {
+  const geo = new THREE.BoxGeometry(w, h, d);
+  const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.75, metalness: 0.02 });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(x, y, z);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  return mesh;
+}
+
+function buildModel() {
+  if (buildingGroup) {
+    scene.remove(buildingGroup);
+    buildingGroup.traverse(child => {
+      if (child.geometry) child.geometry.dispose();
+      if (child.material) {
+        if (Array.isArray(child.material)) child.material.forEach(m => m.dispose());
+        else child.material.dispose();
+      }
+    });
+  }
+
+  buildingGroup = new THREE.Group();
+  const L = config.length;
+  const W = config.width;
+  const H = getWallHeight(config.stories);
+  const T = config.wallThickness / 12;
+  const wallColor = COLORS.walls[config.exteriorFinish] || 0xd4c49a;
+  const roofColor = COLORS.roof[config.roofType] || 0x6a7a6a;
+
+  // ── Foundation ──
+  const fndH = 0.8;
+  buildingGroup.add(makeBox(L + 2, fndH, W + 2, COLORS.foundation, 0, fndH / 2, 0));
+
+  // ── Walls ── (4 walls with thickness, centered at origin)
+  const baseY = fndH;
+  // Front wall (along X, at -W/2)
+  buildingGroup.add(makeBox(L, H, T, wallColor, 0, baseY + H / 2, -W / 2 + T / 2));
+  // Back wall
+  buildingGroup.add(makeBox(L, H, T, wallColor, 0, baseY + H / 2, W / 2 - T / 2));
+  // Left wall (along Z, at -L/2)
+  buildingGroup.add(makeBox(T, H, W - 2 * T, wallColor, -L / 2 + T / 2, baseY + H / 2, 0));
+  // Right wall
+  buildingGroup.add(makeBox(T, H, W - 2 * T, wallColor, L / 2 - T / 2, baseY + H / 2, 0));
+
+  // ── Interior floor ──
+  buildingGroup.add(makeBox(L - 2 * T, 0.15, W - 2 * T, COLORS.interior, 0, baseY + 0.075, 0));
+
+  // ── Windows ── (front and back walls)
+  const winH = 4;
+  const winW = 3;
+  const winD = T + 0.3;
+  const winY = baseY + H * 0.45;
+  const glassMat = new THREE.MeshStandardMaterial({
+    color: COLORS.glass, roughness: 0.1, metalness: 0.2,
+    transparent: true, opacity: 0.5
+  });
+
+  const numWins = Math.max(2, Math.floor(L / 12));
+  const spacing = L / (numWins + 1);
+  for (let i = 1; i <= numWins; i++) {
+    const wx = -L / 2 + spacing * i;
+    // Front windows
+    const wf = new THREE.Mesh(new THREE.BoxGeometry(winW, winH, 0.15), glassMat);
+    wf.position.set(wx, winY, -W / 2 + 0.05);
+    wf.castShadow = false;
+    buildingGroup.add(wf);
+    // Back windows
+    const wb = wf.clone();
+    wb.position.set(wx, winY, W / 2 - 0.05);
+    buildingGroup.add(wb);
+  }
+
+  // Side windows (fewer)
+  const sideWins = Math.max(1, Math.floor(W / 16));
+  const sideSpacing = W / (sideWins + 1);
+  for (let i = 1; i <= sideWins; i++) {
+    const wz = -W / 2 + sideSpacing * i;
+    const ws1 = new THREE.Mesh(new THREE.BoxGeometry(0.15, winH, winW), glassMat);
+    ws1.position.set(-L / 2 + 0.05, winY, wz);
+    buildingGroup.add(ws1);
+    const ws2 = ws1.clone();
+    ws2.position.set(L / 2 - 0.05, winY, wz);
+    buildingGroup.add(ws2);
+  }
+
+  // ── Door ──
+  const doorW = 3.5;
+  const doorH = 7;
+  const doorMat = new THREE.MeshStandardMaterial({ color: COLORS.door, roughness: 0.6 });
+  const door = new THREE.Mesh(new THREE.BoxGeometry(doorW, doorH, 0.2), doorMat);
+  door.position.set(0, baseY + doorH / 2, -W / 2 + 0.05);
+  buildingGroup.add(door);
+
+  // ── Roof ── (gable)
+  const pitchRatio = config.roofPitch / 12;
+  const roofRise = (W / 2) * pitchRatio;
+  const overhang = 2;
+  const roofL = L + overhang * 2;
+  const halfW = W / 2 + overhang;
+  const slopeLen = Math.sqrt(halfW * halfW + roofRise * roofRise);
+  const ridgeY = baseY + H + roofRise;
+
+  const roofMat = new THREE.MeshStandardMaterial({
+    color: roofColor, roughness: 0.65, metalness: 0.15,
+    side: THREE.DoubleSide
+  });
+
+  // Two roof planes
+  const roofGeo = new THREE.PlaneGeometry(roofL, slopeLen);
+  const roofAngle = Math.atan2(roofRise, halfW);
+
+  const roofLeft = new THREE.Mesh(roofGeo, roofMat);
+  roofLeft.position.set(0, baseY + H + roofRise / 2, -halfW / 2 + overhang / 2);
+  roofLeft.rotation.x = -(Math.PI / 2 - roofAngle);
+  roofLeft.castShadow = true;
+  roofLeft.receiveShadow = true;
+  buildingGroup.add(roofLeft);
+
+  const roofRight = new THREE.Mesh(roofGeo, roofMat);
+  roofRight.position.set(0, baseY + H + roofRise / 2, halfW / 2 - overhang / 2);
+  roofRight.rotation.x = (Math.PI / 2 - roofAngle);
+  roofRight.castShadow = true;
+  roofRight.receiveShadow = true;
+  buildingGroup.add(roofRight);
+
+  // Gable end triangles (front and back)
+  const gableShape = new THREE.Shape();
+  gableShape.moveTo(-W / 2, 0);
+  gableShape.lineTo(W / 2, 0);
+  gableShape.lineTo(0, roofRise);
+  gableShape.closePath();
+  const gableGeo = new THREE.ShapeGeometry(gableShape);
+  const gableMat = new THREE.MeshStandardMaterial({ color: wallColor, roughness: 0.75, side: THREE.DoubleSide });
+
+  const gableFront = new THREE.Mesh(gableGeo, gableMat);
+  gableFront.position.set(-L / 2, baseY + H, 0);
+  gableFront.rotation.y = Math.PI / 2;
+  gableFront.castShadow = true;
+  buildingGroup.add(gableFront);
+
+  const gableBack = new THREE.Mesh(gableGeo, gableMat);
+  gableBack.position.set(L / 2, baseY + H, 0);
+  gableBack.rotation.y = -Math.PI / 2;
+  gableBack.castShadow = true;
+  buildingGroup.add(gableBack);
+
+  // ── Solar Panels ──
+  if (config.solarIntegration !== 'none') {
+    const solarMat = new THREE.MeshStandardMaterial({
+      color: COLORS.solar, roughness: 0.3, metalness: 0.6
+    });
+    const panelRows = config.solarIntegration === 'full-array' ? 4 : 2;
+    const panelW = 5;
+    const panelH = 3;
+    const numPanels = Math.floor((roofL - 4) / (panelW + 1));
+    for (let r = 0; r < panelRows; r++) {
+      for (let i = 0; i < numPanels; i++) {
+        const px = -roofL / 2 + 3 + i * (panelW + 1);
+        const pr = (r + 1) / (panelRows + 1);
+        const py = baseY + H + roofRise * (1 - pr) + 0.15;
+        const pz = -halfW * pr + overhang * pr / 2;
+        const panel = new THREE.Mesh(new THREE.BoxGeometry(panelW, 0.12, panelH), solarMat);
+        panel.position.set(px + panelW / 2, py, pz - panelH / 2);
+        panel.rotation.x = -(Math.PI / 2 - roofAngle);
+        panel.castShadow = true;
+        buildingGroup.add(panel);
+      }
+    }
+  }
+
+  // ── Porch ── (if selected)
+  if (config.additionalSpaces && config.additionalSpaces.includes('porch')) {
+    const porchD = 6;
+    const porchH = 8;
+    // Porch floor
+    buildingGroup.add(makeBox(L * 0.6, 0.3, porchD, 0x8b6e4e, 0, fndH + 0.15, -W / 2 - porchD / 2));
+    // Porch posts
+    const postMat = new THREE.MeshStandardMaterial({ color: 0x6a5a3e, roughness: 0.7 });
+    const postGeo = new THREE.CylinderGeometry(0.25, 0.3, porchH, 8);
+    const postPositions = [
+      [-L * 0.28, fndH + porchH / 2, -W / 2 - porchD + 0.5],
+      [L * 0.28, fndH + porchH / 2, -W / 2 - porchD + 0.5]
+    ];
+    postPositions.forEach(([px, py, pz]) => {
+      const post = new THREE.Mesh(postGeo, postMat);
+      post.position.set(px, py, pz);
+      post.castShadow = true;
+      buildingGroup.add(post);
+    });
+    // Porch roof
+    buildingGroup.add(makeBox(L * 0.62, 0.2, porchD + 0.5, roofColor, 0, fndH + porchH, -W / 2 - porchD / 2));
+  }
+
+  scene.add(buildingGroup);
+  updateCalculations();
+  updateAnnotations();
+}
+
+// ═══════════════════════════════════════
+// CALCULATIONS
+// ═══════════════════════════════════════
+function updateCalculations() {
+  const L = config.length;
+  const W = config.width;
+  const stories = config.stories;
+  const H = getWallHeight(stories);
+  const T_ft = config.wallThickness / 12;
+  const sqft = Math.round(L * W * (stories >= 2 ? 2 : stories >= 1.5 ? 1.5 : 1));
+
+  const perimeter = 2 * (L + W);
+  const grossWallVol = perimeter * H * T_ft;
+  const netWallVol = grossWallVol * 0.85; // 15% window deduction
+  const wallVolYd = netWallVol / 27;
+
+  const hempHurd = wallVolYd * 0.22;
+  const limeBinder = wallVolYd * 0.11;
+  const rValue = Math.round(config.wallThickness * 2.4);
+
+  const pitchRatio = config.roofPitch / 12;
+  const roofRise = (W / 2) * pitchRatio;
+  const slopeLen = Math.sqrt((W / 2) ** 2 + roofRise ** 2);
+  const roofArea = Math.round(2 * (L + 4) * slopeLen);
+
+  const solarFrac = config.solarIntegration === 'full-array' ? 0.7 :
+                    config.solarIntegration === 'shingles' ? 0.4 :
+                    config.solarIntegration === 'panel-ready' ? 0.5 : 0;
+  const solarArea = Math.round(roofArea * solarFrac);
+  const solarKw = (solarArea * 0.02).toFixed(1);
+
+  const carbonStored = (wallVolYd * 0.37).toFixed(1);
+
+  const matCost = Math.round(wallVolYd * 800 + roofArea * 12 + solarArea * 25 + sqft * 15);
+  const laborCost = Math.round(sqft * 20);
+  const equipCost = config.constructionMethod === '3d-printed' ? 15000 : 5000;
+  const totalCost = matCost + laborCost + equipCost;
+  const costSqft = Math.round(totalCost / sqft);
+
+  // Update DOM
+  const $ = id => document.getElementById(id);
+  $('dimTag').textContent = L + "' x " + W + "'";
+  $('sqftTag').textContent = sqft.toLocaleString() + ' sq ft';
+  $('storyTag').textContent = stories + (stories === 1 ? ' Story' : ' Stories');
+
+  $('outHempcrete').textContent = '~' + Math.round(wallVolYd) + ' yd³';
+  $('outHurd').textContent = '~' + hempHurd.toFixed(1) + ' tons';
+  $('outLime').textContent = '~' + limeBinder.toFixed(1) + ' tons';
+  $('outRoof').textContent = '~' + roofArea.toLocaleString() + ' sq ft';
+  $('outSolar').textContent = solarArea > 0 ? '~' + solarArea.toLocaleString() + ' sq ft' : 'None';
+  $('outRval').textContent = 'R-' + rValue;
+  $('outCarbon').textContent = '-' + carbonStored + ' tCO₂';
+  $('outSolarKw').textContent = solarArea > 0 ? '~' + solarKw + ' kW' : 'N/A';
+  $('outCostMat').textContent = '$' + matCost.toLocaleString();
+  $('outCostLabor').textContent = '$' + laborCost.toLocaleString();
+  $('outCostEquip').textContent = '$' + equipCost.toLocaleString();
+  $('outCostTotal').textContent = '$' + totalCost.toLocaleString();
+  $('outCostSqft').textContent = '~$' + costSqft;
+
+  // Annotations
+  $('annotRoofLabel').textContent =
+    (config.roofType === 'metal' ? 'Metal Roof' :
+     config.roofType === 'living' ? 'Living Roof' :
+     config.roofType === 'thatch' ? 'Hemp Thatch Roof' : 'Hybrid Roof') +
+    (config.solarIntegration !== 'none' ? ' + Solar' : '');
+  $('annotWallLabel').textContent = config.wallThickness + '" Hempcrete — R-' + rValue;
+  $('annotFoundationLabel').textContent =
+    config.foundationType === 'lime-slab' ? 'Lime Slab Foundation' :
+    config.foundationType === 'pier-beam' ? 'Pier & Beam Foundation' :
+    config.foundationType === 'rubble-trench' ? 'Rubble Trench Foundation' :
+    'Earthbag Stem Wall';
+
+  // Needs list
+  updateNeeds(wallVolYd, hempHurd, limeBinder, solarArea);
+}
+
+function updateNeeds(wallVol, hurd, lime, solarArea) {
+  const needs = [];
+  if (config.constructionMethod === '3d-printed') {
+    needs.push({ icon: '🎓', type: 'skill', name: '3D Print Operator' });
+  }
+  needs.push({ icon: '🌿', type: 'resource', name: hurd.toFixed(1) + ' tons Hemp Hurd' });
+  needs.push({ icon: '�ite', type: 'resource', name: lime.toFixed(1) + ' tons Lime Binder' });
+  needs.push({ icon: '👷', type: 'people', name: 'Finish Crew (4-6)' });
+  if (solarArea > 0) {
+    needs.push({ icon: '⚡', type: 'skill', name: 'Solar Installer' });
+  }
+  needs.push({ icon: '📐', type: 'skill', name: 'Structural Review' });
+  needs.push({ icon: '🔩', type: 'resource', name: 'Metal Roofing' });
+
+  const list = document.getElementById('needsList');
+  list.innerHTML = needs.map(n => `
+    <div class="need-item">
+      <div class="need-icon ${n.type}">${n.icon}</div>
+      <div class="need-name">${n.name}</div>
+      <div class="need-status open">Need</div>
+    </div>
+  `).join('');
+}
+
+function updateAnnotations() {
+  // Annotations use CSS positioning; they stay as overlays
+  // Could project 3D positions later but static works for MVP
+}
+
+// ═══════════════════════════════════════
+// STEP NAVIGATION
+// ═══════════════════════════════════════
+const totalSteps = 5;
+let currentStep = 1;
+
+function initStepper() {
+  const stepper = document.getElementById('stepper');
+  for (let i = 1; i <= totalSteps; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i === 1 ? ' active' : '');
+    dot.dataset.step = i;
+    dot.addEventListener('click', () => goToStep(i));
+    stepper.appendChild(dot);
+  }
+}
+
+function goToStep(n) {
+  document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+  document.querySelector(`.step-content[data-step="${n}"]`).classList.add('active');
+  currentStep = n;
+
+  document.querySelectorAll('.step-dot').forEach((d, i) => {
+    d.className = 'step-dot';
+    if (i + 1 === n) d.classList.add('active');
+    else if (i + 1 < n) d.classList.add('done');
+  });
+
+  document.getElementById('prevBtn').style.display = n > 1 ? '' : 'none';
+  document.getElementById('nextBtn').textContent = n === totalSteps ? '✓ Finish' : 'Next →';
+  document.getElementById('stepIndicator').textContent = 'Step ' + n + ' / ' + totalSteps;
+}
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if (currentStep < totalSteps) goToStep(currentStep + 1);
+});
+document.getElementById('prevBtn').addEventListener('click', () => {
+  if (currentStep > 1) goToStep(currentStep - 1);
+});
+
+// ═══════════════════════════════════════
+// CHIP & FORM WIRING
+// ═══════════════════════════════════════
+document.querySelectorAll('.chip-group').forEach(group => {
+  const key = group.dataset.key;
+  const mode = group.dataset.mode;
+
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (mode === 'single') {
+        group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.toggle('selected');
+        config[key] = chip.dataset.val;
+        if (key === 'stories') config[key] = parseFloat(chip.dataset.val);
+      } else {
+        chip.classList.toggle('selected');
+        config[key] = Array.from(group.querySelectorAll('.chip.selected')).map(c => c.dataset.val);
+      }
+      buildModel();
+    });
+  });
+});
+
+// Selects
+['buildType', 'foundationType', 'kitchenStyle', 'climateZone', 'windowStyle'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', () => { config[id] = el.value; buildModel(); });
+});
+
+// Dimensions
+['dimL', 'dimW'].forEach(id => {
+  document.getElementById(id).addEventListener('input', function() {
+    config[id === 'dimL' ? 'length' : 'width'] = Math.max(10, parseInt(this.value) || 10);
+    buildModel();
+  });
+});
+
+// Wall thickness
+document.getElementById('wallThickness').addEventListener('input', function() {
+  config.wallThickness = parseInt(this.value);
+  document.getElementById('wallVal').textContent = this.value + '"';
+  buildModel();
+});
+
+// Roof pitch
+document.getElementById('roofPitch').addEventListener('input', function() {
+  config.roofPitch = parseInt(this.value);
+  document.getElementById('pitchVal').textContent = this.value + '/12';
+  buildModel();
+});
+
+// ═══════════════════════════════════════
+// VIEW PRESETS
+// ═══════════════════════════════════════
+document.querySelectorAll('.vp-btn[data-view]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.vp-btn[data-view]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const v = btn.dataset.view;
+    const L = config.length;
+    const W = config.width;
+    const H = getWallHeight(config.stories);
+    const dist = Math.max(L, W) * 1.5;
+
+    if (v === '3d') { camera.position.set(dist * 0.7, dist * 0.5, dist * 0.7); }
+    else if (v === 'front') { camera.position.set(0, H / 2 + 5, dist); }
+    else if (v === 'top') { camera.position.set(0, dist, 0.1); }
+    else if (v === 'side') { camera.position.set(dist, H / 2 + 5, 0); }
+
+    controls.target.set(0, H / 2, 0);
+    controls.update();
+  });
+});
+
+// ═══════════════════════════════════════
+// EXPORTS
+// ═══════════════════════════════════════
+document.getElementById('exportGltf').addEventListener('click', () => {
+  if (!buildingGroup) return;
+  const exporter = new GLTFExporter();
+  exporter.parse(buildingGroup, (result) => {
+    const blob = new Blob([result], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'earthback-design-' + config.length + 'x' + config.width + '.glb';
+    a.click();
+    URL.revokeObjectURL(url);
+  }, (err) => { console.error('glTF export error:', err); }, { binary: true });
+});
+
+document.getElementById('exportBom').addEventListener('click', () => {
+  const L = config.length; const W = config.width;
+  const H = getWallHeight(config.stories);
+  const T = config.wallThickness / 12;
+  const wallVol = (2 * (L + W) * H * T * 0.85 / 27);
+  const pitchRatio = config.roofPitch / 12;
+  const roofRise = (W / 2) * pitchRatio;
+  const slopeLen = Math.sqrt((W / 2) ** 2 + roofRise ** 2);
+  const roofArea = Math.round(2 * (L + 4) * slopeLen);
+
+  let csv = 'Material,Quantity,Unit\n';
+  csv += `Hempcrete,${wallVol.toFixed(1)},cubic yards\n`;
+  csv += `Hemp Hurd,${(wallVol * 0.22).toFixed(1)},tons\n`;
+  csv += `Lime Binder,${(wallVol * 0.11).toFixed(1)},tons\n`;
+  csv += `Roofing (${config.roofType}),${roofArea},sq ft\n`;
+  const sf = config.solarIntegration === 'full-array' ? 0.7 : config.solarIntegration === 'shingles' ? 0.4 : config.solarIntegration === 'panel-ready' ? 0.5 : 0;
+  if (sf > 0) csv += `Solar Panels,${Math.round(roofArea * sf)},sq ft\n`;
+  csv += `Foundation (${config.foundationType}),${Math.round(L * W)},sq ft\n`;
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'earthback-bom.csv'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('exportConfig').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'earthback-design-config.json'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+initStepper();
+initScene();
+buildModel();
+animate();
+
+</script>
+</body>
+</html>

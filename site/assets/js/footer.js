@@ -25,6 +25,7 @@
           <li><a href="circles.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Circles</a></li>
           <li><a href="visualizer.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Visualizer</a></li>
           <li><a href="gallery.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Gallery</a></li>
+          <li><a href="designer.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Designer</a></li>
         </ul>
       </div>
       <div>
