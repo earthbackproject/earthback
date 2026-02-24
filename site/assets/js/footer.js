@@ -42,6 +42,7 @@
           <li><a href="safety.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Safety &amp; Trust</a></li>
           <li><a href="terms.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Terms</a></li>
           <li><a href="privacy.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Privacy</a></li>
+          <li><a href="sitemap.html" style="font-size:0.84rem; color:rgba(242,239,230,0.45); text-decoration:none;">Site Map</a></li>
         </ul>
       </div>
     </div>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap — Earthback</title>
+    <meta name="description" content="Full site map of the Earthback Project — find every page, tool, and resource.">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --green:      #1F3A2E;
+            --green-mid:  #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay:       #C2A56C;
+            --clay-dark:  #8A5B3F;
+            --moss:       #7e9b73;
+            --parchment:  #F2EFE6;
+            --parchment2: #EAE3D3;
+            --ink:        #2B2E30;
+            --ink-soft:   #555A5C;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+            --max:        1100px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(20, 38, 28, 0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194, 165, 108, 0.12);
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--parchment); text-decoration: none;
+            letter-spacing: 0.1em; text-transform: uppercase;
+        }
+        .nav-logo .brand-back { color: var(--clay); }
+.brand-the {
+    font-size: 0.5em;
+    font-weight: 300;
+    color: rgba(242,239,230,0.52);
+    text-transform: lowercase;
+    letter-spacing: 0.03em;
+    vertical-align: 0.22em;
+    margin-right: 0.18em;
+}
+.brand-back { color: var(--clay); }
+.brand-project {
+    font-size: 0.46em;
+    font-weight: 400;
+    color: rgba(242,239,230,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    vertical-align: 0.24em;
+}
+        nav ul { display: flex; gap: 1rem; list-style: none; align-items: center; }
+        nav a {
+            color: rgba(242,239,230,0.78); text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            transition: color 0.2s var(--ease);
+        }
+        nav a:hover { color: var(--clay); }
+        .nav-join {
+            background: var(--clay); color: var(--green) !important;
+            padding: 0.55rem 1.35rem; border-radius: 3px;
+            font-weight: 700 !important;
+        }
+        .nav-join:hover { background: var(--parchment) !important; }
+
+        /* PAGE HERO */
+        .page-hero {
+            background: linear-gradient(158deg, #0b1a12 0%, #1F3A2E 55%, #2a4d3a 100%);
+            padding: 9rem 2rem 4rem;
+            text-align: center;
+        }
+        .page-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--parchment);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .page-hero p {
+            color: rgba(242,239,230,0.65);
+            font-size: 1.05rem;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        /* SITEMAP GRID */
+        .sitemap-section {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 3.5rem 2rem 4rem;
+        }
+
+        .sitemap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .sitemap-group {
+            background: white;
+            border-radius: 8px;
+            padding: 1.75rem;
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .sitemap-group h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--green);
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--clay);
+        }
+
+        .sitemap-group ul {
+            list-style: none;
+        }
+
+        .sitemap-group li {
+            margin-bottom: 0.65rem;
+        }
+
+        .sitemap-group a {
+            color: var(--ink);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s var(--ease);
+        }
+
+        .sitemap-group a:hover {
+            color: var(--green-soft);
+        }
+
+        .sitemap-group .page-desc {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--ink-soft);
+            font-weight: 400;
+            margin-top: 0.1rem;
+            line-height: 1.45;
+        }
+
+        .sitemap-group .login-required {
+            font-size: 0.72rem;
+            color: var(--moss);
+            font-weight: 500;
+            margin-left: 0.3rem;
+        }
+
+        @media (max-width: 600px) {
+            .sitemap-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<!-- ── HERO ── -->
+<section class="page-hero">
+    <h1>Site Map</h1>
+    <p>Every page on the Earthback Project, organized by section.</p>
+</section>
+
+<!-- ── SITEMAP ── -->
+<section class="sitemap-section">
+    <div class="sitemap-grid">
+
+        <!-- DISCOVER -->
+        <div class="sitemap-group">
+            <h3>Discover</h3>
+            <ul>
+                <li>
+                    <a href="index.html">Home</a>
+                    <span class="page-desc">Landing page and introduction to Earthback</span>
+                </li>
+                <li>
+                    <a href="about.html">About</a>
+                    <span class="page-desc">Why Earthback exists and what we're building</span>
+                </li>
+                <li>
+                    <a href="how-it-works.html">How It Works</a>
+                    <span class="page-desc">How the platform connects people and projects</span>
+                </li>
+                <li>
+                    <a href="use-cases.html">Use Cases</a>
+                    <span class="page-desc">Real scenarios for how members use Earthback</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- PLATFORM -->
+        <div class="sitemap-group">
+            <h3>Platform</h3>
+            <ul>
+                <li>
+                    <a href="feed.html">Feed</a>
+                    <span class="login-required">Log in required</span>
+                    <span class="page-desc">Community posts, updates, and conversations</span>
+                </li>
+                <li>
+                    <a href="explore.html">Explore</a>
+                    <span class="page-desc">Browse circles, people, and projects</span>
+                </li>
+                <li>
+                    <a href="circles.html">Circles</a>
+                    <span class="page-desc">Topic-based groups for skills and interests</span>
+                </li>
+                <li>
+                    <a href="projects.html">Projects</a>
+                    <span class="page-desc">Active builds and community initiatives</span>
+                </li>
+                <li>
+                    <a href="messages.html">Messages</a>
+                    <span class="login-required">Log in required</span>
+                    <span class="page-desc">Direct conversations with other members</span>
+                </li>
+                <li>
+                    <a href="profile.html">Profile</a>
+                    <span class="login-required">Log in required</span>
+                    <span class="page-desc">Your profile, visions, and activity</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- TOOLS -->
+        <div class="sitemap-group">
+            <h3>Creative Tools</h3>
+            <ul>
+                <li>
+                    <a href="visualizer.html">Visualizer</a>
+                    <span class="login-required">Log in required</span>
+                    <span class="page-desc">AI-powered tool to imagine your green building project</span>
+                </li>
+                <li>
+                    <a href="gallery.html">Gallery</a>
+                    <span class="page-desc">Community-shared visions and inspiration</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- LEARN -->
+        <div class="sitemap-group">
+            <h3>Learn</h3>
+            <ul>
+                <li>
+                    <a href="training.html">Skills &amp; Training</a>
+                    <span class="page-desc">Certification pathways and training partner opportunities</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="sitemap-group">
+            <h3>Account</h3>
+            <ul>
+                <li>
+                    <a href="join.html">Join</a>
+                    <span class="page-desc">Create your Earthback account</span>
+                </li>
+                <li>
+                    <a href="login.html">Log In</a>
+                    <span class="page-desc">Sign in to your existing account</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- LEGAL -->
+        <div class="sitemap-group">
+            <h3>Legal</h3>
+            <ul>
+                <li>
+                    <a href="terms.html">Terms of Service</a>
+                    <span class="page-desc">Rules and expectations for using the platform</span>
+                </li>
+                <li>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <span class="page-desc">How we handle your data (short version: we don't sell it)</span>
+                </li>
+                <li>
+                    <a href="safety.html">Safety</a>
+                    <span class="page-desc">Community guidelines and content standards</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/footer.js"></script>
+</body>
+</html>
