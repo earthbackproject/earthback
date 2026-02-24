@@ -26,6 +26,7 @@
     <a href="feed.html" class="topbar-nav-link${ac('feed.html')}">Home</a>
     <a href="projects.html" class="topbar-nav-link${ac('projects.html')}">Projects</a>
     <a href="visualizer.html" class="topbar-nav-link${ac('visualizer.html')}">Visualizer</a>
+    <a href="gallery.html" class="topbar-nav-link${ac('gallery.html')}">Gallery</a>
     <a href="profile.html#media" class="topbar-nav-link${ac('profile.html')}">Media</a>
     <a href="circles.html" class="topbar-nav-link${ac('circles.html')}">Circles</a>
   </div>
@@ -41,6 +42,7 @@
   <a href="feed.html"${ac('feed.html') ? ' class="active"' : ''}>Home</a>
   <a href="projects.html"${ac('projects.html') ? ' class="active"' : ''}>Projects</a>
   <a href="visualizer.html"${ac('visualizer.html') ? ' class="active"' : ''}>Visualizer</a>
+  <a href="gallery.html"${ac('gallery.html') ? ' class="active"' : ''}>Gallery</a>
   <a href="profile.html#media"${ac('profile.html') ? ' class="active"' : ''}>Media</a>
   <a href="circles.html"${ac('circles.html') ? ' class="active"' : ''}>Circles</a>
   <a href="messages.html">Messages</a>
