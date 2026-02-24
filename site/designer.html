@@ -1053,14 +1053,14 @@ function buildModel() {
   const roofAngle = Math.atan2(roofRise, halfW);
 
   const roofLeft = new THREE.Mesh(roofGeo, roofMat);
-  roofLeft.position.set(0, baseY + H + roofRise / 2, -halfW / 2 + overhang / 2);
+  roofLeft.position.set(0, baseY + H + roofRise / 2, -halfW / 2);
   roofLeft.rotation.x = (Math.PI / 2 - roofAngle);
   roofLeft.castShadow = true;
   roofLeft.receiveShadow = true;
   buildingGroup.add(roofLeft);
 
   const roofRight = new THREE.Mesh(roofGeo, roofMat);
-  roofRight.position.set(0, baseY + H + roofRise / 2, halfW / 2 - overhang / 2);
+  roofRight.position.set(0, baseY + H + roofRise / 2, halfW / 2);
   roofRight.rotation.x = -(Math.PI / 2 - roofAngle);
   roofRight.castShadow = true;
   roofRight.receiveShadow = true;
