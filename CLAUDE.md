@@ -25,19 +25,15 @@ Or just describe what you want to work on and Claude will orient from there.
 
 ---
 
-## CRITICAL — Chrome Browser Tools Crash Cowork
+## VM Crash Recovery
 
-**Do NOT use any `Claude in Chrome` browser tools** in this session unless Nicco explicitly asks and ComfyUI is idle. Using `tabs_context_mcp`, `computer`, `navigate`, or any Chrome MCP tool causes the CoworkVMService to hang and crash the app. This has happened twice.
-
-**If the VM crashes:** Nicco runs `maint scripts\fix-cowork-vm.ps1` as Administrator in PowerShell, then reopens Claude. That script restarts the `CoworkVMService` Windows service.
-
-The root cause is likely the Chrome MCP bridge conflicting with the non-WSL VM virtualization stack when ComfyUI is also under load.
+The CoworkVMService occasionally hangs. **If the VM crashes:** Nicco runs `maint scripts\fix-cowork-vm.ps1` as Administrator in PowerShell, then reopens Claude. That script restarts the service.
 
 ---
 
-## How ComfyUI / Flux Is Used (No Browser Needed)
+## How ComfyUI / Flux Is Used
 
-Scripts talk directly to ComfyUI via its REST API — no Chrome, no UI interaction required.
+Scripts talk directly to ComfyUI via its REST API.
 
 **Key endpoints:**
 - `POST http://127.0.0.1:8188/api/prompt` — queue a generation job (JSON workflow body)
