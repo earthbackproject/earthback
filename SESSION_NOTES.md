@@ -84,12 +84,27 @@
 - Sitemap: added Project Designer entry under Creative Tools
 - Nav: gallery.html and visualizer.html links present in shared nav
 
+### Visualizer Prompt Tips (session 20b)
+- Dynamic 5-category tips panel (28 tips total) toggled from "Prompt tips" button next to textarea
+- Categories: Basics (6), Materials (6), Systems (5), Composition (6), Style Tips (5)
+- Each tip has icon, bolded key takeaway, and most include a "Try this" example prompt
+- "Use this prompt" button drops example directly into textarea with visual flash
+- "More tips" shuffles 3 tips at a time; randomized order on each open
+- Tabbed navigation across categories
+
+### Designer Roof Fix (session 20b)
+- Roof planes were inverted (V-shape valley instead of ^-shape peak)
+- Root cause: rotation.x signs were swapped between left and right roof planes
+- Fixed: left roof rotation.x from negative to positive, right from positive to negative
+- Solar panel rotation also corrected to match left roof slope
+
 ### Commits this session
 1. Training form URL field + V7b schema
 2. `6437e8a` — Project Designer with Three.js configurator
 3. `d5811c6` — Construction method additions (5 methods)
 4. `e28f16a` — Nav CSS fix for designer page
-5. Session notes + tracker + command center updates
+5. `c8863f6` — Visualizer prompt tips + session 20 docs
+6. Roof inversion fix + final docs update
 
 ### Database migrations run this session
 - V5 (visions) — run in prior sub-session

@@ -1054,14 +1054,14 @@ function buildModel() {
 
   const roofLeft = new THREE.Mesh(roofGeo, roofMat);
   roofLeft.position.set(0, baseY + H + roofRise / 2, -halfW / 2 + overhang / 2);
-  roofLeft.rotation.x = -(Math.PI / 2 - roofAngle);
+  roofLeft.rotation.x = (Math.PI / 2 - roofAngle);
   roofLeft.castShadow = true;
   roofLeft.receiveShadow = true;
   buildingGroup.add(roofLeft);
 
   const roofRight = new THREE.Mesh(roofGeo, roofMat);
   roofRight.position.set(0, baseY + H + roofRise / 2, halfW / 2 - overhang / 2);
-  roofRight.rotation.x = (Math.PI / 2 - roofAngle);
+  roofRight.rotation.x = -(Math.PI / 2 - roofAngle);
   roofRight.castShadow = true;
   roofRight.receiveShadow = true;
   buildingGroup.add(roofRight);
@@ -1104,7 +1104,7 @@ function buildModel() {
         const pz = -halfW * pr + overhang * pr / 2;
         const panel = new THREE.Mesh(new THREE.BoxGeometry(panelW, 0.12, panelH), solarMat);
         panel.position.set(px + panelW / 2, py, pz - panelH / 2);
-        panel.rotation.x = -(Math.PI / 2 - roofAngle);
+        panel.rotation.x = (Math.PI / 2 - roofAngle);
         panel.castShadow = true;
         buildingGroup.add(panel);
       }
