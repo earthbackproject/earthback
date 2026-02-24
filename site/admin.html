@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin — Earthback</title>
+    <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green:      #1F3A2E;
+            --green-mid:  #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay:       #C2A56C;
+            --clay-dark:  #8A5B3F;
+            --moss:       #7e9b73;
+            --parchment:  #F2EFE6;
+            --parchment2: #EAE3D3;
+            --ink:        #2B2E30;
+            --ink-soft:   #555A5C;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #0d1a14;
+            color: rgba(242,239,230,0.88);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ── LOCK SCREEN ── */
+        #lock-screen {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #0d1a14;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 1rem;
+        }
+        #lock-screen .lock-msg {
+            font-size: 1rem; color: rgba(242,239,230,0.5);
+        }
+        #lock-screen .spinner {
+            width: 28px; height: 28px;
+            border: 2px solid rgba(194,165,108,0.2);
+            border-top-color: var(--clay);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── HEADER BAR ── */
+        .admin-header {
+            background: rgba(20,38,28,0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194,165,108,0.12);
+            padding: 0.75rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .admin-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem; font-weight: 700;
+            color: var(--parchment); text-decoration: none;
+            letter-spacing: 0.1em; text-transform: uppercase;
+        }
+        .admin-logo span { color: var(--clay); }
+        .admin-badge {
+            font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.15em; color: var(--clay);
+            background: rgba(194,165,108,0.1);
+            padding: 3px 10px; border-radius: 3px;
+            margin-left: 12px; vertical-align: middle;
+        }
+        .admin-meta {
+            font-size: 0.72rem; color: rgba(242,239,230,0.45);
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .live-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 6px rgba(74,222,128,0.5);
+            animation: pulse 2s ease-in-out infinite;
+            display: inline-block; margin-right: 4px;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* ── LAYOUT ── */
+        .admin-body {
+            max-width: 1400px; margin: 0 auto;
+            padding: 1.5rem 2rem 3rem;
+        }
+
+        /* ── STAT CARDS ── */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem; margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: rgba(31,58,46,0.35);
+            border: 1px solid rgba(194,165,108,0.08);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+        }
+        .stat-label {
+            font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.14em; color: rgba(242,239,230,0.4);
+            margin-bottom: 0.4rem;
+        }
+        .stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem; font-weight: 700;
+            color: var(--clay);
+            line-height: 1;
+        }
+        .stat-sub {
+            font-size: 0.7rem; color: rgba(242,239,230,0.35);
+            margin-top: 0.35rem;
+        }
+
+        /* ── SECTION ── */
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; font-weight: 600;
+            color: var(--parchment);
+        }
+        .section-count {
+            font-size: 0.7rem; color: rgba(242,239,230,0.4);
+            background: rgba(31,58,46,0.4);
+            padding: 3px 10px; border-radius: 12px;
+        }
+
+        /* ── MEMBER TABLE ── */
+        .member-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .member-table thead th {
+            font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.12em; color: rgba(242,239,230,0.35);
+            padding: 0.6rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(194,165,108,0.1);
+            position: sticky; top: 0; background: #0d1a14;
+        }
+        .member-table tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            transition: background 0.15s;
+        }
+        .member-table tbody tr:hover {
+            background: rgba(31,58,46,0.25);
+        }
+        .member-table td {
+            padding: 0.75rem 1rem;
+            font-size: 0.82rem;
+            vertical-align: top;
+        }
+        .member-name {
+            font-weight: 600; color: var(--parchment);
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .member-avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: var(--green-mid);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.6rem; font-weight: 700; color: var(--clay);
+            flex-shrink: 0;
+            background-size: cover; background-position: center;
+        }
+        .member-email {
+            font-size: 0.72rem; color: rgba(242,239,230,0.4);
+        }
+        .member-type {
+            display: inline-block;
+            font-size: 0.62rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 2px 8px; border-radius: 3px;
+            background: rgba(194,165,108,0.1); color: var(--clay);
+        }
+        .member-type.org { background: rgba(126,155,115,0.15); color: var(--moss); }
+        .member-type.community { background: rgba(74,124,94,0.15); color: var(--green-soft); }
+        .member-type.tribal { background: rgba(138,91,63,0.15); color: var(--clay-dark); }
+        .member-location {
+            font-size: 0.78rem; color: rgba(242,239,230,0.55);
+        }
+        .member-detail {
+            font-size: 0.75rem; color: rgba(242,239,230,0.5);
+            max-width: 280px;
+            line-height: 1.5;
+        }
+        .member-date {
+            font-size: 0.72rem; color: rgba(242,239,230,0.35);
+            white-space: nowrap;
+        }
+
+        /* ── NEW MEMBER FLASH ── */
+        @keyframes newMemberFlash {
+            0% { background: rgba(74,222,128,0.12); }
+            100% { background: transparent; }
+        }
+        .member-new {
+            animation: newMemberFlash 3s ease-out;
+        }
+
+        /* ── ACTIVITY LOG ── */
+        .activity-section { margin-top: 2rem; }
+        .activity-log {
+            background: rgba(31,58,46,0.2);
+            border: 1px solid rgba(194,165,108,0.06);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.72rem;
+            line-height: 1.8;
+            color: rgba(242,239,230,0.5);
+        }
+        .activity-log .log-entry {
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            padding: 2px 0;
+        }
+        .log-time { color: rgba(242,239,230,0.25); margin-right: 8px; }
+        .log-action { color: var(--moss); }
+        .log-name { color: var(--clay); font-weight: 600; }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            text-align: center; padding: 4rem 2rem;
+            color: rgba(242,239,230,0.3);
+        }
+        .empty-state .empty-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .admin-body { padding: 1rem; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+            .member-table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Lock screen — shown until auth verified -->
+<div id="lock-screen">
+    <div class="spinner"></div>
+    <div class="lock-msg">Verifying access...</div>
+</div>
+
+<!-- Admin content — hidden until auth passes -->
+<div id="admin-content" style="display:none;">
+
+    <header class="admin-header">
+        <div>
+            <a href="/" class="admin-logo">Earth<span>back</span></a>
+            <span class="admin-badge">Admin</span>
+        </div>
+        <div class="admin-meta">
+            <span><span class="live-dot"></span> Live</span>
+            <span id="last-refresh">—</span>
+        </div>
+    </header>
+
+    <div class="admin-body">
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Total Members</div>
+                <div class="stat-value" id="stat-total">—</div>
+                <div class="stat-sub" id="stat-total-sub"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">This Week</div>
+                <div class="stat-value" id="stat-week">—</div>
+                <div class="stat-sub" id="stat-week-sub"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Today</div>
+                <div class="stat-value" id="stat-today">—</div>
+                <div class="stat-sub" id="stat-today-sub"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Member Types</div>
+                <div class="stat-value" id="stat-types" style="font-size:1rem;font-family:'Inter',sans-serif;line-height:1.8;">—</div>
+            </div>
+        </div>
+
+        <!-- Member List -->
+        <div class="section-header">
+            <div class="section-title">All Members</div>
+            <div class="section-count" id="member-count">0 members</div>
+        </div>
+        <table class="member-table">
+            <thead>
+                <tr>
+                    <th>Member</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Brings</th>
+                    <th>Seeks</th>
+                    <th>Joined</th>
+                </tr>
+            </thead>
+            <tbody id="member-tbody">
+                <tr><td colspan="6" class="empty-state"><div class="empty-icon">&#127793;</div>No members yet — you'll be the first to know.</td></tr>
+            </tbody>
+        </table>
+
+        <!-- Activity Log -->
+        <div class="activity-section">
+            <div class="section-header">
+                <div class="section-title">Activity Log</div>
+            </div>
+            <div class="activity-log" id="activity-log">
+                <div class="log-entry"><span class="log-time">—</span><span class="log-action">Dashboard initialized. Waiting for data...</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(function() {
+    const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // ── ADMIN WHITELIST ──
+    // Add your Supabase user IDs here
+    const ADMIN_EMAILS = ['nicco.macintyre@gmail.com'];
+
+    let allMembers = [];
+
+    // ── AUTH CHECK ──
+    async function checkAccess() {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session || !ADMIN_EMAILS.includes(session.user.email)) {
+            document.getElementById('lock-screen').innerHTML = `
+                <div style="text-align:center;color:rgba(242,239,230,0.5);">
+                    <div style="font-size:2rem;margin-bottom:1rem;">&#128274;</div>
+                    <div style="font-size:1rem;margin-bottom:0.5rem;">Access Denied</div>
+                    <div style="font-size:0.8rem;">This page is restricted.</div>
+                    <a href="login.html" style="color:#C2A56C;font-size:0.8rem;display:inline-block;margin-top:1rem;">Sign in &rarr;</a>
+                </div>`;
+            return false;
+        }
+        document.getElementById('lock-screen').style.display = 'none';
+        document.getElementById('admin-content').style.display = 'block';
+        addLog('Authenticated as ' + session.user.email);
+        return true;
+    }
+
+    // ── LOAD MEMBERS ──
+    async function loadMembers() {
+        // Get profiles
+        const { data: profiles, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
+        if (error) {
+            addLog('Error loading profiles: ' + error.message);
+            return;
+        }
+
+        // Also get auth emails via the auth user list (profiles don't store email)
+        // We'll use the profile data + any email from auth metadata
+        allMembers = profiles || [];
+        renderStats();
+        renderTable();
+        updateRefreshTime();
+        addLog('Loaded ' + allMembers.length + ' member(s)');
+    }
+
+    // ── RENDER STATS ──
+    function renderStats() {
+        const now = new Date();
+        const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        const total = allMembers.length;
+        const thisWeek = allMembers.filter(m => new Date(m.created_at) >= weekAgo).length;
+        const today = allMembers.filter(m => new Date(m.created_at) >= todayStart).length;
+
+        document.getElementById('stat-total').textContent = total;
+        document.getElementById('stat-week').textContent = thisWeek;
+        document.getElementById('stat-today').textContent = today;
+
+        // Type breakdown
+        const types = {};
+        allMembers.forEach(m => {
+            const t = m.member_type || 'individual';
+            types[t] = (types[t] || 0) + 1;
+        });
+        const typeHTML = Object.entries(types)
+            .sort((a,b) => b[1] - a[1])
+            .map(([k,v]) => `<div><span class="member-type ${k}">${k}</span> ${v}</div>`)
+            .join('');
+        document.getElementById('stat-types').innerHTML = typeHTML || '—';
+
+        document.getElementById('member-count').textContent = total + ' member' + (total !== 1 ? 's' : '');
+    }
+
+    // ── RENDER TABLE ──
+    function renderTable() {
+        const tbody = document.getElementById('member-tbody');
+        if (allMembers.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><div class="empty-icon">&#127793;</div>No members yet — you\'ll be the first to know.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = allMembers.map(m => {
+            const name = m.display_name || [m.first_name, m.last_name].filter(Boolean).join(' ') || 'Anonymous';
+            const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+            const avatar = m.avatar_url
+                ? `<div class="member-avatar" style="background-image:url(${m.avatar_url})"></div>`
+                : `<div class="member-avatar">${initials}</div>`;
+            const typeClass = m.member_type || 'individual';
+            const joined = m.created_at ? formatDate(m.created_at) : '—';
+            const brings = m.what_bring ? truncate(m.what_bring, 120) : '<span style="opacity:0.3">—</span>';
+            const seeks = m.what_seek ? truncate(m.what_seek, 120) : '<span style="opacity:0.3">—</span>';
+            const loc = m.location || '<span style="opacity:0.3">—</span>';
+
+            return `<tr>
+                <td><div class="member-name">${avatar}<div>${name}<br><span class="member-email">${m.id.slice(0,8)}...</span></div></div></td>
+                <td><span class="member-type ${typeClass}">${typeClass}</span></td>
+                <td class="member-location">${loc}</td>
+                <td class="member-detail">${brings}</td>
+                <td class="member-detail">${seeks}</td>
+                <td class="member-date">${joined}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    // ── REAL-TIME SUBSCRIPTION ──
+    function subscribeToChanges() {
+        sb.channel('admin-profiles')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'profiles' }, payload => {
+                const m = payload.new;
+                const name = m.display_name || [m.first_name, m.last_name].filter(Boolean).join(' ') || 'New member';
+                addLog('<span class="log-name">' + name + '</span> just signed up!', 'signup');
+
+                // Add to top of list
+                allMembers.unshift(m);
+                renderStats();
+                renderTable();
+
+                // Flash the new row
+                const firstRow = document.querySelector('#member-tbody tr:first-child');
+                if (firstRow) firstRow.classList.add('member-new');
+
+                // Desktop notification
+                if (Notification.permission === 'granted') {
+                    new Notification('New Earthback Member!', {
+                        body: name + (m.location ? ' from ' + m.location : ''),
+                        icon: 'assets/img/favicon.svg'
+                    });
+                }
+            })
+            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, payload => {
+                const m = payload.new;
+                const name = m.display_name || [m.first_name, m.last_name].filter(Boolean).join(' ') || 'Member';
+                addLog('<span class="log-name">' + name + '</span> updated their profile');
+
+                // Update in list
+                const idx = allMembers.findIndex(x => x.id === m.id);
+                if (idx >= 0) allMembers[idx] = m;
+                else allMembers.unshift(m);
+                renderStats();
+                renderTable();
+            })
+            .subscribe();
+
+        addLog('Real-time subscription active');
+    }
+
+    // ── ACTIVITY LOG ──
+    function addLog(message, type) {
+        const log = document.getElementById('activity-log');
+        const now = new Date();
+        const time = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = `<span class="log-time">${time}</span><span class="log-action">${message}</span>`;
+        log.prepend(entry);
+
+        // Keep log manageable
+        while (log.children.length > 200) log.removeChild(log.lastChild);
+    }
+
+    // ── HELPERS ──
+    function formatDate(iso) {
+        const d = new Date(iso);
+        const now = new Date();
+        const diffMs = now - d;
+        const diffH = diffMs / (1000 * 60 * 60);
+        if (diffH < 1) return Math.floor(diffMs / 60000) + 'm ago';
+        if (diffH < 24) return Math.floor(diffH) + 'h ago';
+        if (diffH < 48) return 'Yesterday';
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: d.getFullYear() !== now.getFullYear() ? 'numeric' : undefined });
+    }
+
+    function truncate(str, max) {
+        return str.length > max ? str.slice(0, max) + '...' : str;
+    }
+
+    function updateRefreshTime() {
+        document.getElementById('last-refresh').textContent =
+            'Updated ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // ── INIT ──
+    async function init() {
+        // Request notification permission
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        const hasAccess = await checkAccess();
+        if (!hasAccess) return;
+
+        await loadMembers();
+        subscribeToChanges();
+
+        // Periodic refresh every 5 minutes as backup
+        setInterval(loadMembers, 5 * 60 * 1000);
+    }
+
+    init();
+})();
+</script>
+</body>
+</html>
