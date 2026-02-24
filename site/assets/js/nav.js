@@ -35,6 +35,7 @@
       <li><a href="how-it-works.html">How It Works</a></li>
       <li><a href="use-cases.html">Use Cases</a></li>
       <li><a href="visualizer.html"${isActive('visualizer.html') ? ' class="active"' : ''}>Visualizer</a></li>
+      <li><a href="gallery.html"${isActive('gallery.html') ? ' class="active"' : ''}>Gallery</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="safety.html">Safety</a></li>
       <li><a href="login.html" id="nav-signin-link" style="opacity:0.75;">Sign In</a></li>
@@ -51,6 +52,7 @@
   <a href="how-it-works.html">How It Works</a>
   <a href="use-cases.html">Use Cases</a>
   <a href="visualizer.html">Visualizer</a>
+  <a href="gallery.html">Gallery</a>
   <a href="about.html">About</a>
   <a href="safety.html">Safety</a>
   <a href="join.html" class="join-mobile">Join / Sign In →</a>

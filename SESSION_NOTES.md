@@ -4,7 +4,42 @@
 ---
 
 ## Last Updated
-2026-02-23 — Session 15 with Nicco via Cowork
+2026-02-24 — Session 18 with Nicco via Cowork
+
+---
+
+## What Was Done in Session 18 (2026-02-24)
+
+*Vision persistence, rotating credits, positioning rework, gallery repopulate bug.*
+
+### Vision persistence system (committed + pushed + live)
+- New `visions` table via SCHEMA_V5_visions.sql — **migration run in Supabase**
+- `visions` storage bucket created in Supabase (public, with user-folder upload policy)
+- Save flow: render → click "Save to profile" → fetch image as blob → upload to Supabase Storage → insert DB row → gallery reloads
+- Gallery below generator shows saved visions with image, prompt snippet, chips, date
+- Click-to-repopulate: clicking a gallery card should refill form + show image (BUG: not firing, investigating)
+- Save hint text added below toolbar: "Images aren't kept unless you save them..."
+
+### Rotating credit system (committed + pushed + live)
+- Replaced flat 20/day limit with accrual-based credits
+- Final values: 1 credit per render, earn 1 every 2 hours (~12/day), cap 25
+- First visit starts at full 25. Counter shows "X credits · +1 in 1h 42m"
+- localStorage-based under key `earthback_viz_credits`
+- formatCountdown() helper for proper hours+minutes display
+
+### Positioning language rework (committed + pushed)
+- Replaced "no algorithm, no ads" across CLAUDE.md, SESSION_NOTES.md, ghost profile handoff
+- New language: "No algorithm, no data harvesting, no feed manipulation. Revenue comes from connecting members with aligned suppliers and materials partners — not from selling attention."
+
+### Chrome crash warning removed from CLAUDE.md
+- VM crashes happen regardless of Chrome tool usage — not caused by Chrome MCP
+- Simplified to just recovery instructions
+
+### BUG IN PROGRESS: Gallery card click → repopulate not working
+- Cards render, have hover state, but onclick doesn't fire
+- `repopulateVision()` is at global scope, should be accessible
+- Suspect: double JSON.stringify in onclick attribute may be producing bad escaping
+- **Next step:** inspect in Chrome devtools to see the actual rendered onclick attribute
 
 ---
 

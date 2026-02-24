@@ -628,9 +628,22 @@
     <div class="fade-up-3">
       <div class="content-tabs">
         <button class="tab-btn active" onclick="showTab('activity', this)">Activity</button>
+        <button class="tab-btn" onclick="showTab('visions', this)">Visions</button>
         <button class="tab-btn" onclick="showTab('projects', this)">Projects</button>
         <button class="tab-btn" onclick="showTab('resources', this)">Resources</button>
         <button class="tab-btn" onclick="showTab('media', this)">Media</button>
+      </div>
+
+      <!-- VISIONS TAB -->
+      <div id="tab-visions" class="tab-panel">
+        <div id="profileVisionsGrid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px;"></div>
+        <div id="profileVisionsEmpty" style="display:none; text-align:center; padding:2rem; color:var(--text-muted); font-size:0.88rem;">
+          No shared visions yet.
+          <span id="profileVisionsCreateLink" style="display:none;"><br><a href="visualizer.html" style="color:var(--sage); text-decoration:underline;">Create your first vision</a></span>
+        </div>
+        <div style="text-align:center; margin-top:16px;">
+          <a href="gallery.html" style="font-size:0.82rem; color:var(--sage); text-decoration:underline; text-underline-offset:2px;">Browse all community visions →</a>
+        </div>
       </div>
 
       <!-- ACTIVITY TAB -->
@@ -1735,6 +1748,9 @@ async function loadProfile() {
     }
   }
 
+  // Visions tab — load shared visions for this profile
+  await loadProfileVisions(userId);
+
   // Check if this is the current user — show "Edit Profile" if so
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
@@ -1768,6 +1784,108 @@ async function loadProfile() {
 
 function addSignedInNav(session) {
   // Sign-out and avatar are now handled by the topbar — no-op
+}
+
+// ── VISIONS TAB ──
+async function loadProfileVisions(profileUserId) {
+  const grid = document.getElementById('profileVisionsGrid');
+  const empty = document.getElementById('profileVisionsEmpty');
+  const createLink = document.getElementById('profileVisionsCreateLink');
+  if (!grid) return;
+
+  const { data: visions, error } = await sb
+    .from('visions')
+    .select('*')
+    .eq('user_id', profileUserId)
+    .eq('is_shared', true)
+    .eq('is_flagged', false)
+    .order('created_at', { ascending: false });
+
+  if (error || !visions || visions.length === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    // Show "create" link only if viewing own profile
+    const { data: { session } } = await sb.auth.getSession();
+    if (session && session.user.id === profileUserId && createLink) {
+      createLink.style.display = 'inline';
+    }
+    return;
+  }
+
+  // Check which visions current user has liked
+  let likedSet = new Set();
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    const { data: likes } = await sb
+      .from('vision_likes')
+      .select('vision_id')
+      .eq('user_id', session.user.id);
+    if (likes) likes.forEach(l => likedSet.add(l.vision_id));
+  }
+
+  const heartSvg = '<svg style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  grid.innerHTML = visions.map((v, idx) => {
+    const dateStr = new Date(v.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const promptSnippet = (v.prompt || '').substring(0, 100);
+    const isLiked = likedSet.has(v.id);
+    const likeCount = v.like_count || 0;
+
+    return `<div class="profile-vision-card" data-vidx="${idx}" style="background:var(--card); border:1px solid var(--border-lt); border-radius:12px; overflow:hidden; box-shadow:0 1px 6px var(--shadow); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(30,55,40,0.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(30,55,40,0.07)'">
+      ${v.image_url ? `<img src="${v.image_url}" alt="Vision render" loading="lazy" style="width:100%;height:160px;object-fit:cover;display:block;">` :
+        '<div style="height:160px;background:linear-gradient(135deg,#2a3a2a,#3a5a3a);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🏗</div>'}
+      <div style="padding:12px 14px;">
+        <div style="font-size:0.82rem; color:var(--ink); line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin-bottom:8px;">${promptSnippet}</div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px;">
+          <span style="font-size:0.66rem; padding:2px 7px; background:var(--bg); border-radius:20px; color:var(--text-muted); text-transform:capitalize;">${(v.structure || '').replace(/-/g, ' ')}</span>
+          <span style="font-size:0.66rem; padding:2px 7px; background:var(--bg); border-radius:20px; color:var(--text-muted); text-transform:capitalize;">${(v.climate || '').replace(/-/g, ' ')}</span>
+          <span style="font-size:0.66rem; padding:2px 7px; background:var(--bg); border-radius:20px; color:var(--text-muted);">${v.style || ''}</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding-top:6px; border-top:1px solid var(--border-lt);">
+          <button class="profile-like-btn" data-vision-id="${v.id}" style="display:flex;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-size:0.78rem;color:${isLiked ? 'var(--clay-rust,#A05E3A)' : 'var(--text-muted)'};font-weight:${isLiked ? '600' : '400'};padding:3px 6px;border-radius:6px;">
+            ${heartSvg} <span class="pv-like-count">${likeCount}</span>
+          </button>
+          <span style="font-size:0.72rem; color:var(--text-muted);">${dateStr}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Attach like handlers
+  if (session) {
+    grid.querySelectorAll('.profile-like-btn').forEach(btn => {
+      btn.addEventListener('click', async function(e) {
+        e.stopPropagation();
+        const visionId = this.dataset.visionId;
+        const countEl = this.querySelector('.pv-like-count');
+        const currentCount = parseInt(countEl.textContent) || 0;
+        const isLiked = likedSet.has(visionId);
+
+        if (isLiked) {
+          this.style.color = 'var(--text-muted)';
+          this.style.fontWeight = '400';
+          countEl.textContent = Math.max(0, currentCount - 1);
+          likedSet.delete(visionId);
+          await sb.from('vision_likes').delete().eq('vision_id', visionId).eq('user_id', session.user.id);
+          await sb.from('visions').update({ like_count: Math.max(0, currentCount - 1) }).eq('id', visionId);
+        } else {
+          this.style.color = 'var(--clay-rust,#A05E3A)';
+          this.style.fontWeight = '600';
+          countEl.textContent = currentCount + 1;
+          likedSet.add(visionId);
+          await sb.from('vision_likes').insert({ vision_id: visionId, user_id: session.user.id });
+          await sb.from('visions').update({ like_count: currentCount + 1 }).eq('id', visionId);
+
+          // Credit award if under cap
+          const vision = visions[parseInt(btn.closest('[data-vidx]').dataset.vidx)];
+          if (vision && (vision.credit_earned || 0) < 5) {
+            await sb.from('visions').update({ credit_earned: (vision.credit_earned || 0) + 1 }).eq('id', visionId);
+            vision.credit_earned = (vision.credit_earned || 0) + 1;
+          }
+        }
+      });
+    });
+  }
 }
 
 loadProfile();

@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Visions — Earthback</title>
+    <meta name="description" content="Browse community-generated visions of green homes, workshops, and villages rendered in hempcrete, timber, and earth.">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        /* ─────────────────────────────────────
+           EARTHBACK · Community Visions Gallery
+           Consistent with v2.0 brand system
+        ───────────────────────────────────── */
+
+        :root {
+            --green:      #1F3A2E;
+            --green-mid:  #2C4F3B;
+            --green-soft: #4A7C5E;
+            --clay:       #C2A56C;
+            --clay-dark:  #8A5B3F;
+            --clay-rust:  #A05E3A;
+            --moss:       #7e9b73;
+            --parchment:  #F2EFE6;
+            --parchment2: #EAE3D3;
+            --ink:        #2B2E30;
+            --ink-soft:   #555A5C;
+            --white:      #FFFFFF;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+            --max:        1200px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── PAGE CONTAINER ── */
+        .page-container {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 7rem 2rem 4rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .page-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+        .page-header h1 em {
+            font-style: italic;
+            color: var(--clay);
+        }
+        .page-header p {
+            color: var(--ink-soft);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ── GALLERY GRID ── */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* ── VISION CARD ── */
+        .gcard {
+            background: var(--white);
+            border: 1px solid rgba(194,165,108,0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s var(--ease);
+            position: relative;
+        }
+        .gcard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        .gcard-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+        }
+        .gcard-img-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #2a3a2a, #3a5a3a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        .gcard-body {
+            padding: 14px 16px 12px;
+        }
+        .gcard-creator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .gcard-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--green);
+            color: var(--parchment);
+            font-size: 0.65rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .gcard-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .gcard-name {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--green-mid);
+            text-decoration: none;
+        }
+        .gcard-name:hover {
+            text-decoration: underline;
+        }
+        .gcard-prompt {
+            font-size: 0.85rem;
+            color: var(--ink);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .gcard-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+        .gcard-chip {
+            font-size: 0.68rem;
+            padding: 2px 8px;
+            background: var(--parchment);
+            border-radius: 20px;
+            color: var(--ink-soft);
+            text-transform: capitalize;
+        }
+
+        /* ── LIKE + ACTIONS ROW ── */
+        .gcard-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 8px;
+            border-top: 1px solid var(--parchment2);
+        }
+        .gcard-like-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.82rem;
+            color: var(--ink-soft);
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+        .gcard-like-btn:hover {
+            background: rgba(160,94,58,0.08);
+            color: var(--clay-rust);
+        }
+        .gcard-like-btn.liked {
+            color: var(--clay-rust);
+            font-weight: 600;
+        }
+        .gcard-like-btn.liked .heart-icon { fill: var(--clay-rust); }
+        .heart-icon {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            transition: fill 0.15s;
+        }
+        .gcard-report-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--ink-soft);
+            font-size: 1.1rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            opacity: 0;
+            transition: all 0.15s;
+        }
+        .gcard:hover .gcard-report-btn { opacity: 1; }
+        .gcard-report-btn:hover {
+            background: rgba(160,94,58,0.08);
+            color: var(--clay-rust);
+        }
+
+        /* ── EMPTY STATE ── */
+        .gallery-empty {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--ink-soft);
+        }
+        .gallery-empty h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+        .gallery-empty a {
+            color: var(--green-soft);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        /* ── LOADING STATE ── */
+        .gallery-loading {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--ink-soft);
+        }
+
+        /* ── LIGHTBOX / EXPANDED VIEW ── */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .lightbox-overlay.active { display: flex; }
+        .lightbox-content {
+            background: var(--white);
+            border-radius: 14px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .lightbox-img {
+            width: 100%;
+            border-radius: 14px 14px 0 0;
+            display: block;
+        }
+        .lightbox-body {
+            padding: 20px 24px 24px;
+        }
+        .lightbox-prompt {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            color: var(--ink);
+        }
+        .lightbox-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .lightbox-creator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid var(--parchment2);
+        }
+        .lightbox-creator-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--green);
+            color: var(--parchment);
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-creator-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-close:hover { background: rgba(0,0,0,0.7); }
+
+        /* ── REPORT MODAL ── */
+        .report-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .report-modal.active { display: flex; }
+        .report-box {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 400px;
+            width: 100%;
+        }
+        .report-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: var(--green);
+            margin-bottom: 16px;
+        }
+        .report-option {
+            display: block;
+            padding: 8px 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .report-option input { margin-right: 8px; }
+        .report-details {
+            width: 100%;
+            margin-top: 12px;
+            padding: 10px;
+            border: 1px solid var(--parchment2);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            resize: vertical;
+            min-height: 60px;
+        }
+        .report-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 16px;
+        }
+        .report-cancel {
+            background: none;
+            border: 1px solid var(--parchment2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .report-submit {
+            background: var(--clay-rust);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .report-submit:hover { opacity: 0.9; }
+
+        /* ── TOAST ── */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--green);
+            color: var(--parchment);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            z-index: 2000;
+            transition: transform 0.3s var(--ease);
+            pointer-events: none;
+        }
+        .toast.active { transform: translateX(-50%) translateY(0); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 1.75rem; }
+            .page-container { padding: 6rem 1rem 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<div class="page-container">
+
+    <div class="page-header">
+        <h1>Community <em>Visions</em></h1>
+        <p>See what this community is imagining — green homes, workshops, and villages rendered in earth, hemp, and timber.</p>
+    </div>
+
+    <div class="gallery-loading" id="galleryLoading">Loading visions...</div>
+
+    <div class="gallery-grid" id="galleryGrid" style="display:none;"></div>
+
+    <div class="gallery-empty" id="galleryEmpty" style="display:none;">
+        <h3>No shared visions yet</h3>
+        <p>Be the first — <a href="visualizer.html">create a vision</a> and share it with the community.</p>
+    </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <div class="lightbox-content">
+        <img class="lightbox-img" id="lightboxImg" alt="Vision render">
+        <div class="lightbox-body">
+            <div class="lightbox-prompt" id="lightboxPrompt"></div>
+            <div class="lightbox-meta" id="lightboxMeta"></div>
+            <div class="lightbox-creator" id="lightboxCreator"></div>
+        </div>
+    </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="report-modal" id="reportModal">
+    <div class="report-box">
+        <h3>Report this vision</h3>
+        <label class="report-option"><input type="radio" name="reportReason" value="inappropriate"> Inappropriate content</label>
+        <label class="report-option"><input type="radio" name="reportReason" value="spam"> Spam or misleading</label>
+        <label class="report-option"><input type="radio" name="reportReason" value="offensive"> Offensive imagery</label>
+        <label class="report-option"><input type="radio" name="reportReason" value="other"> Other</label>
+        <textarea class="report-details" id="reportDetails" placeholder="Any additional context (optional)"></textarea>
+        <div class="report-actions">
+            <button class="report-cancel" onclick="closeReportModal()">Cancel</button>
+            <button class="report-submit" onclick="submitReport()">Report</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/footer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function() {
+    // ── SUPABASE CLIENT ──
+    var sb = supabase.createClient(
+        'https://yptktmzagctusbeqdaty.supabase.co',
+        'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC'
+    );
+
+    var currentSession = null;
+    var likedSet = new Set();
+    var allVisions = [];
+    var reportingVisionId = null;
+
+    // ── TOAST ──
+    window.showToast = function(msg) {
+        var t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('active');
+        setTimeout(function() { t.classList.remove('active'); }, 3000);
+    };
+
+    // ── INIT ──
+    sb.auth.getSession().then(async function(result) {
+        currentSession = result.data.session;
+
+        // If signed in, load which visions this user has liked
+        if (currentSession) {
+            var likesResult = await sb
+                .from('vision_likes')
+                .select('vision_id')
+                .eq('user_id', currentSession.user.id);
+            if (likesResult.data) {
+                likesResult.data.forEach(function(l) { likedSet.add(l.vision_id); });
+            }
+        }
+
+        loadGallery();
+    });
+
+    // ── LOAD GALLERY ──
+    async function loadGallery() {
+        var loading = document.getElementById('galleryLoading');
+        var grid = document.getElementById('galleryGrid');
+        var empty = document.getElementById('galleryEmpty');
+
+        var { data: visions, error } = await sb
+            .from('visions')
+            .select('*, profiles:user_id(display_name, first_name, last_name, avatar_url)')
+            .eq('is_shared', true)
+            .eq('is_flagged', false)
+            .order('created_at', { ascending: false })
+            .limit(100);
+
+        loading.style.display = 'none';
+
+        if (error || !visions || visions.length === 0) {
+            empty.style.display = 'block';
+            return;
+        }
+
+        allVisions = visions;
+        grid.style.display = 'grid';
+        renderCards(visions, grid);
+    }
+
+    // ── RENDER CARDS ──
+    function renderCards(visions, grid) {
+        grid.innerHTML = visions.map(function(v, idx) {
+            var profile = v.profiles || {};
+            var name = profile.display_name || ((profile.first_name || '') + ' ' + (profile.last_name || '')).trim() || 'Member';
+            var initials = name.split(' ').map(function(w) { return w[0]; }).join('').substring(0, 2).toUpperCase();
+            var avatarHtml = profile.avatar_url
+                ? '<div class="gcard-avatar"><img src="' + profile.avatar_url + '" alt=""></div>'
+                : '<div class="gcard-avatar">' + initials + '</div>';
+            var promptSnippet = (v.prompt || '').substring(0, 120);
+            var isLiked = likedSet.has(v.id);
+            var heartSvg = '<svg class="heart-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+            return '<div class="gcard" data-idx="' + idx + '">' +
+                (v.image_url
+                    ? '<img class="gcard-img" src="' + v.image_url + '" alt="Vision render" loading="lazy" data-action="lightbox">'
+                    : '<div class="gcard-img-placeholder" data-action="lightbox">🏗</div>') +
+                '<div class="gcard-body">' +
+                    '<div class="gcard-creator">' +
+                        avatarHtml +
+                        '<a class="gcard-name" href="profile.html?id=' + v.user_id + '">' + name + '</a>' +
+                    '</div>' +
+                    '<div class="gcard-prompt">' + promptSnippet + '</div>' +
+                    '<div class="gcard-chips">' +
+                        '<span class="gcard-chip">' + (v.structure || '').replace(/-/g, ' ') + '</span>' +
+                        '<span class="gcard-chip">' + (v.climate || '').replace(/-/g, ' ') + '</span>' +
+                        '<span class="gcard-chip">' + (v.style || '') + '</span>' +
+                    '</div>' +
+                    '<div class="gcard-actions">' +
+                        '<button class="gcard-like-btn' + (isLiked ? ' liked' : '') + '" data-action="like" data-vision-id="' + v.id + '">' +
+                            heartSvg + ' <span class="like-count">' + (v.like_count || 0) + '</span>' +
+                        '</button>' +
+                        '<button class="gcard-report-btn" data-action="report" data-vision-id="' + v.id + '" title="Report">⋯</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+
+        // ── EVENT DELEGATION ──
+        grid.addEventListener('click', function(e) {
+            var target = e.target.closest('[data-action]');
+            if (!target) return;
+            var action = target.dataset.action;
+            var card = target.closest('.gcard');
+            var idx = card ? parseInt(card.dataset.idx) : -1;
+
+            if (action === 'lightbox' && idx >= 0) {
+                openLightbox(allVisions[idx]);
+            } else if (action === 'like') {
+                e.preventDefault();
+                toggleLike(target);
+            } else if (action === 'report') {
+                e.preventDefault();
+                openReportModal(target.dataset.visionId);
+            }
+        });
+    }
+
+    // ── LIGHTBOX ──
+    window.openLightbox = function(v) {
+        var overlay = document.getElementById('lightbox');
+        var profile = v.profiles || {};
+        var name = profile.display_name || ((profile.first_name || '') + ' ' + (profile.last_name || '')).trim() || 'Member';
+        var initials = name.split(' ').map(function(w) { return w[0]; }).join('').substring(0, 2).toUpperCase();
+
+        document.getElementById('lightboxImg').src = v.image_url || '';
+        document.getElementById('lightboxPrompt').textContent = v.prompt || '';
+        document.getElementById('lightboxMeta').innerHTML =
+            '<span class="gcard-chip">' + (v.structure || '').replace(/-/g, ' ') + '</span>' +
+            '<span class="gcard-chip">' + (v.climate || '').replace(/-/g, ' ') + '</span>' +
+            '<span class="gcard-chip">' + (v.style || '') + '</span>';
+
+        var avatarHtml = profile.avatar_url
+            ? '<div class="lightbox-creator-avatar"><img src="' + profile.avatar_url + '" alt=""></div>'
+            : '<div class="lightbox-creator-avatar">' + initials + '</div>';
+        document.getElementById('lightboxCreator').innerHTML =
+            avatarHtml +
+            '<a class="gcard-name" href="profile.html?id=' + v.user_id + '" style="font-size:0.9rem;">' + name + '</a>';
+
+        overlay.classList.add('active');
+    };
+
+    window.closeLightbox = function() {
+        document.getElementById('lightbox').classList.remove('active');
+    };
+
+    // Close lightbox on overlay click or Escape
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) closeLightbox();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+            closeReportModal();
+        }
+    });
+
+    // ── LIKE TOGGLE ──
+    async function toggleLike(btn) {
+        if (!currentSession) {
+            showToast('Sign in to like visions');
+            return;
+        }
+
+        var visionId = btn.dataset.visionId;
+        var countEl = btn.querySelector('.like-count');
+        var currentCount = parseInt(countEl.textContent) || 0;
+        var isLiked = likedSet.has(visionId);
+
+        if (isLiked) {
+            // Unlike
+            btn.classList.remove('liked');
+            countEl.textContent = Math.max(0, currentCount - 1);
+            likedSet.delete(visionId);
+
+            await sb.from('vision_likes').delete()
+                .eq('vision_id', visionId)
+                .eq('user_id', currentSession.user.id);
+
+            await sb.from('visions').update({ like_count: Math.max(0, currentCount - 1) })
+                .eq('id', visionId);
+        } else {
+            // Like
+            btn.classList.add('liked');
+            countEl.textContent = currentCount + 1;
+            likedSet.add(visionId);
+
+            await sb.from('vision_likes').insert({
+                vision_id: visionId,
+                user_id: currentSession.user.id
+            });
+
+            await sb.from('visions').update({ like_count: currentCount + 1 })
+                .eq('id', visionId);
+
+            // Award credit to creator if under cap
+            var vision = allVisions.find(function(v) { return v.id === visionId; });
+            if (vision && (vision.credit_earned || 0) < 5) {
+                await sb.from('visions').update({ credit_earned: (vision.credit_earned || 0) + 1 })
+                    .eq('id', visionId);
+                vision.credit_earned = (vision.credit_earned || 0) + 1;
+            }
+        }
+    }
+
+    // ── REPORT ──
+    window.openReportModal = function(visionId) {
+        if (!currentSession) {
+            showToast('Sign in to report content');
+            return;
+        }
+        reportingVisionId = visionId;
+        document.getElementById('reportModal').classList.add('active');
+        // Reset form
+        document.querySelectorAll('input[name="reportReason"]').forEach(function(r) { r.checked = false; });
+        document.getElementById('reportDetails').value = '';
+    };
+
+    window.closeReportModal = function() {
+        document.getElementById('reportModal').classList.remove('active');
+        reportingVisionId = null;
+    };
+
+    window.submitReport = async function() {
+        if (!reportingVisionId || !currentSession) return;
+
+        var reason = document.querySelector('input[name="reportReason"]:checked');
+        if (!reason) {
+            showToast('Please select a reason');
+            return;
+        }
+
+        var details = document.getElementById('reportDetails').value.trim();
+
+        // Insert flag
+        await sb.from('vision_flags').insert({
+            vision_id: reportingVisionId,
+            reported_by_id: currentSession.user.id,
+            reason: reason.value,
+            details: details || null
+        });
+
+        // Mark vision as flagged (pulls from gallery)
+        await sb.from('visions').update({ is_flagged: true })
+            .eq('id', reportingVisionId);
+
+        // Remove card from view
+        var card = document.querySelector('[data-vision-id="' + reportingVisionId + '"]');
+        if (card) {
+            var gcard = card.closest('.gcard');
+            if (gcard) gcard.remove();
+        }
+
+        closeReportModal();
+        showToast('Thanks for reporting. We\'ll review this vision.');
+    };
+})();
+</script>
+</body>
+</html>

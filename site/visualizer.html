@@ -467,6 +467,32 @@
         .vision-card:hover .vision-card-delete { display: flex; }
         .vision-card-delete:hover { background: rgba(160,94,58,0.8); }
 
+        .vision-card-share {
+            display: flex; align-items: center; gap: 4px;
+            background: none; border: 1px solid var(--parchment2);
+            border-radius: 6px; padding: 3px 10px;
+            font-size: 0.72rem; color: var(--ink-soft);
+            cursor: pointer; transition: all 0.15s;
+            margin-top: 6px;
+        }
+        .vision-card-share:hover {
+            border-color: var(--green-soft); color: var(--green-soft);
+        }
+        .vision-card-share.shared {
+            border-color: var(--green-soft); color: var(--green-soft);
+            cursor: default; font-weight: 500;
+        }
+        .vision-card-share .share-icon {
+            width: 12px; height: 12px;
+        }
+        .vision-card-likes {
+            font-size: 0.72rem; color: var(--ink-soft);
+            margin-top: 4px; display: flex; align-items: center; gap: 4px;
+        }
+        .vision-card-likes .heart-sm {
+            width: 12px; height: 12px; fill: var(--clay-rust); stroke: none;
+        }
+
         .visions-empty {
             text-align: center; padding: 2rem;
             color: var(--ink-soft); font-size: 0.88rem;
@@ -962,6 +988,8 @@
 
         // Load existing visions
         loadVisionGallery(session.user.id);
+        // Pick up any credits earned from likes (runs after gallery loads)
+        setTimeout(function() { if (window._pickupLikeCredits) window._pickupLikeCredits(); }, 500);
     });
 
     // ── LOAD VISION GALLERY ──
@@ -988,7 +1016,12 @@
         grid.innerHTML = visions.map(function(v, idx) {
             var dateStr = new Date(v.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             var promptSnippet = (v.prompt || '').substring(0, 100);
-            return '<div class="vision-card" data-vision-idx="' + idx + '">' +
+            var isShared = v.is_shared || false;
+            var shareIcon = '<svg class="share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            var likeCount = v.like_count || 0;
+            var heartSvg = '<svg class="heart-sm" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+
+            return '<div class="vision-card" data-vision-idx="' + idx + '" data-vision-id="' + v.id + '">' +
                 (v.image_url ? '<img src="' + v.image_url + '" alt="Vision render" loading="lazy">' :
                     '<div style="height:160px;background:linear-gradient(135deg,#2a3a2a,#3a5a3a);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🏗</div>') +
                 '<div class="vision-card-body">' +
@@ -1001,6 +1034,10 @@
                         '</div>' +
                         '<span class="vision-card-date">' + dateStr + '</span>' +
                     '</div>' +
+                    (isShared
+                        ? '<button class="vision-card-share shared" disabled>' + shareIcon + ' Shared</button>' +
+                          (likeCount > 0 ? '<div class="vision-card-likes">' + heartSvg + ' ' + likeCount + '</div>' : '')
+                        : '<button class="vision-card-share" data-share-id="' + v.id + '">' + shareIcon + ' Share to gallery</button>') +
                 '</div>' +
                 '<button class="vision-card-delete" onclick="event.stopPropagation();deleteVision(\'' + v.id + '\')" title="Delete">×</button>' +
             '</div>';
@@ -1010,7 +1047,9 @@
         grid.querySelectorAll('.vision-card').forEach(function(card) {
             var idx = parseInt(card.dataset.visionIdx);
             var v = visions[idx];
-            card.addEventListener('click', function() {
+            card.addEventListener('click', function(e) {
+                // Don't repopulate if clicking share or delete buttons
+                if (e.target.closest('[data-share-id]') || e.target.closest('.vision-card-delete')) return;
                 repopulateVision(JSON.stringify({
                     prompt: v.prompt || '',
                     structure: v.structure || 'single-home',
@@ -1021,10 +1060,72 @@
                 }));
             });
         });
+
+        // Attach share button handlers
+        grid.querySelectorAll('[data-share-id]').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                shareVision(btn.dataset.shareId, btn);
+            });
+        });
+    }
+
+    // ── SHARE VISION TO GALLERY ──
+    async function shareVision(visionId, btn) {
+        if (!window._vizSession) return;
+        var shareIcon = '<svg class="share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+        btn.innerHTML = shareIcon + ' Sharing...';
+        btn.disabled = true;
+
+        var { error } = await sb.from('visions').update({ is_shared: true })
+            .eq('id', visionId)
+            .eq('user_id', window._vizSession.user.id);
+
+        if (error) {
+            btn.innerHTML = shareIcon + ' Share to gallery';
+            btn.disabled = false;
+            showError('Could not share — try again.');
+            return;
+        }
+
+        btn.innerHTML = shareIcon + ' Shared';
+        btn.classList.add('shared');
+        // Reload gallery to reflect change
+        loadVisionGallery(window._vizSession.user.id);
+    }
+
+    // ── CREDIT PICKUP FROM LIKES ──
+    async function pickupLikeCredits() {
+        if (!window._vizSession) return;
+        var userId = window._vizSession.user.id;
+
+        // Sum all credit_earned from user's shared visions
+        var { data, error } = await sb.from('visions')
+            .select('credit_earned')
+            .eq('user_id', userId)
+            .eq('is_shared', true);
+
+        if (error || !data) return;
+
+        var totalEarned = data.reduce(function(sum, v) { return sum + (v.credit_earned || 0); }, 0);
+        var claimedKey = 'earthback_viz_like_credits_claimed';
+        var claimed = parseInt(localStorage.getItem(claimedKey) || '0');
+        var unclaimed = totalEarned - claimed;
+
+        if (unclaimed > 0) {
+            // Add unclaimed credits to balance
+            var creditData = getCredits();
+            creditData.credits = Math.min(CREDIT_MAX, creditData.credits + unclaimed);
+            saveCredits(creditData);
+            localStorage.setItem(claimedKey, String(totalEarned));
+            updateCounter();
+        }
     }
 
     // Expose for use outside IIFE
     window._loadVisionGallery = loadVisionGallery;
+    window._pickupLikeCredits = pickupLikeCredits;
 })();
 
 // ── REPOPULATE FORM FROM GALLERY CLICK ──
