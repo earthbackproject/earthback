@@ -1040,7 +1040,9 @@ function buildModel() {
   const overhang = 2;
   const roofL = L + overhang * 2;
   const halfW = W / 2 + overhang;
-  const slopeLen = Math.sqrt(halfW * halfW + roofRise * roofRise);
+  const roofAngle = Math.atan(pitchRatio);            // true pitch angle (matches gable)
+  const totalRise = halfW * pitchRatio;                 // full rise from eave to ridge
+  const slopeLen = Math.sqrt(halfW * halfW + totalRise * totalRise);
   const ridgeY = baseY + H + roofRise;
 
   const roofMat = new THREE.MeshStandardMaterial({
@@ -1048,19 +1050,18 @@ function buildModel() {
     side: THREE.DoubleSide
   });
 
-  // Two roof planes
+  // Two roof planes — angle matches gable, eave drops below wall-top
   const roofGeo = new THREE.PlaneGeometry(roofL, slopeLen);
-  const roofAngle = Math.atan2(roofRise, halfW);
 
   const roofLeft = new THREE.Mesh(roofGeo, roofMat);
-  roofLeft.position.set(0, baseY + H + roofRise / 2, -halfW / 2);
+  roofLeft.position.set(0, ridgeY - totalRise / 2, -halfW / 2);
   roofLeft.rotation.x = (Math.PI / 2 - roofAngle);
   roofLeft.castShadow = true;
   roofLeft.receiveShadow = true;
   buildingGroup.add(roofLeft);
 
   const roofRight = new THREE.Mesh(roofGeo, roofMat);
-  roofRight.position.set(0, baseY + H + roofRise / 2, halfW / 2);
+  roofRight.position.set(0, ridgeY - totalRise / 2, halfW / 2);
   roofRight.rotation.x = -(Math.PI / 2 - roofAngle);
   roofRight.castShadow = true;
   roofRight.receiveShadow = true;
@@ -1100,8 +1101,8 @@ function buildModel() {
       for (let i = 0; i < numPanels; i++) {
         const px = -roofL / 2 + 3 + i * (panelW + 1);
         const pr = (r + 1) / (panelRows + 1);
-        const py = baseY + H + roofRise * (1 - pr) + 0.15;
-        const pz = -halfW * pr + overhang * pr / 2;
+        const py = ridgeY - totalRise * pr + 0.15;
+        const pz = -halfW * pr;
         const panel = new THREE.Mesh(new THREE.BoxGeometry(panelW, 0.12, panelH), solarMat);
         panel.position.set(px + panelW / 2, py, pz - panelH / 2);
         panel.rotation.x = (Math.PI / 2 - roofAngle);
