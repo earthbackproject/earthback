@@ -1102,7 +1102,7 @@ function buildModel() {
         const px = -roofL / 2 + 3 + i * (panelW + 1);
         const pr = (r + 1) / (panelRows + 1);
         const pz = -halfW * pr;
-        const py = ridgeY + pz * pitchRatio + 0.2;
+        const py = ridgeY + pz * pitchRatio + 0.05;
         const panel = new THREE.Mesh(new THREE.BoxGeometry(panelW, 0.12, panelH), solarMat);
         panel.position.set(px + panelW / 2, py, pz - panelH / 2);
         panel.rotation.x = -roofAngle;
