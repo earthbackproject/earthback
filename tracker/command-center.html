@@ -433,16 +433,16 @@ body {
     <div class="status-card">
       <div class="status-label">Database</div>
       <div class="status-value"><span class="dot g"></span>13+ Tables</div>
-      <div class="status-detail">V1-V2, V5-V8b run · 3 pending</div>
+      <div class="status-detail">V1-V2, V5-V8b, V9 queued · 3 pending</div>
     </div>
     <div class="status-card">
       <div class="status-label">Git</div>
-      <div class="status-value"><span class="dot y"></span>Unpushed</div>
-      <div class="status-detail">Session 22 changes need push</div>
+      <div class="status-value"><span class="dot g"></span>Current</div>
+      <div class="status-detail">All session 23 changes pushed</div>
     </div>
     <div class="status-card info">
       <div class="status-label">Sessions</div>
-      <div class="status-value">22</div>
+      <div class="status-value">23</div>
       <div class="status-detail">Since Feb 18, 2026</div>
     </div>
   </div>
@@ -498,16 +498,16 @@ body {
         <li class="action-item urgent">
           <div class="action-dot urgent"></div>
           <div>
-            <div class="action-text"><strong>git push</strong> — session 22 changes not yet pushed</div>
-            <div class="action-note">hemp blocks, map.html, schema V8/V8b, dispatch posts, nav.js</div>
+            <div class="action-text"><strong>Run SCHEMA_V9_analytics.sql</strong> in Supabase SQL Editor</div>
+            <div class="action-note">page_views table — tracking silently fails until this runs</div>
           </div>
           <span class="action-tag urgent-tag">Now</span>
         </li>
         <li class="action-item urgent">
           <div class="action-dot urgent"></div>
           <div>
-            <div class="action-text"><strong>Review Flux overnight output</strong> — new char charsheets + T4/T5/face batches</div>
-            <div class="action-note">Pick PuLID reference faces, select best shots per character</div>
+            <div class="action-text"><strong>LoRA work</strong> — hempcrete LoRA + 3D printer LoRA pipeline</div>
+            <div class="action-note">Get Pexels/Pixabay API keys, run collect/curate/caption/train</div>
           </div>
           <span class="action-tag urgent-tag">Next</span>
         </li>
@@ -769,18 +769,17 @@ body {
 
       <!-- LAST SESSION -->
       <div class="session-box">
-        <div class="session-title">Last Session — #22 · Feb 25, 2026</div>
+        <div class="session-title">Last Session — #23 · Feb 25, 2026</div>
         <div class="session-text">
           <ul>
-            <li><strong>Community Map</strong> — map.html built with Leaflet + OpenStreetMap, 88 curated hotspot pins, 6 categories, layer toggles, Supabase-powered</li>
-            <li><strong>Unmet Need pins</strong> — 24 global south locations added; rejected "Opportunity" framing as exploitative; terracotta #9E4A4A color</li>
-            <li><strong>Hemp Block Masonry</strong> — 6th construction method added to designer.html with full calculations (R-value, carbon, cost, block count)</li>
-            <li><strong>Hempwood research</strong> — 11 new supplier pins (hemp blocks + hempwood); Fibonacci, Plantd, Boardwurks added</li>
-            <li><strong>SCHEMA_V8 + V8b run</strong> — map_hotspots table live in Supabase; unmet-need category added to CHECK constraint</li>
-            <li><strong>hotspots-seed.csv rebuilt</strong> — RFC 4180 compliant (QUOTE_ALL), 89 rows, fixes column misalignment bug</li>
+            <li><strong>Live Traffic Monitor</strong> — eb-grove.html gets stat cards, session trails, live feed, top pages via Supabase Realtime</li>
+            <li><strong>Analytics tracking</strong> — nav.js now fires page-view pings to Supabase on every page load (fire-and-forget, silent)</li>
+            <li><strong>Banner bug fixed</strong> — "data may reset" traced to nav.js (not HTML files); replaced with "EARLY ACCESS" copy across all pages</li>
+            <li><strong>SCHEMA_V9_analytics.sql</strong> — page_views table ready; needs to be run in Supabase before tracking activates</li>
+            <li><strong>All pushed</strong> — 24 files, 4,211 insertions; git workflow sorted (add → commit → push)</li>
           </ul>
           <div style="margin-top:0.6rem;color:rgba(242,239,230,0.5);font-size:0.76rem;">
-            Session 21: 7 new characters (19 total), T4/T5/charsheet overnight batch · Session 20: 3D Designer, Gallery, Training, Sitemap, nav.js/footer.js
+            Session 22: community map, hemp blocks, 88 pins, SCHEMA_V8/V8b · Session 21: 7 new characters (19 total)
           </div>
         </div>
       </div>
@@ -800,7 +799,7 @@ body {
 
   <div class="cc-footer">
     <span>the Earthback Project — Command Center</span>
-    <span>Updated: Feb 25, 2026 · Session 22</span>
+    <span>Updated: Feb 25, 2026 · Session 23</span>
   </div>
 
 </div>

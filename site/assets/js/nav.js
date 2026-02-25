@@ -57,9 +57,9 @@
     line-height: 1.4;
     border-top: 1px solid rgba(255,255,255,0.06);
   ">
-    <span style="font-weight:600;color:#C2A56C;margin-right:6px">PRE-LAUNCH</span>
-    <span>You're viewing an early build — features are in development, content is placeholder, and data may reset.</span>
-    <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:8px">Feedback &rarr;</a>
+    <span style="font-weight:600;color:#C2A56C;margin-right:6px">EARLY ACCESS</span>
+    <span>You're among the first to explore Earthback. We're building in the open — things may change as we grow.</span>
+    <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:8px">Share feedback &rarr;</a>
   </div>
 </nav>
 <div class="mobile-nav-overlay" id="mobile-nav-overlay">

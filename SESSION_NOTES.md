@@ -4,7 +4,56 @@
 ---
 
 ## Last Updated
-2026-02-25 — Session 22 (continued) with Nicco via Cowork
+2026-02-25 — Session 23 with Nicco via Cowork
+
+---
+
+## What Was Done in Session 23 (2026-02-25)
+
+### Live Traffic Monitor + Analytics (session 22 continuation)
+
+#### SCHEMA_V9_analytics.sql (NEW)
+- `page_views` table: id (UUID), page (TEXT), referrer (TEXT), session_id (TEXT), created_at (TIMESTAMPTZ)
+- Indexes on created_at DESC, session_id, page
+- RLS: anon INSERT + public SELECT (no PII stored — publishable key is safe)
+- `ALTER PUBLICATION supabase_realtime ADD TABLE page_views` — required for live feed
+- **⚠️ Still needs to be run in Supabase SQL Editor before tracking goes live**
+
+#### nav.js — page-view tracking added
+- Fire-and-forget `fetch()` POST to `/rest/v1/page_views` on every page load
+- Session ID via `sessionStorage` (`eb_sid`) — resets per browser session, persists across page hops
+- Same-site referrer filtering — external referrers stored as null (shows as "direct")
+- Fully wrapped in try/catch — tracking never breaks the page
+
+#### eb-grove.html — Live Traffic Monitor section
+- 4 stat cards: Active Now (last 10 min), Page Views Today, Sessions Today, All-Time
+- Visitor Session Trails — groups by session_id, shows page breadcrumbs, deduplicates consecutive repeats, active/recent/old states
+- Live Feed — Supabase Realtime `postgres_changes` subscription, flash animation on new rows
+- Top Pages Today — CSS bar chart of page counts
+- Auto-refreshes every 3 minutes via `setInterval`
+
+### Banner Bug Fixed — "Data may reset" text
+
+- Root cause found: banner was injected via **nav.js** (not hardcoded in individual HTML files)
+- All HTML file edits from earlier in the session were red herrings — nav.js was the source on every page
+- Fixed in nav.js: "PRE-LAUNCH / data may reset" → "EARLY ACCESS / building in the open"
+- Individual HTML page banners also cleaned up (now use `<aside id="eb-early-access">`)
+- Confirmed propagating correctly via Netlify after push
+
+### Git / Push Workflow
+- All session 22+23 work committed and pushed (24 files, 4,211 insertions)
+- Resolved "up to date" confusion: files need `git add` + `git commit` before `git push`
+- `tracker/command-center.html` is gitignored — must use `-f` flag or update .gitignore to include it
+
+### Immediate next
+- [ ] **Run SCHEMA_V9_analytics.sql** in Supabase SQL Editor — tracking silently fails until this table exists
+- [ ] **LoRA work** — hempcrete LoRA (Nadia), 3D printer LoRA pipeline (get API keys, run collect/curate/caption/train)
+- [ ] **Review overnight image output** — new char charsheets + T4/T5/face batches in comfyui-output/
+- [ ] **Pick PuLID reference faces** — best charsheet panel per char → faces-reference/CharacterName.png
+- [ ] **Run 3 still-pending SQL migrations** — PROFILE_MIGRATION → SCHEMA_V3 (messages) → SCHEMA_V4 (post images)
+- [ ] **Mobile cleanup** — site looks good on desktop/all browsers; mobile needs polish
+- [ ] **Map — member pins** — add lat/lng + map_visibility to profiles table
+- [ ] **Set up social media accounts** — Twitter + Instagram
 
 ---
 

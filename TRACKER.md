@@ -3,7 +3,7 @@
 *To resume: "Read TRACKER.md and SESSION_NOTES.md and pick up where we left off."*
 *Visual version: `/tracker/index.html` — open in browser for the full dashboard.*
 
-**Last updated:** 2026-02-25 (session 22 — hemp block masonry, community map + map.html, 88 hotspot pins, Unmet Need category, SCHEMA_V8 + V8b run)
+**Last updated:** 2026-02-25 (session 23 — live traffic monitor, analytics tracking, banner bug fix)
 
 ---
 
@@ -189,8 +189,14 @@ Per v1 scope freeze (2026-02-18): everything below is required for v1.
 - [x] `db/SEED_unmet_need_pins.sql` — 24-pin incremental for live DB adds ✓
 - [x] `docs/DISPATCH_POSTS_V2.md` — hemp-blocks circle (3 posts + SRC-16) + hempwood circle (3 posts + SRC-17) appended ✓
 
+### Analytics & Traffic Monitor (new v23)
+- [x] `db/SCHEMA_V9_analytics.sql` — `page_views` table with RLS + realtime subscription ✓
+- [x] `site/assets/js/nav.js` — fire-and-forget page-view tracking on every page load ✓
+- [x] `site/eb-grove.html` — Live Traffic Monitor: stat cards, session trails, live feed, top pages ✓
+- [ ] **Run SCHEMA_V9_analytics.sql in Supabase** — table doesn't exist yet; tracking silently fails until done
+
 ### Shared Components
-- [x] `assets/js/nav.js` — shared nav component for all public pages (HTML injection + auth state + mobile menu) ✓
+- [x] `assets/js/nav.js` — shared nav component for all public pages (HTML injection + auth state + mobile menu + page-view tracking) ✓
 - [x] `assets/js/footer.js` — shared footer component for all public pages ✓
 
 ### Core User Flow (v1 required)
