@@ -34,6 +34,7 @@
       <li><a href="circles.html">Circles</a></li>
       <li><a href="how-it-works.html">How It Works</a></li>
       <li><a href="use-cases.html">Use Cases</a></li>
+      <li><a href="map.html"${isActive('map.html') ? ' class="active"' : ''}>Map</a></li>
       <li><a href="visualizer.html"${isActive('visualizer.html') ? ' class="active"' : ''}>Visualizer</a></li>
       <li><a href="gallery.html"${isActive('gallery.html') ? ' class="active"' : ''}>Gallery</a></li>
       <li><a href="about.html">About</a></li>
@@ -66,6 +67,7 @@
   <a href="circles.html">Circles</a>
   <a href="how-it-works.html">How It Works</a>
   <a href="use-cases.html">Use Cases</a>
+  <a href="map.html">Map</a>
   <a href="visualizer.html">Visualizer</a>
   <a href="gallery.html">Gallery</a>
   <a href="about.html">About</a>

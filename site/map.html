@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Map — Earthback</title>
+<meta name="description" content="Explore hemp buildings, natural building projects, resource hubs, and active rebuilding efforts worldwide.">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+<style>
+/* ── Base ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green1: #1a2e1a;
+  --green2: #2d4a2d;
+  --green3: #3d6b3d;
+  --clay:   #c26b42;
+  --cream:  #f5f0e8;
+  --warm:   #e8dcc8;
+  --text:   #2a2a2a;
+  --muted:  #6b7280;
+
+  /* Pin category colors */
+  --c-rebuilding: #E8A838;
+  --c-resource:   #2D8A7A;
+  --c-build:      #C26B42;
+  --c-partner:    #4A6FA5;
+  --c-opportunity:#4a7c3f;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background: var(--green1);
+}
+
+/* ── Nav placeholder (filled by nav.js) ──────────────────── */
+#site-nav nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+}
+
+/* ── Layout: full-height map below nav ───────────────────── */
+.map-wrap {
+  position: fixed;
+  top: 64px; /* nav height */
+  left: 0; right: 0; bottom: 0;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Floating control panel ──────────────────────────────── */
+.map-panel {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 800;
+  background: rgba(26, 46, 26, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 20px;
+  min-width: 220px;
+  max-width: 260px;
+  color: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+.panel-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-bottom: 4px;
+  color: #e8dcc8;
+}
+
+.panel-sub {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 16px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.pin-count {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.pin-count strong {
+  color: #e8dcc8;
+}
+
+/* ── Layer toggles ───────────────────────────────────────── */
+.layer-toggles { display: flex; flex-direction: column; gap: 8px; }
+
+.layer-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 7px;
+  transition: background 0.15s;
+  user-select: none;
+}
+.layer-toggle:hover { background: rgba(255,255,255,0.06); }
+.layer-toggle.off { opacity: 0.4; }
+
+.toggle-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
+}
+.toggle-label {
+  font-size: 0.8rem;
+  flex: 1;
+}
+.toggle-count {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.35);
+  font-variant-numeric: tabular-nums;
+}
+
+.panel-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin: 14px 0;
+}
+
+/* ── Add pin CTA ─────────────────────────────────────────── */
+.add-pin-btn {
+  display: block;
+  width: 100%;
+  padding: 9px 12px;
+  background: var(--clay);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+  letter-spacing: 0.02em;
+}
+.add-pin-btn:hover { background: #a85a34; transform: translateY(-1px); }
+
+/* ── Leaflet popup overrides ─────────────────────────────── */
+.leaflet-popup-content-wrapper {
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.35);
+  background: #fff;
+  min-width: 240px;
+  max-width: 300px;
+}
+.leaflet-popup-content { margin: 0; width: 100% !important; }
+.leaflet-popup-tip-container { margin-top: -1px; }
+
+.popup-inner {
+  padding: 16px 18px 14px;
+}
+.popup-cat {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 99px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.popup-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a2e1a;
+  margin-bottom: 4px;
+  line-height: 1.25;
+}
+.popup-location {
+  font-size: 0.72rem;
+  color: #888;
+  margin-bottom: 8px;
+}
+.popup-desc {
+  font-size: 0.78rem;
+  color: #444;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.popup-link {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clay);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.popup-link:hover { text-decoration: underline; }
+
+/* ── Custom SVG markers ──────────────────────────────────── */
+.pin-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Loading overlay ─────────────────────────────────────── */
+.map-loading {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 900;
+  background: rgba(26, 46, 26, 0.92);
+  color: #e8dcc8;
+  padding: 16px 28px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.map-loading.hidden { opacity: 0; }
+
+/* ── Responsive panel ────────────────────────────────────── */
+@media (max-width: 600px) {
+  .map-panel {
+    top: auto;
+    bottom: 16px;
+    left: 8px;
+    right: 8px;
+    max-width: none;
+    min-width: 0;
+    padding: 14px 16px;
+  }
+  .layer-toggles { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+  .layer-toggle { padding: 4px 10px; border: 1px solid rgba(255,255,255,0.15); border-radius: 99px; }
+}
+
+/* ── Leaflet z-index fix (sit under our panels) ──────────── */
+.leaflet-control-zoom { margin: 16px 16px 0 0 !important; }
+</style>
+</head>
+<body>
+
+<!-- Shared nav -->
+<div id="site-nav"></div>
+
+<!-- Map fills rest of viewport -->
+<div class="map-wrap">
+  <div id="map"></div>
+
+  <!-- Loading indicator -->
+  <div class="map-loading" id="mapLoading">Loading pins…</div>
+
+  <!-- Control panel -->
+  <div class="map-panel">
+    <div class="panel-title">Community Map</div>
+    <div class="panel-sub">Earthback · Global</div>
+    <div class="pin-count" id="pinCount">Loading…</div>
+
+    <div class="layer-toggles" id="layerToggles">
+      <!-- Populated by JS -->
+    </div>
+
+    <hr class="panel-divider">
+
+    <a href="profile.html" class="add-pin-btn">+ Add Your Pin</a>
+  </div>
+</div>
+
+<!-- Footer omitted — map is full viewport -->
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/sp=" crossorigin=""></script>
+<!-- Shared nav -->
+<script src="assets/js/nav.js"></script>
+
+<script>
+// ── Config ────────────────────────────────────────────────
+const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── Category definitions ──────────────────────────────────
+const CATEGORIES = {
+  rebuilding:  { label: 'Rebuilding',   color: '#E8A838', defaultOn: true  },
+  resource:    { label: 'Resource Hub', color: '#2D8A7A', defaultOn: true  },
+  build:       { label: 'Active Build', color: '#C26B42', defaultOn: true  },
+  partner:     { label: 'Partner Org',  color: '#4A6FA5', defaultOn: true  },
+  opportunity: { label: 'Opportunity',  color: '#4a7c3f', defaultOn: true  },
+};
+
+// Track which layers are visible
+const layerVisible = {};
+Object.keys(CATEGORIES).forEach(k => layerVisible[k] = CATEGORIES[k].defaultOn);
+
+// ── Map init ──────────────────────────────────────────────
+const map = L.map('map', {
+  center: [25, 10],
+  zoom: 2,
+  zoomControl: true,
+  attributionControl: true,
+});
+
+// OpenStreetMap tiles — no API key, fully open
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
+
+// ── Marker layer groups (one per category) ────────────────
+const layerGroups = {};
+Object.keys(CATEGORIES).forEach(k => {
+  layerGroups[k] = L.layerGroup().addTo(map);
+});
+
+// ── SVG pin icon factory ──────────────────────────────────
+function makePinIcon(color) {
+  const svg = `
+    <svg width="28" height="36" viewBox="0 0 28 36" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 0C6.27 0 0 6.27 0 14c0 9.63 14 22 14 22S28 23.63 28 14C28 6.27 21.73 0 14 0z"
+            fill="${color}" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+      <circle cx="14" cy="13" r="5" fill="rgba(255,255,255,0.85)"/>
+    </svg>`;
+  return L.divIcon({
+    html: svg,
+    iconSize: [28, 36],
+    iconAnchor: [14, 36],
+    popupAnchor: [0, -36],
+    className: 'pin-marker',
+  });
+}
+
+// ── Popup HTML builder ────────────────────────────────────
+function buildPopup(h) {
+  const cat = CATEGORIES[h.category] || { label: h.category, color: '#888' };
+  const link = h.url
+    ? `<a class="popup-link" href="${h.url}" target="_blank" rel="noopener">Visit site →</a>`
+    : '';
+  return `
+    <div class="popup-inner">
+      <span class="popup-cat" style="background:${cat.color}">${cat.label}</span>
+      <div class="popup-title">${h.title}</div>
+      <div class="popup-location">📍 ${h.location_name}</div>
+      ${h.description ? `<div class="popup-desc">${h.description}</div>` : ''}
+      ${link}
+    </div>`;
+}
+
+// ── Load hotspots from Supabase ───────────────────────────
+async function loadHotspots() {
+  const { data, error } = await sb
+    .from('map_hotspots')
+    .select('id, title, category, latitude, longitude, location_name, description, url, circle_slug, priority')
+    .eq('is_visible', true)
+    .order('priority', { ascending: false });
+
+  if (error) {
+    console.error('Hotspot load error:', error);
+    document.getElementById('mapLoading').textContent = 'Could not load pins.';
+    return;
+  }
+
+  // Count by category
+  const counts = {};
+  Object.keys(CATEGORIES).forEach(k => counts[k] = 0);
+
+  data.forEach(h => {
+    const cat = h.category;
+    if (!CATEGORIES[cat]) return;
+    counts[cat] = (counts[cat] || 0) + 1;
+
+    const icon = makePinIcon(CATEGORIES[cat].color);
+    const marker = L.marker([h.latitude, h.longitude], { icon });
+    marker.bindPopup(buildPopup(h), { maxWidth: 300 });
+    layerGroups[cat].addLayer(marker);
+  });
+
+  // Update pin count display
+  const total = data.length;
+  document.getElementById('pinCount').innerHTML =
+    `<strong>${total}</strong> location${total !== 1 ? 's' : ''} mapped`;
+
+  // Build layer toggles
+  buildToggles(counts);
+
+  // Hide loading
+  const loader = document.getElementById('mapLoading');
+  loader.classList.add('hidden');
+  setTimeout(() => loader.remove(), 400);
+}
+
+// ── Layer toggle UI ───────────────────────────────────────
+function buildToggles(counts) {
+  const container = document.getElementById('layerToggles');
+  container.innerHTML = '';
+
+  Object.entries(CATEGORIES).forEach(([key, cat]) => {
+    const on = layerVisible[key];
+    const div = document.createElement('div');
+    div.className = 'layer-toggle' + (on ? '' : ' off');
+    div.dataset.cat = key;
+    div.innerHTML = `
+      <div class="toggle-dot" style="background:${cat.color}"></div>
+      <span class="toggle-label">${cat.label}</span>
+      <span class="toggle-count">${counts[key] || 0}</span>`;
+
+    div.addEventListener('click', () => toggleLayer(key, div));
+    container.appendChild(div);
+  });
+}
+
+function toggleLayer(key, el) {
+  layerVisible[key] = !layerVisible[key];
+  el.classList.toggle('off', !layerVisible[key]);
+  if (layerVisible[key]) {
+    map.addLayer(layerGroups[key]);
+  } else {
+    map.removeLayer(layerGroups[key]);
+  }
+}
+
+// ── Run ───────────────────────────────────────────────────
+loadHotspots();
+</script>
+</body>
+</html>
