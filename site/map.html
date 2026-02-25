@@ -269,11 +269,12 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Category definitions ──────────────────────────────────
 const CATEGORIES = {
-  rebuilding:  { label: 'Rebuilding',   color: '#E8A838' },
-  resource:    { label: 'Resource Hub', color: '#2D8A7A' },
-  build:       { label: 'Active Build', color: '#C26B42' },
-  partner:     { label: 'Partner Org',  color: '#4A6FA5' },
-  opportunity: { label: 'Opportunity',  color: '#4a7c3f' },
+  rebuilding:   { label: 'Rebuilding',   color: '#E8A838' },
+  resource:     { label: 'Resource Hub', color: '#2D8A7A' },
+  build:        { label: 'Active Build', color: '#C26B42' },
+  partner:      { label: 'Partner Org',  color: '#4A6FA5' },
+  opportunity:  { label: 'Opportunity',  color: '#4a7c3f' },
+  'unmet-need': { label: 'Unmet Need',   color: '#9E4A4A' },
 };
 
 const layerVisible = Object.fromEntries(Object.keys(CATEGORIES).map(k => [k, true]));
