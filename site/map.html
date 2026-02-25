@@ -3,29 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Community Map — Earthback</title>
+<title>Community Map — the Earthback Project</title>
 <meta name="description" content="Explore hemp buildings, natural building projects, resource hubs, and active rebuilding efforts worldwide.">
-<link rel="icon" href="assets/img/favicon.png" type="image/png">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<link rel="icon" href="assets/img/favicon.ico" sizes="any">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 
 <style>
-/* ── Base ─────────────────────────────────────────────────── */
+/* ── Reset & vars ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 :root {
-  --green1: #1a2e1a;
-  --green2: #2d4a2d;
-  --green3: #3d6b3d;
-  --clay:   #c26b42;
-  --cream:  #f5f0e8;
-  --warm:   #e8dcc8;
-  --text:   #2a2a2a;
-  --muted:  #6b7280;
+  --green:      #1F3A2E;
+  --green-mid:  #2C4F3B;
+  --clay:       #C2A56C;
+  --clay-rust:  #A05E3A;
+  --parchment:  #F2EFE6;
+  --ink:        #2B2E30;
+  --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+  --max:        1280px;
 
-  /* Pin category colors */
   --c-rebuilding: #E8A838;
   --c-resource:   #2D8A7A;
   --c-build:      #C26B42;
@@ -33,31 +32,46 @@
   --c-opportunity:#4a7c3f;
 }
 
-html, body {
-  height: 100%;
-  font-family: 'Inter', sans-serif;
-  color: var(--text);
-  background: var(--green1);
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--green);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden; /* prevent body scroll — map fills viewport */
 }
 
-/* ── Nav placeholder (filled by nav.js) ──────────────────── */
-#site-nav nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 1000;
-}
+/* ── Nav CSS (same pattern as all other pages) ───────────── */
+nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(20,38,28,0.97); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(194,165,108,0.12); }
+.nav-inner { max-width: var(--max); margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+.nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--parchment); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; }
+.nav-logo .brand-back { color: var(--clay); }
+.brand-the { font-size: 0.9em; opacity: 0.7; }
+.brand-project { font-size: 0.75em; opacity: 0.6; }
+nav ul { display: flex; gap: 1rem; list-style: none; align-items: center; }
+nav a { color: rgba(242,239,230,0.78); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s var(--ease); }
+nav a:hover, nav a.active { color: var(--clay); }
+.nav-join { background: var(--clay-rust); color: var(--parchment) !important; padding: 0.55rem 1.35rem; border-radius: 3px; font-weight: 700 !important; }
+.nav-join:hover { background: var(--clay) !important; color: var(--green) !important; }
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--parchment); border-radius: 2px; transition: all 0.3s; }
+.mobile-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(20,38,28,0.98); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; padding: 2rem; }
+.mobile-nav-overlay.open { display: flex; }
+.mobile-nav-overlay a { font-size: 1.4rem; color: rgba(242,239,230,0.8); text-decoration: none; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-family: 'Cormorant Garamond', serif; font-weight: 600; width: 100%; text-align: center; }
+.mobile-nav-overlay a:hover { color: var(--clay); }
+.mobile-nav-overlay a.join-mobile { margin-top: 1.5rem; border: none; background: var(--clay-rust); color: var(--parchment) !important; border-radius: 3px; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; padding: 1rem; }
+@media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
 
-/* ── Layout: full-height map below nav ───────────────────── */
+/* ── Map layout ──────────────────────────────────────────── */
+#site-nav { height: 0; } /* nav is fixed, takes no space */
+
 .map-wrap {
   position: fixed;
-  top: 64px; /* nav height */
   left: 0; right: 0; bottom: 0;
+  /* top set by JS after nav renders */
+  top: 90px;
 }
 
-#map {
-  width: 100%;
-  height: 100%;
-}
+#map { width: 100%; height: 100%; }
 
 /* ── Floating control panel ──────────────────────────────── */
 .map-panel {
@@ -80,19 +94,16 @@ html, body {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.25rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   color: #e8dcc8;
 }
-
 .panel-sub {
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.45);
-  margin-bottom: 16px;
-  letter-spacing: 0.03em;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 14px;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
-
 .pin-count {
   font-size: 0.78rem;
   color: rgba(255,255,255,0.5);
@@ -100,13 +111,10 @@ html, body {
   padding-bottom: 14px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-
-.pin-count strong {
-  color: #e8dcc8;
-}
+.pin-count strong { color: #e8dcc8; }
 
 /* ── Layer toggles ───────────────────────────────────────── */
-.layer-toggles { display: flex; flex-direction: column; gap: 8px; }
+.layer-toggles { display: flex; flex-direction: column; gap: 6px; }
 
 .layer-toggle {
   display: flex;
@@ -115,40 +123,28 @@ html, body {
   cursor: pointer;
   padding: 6px 8px;
   border-radius: 7px;
-  transition: background 0.15s;
+  transition: background 0.15s, opacity 0.15s;
   user-select: none;
 }
-.layer-toggle:hover { background: rgba(255,255,255,0.06); }
-.layer-toggle.off { opacity: 0.4; }
+.layer-toggle:hover { background: rgba(255,255,255,0.07); }
+.layer-toggle.off { opacity: 0.35; }
 
 .toggle-dot {
-  width: 12px; height: 12px;
+  width: 11px; height: 11px;
   border-radius: 50%;
   flex-shrink: 0;
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.15);
 }
-.toggle-label {
-  font-size: 0.8rem;
-  flex: 1;
-}
-.toggle-count {
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.35);
-  font-variant-numeric: tabular-nums;
-}
+.toggle-label { font-size: 0.8rem; flex: 1; }
+.toggle-count { font-size: 0.72rem; color: rgba(255,255,255,0.3); font-variant-numeric: tabular-nums; }
 
-.panel-divider {
-  border: none;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  margin: 14px 0;
-}
+.panel-divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 14px 0; }
 
-/* ── Add pin CTA ─────────────────────────────────────────── */
 .add-pin-btn {
   display: block;
   width: 100%;
   padding: 9px 12px;
-  background: var(--clay);
+  background: var(--clay-rust);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -157,30 +153,26 @@ html, body {
   cursor: pointer;
   text-align: center;
   text-decoration: none;
-  transition: background 0.15s, transform 0.1s;
   letter-spacing: 0.02em;
+  transition: background 0.15s;
 }
-.add-pin-btn:hover { background: #a85a34; transform: translateY(-1px); }
+.add-pin-btn:hover { background: #8a4a2a; }
 
 /* ── Leaflet popup overrides ─────────────────────────────── */
 .leaflet-popup-content-wrapper {
   border-radius: 10px;
   padding: 0;
   overflow: hidden;
-  box-shadow: 0 6px 28px rgba(0,0,0,0.35);
-  background: #fff;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.3);
   min-width: 240px;
   max-width: 300px;
 }
-.leaflet-popup-content { margin: 0; width: 100% !important; }
-.leaflet-popup-tip-container { margin-top: -1px; }
+.leaflet-popup-content { margin: 0 !important; width: 100% !important; }
 
-.popup-inner {
-  padding: 16px 18px 14px;
-}
+.popup-inner { padding: 16px 18px 14px; }
 .popup-cat {
   display: inline-block;
-  font-size: 0.65rem;
+  font-size: 0.64rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -194,36 +186,13 @@ html, body {
   font-size: 1.1rem;
   font-weight: 700;
   color: #1a2e1a;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   line-height: 1.25;
 }
-.popup-location {
-  font-size: 0.72rem;
-  color: #888;
-  margin-bottom: 8px;
-}
-.popup-desc {
-  font-size: 0.78rem;
-  color: #444;
-  line-height: 1.5;
-  margin-bottom: 12px;
-}
-.popup-link {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--clay);
-  text-decoration: none;
-  letter-spacing: 0.02em;
-}
+.popup-location { font-size: 0.72rem; color: #999; margin-bottom: 8px; }
+.popup-desc { font-size: 0.78rem; color: #555; line-height: 1.5; margin-bottom: 10px; }
+.popup-link { font-size: 0.75rem; font-weight: 600; color: #A05E3A; text-decoration: none; }
 .popup-link:hover { text-decoration: underline; }
-
-/* ── Custom SVG markers ──────────────────────────────────── */
-.pin-marker {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 /* ── Loading overlay ─────────────────────────────────────── */
 .map-loading {
@@ -231,219 +200,176 @@ html, body {
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   z-index: 900;
-  background: rgba(26, 46, 26, 0.92);
+  background: rgba(26,46,26,0.92);
   color: #e8dcc8;
-  padding: 16px 28px;
+  padding: 14px 28px;
   border-radius: 10px;
   font-size: 0.85rem;
   letter-spacing: 0.03em;
   pointer-events: none;
   transition: opacity 0.3s;
 }
-.map-loading.hidden { opacity: 0; }
+.map-loading.hidden { opacity: 0; pointer-events: none; }
 
-/* ── Responsive panel ────────────────────────────────────── */
+/* ── Custom marker icon ──────────────────────────────────── */
+.pin-marker { display: flex; align-items: center; justify-content: center; }
+
+/* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 600px) {
   .map-panel {
-    top: auto;
-    bottom: 16px;
-    left: 8px;
-    right: 8px;
-    max-width: none;
-    min-width: 0;
-    padding: 14px 16px;
+    top: auto; bottom: 12px;
+    left: 8px; right: 8px;
+    max-width: none; min-width: 0;
+    padding: 12px 14px;
   }
-  .layer-toggles { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+  .layer-toggles { flex-direction: row; flex-wrap: wrap; }
   .layer-toggle { padding: 4px 10px; border: 1px solid rgba(255,255,255,0.15); border-radius: 99px; }
+  .toggle-count { display: none; }
 }
-
-/* ── Leaflet z-index fix (sit under our panels) ──────────── */
-.leaflet-control-zoom { margin: 16px 16px 0 0 !important; }
 </style>
 </head>
 <body>
 
-<!-- Shared nav -->
 <div id="site-nav"></div>
 
-<!-- Map fills rest of viewport -->
-<div class="map-wrap">
+<div class="map-wrap" id="mapWrap">
   <div id="map"></div>
-
-  <!-- Loading indicator -->
   <div class="map-loading" id="mapLoading">Loading pins…</div>
 
-  <!-- Control panel -->
   <div class="map-panel">
     <div class="panel-title">Community Map</div>
     <div class="panel-sub">Earthback · Global</div>
     <div class="pin-count" id="pinCount">Loading…</div>
-
-    <div class="layer-toggles" id="layerToggles">
-      <!-- Populated by JS -->
-    </div>
-
+    <div class="layer-toggles" id="layerToggles"></div>
     <hr class="panel-divider">
-
     <a href="profile.html" class="add-pin-btn">+ Add Your Pin</a>
   </div>
 </div>
 
-<!-- Footer omitted — map is full viewport -->
-
-<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/sp=" crossorigin=""></script>
-<!-- Shared nav -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="assets/js/nav.js"></script>
 
 <script>
-// ── Config ────────────────────────────────────────────────
+// ── After nav renders, set map top to actual nav height ───
+window.addEventListener('DOMContentLoaded', function() {
+  requestAnimationFrame(function() {
+    const navEl = document.querySelector('nav');
+    if (navEl) {
+      const h = navEl.getBoundingClientRect().height;
+      document.getElementById('mapWrap').style.top = h + 'px';
+    }
+  });
+});
+
+// ── Supabase ──────────────────────────────────────────────
 const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Category definitions ──────────────────────────────────
 const CATEGORIES = {
-  rebuilding:  { label: 'Rebuilding',   color: '#E8A838', defaultOn: true  },
-  resource:    { label: 'Resource Hub', color: '#2D8A7A', defaultOn: true  },
-  build:       { label: 'Active Build', color: '#C26B42', defaultOn: true  },
-  partner:     { label: 'Partner Org',  color: '#4A6FA5', defaultOn: true  },
-  opportunity: { label: 'Opportunity',  color: '#4a7c3f', defaultOn: true  },
+  rebuilding:  { label: 'Rebuilding',   color: '#E8A838' },
+  resource:    { label: 'Resource Hub', color: '#2D8A7A' },
+  build:       { label: 'Active Build', color: '#C26B42' },
+  partner:     { label: 'Partner Org',  color: '#4A6FA5' },
+  opportunity: { label: 'Opportunity',  color: '#4a7c3f' },
 };
 
-// Track which layers are visible
-const layerVisible = {};
-Object.keys(CATEGORIES).forEach(k => layerVisible[k] = CATEGORIES[k].defaultOn);
+const layerVisible = Object.fromEntries(Object.keys(CATEGORIES).map(k => [k, true]));
 
 // ── Map init ──────────────────────────────────────────────
-const map = L.map('map', {
-  center: [25, 10],
-  zoom: 2,
-  zoomControl: true,
-  attributionControl: true,
-});
+const map = L.map('map', { center: [28, 12], zoom: 2 });
 
-// OpenStreetMap tiles — no API key, fully open
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 18,
   attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
 
-// ── Marker layer groups (one per category) ────────────────
-const layerGroups = {};
-Object.keys(CATEGORIES).forEach(k => {
-  layerGroups[k] = L.layerGroup().addTo(map);
-});
+// ── Layer groups ──────────────────────────────────────────
+const layerGroups = Object.fromEntries(
+  Object.keys(CATEGORIES).map(k => [k, L.layerGroup().addTo(map)])
+);
 
-// ── SVG pin icon factory ──────────────────────────────────
-function makePinIcon(color) {
-  const svg = `
-    <svg width="28" height="36" viewBox="0 0 28 36" xmlns="http://www.w3.org/2000/svg">
-      <path d="M14 0C6.27 0 0 6.27 0 14c0 9.63 14 22 14 22S28 23.63 28 14C28 6.27 21.73 0 14 0z"
-            fill="${color}" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
-      <circle cx="14" cy="13" r="5" fill="rgba(255,255,255,0.85)"/>
-    </svg>`;
+// ── Marker factory ────────────────────────────────────────
+function pinIcon(color) {
   return L.divIcon({
-    html: svg,
-    iconSize: [28, 36],
-    iconAnchor: [14, 36],
-    popupAnchor: [0, -36],
+    html: `<svg width="26" height="34" viewBox="0 0 26 34" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13 0C5.82 0 0 5.82 0 13c0 8.95 13 21 13 21S26 21.95 26 13C26 5.82 20.18 0 13 0z"
+        fill="${color}" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+      <circle cx="13" cy="12" r="4.5" fill="rgba(255,255,255,0.85)"/>
+    </svg>`,
+    iconSize: [26, 34],
+    iconAnchor: [13, 34],
+    popupAnchor: [0, -34],
     className: 'pin-marker',
   });
 }
 
-// ── Popup HTML builder ────────────────────────────────────
-function buildPopup(h) {
+// ── Popup builder ─────────────────────────────────────────
+function popupHTML(h) {
   const cat = CATEGORIES[h.category] || { label: h.category, color: '#888' };
-  const link = h.url
-    ? `<a class="popup-link" href="${h.url}" target="_blank" rel="noopener">Visit site →</a>`
-    : '';
-  return `
-    <div class="popup-inner">
-      <span class="popup-cat" style="background:${cat.color}">${cat.label}</span>
-      <div class="popup-title">${h.title}</div>
-      <div class="popup-location">📍 ${h.location_name}</div>
-      ${h.description ? `<div class="popup-desc">${h.description}</div>` : ''}
-      ${link}
-    </div>`;
+  return `<div class="popup-inner">
+    <span class="popup-cat" style="background:${cat.color}">${cat.label}</span>
+    <div class="popup-title">${h.title}</div>
+    <div class="popup-location">📍 ${h.location_name}</div>
+    ${h.description ? `<div class="popup-desc">${h.description}</div>` : ''}
+    ${h.url ? `<a class="popup-link" href="${h.url}" target="_blank" rel="noopener">Visit site →</a>` : ''}
+  </div>`;
 }
 
-// ── Load hotspots from Supabase ───────────────────────────
+// ── Load from Supabase ────────────────────────────────────
 async function loadHotspots() {
+  const loader = document.getElementById('mapLoading');
+
   const { data, error } = await sb
     .from('map_hotspots')
-    .select('id, title, category, latitude, longitude, location_name, description, url, circle_slug, priority')
+    .select('id, title, category, latitude, longitude, location_name, description, url, priority')
     .eq('is_visible', true)
     .order('priority', { ascending: false });
 
   if (error) {
-    console.error('Hotspot load error:', error);
-    document.getElementById('mapLoading').textContent = 'Could not load pins.';
+    loader.textContent = 'Could not load pins — ' + error.message;
     return;
   }
 
-  // Count by category
-  const counts = {};
-  Object.keys(CATEGORIES).forEach(k => counts[k] = 0);
+  const counts = Object.fromEntries(Object.keys(CATEGORIES).map(k => [k, 0]));
 
   data.forEach(h => {
-    const cat = h.category;
-    if (!CATEGORIES[cat]) return;
-    counts[cat] = (counts[cat] || 0) + 1;
-
-    const icon = makePinIcon(CATEGORIES[cat].color);
-    const marker = L.marker([h.latitude, h.longitude], { icon });
-    marker.bindPopup(buildPopup(h), { maxWidth: 300 });
-    layerGroups[cat].addLayer(marker);
+    if (!CATEGORIES[h.category]) return;
+    counts[h.category]++;
+    L.marker([h.latitude, h.longitude], { icon: pinIcon(CATEGORIES[h.category].color) })
+      .bindPopup(popupHTML(h), { maxWidth: 300 })
+      .addTo(layerGroups[h.category]);
   });
 
-  // Update pin count display
-  const total = data.length;
+  // Update count
   document.getElementById('pinCount').innerHTML =
-    `<strong>${total}</strong> location${total !== 1 ? 's' : ''} mapped`;
+    `<strong>${data.length}</strong> location${data.length !== 1 ? 's' : ''} mapped`;
 
-  // Build layer toggles
-  buildToggles(counts);
+  // Build toggles
+  const container = document.getElementById('layerToggles');
+  Object.entries(CATEGORIES).forEach(([key, cat]) => {
+    const el = document.createElement('div');
+    el.className = 'layer-toggle';
+    el.dataset.cat = key;
+    el.innerHTML = `
+      <div class="toggle-dot" style="background:${cat.color}"></div>
+      <span class="toggle-label">${cat.label}</span>
+      <span class="toggle-count">${counts[key]}</span>`;
+    el.addEventListener('click', () => {
+      layerVisible[key] = !layerVisible[key];
+      el.classList.toggle('off', !layerVisible[key]);
+      layerVisible[key] ? map.addLayer(layerGroups[key]) : map.removeLayer(layerGroups[key]);
+    });
+    container.appendChild(el);
+  });
 
-  // Hide loading
-  const loader = document.getElementById('mapLoading');
+  // Hide loader
   loader.classList.add('hidden');
   setTimeout(() => loader.remove(), 400);
 }
 
-// ── Layer toggle UI ───────────────────────────────────────
-function buildToggles(counts) {
-  const container = document.getElementById('layerToggles');
-  container.innerHTML = '';
-
-  Object.entries(CATEGORIES).forEach(([key, cat]) => {
-    const on = layerVisible[key];
-    const div = document.createElement('div');
-    div.className = 'layer-toggle' + (on ? '' : ' off');
-    div.dataset.cat = key;
-    div.innerHTML = `
-      <div class="toggle-dot" style="background:${cat.color}"></div>
-      <span class="toggle-label">${cat.label}</span>
-      <span class="toggle-count">${counts[key] || 0}</span>`;
-
-    div.addEventListener('click', () => toggleLayer(key, div));
-    container.appendChild(div);
-  });
-}
-
-function toggleLayer(key, el) {
-  layerVisible[key] = !layerVisible[key];
-  el.classList.toggle('off', !layerVisible[key]);
-  if (layerVisible[key]) {
-    map.addLayer(layerGroups[key]);
-  } else {
-    map.removeLayer(layerGroups[key]);
-  }
-}
-
-// ── Run ───────────────────────────────────────────────────
 loadHotspots();
 </script>
 </body>
