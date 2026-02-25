@@ -3,7 +3,7 @@
 *To resume: "Read TRACKER.md and SESSION_NOTES.md and pick up where we left off."*
 *Visual version: `/tracker/index.html` — open in browser for the full dashboard.*
 
-**Last updated:** 2026-02-24 (session 20 — shared gallery, training partners, sitemap, 3D designer, shared nav/footer, V5-V7b migrations run)
+**Last updated:** 2026-02-25 (session 22 — hemp block masonry, community map + map.html, 88 hotspot pins, Unmet Need category, SCHEMA_V8 + V8b run)
 
 ---
 
@@ -12,8 +12,8 @@
 | Workstream | Status | Blocking? |
 |---|---|---|
 | Marketing Site (HTML) | 🟢 Live | earthbackproject.org · all pages deployed · 20+ pages |
-| Platform / App | 🟡 In progress | Auth live · feed · gallery · visualizer · designer · training · projects · circles · messaging (demo) |
-| Database Migrations | 🟡 Partial | V1-V2, V5-V7b run ✅ · PROFILE_MIGRATION, V3 (messages), V4 (post images) still pending |
+| Platform / App | 🟡 In progress | Auth live · feed · gallery · visualizer · designer · training · projects · circles · messaging (demo) · **community map live** |
+| Database Migrations | 🟡 Partial | V1-V2, V5-V8b run ✅ · PROFILE_MIGRATION, V3 (messages), V4 (post images) still pending |
 | Source Control | 🟢 Current | GitHub repo connected, git push → Netlify auto-deploy · all pushed |
 | Folder Organization | 🟢 Done | SQL→db/, brand assets→branding/, governance→governance/, archive→reference/, QUICKSTART.md at root |
 | Org, Legal & Naming | 🟡 In progress | Trademark research still pending |
@@ -49,9 +49,10 @@ The public-facing community site. Goal: live and functional before platform buil
 - [x] `messages.html` — Split-pane messaging inbox (demo, needs V3 migration)
 - [x] `visualizer.html` — AI vision generator with credits + personal gallery + sharing
 - [x] `gallery.html` — Community shared visions gallery with likes + reporting
-- [x] `designer.html` — Three.js parametric building configurator with 5 construction methods + exports
+- [x] `designer.html` — Three.js parametric building configurator with **6 construction methods** (added Hemp Block Masonry) + exports
 - [x] `training.html` — Skills & Training partner inquiry page with contact form
 - [x] `sitemap.html` — Full site map organized by section
+- [x] `map.html` — Community map (Leaflet + OpenStreetMap) with 88 curated hotspot pins, 6 categories, layer toggles, Supabase-powered
 
 ### What's still needed on the site
 
@@ -154,17 +155,39 @@ Per v1 scope freeze (2026-02-18): everything below is required for v1.
 - [x] `designer.html` — Three.js parametric building configurator ✓
 - [x] 5-step wizard: Foundation & Type → Interior Layout → Roof & Energy → Materials & Finish → Export ✓
 - [x] 3D preview with OrbitControls, shadows, fog, ground plane ✓
-- [x] 5 construction methods: 3D Printed Hemp, 3D Printed Concrete, Manual Hemp, Conventional, Hybrid ✓
+- [x] **6 construction methods:** 3D Printed Hemp, 3D Printed Concrete, Manual Hemp, Conventional, Hybrid, **Hemp Block Masonry** ✓
+  - Hemp Block Masonry: ~120 blocks/yd³, R-2.4/inch, -0.34 tCO₂/yd³ carbon, $750/yd³ material, $16/sqft labor
 - [x] Live material/cost/carbon calculations ✓
 - [x] Working exports: glTF/GLB, CSV BOM, JSON config ✓
 - [x] Auto-generated needs list per construction method ✓
 - [ ] Wire to Supabase — save/load project configs per user
 - [ ] Community project gallery — browse shared designs
 
+### Community Map (new v22)
+- [x] `map.html` — full-viewport Leaflet.js + OpenStreetMap community map ✓
+- [x] `map_hotspots` Supabase table — lat/lng, category, title, description, url, status, is_visible, priority, RLS ✓
+- [x] SCHEMA_V8_map.sql — ✅ run in Supabase
+- [x] SCHEMA_V8b_unmet_need.sql — adds 'unmet-need' to category CHECK constraint ✅ run in Supabase
+- [x] hotspots-seed.csv — 89 rows, RFC 4180 compliant, all supplier + unmet-need pins ✓
+- [x] hotspots-seed.sql — full 88-pin INSERT (run after DELETE FROM to rebuild) ✓
+- [x] SEED_unmet_need_pins.sql — incremental 24-pin unmet-need-only insert ✓
+- [x] 6 pin categories: Rebuilding, Resource Hub, Active Build, Partner Org, Opportunity, Unmet Need ✓
+- [x] Nav link added to nav.js (desktop + mobile) ✓
+- [ ] Member pins — add lat/lng + map_visibility to profiles, show on map
+- [ ] Project pins — wire project lat/lng to map layer
+- [ ] "Claim your pin" onboarding interstitial post-signup
+
 ### Training Partners (new v7)
 - [x] `training.html` — Skills & Training page with partner contact form ✓
 - [x] `partner_inquiries` table — org_name, contact_name, email, focus_area, website_url, message ✓
 - [x] SCHEMA_V7 + V7b — ✅ run in Supabase
+
+### Hotspot Seed Data (v22)
+- [x] `db/hotspots-seed.csv` — 89 rows, RFC 4180 compliant (QUOTE_ALL), all supplier + unmet-need pins ✓
+- [x] `db/generate-hotspots-sql.py` — regenerates `hotspots-seed.sql` from CSV ✓
+- [x] `db/hotspots-seed.sql` — full 88-pin INSERT for full rebuilds ✓
+- [x] `db/SEED_unmet_need_pins.sql` — 24-pin incremental for live DB adds ✓
+- [x] `docs/DISPATCH_POSTS_V2.md` — hemp-blocks circle (3 posts + SRC-16) + hempwood circle (3 posts + SRC-17) appended ✓
 
 ### Shared Components
 - [x] `assets/js/nav.js` — shared nav component for all public pages (HTML injection + auth state + mobile menu) ✓
@@ -325,11 +348,12 @@ Given current state, this is the recommended sequence:
 - [x] 17. **Training Partners** — training.html with contact form, partner_inquiries table ✓
 - [x] 18. **Shared nav/footer components** — nav.js + footer.js injected on all public pages ✓
 - [x] 19. **Sitemap** — sitemap.html with all pages organized by section ✓
-- [ ] 20. **Integrate Flux assets** — use rendered images for site heroes, sections, textures
-- [ ] 21. **Project creation flow** — form to create a project/company page, link to profile
-- [ ] 22. **Media import pipeline** — paste URL → scrape oEmbed/OG → auto-populate title + thumbnail → create post
-- [ ] 23. **Verification + rate limiting** — safety layer before public launch
-- [ ] 24. **Operations tooling** — monitoring, incident pipeline, digest
+- [x] 20. **Community Map** — map.html with Leaflet, 88 curated hotspot pins, 6 categories, Unmet Need, Supabase-powered ✓
+- [ ] 21. **Integrate Flux assets** — use rendered images for site heroes, sections, textures
+- [ ] 22. **Project creation flow** — form to create a project/company page, link to profile
+- [ ] 23. **Media import pipeline** — paste URL → scrape oEmbed/OG → auto-populate title + thumbnail → create post
+- [ ] 24. **Verification + rate limiting** — safety layer before public launch
+- [ ] 25. **Operations tooling** — monitoring, incident pipeline, digest
 
 ---
 

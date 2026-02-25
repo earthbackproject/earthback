@@ -432,17 +432,17 @@ body {
     </div>
     <div class="status-card">
       <div class="status-label">Database</div>
-      <div class="status-value"><span class="dot g"></span>12+ Tables</div>
-      <div class="status-detail">V1-V2, V5-V7b run · 3 pending</div>
+      <div class="status-value"><span class="dot g"></span>13+ Tables</div>
+      <div class="status-detail">V1-V2, V5-V8b run · 3 pending</div>
     </div>
     <div class="status-card">
       <div class="status-label">Git</div>
-      <div class="status-value"><span class="dot g"></span>Current</div>
-      <div class="status-detail">All pushed to GitHub</div>
+      <div class="status-value"><span class="dot y"></span>Unpushed</div>
+      <div class="status-detail">Session 22 changes need push</div>
     </div>
     <div class="status-card info">
       <div class="status-label">Sessions</div>
-      <div class="status-value">20</div>
+      <div class="status-value">22</div>
       <div class="status-detail">Since Feb 18, 2026</div>
     </div>
   </div>
@@ -459,8 +459,8 @@ body {
     </a>
     <a class="health-card" href="index.html#platform">
       <div class="health-label"><span style="font-size:1rem">⚙️</span> Platform / App</div>
-      <div class="health-bar-bg"><div class="health-bar-fill yellow" style="width:65%"></div></div>
-      <div class="health-stats"><span>Gallery, Designer, Visualizer, Training built</span><span style="font-weight:600;color:var(--orange)">65%</span></div>
+      <div class="health-bar-bg"><div class="health-bar-fill yellow" style="width:68%"></div></div>
+      <div class="health-stats"><span>Gallery, Designer, Visualizer, Training, Map built</span><span style="font-weight:600;color:var(--orange)">68%</span></div>
     </a>
     <a class="health-card" href="index.html#org">
       <div class="health-label"><span style="font-size:1rem">🏛️</span> Org & Legal</div>
@@ -498,7 +498,15 @@ body {
         <li class="action-item urgent">
           <div class="action-dot urgent"></div>
           <div>
-            <div class="action-text"><strong>Review Flux overnight output</strong> — charsheets + site assets + T4 re-run</div>
+            <div class="action-text"><strong>git push</strong> — session 22 changes not yet pushed</div>
+            <div class="action-note">hemp blocks, map.html, schema V8/V8b, dispatch posts, nav.js</div>
+          </div>
+          <span class="action-tag urgent-tag">Now</span>
+        </li>
+        <li class="action-item urgent">
+          <div class="action-dot urgent"></div>
+          <div>
+            <div class="action-text"><strong>Review Flux overnight output</strong> — new char charsheets + T4/T5/face batches</div>
             <div class="action-note">Pick PuLID reference faces, select best shots per character</div>
           </div>
           <span class="action-tag urgent-tag">Next</span>
@@ -506,18 +514,10 @@ body {
         <li class="action-item urgent">
           <div class="action-dot urgent"></div>
           <div>
-            <div class="action-text"><strong>Integrate Flux assets into site</strong> — heroes, sections, textures</div>
-            <div class="action-note">Use rendered images to liven up pages</div>
+            <div class="action-text"><strong>Run 3 still-pending SQL migrations</strong> in Supabase SQL Editor</div>
+            <div class="action-note">PROFILE_MIGRATION → SCHEMA_V3 (messages) → SCHEMA_V4 (post images)</div>
           </div>
-          <span class="action-tag urgent-tag">Next</span>
-        </li>
-        <li class="action-item urgent">
-          <div class="action-dot urgent"></div>
-          <div>
-            <div class="action-text"><strong>Run 3 SQL migrations</strong> in Supabase SQL Editor</div>
-            <div class="action-note">PROFILE_MIGRATION → SCHEMA_V3 → SCHEMA_V4 (see db/README.md)</div>
-          </div>
-          <span class="action-tag urgent-tag">Now</span>
+          <span class="action-tag urgent-tag">Soon</span>
         </li>
       </ul>
 
@@ -526,26 +526,27 @@ body {
         <li class="action-item">
           <div class="action-dot next"></div>
           <div>
-            <div class="action-text"><strong>PuLID face-locked generation</strong> — run setup-pulid.py then queue-pulid-faces.py</div>
+            <div class="action-text"><strong>Map — member pins</strong> — add lat/lng to profiles, show real members on map</div>
           </div>
-          <span class="action-tag next-tag">Next</span>
+          <span class="action-tag next-tag">Map</span>
         </li>
         <li class="action-item">
           <div class="action-dot next"></div>
           <div>
+            <div class="action-text"><strong>PuLID face-locked generation</strong> — run setup-pulid.py then queue-pulid-faces.py</div>
+          </div>
+          <span class="action-tag next-tag">AI</span>
+        </li>
+        <li class="action-item">
+          <div class="action-dot next"></div>
+          <div>
+            <div class="action-text"><strong>Integrate Flux assets into site</strong> — heroes, sections, textures</div>
+          </div>
+        </li>
+        <li class="action-item">
+          <div class="action-dot soon"></div>
+          <div>
             <div class="action-text"><strong>Profile nav link</strong> — add link to own profile from every page</div>
-          </div>
-        </li>
-        <li class="action-item">
-          <div class="action-dot soon"></div>
-          <div>
-            <div class="action-text"><strong>Settings page</strong> — account settings, avatar, MFA</div>
-          </div>
-        </li>
-        <li class="action-item">
-          <div class="action-dot soon"></div>
-          <div>
-            <div class="action-text"><strong>Media import pipeline</strong> — paste URL → scrape → auto-post</div>
           </div>
         </li>
         <li class="action-item">
@@ -578,6 +579,10 @@ body {
             <div class="svc-icon" style="background:var(--green);">Eb</div>
             <div><div class="svc-name">Live Site</div><div class="svc-desc">earthbackproject.org</div></div>
           </a>
+          <a href="https://earthbackproject.org/map.html" target="_blank" class="svc">
+            <div class="svc-icon" style="background:#2D8A7A;">🗺</div>
+            <div><div class="svc-name">Community Map</div><div class="svc-desc">88 pins · Leaflet + Supabase</div></div>
+          </a>
           <a href="https://github.com/earthbackproject/earthback" target="_blank" class="svc">
             <div class="svc-icon" style="background:#24292e;">GH</div>
             <div><div class="svc-name">GitHub</div><div class="svc-desc">earthbackproject/earthback</div></div>
@@ -598,6 +603,7 @@ body {
           <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/storage/buckets" target="_blank" class="sb-link">Storage</a>
           <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/auth/url-configuration" target="_blank" class="sb-link">URL Config</a>
           <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/settings/api" target="_blank" class="sb-link">API Keys</a>
+          <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/editor?schema=public&table=map_hotspots" target="_blank" class="sb-link">Map Hotspots</a>
         </div>
       </div>
 
@@ -763,18 +769,18 @@ body {
 
       <!-- LAST SESSION -->
       <div class="session-box">
-        <div class="session-title">Last Session — #20 · Feb 24, 2026</div>
+        <div class="session-title">Last Session — #22 · Feb 25, 2026</div>
         <div class="session-text">
           <ul>
-            <li><strong>3D Project Designer</strong> — Three.js parametric building configurator with 5 construction methods, live cost/carbon calculations, GLB/CSV/JSON exports</li>
-            <li><strong>Shared Gallery</strong> — gallery.html with community visions, likes, self-like prevention, reporting, credit rewards</li>
-            <li><strong>Training Partners</strong> — training.html with contact form + partner_inquiries table (V7 + V7b migrations)</li>
-            <li><strong>Sitemap page</strong> — sitemap.html with all pages organized by section</li>
-            <li><strong>Shared nav/footer</strong> — nav.js + footer.js components for all public pages</li>
-            <li><strong>V5-V7b migrations run</strong> — visions, vision_likes, vision_flags, partner_inquiries all live in Supabase</li>
+            <li><strong>Community Map</strong> — map.html built with Leaflet + OpenStreetMap, 88 curated hotspot pins, 6 categories, layer toggles, Supabase-powered</li>
+            <li><strong>Unmet Need pins</strong> — 24 global south locations added; rejected "Opportunity" framing as exploitative; terracotta #9E4A4A color</li>
+            <li><strong>Hemp Block Masonry</strong> — 6th construction method added to designer.html with full calculations (R-value, carbon, cost, block count)</li>
+            <li><strong>Hempwood research</strong> — 11 new supplier pins (hemp blocks + hempwood); Fibonacci, Plantd, Boardwurks added</li>
+            <li><strong>SCHEMA_V8 + V8b run</strong> — map_hotspots table live in Supabase; unmet-need category added to CHECK constraint</li>
+            <li><strong>hotspots-seed.csv rebuilt</strong> — RFC 4180 compliant (QUOTE_ALL), 89 rows, fixes column misalignment bug</li>
           </ul>
           <div style="margin-top:0.6rem;color:rgba(242,239,230,0.5);font-size:0.76rem;">
-            Session 19: charsheets + site asset overnight batch · Session 18: vision persistence, rotating credits · Session 15: CLAUDE.md, 3D printer LoRA pipeline
+            Session 21: 7 new characters (19 total), T4/T5/charsheet overnight batch · Session 20: 3D Designer, Gallery, Training, Sitemap, nav.js/footer.js
           </div>
         </div>
       </div>
@@ -794,7 +800,7 @@ body {
 
   <div class="cc-footer">
     <span>the Earthback Project — Command Center</span>
-    <span>Updated: Feb 24, 2026 · Session 20</span>
+    <span>Updated: Feb 25, 2026 · Session 22</span>
   </div>
 
 </div>

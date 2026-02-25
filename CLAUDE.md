@@ -74,12 +74,13 @@ A community platform for people doing green building — hempcrete, solar, food 
 
 **Right now:** Pre-launch. Platform app is built and mostly wired. 3 SQL migrations still need to run. Focus is on AI image generation for site assets.
 
-**Image generation state (as of session 19, 2026-02-24):**
-- T1-T4 character images (237) all rejected — fixed seeds caused near-duplicates; moved to `comfyui-output/_rejected/`
-- T4 re-run (180 images, random seeds) + charsheets (72 images) + site assets (~160 images) all queued/running overnight
+**Image generation state (as of session 21, 2026-02-24):**
+- Roster expanded to **19 characters** — 7 new added this session (Britta, Sofia, Owen, Callum, Joseph, Tariq, Devon)
+- T4 re-run (180 images, random seeds) + charsheets (72 images) + site assets (~160 images) all done
+- New chars: charsheets (42 images) + T4/T5/face batches (~315 images) queued overnight
 - T5 scenes (162 files) + face angles (36 files) kept; renamed to `chars-NAME-*` format
 - **File naming convention:** `chars-NAME-TYPE_NNNNN_.png` / `charsheet-NAME-A/B/C_NNNNN_.png` / `site-THEME-NN_NNNNN_.png`
-- **Next:** review charsheets → pick best face per character → drop in `faces-reference/CharacterName.png` → run PuLID
+- **Next:** review new char charsheets → pick best face per character → `faces-reference/CharacterName.png` → run PuLID
 - **PowerShell tip:** use `;` not `&&` to chain commands (PS5 doesn't support `&&`)
 
 ---
@@ -91,7 +92,7 @@ All batch scripts live in `/Earthback/` root:
 | Script | Purpose |
 |--------|---------|
 | `queue-batches.py` | Main character + scenario image queuer (T1-T5 batches) |
-| `queue-charsheets.py` | Character reference triptychs — 3 sheets × 2 seeds × 12 chars = 72 wide images |
+| `queue-charsheets.py` | Character reference triptychs — 3 sheets × 2 seeds × 19 chars = 114 wide images |
 | `queue-site-assets.py` | Site asset batch — 14 themes, ~80 prompts, landscape + portrait |
 | `queue-circles.py` | 39 circle categories × 3 prompts for explore/circles pages |
 | `queue-hempcrete-lora.py` | Hempcrete LoRA training images (Nadia Benali character) |

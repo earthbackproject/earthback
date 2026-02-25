@@ -81,6 +81,39 @@
     navTarget.innerHTML = navHTML;
   }
 
+  // ── PAGE VIEW TRACKING (fire-and-forget, completely silent) ──
+  (function() {
+    try {
+      // Session ID: persists across page navigations in the same browser tab session
+      var sid = sessionStorage.getItem('eb_sid');
+      if (!sid) {
+        sid = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        sessionStorage.setItem('eb_sid', sid);
+      }
+      var pg = location.pathname.split('/').pop() || 'index.html';
+      // Only log internal referrers (same site page hops)
+      var refPg = null;
+      if (document.referrer) {
+        try {
+          var refUrl = new URL(document.referrer);
+          if (refUrl.hostname === location.hostname) {
+            refPg = refUrl.pathname.split('/').pop() || 'index.html';
+          }
+        } catch(e) {}
+      }
+      fetch(SUPABASE_URL + '/rest/v1/page_views', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ page: pg, referrer: refPg, session_id: sid })
+      });
+    } catch(e) { /* tracking never breaks the page */ }
+  })();
+
   // ── HAMBURGER TOGGLE ──
   document.addEventListener('click', function(e) {
     const btn = e.target.closest('#nav-hamburger');

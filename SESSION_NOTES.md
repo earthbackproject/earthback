@@ -4,7 +4,150 @@
 ---
 
 ## Last Updated
-2026-02-24 — Session 20 with Nicco via Cowork
+2026-02-25 — Session 22 (continued) with Nicco via Cowork
+
+---
+
+## What Was Done in Session 22 (2026-02-25)
+
+*Planning session — pin map, content bot, social pipeline, Moonback/Marsback.*
+
+### Pin Map Plan — docs/PINMAP_PLAN.md (UPDATED)
+- Map framing: universal tool for any community type (rebuilding, greenhouses, cohousing, etc.) — not Ukraine-specific
+- Hotspot system added: 5 curated pin categories (Rebuilding, Resource Hub, Active Build, Partner Org, Opportunity)
+- Each category has a distinct color; team places these manually before member density builds
+- Initial seed list: Kherson, Mykolaiv, New Orleans, Oaxaca, Marrakech, Appalachia, Tamil Nadu, Accra, Taos
+- "Claim your pin" onboarding interstitial — post-signup, 2-tap flow, map visible behind dialog
+- Proximity detection: if new member's location matches a Rebuilding hotspot → special "join this effort" onboarding
+- Layer defaults: Rebuilding + Projects on by default (map looks alive from day one)
+- Build sequence revised: Phase 1 = hotspot seeds, Phase 2 = public map.html (useful before any members pin), then member pins, then onboarding
+
+### Content Bot & Social Pipeline — docs/CONTENT_BOT_PLAN.md (NEW)
+- **Earthback Dispatch** — platform-native bot org account, posts daily across all circles
+- Content types: technique/knowledge posts, project spotlights, news roundups, resource links, community prompts
+- Social pipeline: Dispatch posts → Nicco approves queue → format for Twitter/Instagram → post
+- Phase 1: curate 30-50 seed posts manually, load with staggered timestamps — fastest path to live circles
+- Phase 2: RSS → summarize → post script (`generate-dispatch.py`)
+- Phase 3: Claude API generates original posts per circle on demand
+- Data model: `is_bot` + `bot_type` on profiles; `scheduled_for` + `status` + `source_url` on posts
+- Social media launch this week: start with Twitter + Instagram, manual posting initially
+
+### Moonback / Marsback
+- Nicco is seriously considering registering both domains
+- Same platform template, same circles/dispatch system, off-world context
+- Natural building ↔ space habitat research overlap is real (basalt fiber, mycelium, 3D-printed earthen)
+- Action: register domains now, build later
+
+### Vision notes
+- Map is universal — not a cause, not a campaign. Wherever communities need building, Earthback applies.
+- Geographic view of membership tells you what services to build for each region
+- "If you build it they will come" — the value prop is rare enough and real enough that discoverability will follow quality
+- Onboarding goal: new member plugs directly into whole community (right circles, right people, right geography) in first session
+- Bot/dispatch keeps platform alive pre-critical-mass; displaces itself as member posting takes over
+
+### Hemp Blocks + Hempwood Research + Platform Updates (Session 22 continued)
+
+#### hotspots-seed.csv — EXPANDED to 89 entries (88 usable pins + header)
+- Added 11 new entries covering hemp blocks and hempwood suppliers
+- Added 24 unmet-need pins for global south areas of need (see below)
+- **Hemp block companies added:** Just BioFiber (Canada), Renewabuild (BC), Lancaster Lime Works (PA), DTE Materials (CA), 8th Fire Innovations/DiVita (Edmonton), Cânhamor (Portugal), HempFlax (Netherlands)
+- **Hempwood companies added:** Fibonacci LLC / HempWood® (Murray KY), Plantd Materials (Durham NC), Boardwurks Biocomposites (Florida)
+- Re-classified IsoHemp, Hemp and Block, Hemp Block USA, IsoHemp France → `hemp-blocks` slug (were `hempcrete`)
+- Category breakdown: hempcrete (33), hemp-blocks (10), hempwood (3), straw-bale (7), cob (5), unmet-need (24), rest distributed
+- **Key finding:** Plantd Materials (ex-SpaceX founders) is closest to structural hemp OSB — $22M raised, structural panels in prototype. Fibonacci is the only company selling commercial hemp lumber today (non-structural). Load-rated structural hempwood is ~3-5 years out.
+- **Dakota Hemp** (South Dakota): first US interlocking hemp block manufacturer expected mid-2026 — worth connecting with
+- CSV rebuilt with Python `csv.QUOTE_ALL` (RFC 4180 compliant — fixes comma-in-location_name column misalignment)
+
+#### designer.html — Hemp Block Masonry added as 6th construction method
+- New chip: "Hemp Block Masonry" (`hemp-block` val) in construction method selector
+- Calculates block count (~120 blocks/yd³), lime mortar, timber frame needs
+- R-value: 2.4/inch (same as cast hempcrete)
+- Carbon: slightly less negative than cast hempcrete (-0.34 vs -0.37 tCO₂/yd³) — pre-curing offset
+- Cost: $750/yd³ material (vs $800 cast), $16/sqft labor (blocks faster than casting), $2,500 equipment
+- Needs list: shows Hemp Blocks count, Lime Mortar + Timber Frame, Hemp Block Mason skill
+- Wall annotation: "Hemp Block Wall — R-[n]"
+
+#### DISPATCH_POSTS_V2.md — hemp-blocks and hempwood sections added
+- **hemp-blocks circle:** 3 posts + SRC-16 sourcing guide
+- **hempwood circle:** 3 posts + SRC-17 sourcing guide
+- Image queue updated: 4 new images needed (2 hemp-blocks, 2 hempwood)
+- Hempwood images can queue now (different visual from hempcrete, no LoRA needed)
+- Hemp-block images: hold for hempcrete LoRA (same pale grey-green aesthetic)
+- Total posts now: ~118 across all circles
+
+#### Community Map — map.html (NEW)
+- **Leaflet.js + OpenStreetMap** — fully open-source, no API key needed, perfectly aligned with Earthback ethos
+- Full-viewport map page at `site/map.html`; nav added via nav.js + inline nav CSS (same pattern as explore.html)
+- Dynamic top offset: `requestAnimationFrame` + `getBoundingClientRect()` on `<nav>` → correctly accounts for nav + prelaunch banner (~88-90px)
+- **6 pin categories** with distinct colors: Rebuilding (#E8A838), Resource Hub (#2D8A7A), Active Build (#C26B42), Partner Org (#4A6FA5), Opportunity (#4a7c3f), Unmet Need (#9E4A4A)
+- SVG drop-pin markers via `L.divIcon`; popups with category badge, title, location, description, "Visit site →" link
+- Layer toggle panel with per-category pin counts; click to show/hide each category
+- Loads hotspots from Supabase `map_hotspots` table via publishable key — works for all visitors including logged-out
+- "Loading pins…" overlay removed after data loads; graceful error state if Supabase fails
+- Map link added to nav.js (desktop + mobile overlay) — appears before Visualizer in nav order
+- **88 pins loaded and working** — user confirmed "HELL YEAH! I can't wait until this map looks like a mycelium maze"
+
+#### "Unmet Need" pin category — 24 global south pins
+- User rejected "Opportunity" as exploitative framing for areas of need/disaster
+- Brainstormed alternatives: Solidarity, Calling, Frontline, Unmet — user chose **"Unmet Need"** — honest, specific, no political baggage
+- **Color:** Deep terracotta `#9E4A4A` — distinct from Active Build clay, conveys urgency without alarm-red
+- **24 pins across:** Malawi, Mozambique, Ethiopia, Haiti, Nepal, Bangladesh, Myanmar, Central African Republic, South Sudan, Yemen, Papua New Guinea, Sierra Leone, Liberia, Madagascar, Burkina Faso, Niger, Mali, Chad, DRC, Zambia, Honduras, Bolivia, Guatemala, Cambodia
+- All marked `status = 'planned'` — curated from news/housing-crisis data as areas where green building expertise is most needed
+- Added to `SCHEMA_V8b_unmet_need.sql` (new CHECK constraint migration), full seed in `hotspots-seed.sql`, incremental in `SEED_unmet_need_pins.sql`
+
+#### Database — SCHEMA_V8 + V8b run in Supabase ✅
+- **SCHEMA_V8_map.sql** — creates `map_hotspots` table with full schema (lat/lng, category, title, description, url, status, RLS, indexes, updated_at trigger)
+  - Admin write policy removed — `is_admin` column doesn't exist yet; service role bypasses RLS entirely for Supabase dashboard writes
+- **SCHEMA_V8b_unmet_need.sql** — drops old category CHECK constraint (found via `pg_constraint`), recreates it adding `'unmet-need'`
+- Both run successfully; **hotspots-seed.sql** run after DELETE FROM → all 88 pins loaded
+
+#### Incremental SQL update pattern established
+- `hotspots-seed.sql` = full snapshot → run after `DELETE FROM map_hotspots` for a full rebuild
+- `SEED_*.sql` = incremental inserts only → safe to run on live DB without touching existing rows
+- Schema changes = `SCHEMA_V*.sql` files → always run schema before seed
+
+### Immediate next
+- [ ] **Review overnight image output** — new char charsheets + T4/T5/face batches in comfyui-output/
+- [ ] **Pick PuLID reference faces** — best charsheet panel per char → faces-reference/CharacterName.png
+- [ ] **Write seed content pack** — 30-50 Earthback Dispatch posts for circle seeding (can do with Claude)
+- [ ] **Create Dispatch bot account** — insert into Supabase profiles manually
+- [ ] **Register Moonback and Marsback domains** — before someone else does
+- [ ] **Set up social media accounts** — Twitter + Instagram this week
+- [ ] **Run 3 still-pending SQL migrations** — PROFILE_MIGRATION → SCHEMA_V3 (messages) → SCHEMA_V4 (post images) in Supabase SQL Editor
+- [ ] **Map — member pins** — add lat/lng + map_visibility to profiles table, show real member dots on map
+- [ ] **Map — project pins** — wire existing project lat/lng to map_hotspots or separate layer
+- [ ] **"Claim your pin" onboarding** — post-signup interstitial, 2-tap flow, map visible behind dialog
+- [ ] **git add / commit / push** — all session 22 changes (hemp blocks, map.html, schema V8/V8b, dispatch posts, nav.js)
+
+---
+
+## What Was Done in Session 21 (2026-02-24)
+
+*7 new characters added, charsheets + full batches queued overnight.*
+
+### 7 new characters added to queue-batches.py and queue-charsheets.py
+- **Britta Svensson** — 27, Swedish, blonde, straw bale + natural plaster, Skåne, seed 440001
+- **Sofia Marini** — 31, Italian, brunette, earthen architecture + lime plaster, Tuscany, seed 550001
+- **Owen Marsh** — 23, white American, young, off-grid + tiny homes, Vermont, seed 660001
+- **Callum Reed** — 25, Welsh, young, cordwood + cob, Brecon Beacons, seed 770001
+- **Joseph Runningwater** — 67, Coast Salish/Lummi Nation, elder male, land steward + watershed, Pacific Northwest, seed 880001
+- **Tariq Hassan** — 29, Yemeni, traditional earthen tower house preservation, Hadhramaut Valley, seed 990001
+- **Devon Clarke** — 25, Black American, urban food systems + mutual aid, New Orleans, seed 111001
+- Roster now: **19 characters total**
+- Full T5 scenes (5 scenes each) written for all 7 new characters
+- All 7 added to CHARS in both queue-batches.py and queue-charsheets.py
+
+### Overnight queue running
+- Charsheets for all 7 new characters: 7 × 3 sheets × 2 seeds = **42 images**
+- Full T4 + T5 + face batches for all 7: `--reseed --batch-size 3` — **~315 images**
+- Both running overnight
+
+### Immediate next (when back)
+- [ ] **Review new character charsheets** — check face consistency across panels
+- [ ] **Review all overnight output** — new chars T4/T5/face + any remaining from prior batch
+- [ ] **Pick PuLID reference faces** — best charsheet panel per character → `faces-reference/CharacterName.png`
+- [ ] **Update docs/CHARACTERS.md** — add the 7 new character bibles
+- [ ] **Integrate Flux assets into site** — heroes, section backgrounds, textures
 
 ---
 

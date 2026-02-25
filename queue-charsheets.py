@@ -99,6 +99,35 @@ CHARS = [
      "desc": "a 26-year-old Mexican-American man, warm tan skin, thick dark hair, "
              "dark brown eyes, square face, light stubble, broad shoulders, strong jaw",
      "seed": 330001},
+    {"name": "Britta Svensson",
+     "desc": "a 27-year-old Swedish woman, long straight pale golden blonde hair, "
+             "very fair skin, clear blue eyes, angular Nordic face, tall and lean, clean-featured",
+     "seed": 440001},
+    {"name": "Sofia Marini",
+     "desc": "a 31-year-old Italian woman, dark brown wavy medium-length hair, "
+             "warm olive-tan skin, dark brown eyes, oval face, defined jaw, expressive dark brows",
+     "seed": 550001},
+    {"name": "Owen Marsh",
+     "desc": "a 23-year-old white American man, short dark brown hair, light skin with freckles, "
+             "lean build, hazel eyes, clean-shaven, sharp jaw, youthful face",
+     "seed": 660001},
+    {"name": "Callum Reed",
+     "desc": "a 25-year-old white Welsh man, medium brown wavy hair, fair skin, "
+             "blue-green eyes, slender build, light stubble, angular face, narrow jaw",
+     "seed": 770001},
+    {"name": "Joseph Runningwater",
+     "desc": "a 67-year-old Coast Salish man, Lummi Nation, deep copper-brown heavily weathered skin, "
+             "thick silver-white hair worn long, strong broad face, prominent cheekbones, "
+             "dark deep-set eyes, heavy brow, heavyset commanding build",
+     "seed": 880001},
+    {"name": "Tariq Hassan",
+     "desc": "a 29-year-old Yemeni man, warm medium-brown skin, short black hair, "
+             "close-trimmed dark beard, angular lean face, deep dark eyes, tall and lean build",
+     "seed": 990001},
+    {"name": "Devon Clarke",
+     "desc": "a 25-year-old Black American man, deep brown skin, close-cropped natural hair, "
+             "wide bright expressive eyes, lean athletic build, clean-shaven, warm open face",
+     "seed": 111001},
 ]
 
 # ── Three triptych sheet types ─────────────────────────────────────────────────

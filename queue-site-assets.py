@@ -297,6 +297,20 @@ ASSET_BATCHES = {
         ],
     },
 
+    # ── Dispatch Support (post illustration images) ───────────────────────────
+    # Specific images needed to illustrate Earthback Dispatch posts.
+    # Hempcrete posts are EXCLUDED here — wait for hempcrete LoRA.
+    "dispatch-support": {
+        "label": "Dispatch post illustrations — timber infill, passive solar, solar thermal, off-grid panel",
+        "wide": False,
+        "prompts": [
+            STYLE + "Timber frame structure with hempcrete infill panels visible between the posts — pale grey-green hempcrete packed into bays, timber joinery visible at corners. Interior light, construction phase.",
+            STYLE + "Deep south-facing window reveal in an earthen home — thick 18-inch wall sill, winter sunlight cutting a precise rectangle across a tiled thermal mass floor, a wooden overhang visible outside. Warm afternoon light.",
+            STYLE + "Flat plate solar thermal collector mounted on a natural building roof — copper header pipes and riser tubes visible through the glazing, condensation on the glass. Close-up, side light.",
+            STYLE + "Off-grid 12V power panel on a wooden wall — DC circuit breakers labeled in marker, a battery monitor display, a wiring loom, a small inverter. Utility interior, natural light.",
+        ],
+    },
+
 }
 
 

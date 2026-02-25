@@ -470,6 +470,7 @@ input[type="range"]::-webkit-slider-thumb {
             <span class="chip selected" data-val="3d-printed-hemp">3D Printed Hempcrete</span>
             <span class="chip" data-val="3d-printed-concrete">3D Printed Concrete</span>
             <span class="chip" data-val="manual-hemp">Manual Hempcrete</span>
+            <span class="chip" data-val="hemp-block">Hemp Block Masonry</span>
             <span class="chip" data-val="conventional">Conventional Build</span>
             <span class="chip" data-val="hybrid">Hybrid</span>
           </div>
@@ -965,8 +966,10 @@ function buildModel() {
   const method = config.constructionMethod;
   const isConcreteMethod = method === '3d-printed-concrete';
   const isConventionalMethod = method === 'conventional';
+  const isHempBlockMethod = method === 'hemp-block';
   const wallColor = isConcreteMethod ? 0xb0b0a8 :
                     isConventionalMethod ? 0xc8b898 :
+                    isHempBlockMethod ? 0xd4c89a : // slightly greener tint for hemp blocks
                     (COLORS.walls[config.exteriorFinish] || 0xd4c49a);
   const roofColor = COLORS.roof[config.roofType] || 0x6a7a6a;
 
@@ -1158,18 +1161,23 @@ function updateCalculations() {
 
   const method = config.constructionMethod;
   const isHemp = method === '3d-printed-hemp' || method === 'manual-hemp' || method === 'hybrid';
+  const isHempBlock = method === 'hemp-block';
   const isConcrete = method === '3d-printed-concrete';
   const isConventional = method === 'conventional';
 
   // Material quantities vary by construction method
   const hempHurd = isHemp ? wallVolYd * 0.22 : (method === 'hybrid' ? wallVolYd * 0.11 : 0);
   const limeBinder = isHemp ? wallVolYd * 0.11 : 0;
+  // Hemp blocks: ~120 blocks per yd³ of wall volume; mortar ~0.05 tons/yd³
+  const hempBlocks = isHempBlock ? Math.round(wallVolYd * 120) : 0;
+  const blockMortar = isHempBlock ? (wallVolYd * 0.05).toFixed(1) : 0;
   const concreteVol = isConcrete ? wallVolYd : (isConventional ? wallVolYd * 0.4 : 0);
   const lumberBF = isConventional ? Math.round(sqft * 6.5) : (method === 'hybrid' ? Math.round(sqft * 3) : 0);
   const insulBatts = isConventional ? Math.round(perimeter * H * 0.9) : 0;
 
   // R-value depends on wall material
   const rValue = isHemp ? Math.round(config.wallThickness * 2.4) :
+                 isHempBlock ? Math.round(config.wallThickness * 2.4) :
                  isConcrete ? Math.round(config.wallThickness * 0.8) :
                  isConventional ? Math.round(config.wallThickness * 1.1) :
                  Math.round(config.wallThickness * 1.8); // hybrid
@@ -1185,17 +1193,18 @@ function updateCalculations() {
   const solarArea = Math.round(roofArea * solarFrac);
   const solarKw = (solarArea * 0.02).toFixed(1);
 
-  // Carbon: hempcrete is carbon-negative, concrete is carbon-positive
+  // Carbon: hempcrete and hemp blocks are carbon-negative, concrete is carbon-positive
   const carbonStored = isHemp ? (wallVolYd * 0.37).toFixed(1) :
+                       isHempBlock ? (wallVolYd * 0.34).toFixed(1) : // blocks sequester slightly less due to pre-curing
                        isConcrete ? (-wallVolYd * 0.25).toFixed(1) :
                        isConventional ? (-wallVolYd * 0.18).toFixed(1) :
                        (wallVolYd * 0.18).toFixed(1); // hybrid
 
   // Cost model varies by method
-  const wallCostPerYd = isHemp ? 800 : isConcrete ? 650 : isConventional ? 500 : 700;
+  const wallCostPerYd = isHemp ? 800 : isHempBlock ? 750 : isConcrete ? 650 : isConventional ? 500 : 700;
   const matCost = Math.round(wallVolYd * wallCostPerYd + roofArea * 12 + solarArea * 25 + sqft * 15 + lumberBF * 0.85 + insulBatts * 1.2);
-  const laborCost = Math.round(sqft * (isConventional ? 30 : 20));
-  const equipCost = method === '3d-printed-hemp' || method === '3d-printed-concrete' ? 15000 : (isConventional ? 3000 : 5000);
+  const laborCost = Math.round(sqft * (isConventional ? 30 : isHempBlock ? 16 : 20)); // blocks are faster to lay than casting
+  const equipCost = method === '3d-printed-hemp' || method === '3d-printed-concrete' ? 15000 : isHempBlock ? 2500 : (isConventional ? 3000 : 5000);
   const totalCost = matCost + laborCost + equipCost;
   const costSqft = Math.round(totalCost / sqft);
 
@@ -1206,14 +1215,14 @@ function updateCalculations() {
   $('storyTag').textContent = stories + (stories === 1 ? ' Story' : ' Stories');
 
   // Adapt labels + values to construction method
-  $('outWallLabel').textContent = isHemp ? 'Hempcrete Volume' : isConcrete ? 'Concrete Volume' : isConventional ? 'Framing Volume' : 'Wall Volume';
-  $('outHempcrete').textContent = isHemp ? '~' + Math.round(wallVolYd) + ' yd³' : isConcrete ? '~' + Math.round(concreteVol) + ' yd³' : isConventional ? '~' + Math.round(wallVolYd) + ' yd³' : '~' + Math.round(wallVolYd) + ' yd³';
+  $('outWallLabel').textContent = isHemp ? 'Hempcrete Volume' : isHempBlock ? 'Hemp Block Count' : isConcrete ? 'Concrete Volume' : isConventional ? 'Framing Volume' : 'Wall Volume';
+  $('outHempcrete').textContent = isHemp ? '~' + Math.round(wallVolYd) + ' yd³' : isHempBlock ? '~' + hempBlocks.toLocaleString() + ' blocks' : isConcrete ? '~' + Math.round(concreteVol) + ' yd³' : '~' + Math.round(wallVolYd) + ' yd³';
 
-  $('outMat2Label').textContent = isHemp ? 'Hemp Hurd' : isConcrete ? 'Rebar' : isConventional ? 'Lumber' : 'Hemp Hurd';
-  $('outHurd').textContent = hempHurd > 0 ? '~' + hempHurd.toFixed(1) + ' tons' : lumberBF > 0 ? '~' + lumberBF.toLocaleString() + ' BF' : isConcrete ? '~' + Math.round(concreteVol * 0.15) + ' tons' : 'N/A';
+  $('outMat2Label').textContent = isHemp ? 'Hemp Hurd' : isHempBlock ? 'Lime Mortar' : isConcrete ? 'Rebar' : isConventional ? 'Lumber' : 'Hemp Hurd';
+  $('outHurd').textContent = isHempBlock ? '~' + blockMortar + ' tons' : hempHurd > 0 ? '~' + hempHurd.toFixed(1) + ' tons' : lumberBF > 0 ? '~' + lumberBF.toLocaleString() + ' BF' : isConcrete ? '~' + Math.round(concreteVol * 0.15) + ' tons' : 'N/A';
 
-  $('outMat3Label').textContent = isHemp ? 'Lime Binder' : isConcrete ? 'Reinforcement' : isConventional ? 'Insulation' : 'Lime Binder';
-  $('outLime').textContent = limeBinder > 0 ? '~' + limeBinder.toFixed(1) + ' tons' : insulBatts > 0 ? '~' + insulBatts.toLocaleString() + ' sq ft' : isConcrete ? 'Mesh + fiber' : 'N/A';
+  $('outMat3Label').textContent = isHemp ? 'Lime Binder' : isHempBlock ? 'Timber Frame' : isConcrete ? 'Reinforcement' : isConventional ? 'Insulation' : 'Lime Binder';
+  $('outLime').textContent = isHempBlock ? 'Required (infill)' : limeBinder > 0 ? '~' + limeBinder.toFixed(1) + ' tons' : insulBatts > 0 ? '~' + insulBatts.toLocaleString() + ' sq ft' : isConcrete ? 'Mesh + fiber' : 'N/A';
   $('outRoof').textContent = '~' + roofArea.toLocaleString() + ' sq ft';
   $('outSolar').textContent = solarArea > 0 ? '~' + solarArea.toLocaleString() + ' sq ft' : 'None';
   $('outRval').textContent = 'R-' + rValue;
@@ -1232,7 +1241,7 @@ function updateCalculations() {
      config.roofType === 'living' ? 'Living Roof' :
      config.roofType === 'thatch' ? 'Hemp Thatch Roof' : 'Hybrid Roof') +
     (config.solarIntegration !== 'none' ? ' + Solar' : '');
-  const wallMaterial = isHemp ? 'Hempcrete' : isConcrete ? 'Printed Concrete' : isConventional ? 'Frame + Insulation' : 'Hybrid';
+  const wallMaterial = isHemp ? 'Hempcrete' : isHempBlock ? 'Hemp Block Wall' : isConcrete ? 'Printed Concrete' : isConventional ? 'Frame + Insulation' : 'Hybrid';
   $('annotWallLabel').textContent = config.wallThickness + '" ' + wallMaterial + ' — R-' + rValue;
   $('annotFoundationLabel').textContent =
     config.foundationType === 'lime-slab' ? 'Lime Slab Foundation' :
@@ -1241,18 +1250,24 @@ function updateCalculations() {
     'Earthbag Stem Wall';
 
   // Needs list
-  updateNeeds(wallVolYd, hempHurd, limeBinder, solarArea);
+  updateNeeds(wallVolYd, hempHurd, limeBinder, solarArea, hempBlocks);
 }
 
-function updateNeeds(wallVol, hurd, lime, solarArea) {
+function updateNeeds(wallVol, hurd, lime, solarArea, blockCount) {
   const needs = [];
   const method = config.constructionMethod;
   const isHemp = method === '3d-printed-hemp' || method === 'manual-hemp' || method === 'hybrid';
+  const isHempBlock = method === 'hemp-block';
   const isConcrete = method === '3d-printed-concrete';
   const isConventional = method === 'conventional';
   const is3D = method === '3d-printed-hemp' || method === '3d-printed-concrete';
 
   if (is3D) needs.push({ icon: '🎓', type: 'skill', name: '3D Print Operator' });
+  if (isHempBlock) {
+    needs.push({ icon: '🧱', type: 'resource', name: (blockCount || Math.round(wallVol * 120)).toLocaleString() + ' Hemp Blocks' });
+    needs.push({ icon: '🪨', type: 'resource', name: 'Lime Mortar + Timber Frame' });
+    needs.push({ icon: '🔨', type: 'skill', name: 'Hemp Block Mason' });
+  }
   if (isHemp) {
     needs.push({ icon: '🌿', type: 'resource', name: hurd.toFixed(1) + ' tons Hemp Hurd' });
     needs.push({ icon: '�ite', type: 'resource', name: lime.toFixed(1) + ' tons Lime Binder' });

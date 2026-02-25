@@ -359,6 +359,111 @@
         .action-tag.urgent-tag { background: rgba(251,191,36,0.12); color: #fbbf24; }
         .action-tag.blocked-tag { background: rgba(248,113,113,0.1); color: #f87171; }
 
+        /* ── LIVE TRAFFIC ── */
+        .traffic-stats {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem; margin-bottom: 1.25rem;
+        }
+        .traffic-stat {
+            background: rgba(31,58,46,0.35);
+            border: 1px solid rgba(194,165,108,0.08);
+            border-radius: 8px; padding: 0.85rem 1rem;
+            text-align: center;
+        }
+        .traffic-stat-val {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem; font-weight: 700; color: var(--clay);
+            line-height: 1;
+        }
+        .traffic-stat-val.active { color: #4ade80; }
+        .traffic-stat-label {
+            font-size: 0.6rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.12em; color: rgba(242,239,230,0.35);
+            margin-top: 0.25rem;
+        }
+
+        .traffic-two-col {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1.25rem; margin-bottom: 2rem;
+        }
+
+        /* Session trails */
+        .session-trail {
+            display: flex; flex-direction: column; gap: 0.2rem;
+            padding: 0.65rem 0.75rem; border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 0.4rem; transition: border-color 0.15s;
+        }
+        .session-trail:hover { border-color: rgba(194,165,108,0.15); }
+        .session-trail.active-trail {
+            border-color: rgba(74,222,128,0.2);
+            background: rgba(74,222,128,0.03);
+        }
+        .trail-meta {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.65rem; color: rgba(242,239,230,0.3);
+        }
+        .trail-dot {
+            width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+        }
+        .trail-dot.active { background: #4ade80; box-shadow: 0 0 5px rgba(74,222,128,0.5); }
+        .trail-dot.recent { background: var(--clay); }
+        .trail-dot.old { background: rgba(255,255,255,0.2); }
+        .trail-pages {
+            display: flex; align-items: center; gap: 0.3rem;
+            flex-wrap: wrap; margin-top: 0.25rem;
+        }
+        .trail-page {
+            font-size: 0.7rem; color: rgba(242,239,230,0.7);
+            background: rgba(31,58,46,0.5);
+            padding: 0.15rem 0.5rem; border-radius: 3px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        .trail-page.last-page { color: var(--parchment); background: rgba(194,165,108,0.15); }
+        .trail-arrow {
+            font-size: 0.6rem; color: rgba(242,239,230,0.2);
+        }
+
+        /* Live feed */
+        .live-feed {
+            max-height: 320px; overflow-y: auto;
+        }
+        .feed-view {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.4rem 0.5rem; border-radius: 5px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.75rem; transition: background 0.3s;
+        }
+        .feed-view.flash { background: rgba(74,222,128,0.08); }
+        .feed-view-page {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.72rem; color: var(--parchment); font-weight: 600;
+        }
+        .feed-view-ref { font-size: 0.67rem; color: rgba(242,239,230,0.3); }
+        .feed-view-time { font-size: 0.62rem; color: rgba(242,239,230,0.2); margin-left: auto; white-space: nowrap; }
+        .feed-view-new { font-size: 0.55rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: #4ade80; background: rgba(74,222,128,0.1);
+            padding: 0.1rem 0.35rem; border-radius: 3px; }
+
+        /* Top pages */
+        .top-pages { display: flex; flex-direction: column; gap: 0.5rem; }
+        .top-page-row { display: flex; align-items: center; gap: 0.65rem; }
+        .top-page-name {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.72rem; color: rgba(242,239,230,0.65);
+            width: 130px; flex-shrink: 0; overflow: hidden;
+            text-overflow: ellipsis; white-space: nowrap;
+        }
+        .top-page-bar-bg {
+            flex: 1; height: 6px; background: rgba(31,58,46,0.5);
+            border-radius: 3px; overflow: hidden;
+        }
+        .top-page-bar { height: 100%; background: var(--clay); border-radius: 3px; transition: width 0.4s ease; }
+        .top-page-count {
+            font-size: 0.7rem; color: rgba(242,239,230,0.4);
+            width: 24px; text-align: right; flex-shrink: 0;
+        }
+
         /* ── PLATFORM ACTIVITY ── */
         .platform-item {
             display: flex; align-items: center; gap: 0.6rem;
@@ -472,6 +577,62 @@
                 <div class="health-status" id="hc-visions-status">—</div>
                 <div class="health-detail" id="hc-visions-detail">Visions table</div>
             </div>
+            <div class="health-item checking" id="hc-map">
+                <div class="health-label2">Community Map</div>
+                <div class="health-status" id="hc-map-status">—</div>
+                <div class="health-detail" id="hc-map-detail">map_hotspots table</div>
+            </div>
+        </div>
+
+        <!-- ══════ LIVE TRAFFIC ══════ -->
+        <div class="section-header" style="margin-bottom:0.75rem;">
+            <div class="section-title">Live Traffic <span id="live-pulse" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,0.5);margin-left:8px;vertical-align:middle;animation:pulse 2s ease-in-out infinite;"></span></div>
+            <div class="section-count" id="traffic-refresh" style="cursor:pointer;" onclick="loadTraffic()">Click to refresh</div>
+        </div>
+
+        <div class="traffic-stats">
+            <div class="traffic-stat">
+                <div class="traffic-stat-val active" id="ts-active">—</div>
+                <div class="traffic-stat-label">Active Now<br><span style="opacity:0.5;font-size:0.55rem;">(last 10 min)</span></div>
+            </div>
+            <div class="traffic-stat">
+                <div class="traffic-stat-val" id="ts-today">—</div>
+                <div class="traffic-stat-label">Page Views Today</div>
+            </div>
+            <div class="traffic-stat">
+                <div class="traffic-stat-val" id="ts-sessions">—</div>
+                <div class="traffic-stat-label">Sessions Today</div>
+            </div>
+            <div class="traffic-stat">
+                <div class="traffic-stat-val" id="ts-total">—</div>
+                <div class="traffic-stat-label">All-Time Views</div>
+            </div>
+        </div>
+
+        <div class="traffic-two-col">
+            <!-- SESSION TRAILS -->
+            <div class="panel">
+                <div class="panel-title"><span>🧭</span> Visitor Trails <span id="trail-count" style="font-size:0.7rem;font-weight:400;color:rgba(242,239,230,0.35);margin-left:4px;"></span></div>
+                <div id="session-trails">
+                    <div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">Loading trails...</div>
+                </div>
+            </div>
+
+            <!-- LIVE FEED + TOP PAGES -->
+            <div style="display:flex;flex-direction:column;gap:1.25rem;">
+                <div class="panel">
+                    <div class="panel-title"><span>⚡</span> Live Feed</div>
+                    <div class="live-feed" id="live-feed">
+                        <div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">Waiting for visitors...</div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title"><span>📊</span> Top Pages Today</div>
+                    <div class="top-pages" id="top-pages">
+                        <div style="text-align:center;padding:1rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">Loading...</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- ══════ SERVICES + PRIORITIES ══════ -->
@@ -522,7 +683,15 @@
                     <li class="action-item urgent">
                         <div class="action-dot urgent"></div>
                         <div>
-                            <div class="action-text"><strong>Review Flux overnight output</strong> — charsheets + site assets + T4 re-run</div>
+                            <div class="action-text"><strong>git push</strong> — session 22 changes not yet pushed</div>
+                            <div class="action-note">map.html, hemp blocks, schema V8/V8b, dispatch posts, nav.js</div>
+                        </div>
+                        <span class="action-tag urgent-tag">Now</span>
+                    </li>
+                    <li class="action-item urgent">
+                        <div class="action-dot urgent"></div>
+                        <div>
+                            <div class="action-text"><strong>Review Flux overnight output</strong> — charsheets + T4/T5/face batches</div>
                             <div class="action-note">Pick PuLID reference faces, select best shots per character</div>
                         </div>
                         <span class="action-tag urgent-tag">Next</span>
@@ -530,17 +699,10 @@
                     <li class="action-item urgent">
                         <div class="action-dot urgent"></div>
                         <div>
-                            <div class="action-text"><strong>Run 3 SQL migrations</strong> in Supabase SQL Editor</div>
-                            <div class="action-note">PROFILE_MIGRATION &rarr; SCHEMA_V3 &rarr; SCHEMA_V4</div>
+                            <div class="action-text"><strong>Run 3 still-pending SQL migrations</strong></div>
+                            <div class="action-note">PROFILE_MIGRATION &rarr; SCHEMA_V3 (messages) &rarr; SCHEMA_V4 (post images)</div>
                         </div>
-                        <span class="action-tag urgent-tag">Now</span>
-                    </li>
-                    <li class="action-item urgent">
-                        <div class="action-dot urgent"></div>
-                        <div>
-                            <div class="action-text"><strong>Integrate Flux assets</strong> into site — heroes, sections, textures</div>
-                        </div>
-                        <span class="action-tag urgent-tag">Next</span>
+                        <span class="action-tag urgent-tag">Soon</span>
                     </li>
                 </ul>
 
@@ -548,16 +710,21 @@
                 <ul class="action-list">
                     <li class="action-item">
                         <div class="action-dot next"></div>
-                        <div><div class="action-text"><strong>PuLID face-locked generation</strong> — setup-pulid.py then queue-pulid-faces.py</div></div>
-                        <span class="action-tag next-tag">Next</span>
+                        <div><div class="action-text"><strong>Map — member pins</strong> — add lat/lng to profiles, show members on map</div></div>
+                        <span class="action-tag next-tag">Map</span>
                     </li>
                     <li class="action-item">
                         <div class="action-dot next"></div>
-                        <div><div class="action-text"><strong>Profile nav link</strong> — add link to own profile from every page</div></div>
+                        <div><div class="action-text"><strong>PuLID face-locked generation</strong> — setup-pulid.py then queue-pulid-faces.py</div></div>
+                        <span class="action-tag next-tag">AI</span>
+                    </li>
+                    <li class="action-item">
+                        <div class="action-dot next"></div>
+                        <div><div class="action-text"><strong>Integrate Flux assets</strong> into site — heroes, sections, textures</div></div>
                     </li>
                     <li class="action-item">
                         <div class="action-dot soon"></div>
-                        <div><div class="action-text"><strong>Settings page</strong> — account settings, avatar, MFA</div></div>
+                        <div><div class="action-text"><strong>Profile nav link</strong> — add link to own profile from every page</div></div>
                     </li>
                     <li class="action-item">
                         <div class="action-dot soon"></div>
@@ -863,6 +1030,16 @@
                        e.message.includes('does not exist') ? 'Not created' : 'Error', e.message);
         }
 
+        // Map hotspots table
+        try {
+            const { count, error } = await sb.from('map_hotspots').select('*', { count: 'exact', head: true });
+            if (error) throw error;
+            setHealth('hc-map', 'ok', count + ' pins', 'map_hotspots OK');
+        } catch(e) {
+            setHealth('hc-map', e.message.includes('does not exist') ? 'warn' : 'err',
+                       e.message.includes('does not exist') ? 'Not created' : 'Error', e.message);
+        }
+
         document.getElementById('health-time').textContent = 'Checked ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     }
 
@@ -939,6 +1116,182 @@
         }
     }
 
+    // ── LIVE TRAFFIC ──
+    let allViews = [];
+    let feedViews = [];
+
+    async function loadTraffic() {
+        document.getElementById('traffic-refresh').textContent = 'Loading...';
+        try {
+            const { data: views, error } = await sb
+                .from('page_views')
+                .select('id, page, referrer, session_id, created_at')
+                .order('created_at', { ascending: false })
+                .limit(500);
+            if (error) throw error;
+            allViews = views || [];
+            feedViews = [...allViews];
+            renderTrafficStats();
+            renderSessionTrails();
+            renderTopPages();
+            renderLiveFeed(feedViews.slice(0, 30));
+            document.getElementById('traffic-refresh').textContent =
+                'Refreshed ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        } catch(e) {
+            document.getElementById('traffic-refresh').textContent = 'Error: ' + e.message.slice(0, 40);
+        }
+    }
+
+    function renderTrafficStats() {
+        const now = new Date();
+        const tenMinAgo = new Date(now - 10 * 60 * 1000);
+        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const todayViews = allViews.filter(v => new Date(v.created_at) >= todayStart);
+        const activeViews = allViews.filter(v => new Date(v.created_at) >= tenMinAgo);
+        const todaySessions = new Set(todayViews.filter(v => v.session_id).map(v => v.session_id)).size;
+        const activeSessions = new Set(activeViews.filter(v => v.session_id).map(v => v.session_id)).size;
+        document.getElementById('ts-active').textContent = activeSessions;
+        document.getElementById('ts-today').textContent = todayViews.length;
+        document.getElementById('ts-sessions').textContent = todaySessions;
+        document.getElementById('ts-total').textContent = allViews.length + (allViews.length >= 500 ? '+' : '');
+    }
+
+    function renderSessionTrails() {
+        const now = new Date();
+        const tenMinAgo = new Date(now - 10 * 60 * 1000);
+        const hourAgo = new Date(now - 60 * 60 * 1000);
+
+        const sessions = {};
+        allViews.forEach(v => {
+            const sid = v.session_id || ('anon-' + v.id);
+            if (!sessions[sid]) sessions[sid] = [];
+            sessions[sid].push(v);
+        });
+        Object.values(sessions).forEach(s => s.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)));
+
+        const sortedSessions = Object.entries(sessions)
+            .sort((a, b) => {
+                const aLast = new Date(a[1][a[1].length - 1].created_at);
+                const bLast = new Date(b[1][b[1].length - 1].created_at);
+                return bLast - aLast;
+            })
+            .slice(0, 14);
+
+        document.getElementById('trail-count').textContent = sortedSessions.length + ' sessions';
+
+        if (sortedSessions.length === 0) {
+            document.getElementById('session-trails').innerHTML =
+                '<div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">No visitors yet — share the link!</div>';
+            return;
+        }
+
+        const html = sortedSessions.map(([sid, views]) => {
+            const lastView = new Date(views[views.length - 1].created_at);
+            const isActive = lastView >= tenMinAgo;
+            const isRecent = lastView >= hourAgo;
+            const dotClass = isActive ? 'active' : (isRecent ? 'recent' : 'old');
+            const trailClass = isActive ? 'session-trail active-trail' : 'session-trail';
+            const pageCount = views.length;
+
+            const dedupedPages = views.reduce((acc, v) => {
+                if (acc.length === 0 || acc[acc.length - 1] !== v.page) acc.push(v.page);
+                return acc;
+            }, []);
+
+            const pagesHtml = dedupedPages.map((pg, i) => {
+                const isLast = i === dedupedPages.length - 1;
+                const pgName = pg.replace('.html', '');
+                return (i > 0 ? '<span class="trail-arrow">›</span>' : '') +
+                    `<span class="trail-page${isLast ? ' last-page' : ''}">${pgName}</span>`;
+            }).join('');
+
+            const statusTxt = isActive
+                ? '<span style="color:#4ade80;font-size:0.62rem;">&#9679; active now</span>'
+                : formatDate(views[views.length - 1].created_at);
+
+            return `<div class="${trailClass}">
+                <div class="trail-meta">
+                    <div class="trail-dot ${dotClass}"></div>
+                    <span>${statusTxt}</span>
+                    <span style="margin-left:auto;">${pageCount} page${pageCount !== 1 ? 's' : ''}</span>
+                </div>
+                <div class="trail-pages">${pagesHtml}</div>
+            </div>`;
+        }).join('');
+
+        document.getElementById('session-trails').innerHTML = html;
+    }
+
+    function renderTopPages() {
+        const now = new Date();
+        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const todayViews = allViews.filter(v => new Date(v.created_at) >= todayStart);
+        const pageCounts = {};
+        todayViews.forEach(v => { pageCounts[v.page] = (pageCounts[v.page] || 0) + 1; });
+        const sorted = Object.entries(pageCounts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+
+        if (sorted.length === 0) {
+            document.getElementById('top-pages').innerHTML =
+                '<div style="text-align:center;padding:1rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">No views today yet</div>';
+            return;
+        }
+        const max = sorted[0][1];
+        document.getElementById('top-pages').innerHTML = sorted.map(([page, count]) => {
+            const pct = Math.round((count / max) * 100);
+            const pgName = page.replace('.html', '') || 'home';
+            return `<div class="top-page-row">
+                <div class="top-page-name">${pgName}</div>
+                <div class="top-page-bar-bg"><div class="top-page-bar" style="width:${pct}%"></div></div>
+                <div class="top-page-count">${count}</div>
+            </div>`;
+        }).join('');
+    }
+
+    function renderLiveFeed(views) {
+        if (views.length === 0) {
+            document.getElementById('live-feed').innerHTML =
+                '<div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">Waiting for visitors...</div>';
+            return;
+        }
+        document.getElementById('live-feed').innerHTML = views.map((v, i) => {
+            const refHtml = v.referrer
+                ? `<span class="feed-view-ref">&#8592; ${v.referrer.replace('.html', '')}</span>`
+                : `<span class="feed-view-ref" style="opacity:0.4;">direct</span>`;
+            return `<div class="feed-view" id="fv-${v.id}">
+                <span class="feed-view-page">${v.page}</span>
+                ${refHtml}
+                <span class="feed-view-time">${formatDate(v.created_at)}</span>
+                ${i === 0 ? '<span class="feed-view-new">new</span>' : ''}
+            </div>`;
+        }).join('');
+    }
+
+    function subscribeToTraffic() {
+        sb.channel('live-page-views')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'page_views' }, payload => {
+                const v = payload.new;
+                allViews.unshift(v);
+                feedViews.unshift(v);
+                if (allViews.length > 500) allViews.pop();
+                if (feedViews.length > 30) feedViews.pop();
+
+                renderTrafficStats();
+                renderSessionTrails();
+                renderTopPages();
+                renderLiveFeed(feedViews.slice(0, 30));
+
+                const newRow = document.getElementById('fv-' + v.id);
+                if (newRow) {
+                    newRow.classList.add('flash');
+                    setTimeout(() => newRow.classList.remove('flash'), 1500);
+                }
+                addLog('&#128065; Page view: <span style="color:var(--clay);">' + v.page + '</span>' +
+                    (v.referrer ? ' &larr; ' + v.referrer : ' (direct)'));
+            })
+            .subscribe();
+        addLog('Live traffic subscription active');
+    }
+
     // ── INIT ──
     async function init() {
         // Request notification permission
@@ -954,12 +1307,15 @@
         runHealthChecks();
         loadPlatformActivity();
         loadRecentVisions();
+        loadTraffic();
+        subscribeToTraffic();
 
-        // Periodic refresh every 5 minutes
+        // Periodic refresh
         setInterval(loadMembers, 5 * 60 * 1000);
         setInterval(runHealthChecks, 5 * 60 * 1000);
         setInterval(loadPlatformActivity, 2 * 60 * 1000);
         setInterval(loadRecentVisions, 2 * 60 * 1000);
+        setInterval(loadTraffic, 3 * 60 * 1000);
     }
 
     init();

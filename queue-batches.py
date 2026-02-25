@@ -188,6 +188,77 @@ CHARS = [
         "light": "harsh Arizona sunlight",
         "seed": 330001,
     },
+    {
+        "name": "Britta Svensson",
+        "trigger": "BRITTA_SVENSSON_EB",
+        "desc": "a 27-year-old Swedish woman, long straight pale golden blonde hair, "
+                "very fair skin, clear blue eyes, angular Nordic face, tall and lean, "
+                "clean-featured",
+        "location": "Skåne southern Sweden",
+        "light": "soft overcast Scandinavian daylight",
+        "seed": 440001,
+    },
+    {
+        "name": "Sofia Marini",
+        "trigger": "SOFIA_MARINI_EB",
+        "desc": "a 31-year-old Italian woman, dark brown wavy medium-length hair, "
+                "warm olive-tan skin, dark brown eyes, oval face, defined jaw, "
+                "expressive dark brows",
+        "location": "Val d'Orcia Tuscany Italy",
+        "light": "warm Mediterranean afternoon light",
+        "seed": 550001,
+    },
+    {
+        "name": "Owen Marsh",
+        "trigger": "OWEN_MARSH_EB",
+        "desc": "a 23-year-old white American man, short dark brown hair, "
+                "light skin with freckles, lean build, hazel eyes, clean-shaven, "
+                "sharp jaw, youthful face",
+        "location": "Vermont farmland",
+        "light": "crisp clear New England morning light",
+        "seed": 660001,
+    },
+    {
+        "name": "Callum Reed",
+        "trigger": "CALLUM_REED_EB",
+        "desc": "a 25-year-old white Welsh man, medium brown wavy hair, "
+                "fair skin, blue-green eyes, slender build, light stubble, "
+                "angular face, narrow jaw",
+        "location": "Brecon Beacons Wales",
+        "light": "soft overcast Welsh daylight",
+        "seed": 770001,
+    },
+    {
+        "name": "Joseph Runningwater",
+        "trigger": "JOSEPH_RUNNINGWATER_EB",
+        "desc": "a 67-year-old Coast Salish man, Lummi Nation, deep copper-brown "
+                "heavily weathered skin, thick silver-white hair worn long, strong "
+                "broad face, prominent cheekbones, dark deep-set eyes, heavy brow, "
+                "heavyset commanding build",
+        "location": "Lummi Nation Pacific Northwest coast",
+        "light": "soft overcast Pacific Northwest coastal light",
+        "seed": 880001,
+    },
+    {
+        "name": "Tariq Hassan",
+        "trigger": "TARIQ_HASSAN_EB",
+        "desc": "a 29-year-old Yemeni man, warm medium-brown skin, short black hair, "
+                "close-trimmed dark beard, angular lean face, deep dark eyes, "
+                "tall and lean build",
+        "location": "Hadhramaut Valley Yemen",
+        "light": "bright highland Yemen afternoon sun",
+        "seed": 990001,
+    },
+    {
+        "name": "Devon Clarke",
+        "trigger": "DEVON_CLARKE_EB",
+        "desc": "a 25-year-old Black American man, deep brown skin, close-cropped "
+                "natural hair, wide bright expressive eyes, lean athletic build, "
+                "clean-shaven, warm open face",
+        "location": "New Orleans Louisiana",
+        "light": "warm Gulf Coast morning light",
+        "seed": 111001,
+    },
 ]
 
 # Offset added to char seed per face angle — keeps same noise base, varies pose
@@ -613,6 +684,170 @@ T5_SCENES = {
          "Sitting with an older Mexican man in the shade of a mesquite tree, "
          "both looking at a hand-drawn diagram on paper between them. "
          "Barrio afternoon shade, warm filtered light. Photograph."),
+    ],
+
+    "Britta Svensson": [
+        ("{trigger}, long straight pale golden hair, very fair skin, blue eyes. "
+         "Placing and pinning a straw bale into a rising wall with a bale needle, "
+         "tamping it tight against the previous course. "
+         "Overcast Swedish morning light, timber frame behind her. Photograph."),
+
+        ("{trigger}, long blonde hair, fair skin, angular Nordic face. "
+         "Applying lime plaster to a straw bale wall exterior with a hawk and float, "
+         "spreading it in long smooth arcs. Outdoor afternoon, soft Scandinavian light. Photograph."),
+
+        ("{trigger}, pale golden hair, blue eyes, tall lean build. "
+         "Testing moisture content of a straw bale section with a probe meter, "
+         "reading the display carefully. On-site, overcast grey sky. Photograph."),
+
+        ("{trigger}, long blonde hair, very fair skin, clean-featured. "
+         "Reviewing a building permit drawing spread on a kitchen table with a neighbor, "
+         "pointing at a detail, both leaning in. Interior window light. Photograph."),
+
+        ("{trigger}, pale golden hair, blue eyes, angular Nordic face. "
+         "Walking along a just-stripped straw bale wall, running her fingertips "
+         "along the freshly plastered lime surface, assessing the texture. "
+         "Overcast Swedish afternoon. Photograph."),
+    ],
+
+    "Sofia Marini": [
+        ("{trigger}, dark brown wavy hair, warm olive-tan skin, expressive dark brows. "
+         "Mixing a batch of lime putty in a large bucket, adding pozzolan powder slowly "
+         "from a bag, watching the consistency. Outdoor shade, warm Tuscan afternoon. Photograph."),
+
+        ("{trigger}, dark brown wavy hair, oval face, defined jaw. "
+         "Applying intonaco lime plaster to an interior wall with a wooden float, "
+         "long smooth arcing strokes, face close to the surface. "
+         "Interior, warm afternoon window light. Photograph."),
+
+        ("{trigger}, dark brown wavy medium-length hair, olive-tan skin. "
+         "Crouching to photograph an ancient earthen and stone wall section with a camera, "
+         "field notebook open on the ground beside her. Warm Tuscan light, golden hour. Photograph."),
+
+        ("{trigger}, dark brown hair, dark brown eyes, expressive brows. "
+         "At a long table with a village council, pointing at building drawings, "
+         "speaking carefully, others listening. Interior, overhead light. Photograph."),
+
+        ("{trigger}, dark brown wavy hair, warm olive-tan skin, oval face. "
+         "Mixing dry pigments — ochre and terracotta — into a bucket of lime wash, "
+         "watching the color develop. Outdoor table, warm Mediterranean afternoon. Photograph."),
+    ],
+
+    "Owen Marsh": [
+        ("{trigger}, short dark brown hair, freckled light skin, hazel eyes, youthful face. "
+         "Wiring a solar charge controller on a plywood panel in a small off-grid cabin, "
+         "tools laid out neatly beside him. Interior, afternoon light through a small window. Photograph."),
+
+        ("{trigger}, short dark brown hair, clean-shaven, lean build, freckles. "
+         "Installing a composting toilet in a tiny home bathroom, "
+         "instruction sheet pinned to the wall, working carefully. Interior light. Photograph."),
+
+        ("{trigger}, dark brown hair, sharp jaw, light freckled skin. "
+         "Threading conduit through a drilled hole in an insulated wall panel, "
+         "leaning into it. Crisp Vermont morning light, timber framing behind him. Photograph."),
+
+        ("{trigger}, short dark hair, hazel eyes, youthful clean-shaven face. "
+         "Reading battery bank voltage readings on a monitoring display, "
+         "writing numbers in a logbook. Small utility closet, LED light. Photograph."),
+
+        ("{trigger}, dark brown hair, freckled skin, lean athletic build. "
+         "Lifting a framed wall section into position alongside a neighbor, "
+         "both straining slightly. Vermont morning, clear sky, field behind them. Photograph."),
+    ],
+
+    "Callum Reed": [
+        ("{trigger}, medium brown wavy hair, fair skin, light stubble, blue-green eyes. "
+         "Laying a course of cordwood logs in a lime-sawdust mortar bed, "
+         "pressing each piece level and tight. Overcast Welsh daylight, outdoor site. Photograph."),
+
+        ("{trigger}, wavy brown hair, slender build, light stubble, angular face. "
+         "Mixing cob — clay, sand, and straw — on a tarp in light Welsh rain, "
+         "treading it with bare feet, arms loose. Grey sky. Photograph."),
+
+        ("{trigger}, medium brown wavy hair, fair skin, blue-green eyes. "
+         "Cutting and pointing mortar joints between cordwood rounds with a pointing tool, "
+         "precise and slow. Close work, diffuse overcast light. Photograph."),
+
+        ("{trigger}, wavy brown hair, light stubble, angular narrow jaw. "
+         "Sitting on a stool beside a completed cordwood wall section, "
+         "sketching details in a notebook, studying the pattern. Soft Welsh afternoon. Photograph."),
+
+        ("{trigger}, medium brown hair, slender build, light stubble. "
+         "Demonstrating a cob ball soil test to a small workshop group, "
+         "rolling a ball of clay between both palms, looking at the group. "
+         "Outdoor morning, overcast Welsh sky. Photograph."),
+    ],
+
+    "Joseph Runningwater": [
+        ("{trigger}, thick silver-white hair worn long, deep copper-brown weathered skin, "
+         "prominent cheekbones, heavy brow. "
+         "Kneeling at the edge of a stream, placing a large rock for habitat deflection "
+         "with both hands in the water. Soft overcast Pacific Northwest light. Photograph."),
+
+        ("{trigger}, long silver-white hair, deep copper-brown skin, heavyset build. "
+         "Walking a forest path with a younger person, pointing up at an old-growth cedar, "
+         "speaking. Soft filtered light through a tall canopy. Photograph."),
+
+        ("{trigger}, silver-white hair, prominent cheekbones, deep-set dark eyes. "
+         "Seated at a low table with a watershed map spread out, "
+         "tracing a line with one finger, studying it. Interior, quiet natural light. Photograph."),
+
+        ("{trigger}, long silver-white hair, heavyset commanding build, weathered face. "
+         "Standing in shallow water at a stream crossing, arms crossed, "
+         "watching the current move around newly placed rocks, assessing. "
+         "Overcast Pacific Northwest sky, forest behind. Photograph."),
+
+        ("{trigger}, silver-white hair, deep copper-brown skin, heavy brow. "
+         "Crouching with a group of young people at a forest edge, "
+         "holding up a native plant specimen and pointing at the roots, explaining. "
+         "Soft morning light through trees. Photograph."),
+    ],
+
+    "Tariq Hassan": [
+        ("{trigger}, warm medium-brown skin, short black hair, close-trimmed dark beard. "
+         "Examining a crack in a stone-and-earth tower house wall, "
+         "tracing the mortar joint with one finger, looking closely. "
+         "Bright highland Yemen afternoon sun, long shadow. Photograph."),
+
+        ("{trigger}, close-trimmed beard, angular lean face, deep dark eyes. "
+         "Mixing traditional earthen mortar in a bucket, adding water slowly "
+         "from a jug, watching the clay consistency change. "
+         "Outdoor shade, dry warm air. Photograph."),
+
+        ("{trigger}, warm medium-brown skin, short black hair, tall lean build. "
+         "On scaffold beside a tall tower house wall, pressing fresh earthen mortar "
+         "into a repair joint with a wooden float. Bright afternoon sun, adobe surface close. Photograph."),
+
+        ("{trigger}, close-trimmed dark beard, angular face, dark eyes. "
+         "Sitting with an elder craftsman on low stools, both examining "
+         "a hand-drawn detail of a traditional window corbel. Interior, cool shade. Photograph."),
+
+        ("{trigger}, warm medium-brown skin, short black hair, lean build. "
+         "Standing at the base of a tall traditional mudbrick tower house, "
+         "looking up, one hand shading his eyes, assessing the upper floors. "
+         "Bright Yemen midday, full overhead sun. Photograph."),
+    ],
+
+    "Devon Clarke": [
+        ("{trigger}, deep brown skin, close-cropped natural hair, lean athletic build. "
+         "Turning compost in a raised bin at a community garden, fork in hand, "
+         "steam rising from the pile. Warm Gulf Coast morning light, city visible behind. Photograph."),
+
+        ("{trigger}, deep brown skin, wide bright eyes, clean-shaven, warm open face. "
+         "Carrying a flat of seedlings carefully to a planting bed, "
+         "focused and steady. Soft morning light, urban garden setting. Photograph."),
+
+        ("{trigger}, close-cropped natural hair, lean build, bright expressive eyes. "
+         "Organizing donated produce into bins at a community fridge on a sidewalk, "
+         "efficient and cheerful. Overcast day, neighborhood street. Photograph."),
+
+        ("{trigger}, deep brown skin, warm open face, wide eyes. "
+         "Leaning on a garden fence talking to an elderly neighbor, "
+         "both looking at a growing bed, animated and easy. Warm Gulf Coast afternoon. Photograph."),
+
+        ("{trigger}, close-cropped hair, lean athletic build, clean-shaven. "
+         "Spreading compost onto a raised bed with a flat shovel, "
+         "working methodically down the row. New Orleans morning, warm and humid, soft light. Photograph."),
     ],
 }
 
