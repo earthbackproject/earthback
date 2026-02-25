@@ -23,12 +23,14 @@ ALTER TABLE public.page_views ENABLE ROW LEVEL SECURITY;
 
 -- Anyone (anon + authenticated) can INSERT a page view
 -- This is intentional — the tracking script in nav.js uses the publishable key
+DROP POLICY IF EXISTS "anon_insert_page_views" ON public.page_views;
 CREATE POLICY "anon_insert_page_views"
   ON public.page_views FOR INSERT
   TO anon, authenticated
   WITH CHECK (true);
 
 -- Anyone can SELECT — no PII is stored, just page names + opaque session IDs
+DROP POLICY IF EXISTS "public_read_page_views" ON public.page_views;
 CREATE POLICY "public_read_page_views"
   ON public.page_views FOR SELECT
   TO anon, authenticated

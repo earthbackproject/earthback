@@ -72,16 +72,20 @@ A community platform for people doing green building — hempcrete, solar, food 
 **GitHub:** https://github.com/earthbackproject/earthback (auto-deploys to Netlify on push)
 **Supabase project:** `yptktmzagctusbeqdaty`
 
-**Right now:** Pre-launch. Platform app is built and mostly wired. 3 SQL migrations still need to run. Focus is on AI image generation for site assets.
+**Right now:** Pre-launch. Platform app is built and mostly wired. 3 SQL migrations still pending (PROFILE_MIGRATION, V3, V4). Analytics tracking live (SCHEMA_V9 run). Next focus: LoRA training.
 
-**Image generation state (as of session 21, 2026-02-24):**
-- Roster expanded to **19 characters** — 7 new added this session (Britta, Sofia, Owen, Callum, Joseph, Tariq, Devon)
-- T4 re-run (180 images, random seeds) + charsheets (72 images) + site assets (~160 images) all done
-- New chars: charsheets (42 images) + T4/T5/face batches (~315 images) queued overnight
-- T5 scenes (162 files) + face angles (36 files) kept; renamed to `chars-NAME-*` format
+**Image generation state (as of session 23, 2026-02-25):**
+- Roster: **19 characters** — 12 originals + 7 new (Britta, Sofia, Owen, Callum, Joseph, Tariq, Devon)
+- All charsheets, T4/T5/face batches generated; files renamed to `chars-NAME-*` convention
 - **File naming convention:** `chars-NAME-TYPE_NNNNN_.png` / `charsheet-NAME-A/B/C_NNNNN_.png` / `site-THEME-NN_NNNNN_.png`
-- **Next:** review new char charsheets → pick best face per character → `faces-reference/CharacterName.png` → run PuLID
+- **Next:** LoRA training (hempcrete + 3D printer) → PuLID face-locked generation → integrate Flux assets into site
 - **PowerShell tip:** use `;` not `&&` to chain commands (PS5 doesn't support `&&`)
+
+**Analytics (as of session 23):**
+- `page_views` table live in Supabase (SCHEMA_V9 run ✓)
+- nav.js fires fire-and-forget tracking on every page load
+- eb-grove.html has Live Traffic Monitor (session trails, live feed, top pages, stat cards)
+- SCHEMA_V9b_ip.sql ready — adds IP capture via RPC function (run when ready)
 
 ---
 
@@ -102,7 +106,7 @@ All batch scripts live in `/Earthback/` root:
 | `caption-3dprinter-images.py` | Generate .txt captions for Kohya |
 | `train-3dprinter-lora.bat` | Kohya SS training command for 3D printer LoRA |
 
-**Characters:** 12 characters defined in `docs/CHARACTERS.md`, each with fixed seed for consistency.
+**Characters:** 19 characters — full bibles in `docs/CHARACTERS.md`, each with fixed seed for consistency.
 **PuLID:** Node installed at `ComfyUI/custom_nodes/ComfyUI-PuLID-Flux`. Models need downloading via `setup-pulid.py`.
 **Reference images:** Drop in `faces-reference/CharacterName.png` to enable PuLID for that character.
 

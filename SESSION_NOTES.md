@@ -46,13 +46,13 @@
 - `tracker/command-center.html` is gitignored — must use `-f` flag or update .gitignore to include it
 
 ### Immediate next
-- [ ] **Run SCHEMA_V9_analytics.sql** in Supabase SQL Editor — tracking silently fails until this table exists
-- [ ] **LoRA work** — hempcrete LoRA (Nadia), 3D printer LoRA pipeline (get API keys, run collect/curate/caption/train)
-- [ ] **Review overnight image output** — new char charsheets + T4/T5/face batches in comfyui-output/
-- [ ] **Pick PuLID reference faces** — best charsheet panel per char → faces-reference/CharacterName.png
+- [x] **Run SCHEMA_V9_analytics.sql** — done ✓ traffic monitor working, data coming in overnight
+- [ ] **LoRA work** — hempcrete LoRA (Nadia) + 3D printer LoRA (get Pexels/Pixabay API keys → collect → curate → caption → train)
+- [ ] **PuLID reference faces** — pick best charsheet panel per char → faces-reference/CharacterName.png → run queue-pulid-faces.py
+- [ ] **IP tracking** — run db/SCHEMA_V9b_ip.sql in Supabase (adds ip_address column + RPC function; nav.js ready)
 - [ ] **Run 3 still-pending SQL migrations** — PROFILE_MIGRATION → SCHEMA_V3 (messages) → SCHEMA_V4 (post images)
 - [ ] **Mobile cleanup** — site looks good on desktop/all browsers; mobile needs polish
-- [ ] **Map — member pins** — add lat/lng + map_visibility to profiles table
+- [ ] **Integrate Flux assets** — rendered images into site heroes/sections
 - [ ] **Set up social media accounts** — Twitter + Instagram
 
 ---

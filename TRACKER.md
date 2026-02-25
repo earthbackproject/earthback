@@ -191,9 +191,11 @@ Per v1 scope freeze (2026-02-18): everything below is required for v1.
 
 ### Analytics & Traffic Monitor (new v23)
 - [x] `db/SCHEMA_V9_analytics.sql` — `page_views` table with RLS + realtime subscription ✓
+- [x] SCHEMA_V9_analytics.sql — ✅ run in Supabase · traffic monitor live and working
 - [x] `site/assets/js/nav.js` — fire-and-forget page-view tracking on every page load ✓
 - [x] `site/eb-grove.html` — Live Traffic Monitor: stat cards, session trails, live feed, top pages ✓
-- [ ] **Run SCHEMA_V9_analytics.sql in Supabase** — table doesn't exist yet; tracking silently fails until done
+- [x] `db/SCHEMA_V9b_ip.sql` — adds `ip_address` column + `insert_page_view()` RPC function ✓
+- [ ] Run SCHEMA_V9b_ip.sql in Supabase — enables IP capture in session trails + live feed
 
 ### Shared Components
 - [x] `assets/js/nav.js` — shared nav component for all public pages (HTML injection + auth state + mobile menu + page-view tracking) ✓
