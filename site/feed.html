@@ -201,7 +201,11 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
   gap: 16px;
   position: sticky;
   top: 84px;
-  height: fit-content;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.08) transparent;
+  padding-right: 2px;
 }
 
 /* ── SIDEBAR CARD ── */
@@ -289,6 +293,90 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
   transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* ── FLASH NOTIFICATIONS CARD ── */
+.flash-card {
+  background: var(--white);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius);
+  padding: 11px 14px;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+.flash-card-label {
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 7px;
+}
+.flash-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.45;
+}
+.flash-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sage);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* ── NAV LINKS CARD ── */
+.nav-card {
+  background: var(--white);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius);
+  padding: 12px 10px;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+.nav-card-label {
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 0 4px 6px;
+}
+.nav-card-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.nav-card-link:hover { background: var(--paper); }
+.nav-card-link.active { background: var(--pale-green); color: var(--green); font-weight: 600; }
+.nav-card-link img { width: 1em; height: 1em; opacity: 0.65; flex-shrink: 0; }
+.nav-card-more-items { display: none; }
+.nav-card-more-items.open { display: block; }
+.nav-card-more-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-family: var(--font-sans);
+  transition: background 0.15s, color 0.15s;
+}
+.nav-card-more-btn:hover { background: var(--paper); color: var(--text); }
+.nav-card-more-btn svg { transition: transform 0.2s; margin-left: auto; }
+.nav-card-more-btn.open svg { transform: rotate(180deg); }
+
 /* ── STREAMS CARD ── */
 .streams-card {
   background: var(--white);
@@ -347,6 +435,12 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
   font-size: 0.75rem;
   color: var(--text-muted);
   font-weight: 500;
+}
+#stream-items-dynamic {
+  max-height: 140px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.08) transparent;
 }
 
 /* ── INVITE CARD ── */
@@ -907,6 +1001,50 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
       </div>
     </a>
 
+    <!-- FLASH NOTIFICATIONS -->
+    <div class="flash-card">
+      <div class="flash-card-label">Updates</div>
+      <div class="flash-msg">
+        <span class="flash-dot"></span>
+        <span id="flash-text">Welcome — your first post earns 10 Earth Score points.</span>
+      </div>
+    </div>
+
+    <!-- NAV LINKS -->
+    <div class="nav-card">
+      <div class="nav-card-label">Navigate</div>
+      <a href="feed.html" class="nav-card-link active">
+        <img src="assets/img/icons/icon-leaf.svg" alt=""> Home
+      </a>
+      <a href="circles.html" class="nav-card-link">
+        <img src="assets/img/icons/icon-people.svg" alt=""> Circles
+      </a>
+      <a href="map.html" class="nav-card-link">
+        <img src="assets/img/icons/icon-pin.svg" alt=""> Map
+      </a>
+      <a href="projects.html" class="nav-card-link">
+        <img src="assets/img/icons/icon-building.svg" alt=""> Projects
+      </a>
+      <a href="gallery.html" class="nav-card-link">
+        <img src="assets/img/icons/icon-heart.svg" alt=""> Gallery
+      </a>
+      <button class="nav-card-more-btn" id="nav-card-more-btn" onclick="toggleNavMore()">
+        More
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,4 6,8 10,4"/></svg>
+      </button>
+      <div class="nav-card-more-items" id="nav-card-more-items">
+        <a href="visualizer.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-sun.svg" alt=""> AI Visualizer
+        </a>
+        <a href="designer.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-chart.svg" alt=""> Estimator
+        </a>
+        <a href="messages.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-chat.svg" alt=""> Messages
+        </a>
+      </div>
+    </div>
+
     <div class="streams-card" id="streams-card">
       <div class="streams-label">Your Streams</div>
       <div class="stream-item active" onclick="filterStream('all', this)">
@@ -1240,6 +1378,14 @@ function setFilter(mode, btn) {
     hint.textContent = 'Showing high-signal and relevant posts';
   }
   renderFeed();
+}
+
+function toggleNavMore() {
+  var btn  = document.getElementById('nav-card-more-btn');
+  var more = document.getElementById('nav-card-more-items');
+  if (!btn || !more) return;
+  btn.classList.toggle('open');
+  more.classList.toggle('open');
 }
 
 function filterStream(stream, el) {
