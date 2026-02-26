@@ -4,7 +4,52 @@
 ---
 
 ## Last Updated
-2026-02-25 — Session 23 with Nicco via Cowork
+2026-02-26 — Session 24 with Nicco via Cowork
+
+---
+
+## What Was Done in Session 24 (2026-02-26)
+
+### Project Designer → Project Estimator rebrand
+- Renamed all user-visible text from "Project Designer" to "Project Estimator" across 4 files
+- `designer.html`: title, meta description, h1, hero copy updated
+- `footer.js`: nav link text "Designer" → "Estimator" (href stays `designer.html`)
+- `sitemap.html`: "Project Designer" → "Project Estimator" with updated description
+- `visualizer.html`: hint tip text updated from "For the Designer tool" → "Ready to estimate costs?"
+- Filename kept as `designer.html` to avoid breaking bookmarks
+
+### All pending SQL migrations run in Supabase
+- V6b (visions UPDATE policy) — ✅ run
+- V6c (no self-likes) — ✅ run
+- V7 (partner_inquiries) — ✅ run
+- V7b (partner URL column) — ✅ run
+- V8 (map_pins) — ✅ run
+- V8b (unmet_need pin type) — ✅ run
+- Only V9b (IP capture) still pending — run when ready
+
+### eb-grove.html — new admin panels
+- **Flagged Visions review panel** — shows all flagged visions with reporter reasons, image thumbnails, prompt text. Restore (unflag) or Delete (permanent) buttons. Auto-refreshes every 2 min.
+- **Partner Inquiry inbox** — shows all training.html form submissions. Mark as reviewed, reply via email link. Shows org name, contact, focus area, message, website. Auto-refreshes every 5 min.
+- **What's Next panel updated** — removed stale items (git push session 22, etc.), added current priorities (LoRA, Flux integration, PuLID, site cleanup, V9b)
+
+### Documentation catch-up
+- `db/README.md` updated with all migration entries (V6c–V9b) and run statuses
+- `TRACKER.md` — eb-grove.html now has dedicated admin portal section with full checklist, added to pages list and Quick Status
+- SESSION_NOTES.md and TRACKER.md updated for session 24
+
+### Confirmed already done (from prior sessions)
+- Gallery page (gallery.html) — fully built with cards, likes, lightbox, reporting
+- Visualizer share button + credit pickup — working
+- Profile visions tab — working with like buttons and credit logic
+
+---
+
+## Immediate Next Steps
+1. **Run V9b (IP capture)** — `SCHEMA_V9b_ip.sql` in Supabase SQL Editor when ready
+2. **LoRA training** — hempcrete LoRA + 3D printer LoRA pipeline
+3. **Integrate Flux assets into site** — heroes, sections, textures from `comfyui-output/`
+4. **PuLID face-locked generation** — pick reference faces → `setup-pulid.py` → `queue-pulid-faces.py`
+5. **Site cleanup walkthrough** — go through every page detail
 
 ---
 

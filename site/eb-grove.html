@@ -492,6 +492,58 @@
             line-height: 1.8;
         }
 
+        /* ── FLAGGED / INQUIRY CARDS ── */
+        .review-card {
+            background: rgba(31,58,46,0.3);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.6rem;
+            transition: border-color 0.2s;
+        }
+        .review-card:hover { border-color: rgba(194,165,108,0.2); }
+        .review-card-head {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 0.4rem;
+        }
+        .review-card-label {
+            font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; padding: 2px 8px; border-radius: 3px;
+        }
+        .review-card-label.flag { background: rgba(248,113,113,0.12); color: #f87171; }
+        .review-card-label.inquiry { background: rgba(74,222,128,0.1); color: #4ade80; }
+        .review-card-label.new-label { background: rgba(251,191,36,0.12); color: #fbbf24; }
+        .review-card-time { font-size: 0.65rem; color: rgba(242,239,230,0.25); }
+        .review-card-body {
+            font-size: 0.8rem; color: rgba(242,239,230,0.7);
+            line-height: 1.5; margin-bottom: 0.5rem;
+        }
+        .review-card-meta {
+            font-size: 0.7rem; color: rgba(242,239,230,0.4);
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+        }
+        .review-actions {
+            display: flex; gap: 0.4rem; margin-top: 0.5rem;
+        }
+        .review-btn {
+            font-size: 0.68rem; font-weight: 600;
+            padding: 4px 12px; border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(31,58,46,0.4);
+            color: rgba(242,239,230,0.7);
+            cursor: pointer; transition: all 0.15s;
+        }
+        .review-btn:hover { border-color: rgba(194,165,108,0.25); color: var(--parchment); }
+        .review-btn.dismiss { color: #f87171; }
+        .review-btn.dismiss:hover { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.25); }
+        .review-btn.restore { color: #4ade80; }
+        .review-btn.restore:hover { background: rgba(74,222,128,0.08); border-color: rgba(74,222,128,0.2); }
+        .review-btn.archive { color: var(--clay); }
+        .review-btn.archive:hover { background: rgba(194,165,108,0.08); border-color: rgba(194,165,108,0.2); }
+        .review-scrollbox {
+            max-height: 420px; overflow-y: auto;
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 768px) {
             .admin-body { padding: 1rem; }
@@ -501,6 +553,8 @@
             .svc-grid { grid-template-columns: 1fr; }
             .sb-links { grid-template-columns: 1fr 1fr; }
             .health-row { grid-template-columns: 1fr 1fr; }
+            .traffic-stats { grid-template-columns: 1fr 1fr; }
+            .traffic-two-col { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -582,6 +636,33 @@
                 <div class="health-status" id="hc-map-status">—</div>
                 <div class="health-detail" id="hc-map-detail">map_hotspots table</div>
             </div>
+        </div>
+
+        <!-- ══════ FLAGGED VISIONS + PARTNER INQUIRIES ══════ -->
+        <div class="two-col">
+
+            <!-- Flagged Visions -->
+            <div class="panel">
+                <div class="panel-title">
+                    <span>&#9888;</span> Flagged Visions
+                    <span id="flag-count" style="font-size:0.7rem;font-weight:400;color:rgba(242,239,230,0.35);margin-left:4px;"></span>
+                </div>
+                <div class="review-scrollbox" id="flagged-visions">
+                    <div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Partner Inquiries -->
+            <div class="panel">
+                <div class="panel-title">
+                    <span>&#129309;</span> Partner Inquiries
+                    <span id="inquiry-count" style="font-size:0.7rem;font-weight:400;color:rgba(242,239,230,0.35);margin-left:4px;"></span>
+                </div>
+                <div class="review-scrollbox" id="partner-inquiries">
+                    <div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.8rem;">Loading...</div>
+                </div>
+            </div>
+
         </div>
 
         <!-- ══════ LIVE TRAFFIC ══════ -->
@@ -683,24 +764,24 @@
                     <li class="action-item urgent">
                         <div class="action-dot urgent"></div>
                         <div>
-                            <div class="action-text"><strong>git push</strong> — session 22 changes not yet pushed</div>
-                            <div class="action-note">map.html, hemp blocks, schema V8/V8b, dispatch posts, nav.js</div>
-                        </div>
-                        <span class="action-tag urgent-tag">Now</span>
-                    </li>
-                    <li class="action-item urgent">
-                        <div class="action-dot urgent"></div>
-                        <div>
-                            <div class="action-text"><strong>Review Flux overnight output</strong> — charsheets + T4/T5/face batches</div>
-                            <div class="action-note">Pick PuLID reference faces, select best shots per character</div>
+                            <div class="action-text"><strong>LoRA training</strong> — hempcrete + 3D printer pipelines</div>
+                            <div class="action-note">Run hempcrete LoRA, collect 3D printer dataset, train both</div>
                         </div>
                         <span class="action-tag urgent-tag">Next</span>
                     </li>
                     <li class="action-item urgent">
                         <div class="action-dot urgent"></div>
                         <div>
-                            <div class="action-text"><strong>Run 3 still-pending SQL migrations</strong></div>
-                            <div class="action-note">PROFILE_MIGRATION &rarr; SCHEMA_V3 (messages) &rarr; SCHEMA_V4 (post images)</div>
+                            <div class="action-text"><strong>Integrate Flux assets</strong> into site heroes + sections</div>
+                            <div class="action-note">Pick best from comfyui-output/, resize, place on pages</div>
+                        </div>
+                        <span class="action-tag urgent-tag">Next</span>
+                    </li>
+                    <li class="action-item urgent">
+                        <div class="action-dot urgent"></div>
+                        <div>
+                            <div class="action-text"><strong>PuLID face-locked generation</strong></div>
+                            <div class="action-note">Pick reference faces &rarr; setup-pulid.py &rarr; queue-pulid-faces.py</div>
                         </div>
                         <span class="action-tag urgent-tag">Soon</span>
                     </li>
@@ -710,17 +791,18 @@
                 <ul class="action-list">
                     <li class="action-item">
                         <div class="action-dot next"></div>
+                        <div><div class="action-text"><strong>Site cleanup walkthrough</strong> — go through every page, fix details</div></div>
+                        <span class="action-tag next-tag">Site</span>
+                    </li>
+                    <li class="action-item">
+                        <div class="action-dot next"></div>
                         <div><div class="action-text"><strong>Map — member pins</strong> — add lat/lng to profiles, show members on map</div></div>
                         <span class="action-tag next-tag">Map</span>
                     </li>
                     <li class="action-item">
                         <div class="action-dot next"></div>
-                        <div><div class="action-text"><strong>PuLID face-locked generation</strong> — setup-pulid.py then queue-pulid-faces.py</div></div>
-                        <span class="action-tag next-tag">AI</span>
-                    </li>
-                    <li class="action-item">
-                        <div class="action-dot next"></div>
-                        <div><div class="action-text"><strong>Integrate Flux assets</strong> into site — heroes, sections, textures</div></div>
+                        <div><div class="action-text"><strong>Run V9b IP tracking</strong> — enables IP capture in session trails</div></div>
+                        <span class="action-tag next-tag">DB</span>
                     </li>
                     <li class="action-item">
                         <div class="action-dot soon"></div>
@@ -1292,6 +1374,171 @@
         addLog('Live traffic subscription active');
     }
 
+    // ── FLAGGED VISIONS ──
+    async function loadFlaggedVisions() {
+        const el = document.getElementById('flagged-visions');
+        const countEl = document.getElementById('flag-count');
+        try {
+            // Get flagged visions
+            const { data: flagged, error } = await sb.from('visions')
+                .select('id, prompt, style, structure, climate, image_url, user_id, created_at, is_flagged')
+                .eq('is_flagged', true)
+                .order('created_at', { ascending: false })
+                .limit(20);
+            if (error) throw error;
+
+            // Get associated flags with reasons
+            let flagDetails = {};
+            if (flagged && flagged.length > 0) {
+                const visionIds = flagged.map(v => v.id);
+                const { data: flags } = await sb.from('vision_flags')
+                    .select('vision_id, reason, details, created_at')
+                    .in('vision_id', visionIds)
+                    .order('created_at', { ascending: false });
+                if (flags) {
+                    flags.forEach(f => {
+                        if (!flagDetails[f.vision_id]) flagDetails[f.vision_id] = [];
+                        flagDetails[f.vision_id].push(f);
+                    });
+                }
+            }
+
+            countEl.textContent = (flagged ? flagged.length : 0) + ' flagged';
+
+            if (!flagged || flagged.length === 0) {
+                el.innerHTML = '<div style="text-align:center;padding:2rem;color:rgba(74,222,128,0.5);font-size:0.85rem;">&#10003; No flagged visions — all clear</div>';
+                return;
+            }
+
+            el.innerHTML = flagged.map(v => {
+                const flags = flagDetails[v.id] || [];
+                const reasons = flags.map(f => f.reason).join(', ');
+                const details = flags.map(f => f.details).filter(Boolean).join('; ');
+                const promptSnippet = truncate(v.prompt || 'No prompt', 80);
+                const imgThumb = v.image_url
+                    ? '<img src="' + v.image_url + '" style="width:48px;height:48px;border-radius:6px;object-fit:cover;flex-shrink:0;" onerror="this.style.display=\'none\'">'
+                    : '';
+                return '<div class="review-card" id="flag-' + v.id + '">' +
+                    '<div class="review-card-head">' +
+                        '<span class="review-card-label flag">&#9888; ' + reasons + '</span>' +
+                        '<span class="review-card-time">' + formatDate(v.created_at) + '</span>' +
+                    '</div>' +
+                    '<div style="display:flex;gap:0.75rem;">' +
+                        imgThumb +
+                        '<div>' +
+                            '<div class="review-card-body">' + promptSnippet + '</div>' +
+                            '<div class="review-card-meta">' +
+                                '<span>' + (v.style || '—') + '</span>' +
+                                '<span>' + (v.structure || '').replace(/-/g, ' ') + '</span>' +
+                                (details ? '<span style="color:rgba(248,113,113,0.6);">"' + truncate(details, 80) + '"</span>' : '') +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="review-actions">' +
+                        '<button class="review-btn restore" onclick="restoreVision(\'' + v.id + '\')">Restore</button>' +
+                        '<button class="review-btn dismiss" onclick="deleteVision(\'' + v.id + '\')">Delete</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        } catch(e) {
+            el.innerHTML = '<div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.75rem;">' +
+                (e.message.includes('does not exist') ? 'Table not created yet' : e.message) + '</div>';
+        }
+    }
+
+    // Restore a flagged vision (unflag + clear flags)
+    window.restoreVision = async function(visionId) {
+        if (!confirm('Restore this vision to the gallery?')) return;
+        try {
+            await sb.from('visions').update({ is_flagged: false }).eq('id', visionId);
+            await sb.from('vision_flags').update({ is_reviewed: true }).eq('vision_id', visionId);
+            const card = document.getElementById('flag-' + visionId);
+            if (card) { card.style.opacity = '0.3'; card.style.pointerEvents = 'none'; }
+            addLog('Restored vision ' + visionId.slice(0, 8) + '...');
+            setTimeout(loadFlaggedVisions, 1000);
+        } catch(e) {
+            addLog('Error restoring vision: ' + e.message);
+        }
+    };
+
+    // Delete a flagged vision permanently
+    window.deleteVision = async function(visionId) {
+        if (!confirm('Permanently delete this vision? This cannot be undone.')) return;
+        try {
+            await sb.from('vision_flags').delete().eq('vision_id', visionId);
+            await sb.from('vision_likes').delete().eq('vision_id', visionId);
+            await sb.from('visions').delete().eq('id', visionId);
+            const card = document.getElementById('flag-' + visionId);
+            if (card) card.remove();
+            addLog('Deleted flagged vision ' + visionId.slice(0, 8) + '...');
+            loadFlaggedVisions();
+        } catch(e) {
+            addLog('Error deleting vision: ' + e.message);
+        }
+    };
+
+    // ── PARTNER INQUIRIES ──
+    async function loadPartnerInquiries() {
+        const el = document.getElementById('partner-inquiries');
+        const countEl = document.getElementById('inquiry-count');
+        try {
+            const { data: inquiries, error } = await sb.from('partner_inquiries')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(20);
+            if (error) throw error;
+
+            const unread = (inquiries || []).filter(i => i.status === 'new' || !i.status).length;
+            countEl.textContent = (inquiries ? inquiries.length : 0) + ' total' + (unread > 0 ? ' · ' + unread + ' new' : '');
+
+            if (!inquiries || inquiries.length === 0) {
+                el.innerHTML = '<div style="text-align:center;padding:2rem;color:rgba(242,239,230,0.3);font-size:0.85rem;">No partner inquiries yet</div>';
+                return;
+            }
+
+            el.innerHTML = inquiries.map(inq => {
+                const isNew = inq.status === 'new' || !inq.status;
+                const statusLabel = isNew ? 'new' : (inq.status || 'reviewed');
+                const labelClass = isNew ? 'new-label' : 'inquiry';
+                return '<div class="review-card" id="inq-' + inq.id + '">' +
+                    '<div class="review-card-head">' +
+                        '<span class="review-card-label ' + labelClass + '">' + statusLabel + '</span>' +
+                        '<span class="review-card-time">' + formatDate(inq.created_at) + '</span>' +
+                    '</div>' +
+                    '<div class="review-card-body">' +
+                        '<strong>' + (inq.org_name || 'Unknown org') + '</strong>' +
+                        (inq.website_url ? ' · <a href="' + inq.website_url + '" target="_blank" style="color:var(--moss);font-size:0.75rem;">website</a>' : '') +
+                        '<br>' + (inq.message || '<em style="opacity:0.4;">No message</em>') +
+                    '</div>' +
+                    '<div class="review-card-meta">' +
+                        '<span>' + (inq.contact_name || '—') + '</span>' +
+                        '<span><a href="mailto:' + (inq.email || '') + '" style="color:var(--clay);text-decoration:none;">' + (inq.email || '—') + '</a></span>' +
+                        '<span>' + (inq.focus_area || '—') + '</span>' +
+                    '</div>' +
+                    '<div class="review-actions">' +
+                        (isNew
+                            ? '<button class="review-btn archive" onclick="markInquiryReviewed(\'' + inq.id + '\')">Mark Reviewed</button>'
+                            : '<span style="font-size:0.65rem;color:rgba(74,222,128,0.4);padding:4px 0;">&#10003; Reviewed</span>') +
+                        '<button class="review-btn" onclick="window.open(\'mailto:' + (inq.email || '') + '?subject=Earthback Training Partnership\',\'_blank\')">Reply</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        } catch(e) {
+            el.innerHTML = '<div style="text-align:center;padding:1.5rem;color:rgba(242,239,230,0.3);font-size:0.75rem;">' +
+                (e.message.includes('does not exist') ? 'Table not created yet — run V7' : e.message) + '</div>';
+        }
+    }
+
+    window.markInquiryReviewed = async function(inqId) {
+        try {
+            await sb.from('partner_inquiries').update({ status: 'reviewed' }).eq('id', inqId);
+            addLog('Marked inquiry ' + inqId.slice(0, 8) + '... as reviewed');
+            loadPartnerInquiries();
+        } catch(e) {
+            addLog('Error updating inquiry: ' + e.message);
+        }
+    };
+
     // ── INIT ──
     async function init() {
         // Request notification permission
@@ -1307,6 +1554,8 @@
         runHealthChecks();
         loadPlatformActivity();
         loadRecentVisions();
+        loadFlaggedVisions();
+        loadPartnerInquiries();
         loadTraffic();
         subscribeToTraffic();
 
@@ -1315,6 +1564,8 @@
         setInterval(runHealthChecks, 5 * 60 * 1000);
         setInterval(loadPlatformActivity, 2 * 60 * 1000);
         setInterval(loadRecentVisions, 2 * 60 * 1000);
+        setInterval(loadFlaggedVisions, 2 * 60 * 1000);
+        setInterval(loadPartnerInquiries, 5 * 60 * 1000);
         setInterval(loadTraffic, 3 * 60 * 1000);
     }
 

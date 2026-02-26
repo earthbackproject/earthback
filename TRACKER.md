@@ -3,7 +3,7 @@
 *To resume: "Read TRACKER.md and SESSION_NOTES.md and pick up where we left off."*
 *Visual version: `/tracker/index.html` — open in browser for the full dashboard.*
 
-**Last updated:** 2026-02-25 (session 23 — live traffic monitor, analytics tracking, banner bug fix)
+**Last updated:** 2026-02-26 (session 24 — estimator rebrand, all migrations run, doc catch-up)
 
 ---
 
@@ -12,8 +12,8 @@
 | Workstream | Status | Blocking? |
 |---|---|---|
 | Marketing Site (HTML) | 🟢 Live | earthbackproject.org · all pages deployed · 20+ pages |
-| Platform / App | 🟡 In progress | Auth live · feed · gallery · visualizer · designer · training · projects · circles · messaging (demo) · **community map live** |
-| Database Migrations | 🟡 Partial | V1-V2, V5-V8b run ✅ · PROFILE_MIGRATION, V3 (messages), V4 (post images) still pending |
+| Platform / App | 🟡 In progress | Auth live · feed · gallery · visualizer · estimator · training · projects · circles · messaging (demo) · **community map** · **admin portal (eb-grove)** |
+| Database Migrations | 🟡 Partial | V1-V2, V5-V9 all run ✅ · PROFILE_MIGRATION, V3 (messages), V4 (post images), V9b (IP) still pending |
 | Source Control | 🟢 Current | GitHub repo connected, git push → Netlify auto-deploy · all pushed |
 | Folder Organization | 🟢 Done | SQL→db/, brand assets→branding/, governance→governance/, archive→reference/, QUICKSTART.md at root |
 | Org, Legal & Naming | 🟡 In progress | Trademark research still pending |
@@ -49,10 +49,11 @@ The public-facing community site. Goal: live and functional before platform buil
 - [x] `messages.html` — Split-pane messaging inbox (demo, needs V3 migration)
 - [x] `visualizer.html` — AI vision generator with credits + personal gallery + sharing
 - [x] `gallery.html` — Community shared visions gallery with likes + reporting
-- [x] `designer.html` — Three.js parametric building configurator with **6 construction methods** (added Hemp Block Masonry) + exports
+- [x] `designer.html` — Three.js parametric building **estimator** with **6 construction methods** (added Hemp Block Masonry) + exports
 - [x] `training.html` — Skills & Training partner inquiry page with contact form
 - [x] `sitemap.html` — Full site map organized by section
 - [x] `map.html` — Community map (Leaflet + OpenStreetMap) with 88 curated hotspot pins, 6 categories, layer toggles, Supabase-powered
+- [x] `eb-grove.html` — **Admin operations portal** (auth-gated, obscured URL) — real-time members, traffic monitor, system health, platform activity, visions feed
 
 ### What's still needed on the site
 
@@ -150,9 +151,11 @@ Per v1 scope freeze (2026-02-18): everything below is required for v1.
 - [x] Credit award on like — likes earn credits for creator (max 5 per vision) ✓
 - [x] SCHEMA_V5 (visions) — ✅ run in Supabase
 - [x] SCHEMA_V6 (gallery — vision_likes, vision_flags, sharing columns) — ✅ run in Supabase
+- [x] SCHEMA_V6b (visions UPDATE policy) — ✅ run in Supabase
+- [x] SCHEMA_V6c (no self-likes RLS) — ✅ run in Supabase
 
-### 3D Project Designer (new v20)
-- [x] `designer.html` — Three.js parametric building configurator ✓
+### 3D Project Estimator (new v20, rebranded session 24)
+- [x] `designer.html` — Three.js parametric building estimator ✓
 - [x] 5-step wizard: Foundation & Type → Interior Layout → Roof & Energy → Materials & Finish → Export ✓
 - [x] 3D preview with OrbitControls, shadows, fog, ground plane ✓
 - [x] **6 construction methods:** 3D Printed Hemp, 3D Printed Concrete, Manual Hemp, Conventional, Hybrid, **Hemp Block Masonry** ✓
@@ -189,11 +192,29 @@ Per v1 scope freeze (2026-02-18): everything below is required for v1.
 - [x] `db/SEED_unmet_need_pins.sql` — 24-pin incremental for live DB adds ✓
 - [x] `docs/DISPATCH_POSTS_V2.md` — hemp-blocks circle (3 posts + SRC-16) + hempwood circle (3 posts + SRC-17) appended ✓
 
-### Analytics & Traffic Monitor (new v23)
+### Admin Operations Portal — eb-grove.html (new v20, expanded v23)
+Nicco's main interface to the site. Auth-gated to `earthbackproject@gmail.com` and `nicco.macintyre@gmail.com`. URL deliberately obscured (not `/admin`).
+- [x] Auth gate — checks Supabase session, denies access to non-whitelisted emails ✓
+- [x] Stats cards — total members, new this week, new today ✓
+- [x] Real-time member table — Supabase Realtime subscription, live rows on signup ✓
+- [x] Desktop notifications — browser push on new member signup ✓
+- [x] Activity log — recent signups with timestamps ✓
+- [x] System Health panel — site ping, DB check, auth check, visions check; auto-refresh every 5 min ✓
+- [x] Service quick links — GitHub, Supabase, Netlify (no project IDs exposed) ✓
+- [x] What's Next priorities panel ✓
+- [x] Recent Platform Activity feed — latest posts, projects, etc. ✓
+- [x] Recent Visions feed — latest shared AI visions ✓
+- [x] Live Traffic Monitor — stat cards (active now, today, sessions, all-time), session trails, live feed, top pages bar chart ✓
+- [x] `noindex, nofollow` meta tag — hidden from search engines ✓
+- [x] Linked from command-center.html topbar ✓
+- [x] Flagged visions review panel — restore or delete flagged visions with reporter reasons ✓
+- [x] Partner inquiry inbox — view training.html form submissions, mark reviewed, reply via email ✓
+- [ ] Add quick-action buttons — run common admin tasks (e.g. seed content, check queue)
+
+### Analytics & Traffic Tracking (new v23)
 - [x] `db/SCHEMA_V9_analytics.sql` — `page_views` table with RLS + realtime subscription ✓
 - [x] SCHEMA_V9_analytics.sql — ✅ run in Supabase · traffic monitor live and working
 - [x] `site/assets/js/nav.js` — fire-and-forget page-view tracking on every page load ✓
-- [x] `site/eb-grove.html` — Live Traffic Monitor: stat cards, session trails, live feed, top pages ✓
 - [x] `db/SCHEMA_V9b_ip.sql` — adds `ip_address` column + `insert_page_view()` RPC function ✓
 - [ ] Run SCHEMA_V9b_ip.sql in Supabase — enables IP capture in session trails + live feed
 
@@ -352,7 +373,7 @@ Given current state, this is the recommended sequence:
 - [x] 13. **Profile editing + avatar upload** — inline editing for name, tagline, bio, location, skills (3 levels); avatar upload to Supabase Storage; feed shows uploaded avatar; cover band slimmed down ✓
 - [x] 14. **AI Visualizer** — Flux-powered vision generator with credit system, personal gallery, save to Supabase Storage ✓
 - [x] 15. **Shared Gallery** — gallery.html with likes, self-like prevention, reporting, credit rewards ✓
-- [x] 16. **3D Project Designer** — Three.js parametric building configurator with 5 construction methods, live calculations, GLB/CSV/JSON exports ✓
+- [x] 16. **3D Project Estimator** — Three.js parametric building estimator with 6 construction methods, live calculations, GLB/CSV/JSON exports ✓
 - [x] 17. **Training Partners** — training.html with contact form, partner_inquiries table ✓
 - [x] 18. **Shared nav/footer components** — nav.js + footer.js injected on all public pages ✓
 - [x] 19. **Sitemap** — sitemap.html with all pages organized by section ✓
