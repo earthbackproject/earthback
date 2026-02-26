@@ -67,6 +67,7 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
   scrollbar-width: thin;
   scrollbar-color: rgba(0,0,0,0.08) transparent;
   padding-right: 2px;
+  transition: top 0.15s ease, max-height 0.15s ease;
 }
 
 /* ── SIDEBAR CARD ── */
@@ -852,6 +853,15 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
       </div>
     </a>
 
+    <!-- FLASH NOTIFICATIONS -->
+    <div class="flash-card">
+      <div class="flash-card-label">Updates</div>
+      <div class="flash-msg">
+        <span class="flash-dot"></span>
+        <span id="flash-text">Welcome — your first post earns 10 Earth Score points.</span>
+      </div>
+    </div>
+
     <!-- NAV LINKS -->
     <div class="nav-card">
       <div class="nav-card-label">Navigate</div>
@@ -918,15 +928,6 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
       <div id="stream-items-dynamic"></div>
       <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border-lt);">
         <div style="font-size:0.78rem; color:var(--sage); font-weight:500; cursor:pointer;">+ Subscribe to more streams</div>
-      </div>
-    </div>
-
-    <!-- FLASH NOTIFICATIONS -->
-    <div class="flash-card">
-      <div class="flash-card-label">Updates</div>
-      <div class="flash-msg">
-        <span class="flash-dot"></span>
-        <span id="flash-text">Welcome — your first post earns 10 Earth Score points.</span>
       </div>
     </div>
 
@@ -1033,6 +1034,23 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="assets/js/app-nav.js"></script>
 <script>
+// ── SIDEBAR STICKY ADJUST ──
+// Sidebar should hug the top of the viewport once the app-nav scrolls out of view
+(function() {
+  var sidebar = document.querySelector('.dash-sidebar');
+  if (!sidebar) return;
+  window.addEventListener('scroll', function() {
+    var nav = document.querySelector('#app-nav nav');
+    if (!nav) return;
+    var navBottom = nav.getBoundingClientRect().bottom;
+    // navBottom = distance from viewport top to bottom of the nav bar
+    // When nav is fully visible, navBottom ~ 84px; as it scrolls up, it shrinks toward 0
+    var offset = Math.max(8, navBottom);
+    sidebar.style.top = offset + 'px';
+    sidebar.style.maxHeight = 'calc(100vh - ' + (offset + 16) + 'px)';
+  }, { passive: true });
+})();
+
 // ── SUPABASE CLIENT ──
 const SUPABASE_URL = 'https://yptktmzagctusbeqdaty.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_zp8dWs1CaN-A5oeR94qRdw_n7jNDhmC';
