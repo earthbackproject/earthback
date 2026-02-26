@@ -3,7 +3,7 @@
 *To resume: "Read TRACKER.md and SESSION_NOTES.md and pick up where we left off."*
 *Visual version: `/tracker/index.html` — open in browser for the full dashboard.*
 
-**Last updated:** 2026-02-26 (session 24 — estimator rebrand, all migrations run, doc catch-up)
+**Last updated:** 2026-02-26 (session 27 — public nav redesign, feed sidebar improvements)
 
 ---
 
@@ -17,7 +17,7 @@
 | Source Control | 🟢 Current | GitHub repo connected, git push → Netlify auto-deploy · all pushed |
 | Folder Organization | 🟢 Done | SQL→db/, brand assets→branding/, governance→governance/, archive→reference/, QUICKSTART.md at root |
 | Org, Legal & Naming | 🟡 In progress | Trademark research still pending |
-| Branding | 🟡 In progress | Typography done · logo still needed · og:image + favicons done |
+| Branding | 🟢 SVG system live | 30 SVGs deployed (icons, wordmarks, logomarks, badges, pins, patterns) · Georgia font · mixed-case brand · emoji replaced sitewide |
 | Hosting & Launch | 🟢 Live | earthbackproject.org on Netlify · git-based deploys |
 | Documentation | 🟢 Done | CLAUDE.md (auto-loaded), QUICKSTART.md, command-center.html, session notes, tracker |
 | AI Image Generation | 🟡 In progress | Charsheets + site assets + T4 re-run overnight · PuLID next · hempcrete LoRA pending |
@@ -59,8 +59,11 @@ The public-facing community site. Goal: live and functional before platform buil
 
 **High priority**
 - [x] **join.html — Netlify Forms wired** · Step 1 submits real data in background · Auth connection (magic link) comes when platform is built
+- [x] **Public nav** — Facebook-style visible link row: Feed · Circles · Map · Visualizer · Estimator · Gallery + More ▾ grouped dropdown · Estimator linked · orphaned CSS cleaned from 13 pages
 - [x] **Mobile nav** — hamburger menu on all pages (all 8 files)
-- [x] **Brand typography** — "the Earthback Project" treatment across all nav + footer logos
+- [x] **Brand typography** — "the Earthback Project" treatment across all nav + footer logos · Georgia font · mixed case · leaf icon on all brand touchpoints
+- [x] **SVG icon system** — 30 SVGs deployed; ~130 emoji replaced sitewide with proper icons
+- [x] **Early access banner** — centralized in `early-access-banner.js` (app bottom) + sub-headers in nav.js/app-nav.js; copy: "Claim your username and get in early — your voice shapes what gets built. Join free →"
 - [x] **Deploy to Netlify** — LIVE at earthbackproject.org ✓
 - [x] **DNS + SSL** — Netlify auto-SSL active ✓
 - [x] **Email address** — updated to earthbackproject@gmail.com across all pages ✓

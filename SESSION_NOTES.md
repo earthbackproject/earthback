@@ -4,7 +4,102 @@
 ---
 
 ## Last Updated
-2026-02-26 — Session 24 with Nicco via Cowork
+2026-02-26 — Session 27 with Nicco via Cowork
+
+---
+
+## What Was Done in Session 27 (2026-02-26)
+
+### Public nav (nav.js) — full redesign
+- **Iterated twice** to land on the right pattern:
+  1. First pass: hamburger left + logo + quick links right + full dropdown panel (all links grouped)
+  2. Final: **Facebook-style visible link row** — The Feed · Circles · Map · Visualizer · Estimator · Gallery always visible across the top; **More ▾** button opens a grouped dropdown for the rest
+- **More ▾ dropdown** has 3 columns: Community (Feed, Circles, Map, Gallery) / Tools (Visualizer, Estimator) / Learn (How It Works, Use Cases, About, Training Partners) / Info (Safety, Terms, Privacy, Site Map)
+- **Estimator** (designer.html) now linked in both top row AND dropdown Tools group
+- Links progressively collapse into More at 960px and 720px — nav never overflows
+- Dropdown closes on backdrop click, link click, or Escape
+- Auth state preserved: Sign Out / My Feed when logged in
+- **Removed orphaned CSS** (`.nav-hamburger`, `.mobile-nav-overlay`, `nav ul` rules) from 13 HTML pages — nav styles now live exclusively in nav.js
+- **Recurring git lock file issue**: HEAD.lock and index.lock get left behind after each commit; requires manual deletion from Windows at `.git\HEAD.lock` / `.git\index.lock`
+
+### Feed sidebar — improvements + bug fix
+- **Sticky overflow bug fixed**: sidebar had `height: fit-content` with `position: sticky` — invite card was inaccessible until page bottom. Fixed with `max-height: calc(100vh - 100px); overflow-y: auto`
+- **Navigate card added**: compact sidebar nav with icons — Home, Circles, Map, Projects, Gallery visible; More ▾ toggle reveals AI Visualizer, Estimator, Messages in-place
+- **Updates card added**: small flash notifications card with green dot indicator; `#flash-text` span easy to wire to real data later
+- **Streams card**: `#stream-items-dynamic` capped at 140px with internal scroll so card stays compact
+- **Card order** (top to bottom): Profile card → Streams → Navigate → Updates → Invite
+- **flex-shrink fix**: added `flex-shrink: 0` to `.sidebar-card` so the profile card can't be compressed by the flex scroll container
+- **Pending push**: last 2 commits (reorder + flex-shrink) need push after lock file cleared
+
+### Site tour — flagged as new feature
+- User noted during nav discussion that a **site tour page** is needed — a guided walkthrough explaining causes, tools, and possibilities
+- Not yet built; add to backlog
+
+---
+
+## Immediate Next Steps
+1. **Push pending commits** — delete `.git\index.lock` if present, then push; check feed sidebar at various resolutions
+2. **App nav (app-nav.js)** — still on old hamburger pattern; needs same More ▾ treatment as public nav; 7 pages affected (feed, circles, profile, projects, messages, project, create-project)
+3. **Site tour page** — new guided walkthrough page; scope before building
+4. **LoRA training** — hempcrete LoRA + 3D printer LoRA pipeline (datasets ready)
+5. **PuLID face-locked generation** — pick reference faces → `setup-pulid.py` → `queue-pulid-faces.py`
+6. **Integrate Flux assets into site** — heroes, sections, textures from `comfyui-output/`
+7. **Run V9b (IP capture)** — `SCHEMA_V9b_ip.sql` in Supabase SQL Editor when ready
+
+---
+
+## What Was Done in Sessions 25–26 (2026-02-26)
+
+### SVG brand graphics package (30 files)
+- Created full SVG brand system in `site/assets/img/` subdirectories:
+  - **`brand/`** (6): wordmarks (dark/light/compact) + logomarks (leaf monogram, circle, badge)
+  - **`icons/`** (15): leaf, seedling, sun, building, hammer, handshake, people, globe, pin, chat, heart, chart, shield, water, lightning
+  - **`badges/`** (3): verified partner, community member, early access
+  - **`map-pins/`** (3): project (green), member (moss), supplier (clay)
+  - **`patterns/`** (4): leaf grid, topography, hemp weave, leaf vine divider
+- All use Georgia font (system font, no import needed), brand colors (#1F3A2E, #C2A56C, #7e9b73, #F2EFE6)
+- `<tspan>` technique for seamless "Earthback" color split with zero gap
+- Review package in `graphics-review/PREVIEW.html`
+
+### Sitewide emoji → SVG icon replacement
+- Replaced ~130+ emoji across 18+ HTML/JS files with proper SVG `<img>` tags
+- Added `.ico` CSS utility class for inline icons
+- Added `_i()` JS helper function in feed.html for template literal contexts
+- Updated favicon with leaf vein texture
+
+### Brand standardization across all navs and footers
+- **nav.js** (public nav, 13 pages): added leaf icon to logo
+- **app-nav.js** (app nav, 7 pages): replaced 🌿 emoji with SVG leaf, replaced 💬 with SVG chat
+- **footer.js**: added leaf icon, switched from Cormorant Garamond to Georgia, removed uppercase
+- **Inline logos** on login.html, auth-callback.html, profile.html, project.html: added leaf icon
+- **`.nav-logo` CSS on 14 pages**: removed `text-transform: uppercase`, removed `letter-spacing: 0.1em`, switched to Georgia
+- **`.footer-logo` CSS on 5 pages** (profile, project, terms, explore, privacy): same fixes
+- Brand now renders as mixed-case "the Earthback Project" consistently everywhere
+
+### Early access banner centralization + new CTA copy
+- Created `site/assets/js/early-access-banner.js` — single config file controls bottom sticky banner on all 7 app pages
+  - `enabled: true/false` toggle to kill it everywhere
+  - Dismiss button (session-scoped via sessionStorage)
+- Removed 7 inline `<aside>` banners from app pages, replaced with `<script>` tag
+- Added sub-header banner to **app-nav.js** (matches public nav sub-header)
+- Updated copy everywhere: **"Claim your username and get in early — your voice shapes what gets built. Join free →"**
+  - nav.js (public pages sub-header)
+  - app-nav.js (app pages sub-header)
+  - early-access-banner.js (app pages bottom sticky)
+- CTA now links to `join.html` instead of mailto feedback
+
+### Hempcrete LoRA dataset committed
+- `dataset-hempcrete/curated/` — 15 curated images + captions pushed to repo
+- `lora-training/hempcrete pics/` — raw source images pushed
+
+---
+
+## Immediate Next Steps
+1. **LoRA training** — hempcrete LoRA + 3D printer LoRA pipeline (datasets ready)
+2. **PuLID face-locked generation** — pick reference faces → `setup-pulid.py` → `queue-pulid-faces.py`
+3. **Integrate Flux assets into site** — heroes, sections, textures from `comfyui-output/`
+4. **Run V9b (IP capture)** — `SCHEMA_V9b_ip.sql` in Supabase SQL Editor when ready
+5. **Site cleanup walkthrough** — go through every page detail
 
 ---
 

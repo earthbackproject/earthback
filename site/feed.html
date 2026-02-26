@@ -215,6 +215,7 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: 0 2px 6px var(--shadow);
+  flex-shrink: 0;
 }
 
 .sidebar-hero {
@@ -1001,12 +1002,16 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
       </div>
     </a>
 
-    <!-- FLASH NOTIFICATIONS -->
-    <div class="flash-card">
-      <div class="flash-card-label">Updates</div>
-      <div class="flash-msg">
-        <span class="flash-dot"></span>
-        <span id="flash-text">Welcome — your first post earns 10 Earth Score points.</span>
+    <div class="streams-card" id="streams-card">
+      <div class="streams-label">Your Streams</div>
+      <div class="stream-item active" onclick="filterStream('all', this)">
+        <span class="stream-icon"><img src="assets/img/icons/icon-leaf.svg" alt="" style="width:1em;height:1em;"></span>
+        <span class="stream-name">All Activity</span>
+        <span class="stream-count" id="stream-all-count">–</span>
+      </div>
+      <div id="stream-items-dynamic"></div>
+      <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border-lt);">
+        <div style="font-size:0.78rem; color:var(--sage); font-weight:500; cursor:pointer;">+ Subscribe to more streams</div>
       </div>
     </div>
 
@@ -1045,16 +1050,12 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
       </div>
     </div>
 
-    <div class="streams-card" id="streams-card">
-      <div class="streams-label">Your Streams</div>
-      <div class="stream-item active" onclick="filterStream('all', this)">
-        <span class="stream-icon"><img src="assets/img/icons/icon-leaf.svg" alt="" style="width:1em;height:1em;"></span>
-        <span class="stream-name">All Activity</span>
-        <span class="stream-count" id="stream-all-count">–</span>
-      </div>
-      <div id="stream-items-dynamic"></div>
-      <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border-lt);">
-        <div style="font-size:0.78rem; color:var(--sage); font-weight:500; cursor:pointer;">+ Subscribe to more streams</div>
+    <!-- FLASH NOTIFICATIONS -->
+    <div class="flash-card">
+      <div class="flash-card-label">Updates</div>
+      <div class="flash-msg">
+        <span class="flash-dot"></span>
+        <span id="flash-text">Welcome — your first post earns 10 Earth Score points.</span>
       </div>
     </div>
 
