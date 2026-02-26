@@ -120,68 +120,10 @@ body {
   font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
 }
 
-/* ── STATUS STRIP ── */
-.status-strip {
-  display: grid; grid-template-columns: repeat(5, 1fr);
-  gap: 0.75rem; margin-bottom: 2rem;
-}
-.status-card {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: 10px; padding: 1rem 1.25rem;
-  border-left: 4px solid var(--moss); transition: all 0.2s;
-}
-.status-card:hover { box-shadow: 0 4px 12px var(--shadow); }
-.status-card.warning { border-left-color: var(--orange); }
-.status-card.danger { border-left-color: var(--red); }
-.status-card.info { border-left-color: var(--clay); }
-.status-label {
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.35rem;
-}
-.status-value {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.4rem; font-weight: 600; color: var(--green); line-height: 1.2;
-}
-.status-detail { font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.2rem; }
-.status-detail a { color: var(--green-soft); text-decoration: none; }
-.status-detail a:hover { color: var(--clay); }
-.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.4rem; vertical-align: middle; }
-.dot.g { background: var(--moss); }
-.dot.y { background: var(--orange); }
-.dot.r { background: var(--red); }
-
 /* ── SECTION LABEL ── */
 .section-label {
   font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--clay-rust); margin-bottom: 0.75rem;
-}
-
-/* ── HEALTH GRID ── */
-.health-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem; margin-bottom: 2rem;
-}
-.health-card {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: 10px; padding: 1.1rem 1.25rem;
-  cursor: pointer; transition: all 0.15s;
-  text-decoration: none; color: inherit; display: block;
-}
-.health-card:hover { border-color: rgba(194,165,108,0.4); box-shadow: 0 2px 8px var(--shadow); }
-.health-label {
-  font-size: 0.72rem; font-weight: 600; color: var(--ink-soft);
-  margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;
-}
-.health-bar-bg {
-  width: 100%; height: 6px; background: var(--parchment2);
-  border-radius: 3px; overflow: hidden; margin-bottom: 0.35rem;
-}
-.health-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s var(--ease); }
-.health-bar-fill.green { background: var(--moss); }
-.health-bar-fill.yellow { background: var(--orange); }
-.health-stats {
-  font-size: 0.72rem; color: var(--ink-soft);
-  display: flex; justify-content: space-between;
 }
 
 /* ── TWO-COL ── */
@@ -227,34 +169,37 @@ body {
 }
 .sb-link:hover { background: rgba(74,124,94,0.12); color: var(--green); }
 
-/* ── ACTION LIST ── */
-.action-list { list-style: none; }
-.action-item {
-  display: flex; align-items: flex-start; gap: 0.75rem;
-  padding: 0.6rem 0.8rem; border-radius: 8px;
-  margin-bottom: 0.35rem; border: 1px solid var(--border); transition: all 0.15s;
+/* ── CREDENTIALS BOX ── */
+.cred-box {
+  background: var(--green); border-radius: 10px;
+  padding: 1.5rem 1.75rem; margin-bottom: 2rem;
 }
-.action-item:hover { border-color: rgba(194,165,108,0.3); }
-.action-item.blocked { background: rgba(192,57,43,0.04); border-color: rgba(192,57,43,0.15); }
-.action-item.urgent { background: rgba(214,138,26,0.04); border-color: rgba(214,138,26,0.2); }
-.action-dot {
-  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+.cred-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 600; color: var(--clay);
+  margin-bottom: 1rem;
 }
-.action-dot.next { background: var(--clay); }
-.action-dot.soon { background: var(--moss); }
-.action-dot.blocked { background: var(--red); }
-.action-dot.urgent { background: var(--orange); }
-.action-text { font-size: 0.82rem; color: var(--ink); }
-.action-text strong { color: var(--green); }
-.action-note { font-size: 0.7rem; color: var(--ink-soft); margin-top: 0.1rem; }
-.action-tag {
-  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em;
-  text-transform: uppercase; padding: 0.15rem 0.45rem; border-radius: 20px;
-  flex-shrink: 0; margin-top: 3px; margin-left: auto;
+.cred-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;
 }
-.action-tag.next-tag { background: rgba(194,165,108,0.15); color: var(--clay-rust); }
-.action-tag.blocked-tag { background: rgba(192,57,43,0.12); color: var(--red); }
-.action-tag.urgent-tag { background: rgba(214,138,26,0.12); color: var(--orange); }
+.cred-item {
+  background: rgba(255,255,255,0.06); border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+.cred-label {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(194,165,108,0.7); margin-bottom: 0.3rem;
+}
+.cred-value {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.76rem; color: rgba(242,239,230,0.85); word-break: break-all;
+  cursor: pointer; transition: color 0.15s;
+}
+.cred-value:hover { color: var(--clay); }
+.cred-value.copied { color: var(--moss-lt); }
+.cred-note {
+  font-size: 0.68rem; color: rgba(242,239,230,0.4); margin-top: 0.2rem;
+}
 
 /* ── FOLDER MAP ── */
 .folder-map { list-style: none; }
@@ -286,20 +231,6 @@ body {
 }
 .kf-purpose { font-size: 0.7rem; color: var(--ink-soft); }
 
-/* ── SESSION BOX ── */
-.session-box {
-  background: var(--green); border-radius: 10px;
-  padding: 1.5rem 1.75rem; margin-bottom: 2rem;
-}
-.session-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.1rem; font-weight: 600; color: var(--clay); margin-bottom: 0.75rem;
-}
-.session-text { font-size: 0.82rem; color: rgba(242,239,230,0.75); line-height: 1.65; }
-.session-text strong { color: var(--parchment); }
-.session-text ul { margin: 0.5rem 0 0 1.25rem; }
-.session-text li { margin-bottom: 0.25rem; }
-
 /* ── CLAUDE BOX ── */
 .claude-box {
   background: var(--white); border: 2px dashed rgba(194,165,108,0.3);
@@ -320,13 +251,6 @@ body {
 .claude-box-prompt.copied { border-color: var(--moss); background: rgba(126,155,115,0.08); }
 .claude-box-note { font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.5rem; }
 
-/* ── FOOTER ── */
-.cc-footer {
-  margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
-  font-size: 0.76rem; color: var(--ink-soft);
-  display: flex; justify-content: space-between; align-items: center;
-}
-
 /* ── DEPLOY BOX ── */
 .deploy-box {
   background: var(--parchment2); border-radius: 8px;
@@ -338,18 +262,22 @@ body {
   line-height: 1.7;
 }
 
+/* ── FOOTER ── */
+.cc-footer {
+  margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+  font-size: 0.76rem; color: var(--ink-soft);
+  display: flex; justify-content: space-between; align-items: center;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .status-strip { grid-template-columns: repeat(3, 1fr); }
   .two-col { grid-template-columns: 1fr; }
-  .health-grid { grid-template-columns: 1fr 1fr; }
   .service-grid { grid-template-columns: 1fr; }
   .sb-links { grid-template-columns: 1fr 1fr; }
+  .cred-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
   .container { padding: 1.25rem 1rem 3rem; }
-  .status-strip { grid-template-columns: 1fr 1fr; }
-  .health-grid { grid-template-columns: 1fr; }
   .kf-grid { grid-template-columns: 1fr; }
   .reboot-steps { gap: 0.65rem; }
 }
@@ -373,7 +301,7 @@ body {
   <div class="page-header">
     <div class="page-header-sup">Earthback</div>
     <h1>Command Center</h1>
-    <div class="page-header-sub">Open this when you sit down to work. Everything you need in one place.</div>
+    <div class="page-header-sub">Static reference — service links, credentials, paths, and startup sequence. For live status, use <a href="https://earthbackproject.org/eb-grove.html" target="_blank" style="color:var(--green-soft);">Admin Dashboard</a>.</div>
   </div>
 
   <!-- ══════════════════════════════════════ -->
@@ -412,197 +340,96 @@ body {
       </div>
     </div>
     <div style="margin-top:1rem;font-size:0.78rem;color:rgba(255,80,80,0.7);background:rgba(192,57,43,0.12);border-radius:6px;padding:0.6rem 0.85rem;">
-      ⚠️ <strong style="color:rgba(242,239,230,0.8);">If Cowork crashes:</strong> Run <code style="background:rgba(255,255,255,0.08);padding:0.1rem 0.4rem;border-radius:3px;color:var(--clay);">maint scripts\fix-cowork-vm.ps1</code> as Administrator in PowerShell, then reopen Claude. Do not use Chrome browser tools while ComfyUI is running.
+      ⚠️ <strong style="color:rgba(242,239,230,0.8);">If Cowork crashes:</strong> Run <code style="background:rgba(255,255,255,0.08);padding:0.1rem 0.4rem;border-radius:3px;color:var(--clay);">maint scripts\fix-cowork-vm.ps1</code> as Administrator in PowerShell, then reopen Claude.
     </div>
   </div>
 
   <!-- ══════════════════════════════════════ -->
-  <!-- STATUS STRIP                          -->
+  <!-- CREDENTIALS & API KEYS               -->
   <!-- ══════════════════════════════════════ -->
-  <div class="status-strip">
-    <div class="status-card">
-      <div class="status-label">Live Site</div>
-      <div class="status-value"><span class="dot g"></span>Online</div>
-      <div class="status-detail"><a href="https://earthbackproject.org" target="_blank">earthbackproject.org</a></div>
+  <div class="cred-box">
+    <div class="cred-title">Credentials & API Keys</div>
+    <div class="cred-grid">
+      <div class="cred-item">
+        <div class="cred-label">Supabase Project ID</div>
+        <div class="cred-value" onclick="copyCred(this)">yptktmzagctusbeqdaty</div>
+      </div>
+      <div class="cred-item">
+        <div class="cred-label">Supabase Anon (Publishable) Key</div>
+        <div class="cred-value" onclick="copyCred(this)">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</div>
+        <div class="cred-note">Full key in site/assets/js/supabase-config.js</div>
+      </div>
+      <div class="cred-item">
+        <div class="cred-label">Supabase URL</div>
+        <div class="cred-value" onclick="copyCred(this)">https://yptktmzagctusbeqdaty.supabase.co</div>
+      </div>
+      <div class="cred-item">
+        <div class="cred-label">GitHub Repo</div>
+        <div class="cred-value" onclick="copyCred(this)">earthbackproject/earthback</div>
+      </div>
+      <div class="cred-item">
+        <div class="cred-label">Netlify Site</div>
+        <div class="cred-value" onclick="copyCred(this)">earthbackproject.org</div>
+        <div class="cred-note">Auto-deploys from GitHub on push</div>
+      </div>
+      <div class="cred-item">
+        <div class="cred-label">ComfyUI (Local)</div>
+        <div class="cred-value" onclick="copyCred(this)">http://127.0.0.1:8188</div>
+        <div class="cred-note">Start with comfy-run.bat</div>
+      </div>
     </div>
-    <div class="status-card">
-      <div class="status-label">Auth</div>
-      <div class="status-value"><span class="dot g"></span>Working</div>
-      <div class="status-detail">Magic link + Google OAuth</div>
-    </div>
-    <div class="status-card">
-      <div class="status-label">Database</div>
-      <div class="status-value"><span class="dot g"></span>13+ Tables</div>
-      <div class="status-detail">V1-V2, V5-V9 run ✓ · 4 pending (Profile, V3, V4, V9b)</div>
-    </div>
-    <div class="status-card">
-      <div class="status-label">Git</div>
-      <div class="status-value"><span class="dot g"></span>Current</div>
-      <div class="status-detail">All session 28 changes pushed</div>
-    </div>
-    <div class="status-card info">
-      <div class="status-label">Sessions</div>
-      <div class="status-value">28</div>
-      <div class="status-detail">Since Feb 18, 2026</div>
+    <div style="margin-top:0.85rem;font-size:0.72rem;color:rgba(242,239,230,0.4);text-align:center;">
+      Click any value to copy. Service key (secret) is in Supabase dashboard → Settings → API Keys. Never commit it.
     </div>
   </div>
 
   <!-- ══════════════════════════════════════ -->
-  <!-- WORKSTREAM HEALTH                     -->
-  <!-- ══════════════════════════════════════ -->
-  <div class="section-label">Workstream Health</div>
-  <div class="health-grid">
-    <a class="health-card" href="index.html#site">
-      <div class="health-label"><span style="font-size:1rem">🌐</span> Marketing Site</div>
-      <div class="health-bar-bg"><div class="health-bar-fill green" style="width:95%"></div></div>
-      <div class="health-stats"><span>20+ pages live</span><span style="font-weight:600;color:var(--moss)">95%</span></div>
-    </a>
-    <a class="health-card" href="index.html#platform">
-      <div class="health-label"><span style="font-size:1rem">⚙️</span> Platform / App</div>
-      <div class="health-bar-bg"><div class="health-bar-fill yellow" style="width:68%"></div></div>
-      <div class="health-stats"><span>Gallery, Designer, Visualizer, Training, Map built</span><span style="font-weight:600;color:var(--orange)">68%</span></div>
-    </a>
-    <a class="health-card" href="index.html#org">
-      <div class="health-label"><span style="font-size:1rem">🏛️</span> Org & Legal</div>
-      <div class="health-bar-bg"><div class="health-bar-fill yellow" style="width:43%"></div></div>
-      <div class="health-stats"><span>3 of 7 done</span><span style="font-weight:600;color:var(--orange)">43%</span></div>
-    </a>
-    <a class="health-card" href="index.html#branding">
-      <div class="health-label"><span style="font-size:1rem">🎨</span> Branding</div>
-      <div class="health-bar-bg"><div class="health-bar-fill green" style="width:71%"></div></div>
-      <div class="health-stats"><span>5 of 7 done</span><span style="font-weight:600;color:var(--moss)">71%</span></div>
-    </a>
-    <a class="health-card" href="index.html#launch">
-      <div class="health-label"><span style="font-size:1rem">🚀</span> Hosting & Launch</div>
-      <div class="health-bar-bg"><div class="health-bar-fill green" style="width:100%"></div></div>
-      <div class="health-stats"><span>Pre-launch complete</span><span style="font-weight:600;color:var(--moss)">100%</span></div>
-    </a>
-    <a class="health-card" href="index.html#content">
-      <div class="health-label"><span style="font-size:1rem">✍️</span> Content & Copy</div>
-      <div class="health-bar-bg"><div class="health-bar-fill green" style="width:73%"></div></div>
-      <div class="health-stats"><span>8 of 11 done</span><span style="font-weight:600;color:var(--moss)">73%</span></div>
-    </a>
-  </div>
-
-  <!-- ══════════════════════════════════════ -->
-  <!-- NEXT UP + SERVICES (two column)       -->
+  <!-- SERVICES + DEPLOY (two column)        -->
   <!-- ══════════════════════════════════════ -->
   <div class="two-col">
 
-    <!-- WHAT'S NEXT -->
+    <!-- SERVICES + SUPABASE DEEP LINKS -->
     <div class="panel">
-      <div class="panel-title"><span>🎯</span> What's Next</div>
-
-      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);margin-bottom:0.4rem;">Immediate — next session</div>
-      <ul class="action-list">
-        <li class="action-item urgent">
-          <div class="action-dot urgent"></div>
-          <div>
-            <div class="action-text"><strong>LoRA training</strong> — hempcrete LoRA + 3D printer LoRA pipeline</div>
-            <div class="action-note">Get Pexels/Pixabay API keys → collect → curate → caption → train in Kohya</div>
-          </div>
-          <span class="action-tag urgent-tag">Next</span>
-        </li>
-        <li class="action-item urgent">
-          <div class="action-dot urgent"></div>
-          <div>
-            <div class="action-text"><strong>PuLID face-locked generation</strong> — pick reference faces → setup-pulid.py → queue</div>
-            <div class="action-note">Needs best charsheet panel per character in faces-reference/</div>
-          </div>
-          <span class="action-tag urgent-tag">Next</span>
-        </li>
-        <li class="action-item urgent">
-          <div class="action-dot urgent"></div>
-          <div>
-            <div class="action-text"><strong>Run pending SQL migrations</strong> in Supabase SQL Editor</div>
-            <div class="action-note">PROFILE_MIGRATION, V3 (messages), V4 (post images), V9b (IP capture)</div>
-          </div>
-          <span class="action-tag urgent-tag">Soon</span>
-        </li>
-      </ul>
-
-      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--clay-rust);margin:0.85rem 0 0.4rem;">Build queue</div>
-      <ul class="action-list">
-        <li class="action-item">
-          <div class="action-dot next"></div>
-          <div>
-            <div class="action-text"><strong>Integrate Flux assets into site</strong> — heroes, sections, textures from comfyui-output/</div>
-          </div>
-          <span class="action-tag next-tag">Site</span>
-        </li>
-        <li class="action-item">
-          <div class="action-dot next"></div>
-          <div>
-            <div class="action-text"><strong>Site tour page</strong> — guided walkthrough for new visitors</div>
-          </div>
-          <span class="action-tag next-tag">Site</span>
-        </li>
-        <li class="action-item">
-          <div class="action-dot next"></div>
-          <div>
-            <div class="action-text"><strong>Map — member pins</strong> — add lat/lng to profiles, show real members on map</div>
-          </div>
-          <span class="action-tag next-tag">Map</span>
-        </li>
-        <li class="action-item">
-          <div class="action-dot soon"></div>
-          <div>
-            <div class="action-text"><strong>og:image social card</strong> — 1200×630 for link previews</div>
-          </div>
-        </li>
-      </ul>
-
-      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin:0.85rem 0 0.4rem;">Blocked / waiting</div>
-      <ul class="action-list">
-        <li class="action-item blocked">
-          <div class="action-dot blocked"></div>
-          <div>
-            <div class="action-text"><strong>Trademark research</strong> — other "Earthbacks"</div>
-            <div class="action-note">Blocks: naming, title tags, meta, 501(c)(3)</div>
-          </div>
-          <span class="action-tag blocked-tag">Nicco</span>
-        </li>
-      </ul>
+      <div class="panel-title"><span>🔗</span> Services</div>
+      <div class="service-grid">
+        <a href="https://earthbackproject.org" target="_blank" class="svc">
+          <div class="svc-icon" style="background:var(--green);">Eb</div>
+          <div><div class="svc-name">Live Site</div><div class="svc-desc">earthbackproject.org</div></div>
+        </a>
+        <a href="https://earthbackproject.org/map.html" target="_blank" class="svc">
+          <div class="svc-icon" style="background:#2D8A7A;">🗺</div>
+          <div><div class="svc-name">Community Map</div><div class="svc-desc">88 pins · Leaflet + Supabase</div></div>
+        </a>
+        <a href="https://github.com/earthbackproject/earthback" target="_blank" class="svc">
+          <div class="svc-icon" style="background:#24292e;">GH</div>
+          <div><div class="svc-name">GitHub</div><div class="svc-desc">earthbackproject/earthback</div></div>
+        </a>
+        <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty" target="_blank" class="svc">
+          <div class="svc-icon" style="background:#3ecf8e;">SB</div>
+          <div><div class="svc-name">Supabase</div><div class="svc-desc">Database + Auth + Storage</div></div>
+        </a>
+        <a href="https://app.netlify.com" target="_blank" class="svc">
+          <div class="svc-icon" style="background:#00c7b7;">NL</div>
+          <div><div class="svc-name">Netlify</div><div class="svc-desc">Hosting + Forms + Deploys</div></div>
+        </a>
+        <a href="https://earthbackproject.org/eb-grove.html" target="_blank" class="svc">
+          <div class="svc-icon" style="background:var(--clay-rust);">🌳</div>
+          <div><div class="svc-name">Admin Dashboard</div><div class="svc-desc">eb-grove.html — live traffic & stats</div></div>
+        </a>
+      </div>
+      <div class="sb-links">
+        <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/editor" target="_blank" class="sb-link">Table Editor</a>
+        <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/sql" target="_blank" class="sb-link">SQL Editor</a>
+        <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/auth/users" target="_blank" class="sb-link">Auth Users</a>
+        <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/storage/buckets" target="_blank" class="sb-link">Storage</a>
+        <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/auth/url-configuration" target="_blank" class="sb-link">URL Config</a>
+        <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/settings/api" target="_blank" class="sb-link">API Keys</a>
+        <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/editor?schema=public&table=map_hotspots" target="_blank" class="sb-link">Map Hotspots</a>
+      </div>
     </div>
 
-    <!-- SERVICES + SUPABASE DEEP LINKS -->
+    <!-- DEPLOY -->
     <div style="display:flex;flex-direction:column;gap:1.5rem;">
-      <div class="panel">
-        <div class="panel-title"><span>🔗</span> Services</div>
-        <div class="service-grid">
-          <a href="https://earthbackproject.org" target="_blank" class="svc">
-            <div class="svc-icon" style="background:var(--green);">Eb</div>
-            <div><div class="svc-name">Live Site</div><div class="svc-desc">earthbackproject.org</div></div>
-          </a>
-          <a href="https://earthbackproject.org/map.html" target="_blank" class="svc">
-            <div class="svc-icon" style="background:#2D8A7A;">🗺</div>
-            <div><div class="svc-name">Community Map</div><div class="svc-desc">88 pins · Leaflet + Supabase</div></div>
-          </a>
-          <a href="https://github.com/earthbackproject/earthback" target="_blank" class="svc">
-            <div class="svc-icon" style="background:#24292e;">GH</div>
-            <div><div class="svc-name">GitHub</div><div class="svc-desc">earthbackproject/earthback</div></div>
-          </a>
-          <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty" target="_blank" class="svc">
-            <div class="svc-icon" style="background:#3ecf8e;">SB</div>
-            <div><div class="svc-name">Supabase</div><div class="svc-desc">Database + Auth + Storage</div></div>
-          </a>
-          <a href="https://app.netlify.com" target="_blank" class="svc">
-            <div class="svc-icon" style="background:#00c7b7;">NL</div>
-            <div><div class="svc-name">Netlify</div><div class="svc-desc">Hosting + Forms + Deploys</div></div>
-          </a>
-        </div>
-        <div class="sb-links">
-          <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/editor" target="_blank" class="sb-link">Table Editor</a>
-          <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/sql" target="_blank" class="sb-link">SQL Editor</a>
-          <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/auth/users" target="_blank" class="sb-link">Auth Users</a>
-          <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/storage/buckets" target="_blank" class="sb-link">Storage</a>
-          <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/auth/url-configuration" target="_blank" class="sb-link">URL Config</a>
-          <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/settings/api" target="_blank" class="sb-link">API Keys</a>
-          <a href="https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/editor?schema=public&table=map_hotspots" target="_blank" class="sb-link">Map Hotspots</a>
-        </div>
-      </div>
-
-      <!-- DEPLOY -->
       <div class="panel">
         <div class="panel-title"><span>🚀</span> Deploy</div>
         <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:0.5rem;">Push to GitHub → Netlify auto-deploys the <code style="font-size:0.78rem;background:var(--parchment);padding:0.1rem 0.35rem;border-radius:3px;">site/</code> folder.</div>
@@ -610,54 +437,10 @@ body {
           <code>git status<br>git add -A<br>git commit -m "describe what changed"<br>git push</code>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- AI IMAGE GENERATION                   -->
-  <!-- ══════════════════════════════════════ -->
-  <div class="section-label">AI Image Generation — ComfyUI / Flux</div>
-  <div class="panel" style="margin-bottom:2rem;">
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;">
-
-      <!-- Queue Scripts -->
-      <div>
-        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--clay-rust);margin-bottom:0.6rem;">Batch Scripts</div>
-        <ul class="folder-map" style="font-size:0.78rem;">
-          <li class="folder-item" style="padding:0.4rem 0;">
-            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🎭</div>
-            <div><div class="folder-name" style="font-size:0.72rem;">queue-batches.py</div><div class="folder-desc" style="font-size:0.68rem;">12 characters × T1–T5 scenarios</div></div>
-          </li>
-          <li class="folder-item" style="padding:0.4rem 0;">
-            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">📋</div>
-            <div><div class="folder-name" style="font-size:0.72rem;">queue-charsheets.py</div><div class="folder-desc" style="font-size:0.68rem;">19 chars × 3 triptych sheets</div></div>
-          </li>
-          <li class="folder-item" style="padding:0.4rem 0;">
-            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🏡</div>
-            <div><div class="folder-name" style="font-size:0.72rem;">queue-site-assets.py</div><div class="folder-desc" style="font-size:0.68rem;">14 themes × ~80 prompts</div></div>
-          </li>
-          <li class="folder-item" style="padding:0.4rem 0;">
-            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">⭕</div>
-            <div><div class="folder-name" style="font-size:0.72rem;">queue-circles.py</div><div class="folder-desc" style="font-size:0.68rem;">39 circles × 3 prompts each</div></div>
-          </li>
-          <li class="folder-item" style="padding:0.4rem 0;">
-            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🧱</div>
-            <div><div class="folder-name" style="font-size:0.72rem;">queue-hempcrete-lora.py</div><div class="folder-desc" style="font-size:0.68rem;">Hempcrete LoRA training images</div></div>
-          </li>
-          <li class="folder-item" style="padding:0.4rem 0;">
-            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🖼️</div>
-            <div><div class="folder-name" style="font-size:0.72rem;">queue-pulid-faces.py</div><div class="folder-desc" style="font-size:0.68rem;">PuLID face-locked generation</div></div>
-          </li>
-          <li class="folder-item" style="padding:0.4rem 0;">
-            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🖨️</div>
-            <div><div class="folder-name" style="font-size:0.72rem;">collect-3dprinter-images.py</div><div class="folder-desc" style="font-size:0.68rem;">Download CC0 printer photos</div></div>
-          </li>
-        </ul>
-      </div>
-
-      <!-- ComfyUI API -->
-      <div>
-        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--clay-rust);margin-bottom:0.6rem;">ComfyUI API (No Browser Needed)</div>
+      <!-- COMFYUI API QUICK REF -->
+      <div class="panel">
+        <div class="panel-title"><span>🎨</span> ComfyUI API</div>
         <div style="background:var(--parchment2);border-radius:8px;padding:0.85rem 1rem;font-family:'SF Mono','Fira Code',monospace;font-size:0.72rem;line-height:1.9;color:var(--green);">
           <div><span style="color:var(--ink-soft)"># queue a job</span></div>
           <div>POST /api/prompt</div>
@@ -672,27 +455,6 @@ body {
           <div><div class="svc-name" style="font-size:0.78rem;">ComfyUI</div><div class="svc-desc">127.0.0.1:8188 (local)</div></div>
         </a>
       </div>
-
-      <!-- Output + LoRA Pipeline -->
-      <div>
-        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--clay-rust);margin-bottom:0.6rem;">Output &amp; LoRA Pipeline</div>
-        <div style="font-size:0.78rem;color:var(--ink-soft);margin-bottom:0.6rem;">
-          <strong style="color:var(--ink);">Images save to:</strong><br>
-          <code style="font-size:0.71rem;background:var(--parchment2);padding:0.2rem 0.4rem;border-radius:4px;display:inline-block;margin-top:0.2rem;">comfyui-output\</code>
-        </div>
-        <div style="font-size:0.78rem;color:var(--ink-soft);margin-bottom:0.4rem;"><strong style="color:var(--ink);">3D Printer LoRA pipeline:</strong></div>
-        <ol style="font-size:0.74rem;color:var(--ink-soft);line-height:1.8;padding-left:1.1rem;">
-          <li>Get Pexels + Pixabay API keys</li>
-          <li><code style="font-size:0.69rem;background:var(--parchment2);padding:0.1rem 0.3rem;border-radius:3px;">collect-3dprinter-images.py</code></li>
-          <li><code style="font-size:0.69rem;background:var(--parchment2);padding:0.1rem 0.3rem;border-radius:3px;">curate-3dprinter-images.py</code></li>
-          <li><code style="font-size:0.69rem;background:var(--parchment2);padding:0.1rem 0.3rem;border-radius:3px;">caption-3dprinter-images.py</code></li>
-          <li><code style="font-size:0.69rem;background:var(--parchment2);padding:0.1rem 0.3rem;border-radius:3px;">train-3dprinter-lora.bat</code></li>
-        </ol>
-        <div style="font-size:0.7rem;color:var(--ink-soft);margin-top:0.6rem;">
-          Docs: <code style="font-size:0.67rem;background:var(--parchment2);padding:0.1rem 0.3rem;border-radius:3px;">docs/HANDOFF-3D-PRINTER-LORA.md</code>
-        </div>
-      </div>
-
     </div>
   </div>
 
@@ -727,6 +489,14 @@ body {
         <li class="folder-item">
           <div class="folder-icon">📊</div>
           <div><div class="folder-name">tracker/</div><div class="folder-desc">This page + the Build Tracker task board.</div></div>
+        </li>
+        <li class="folder-item">
+          <div class="folder-icon">📸</div>
+          <div><div class="folder-name">comfyui-output/</div><div class="folder-desc">All generated images from ComfyUI / Flux. Not tracked in git.</div></div>
+        </li>
+        <li class="folder-item">
+          <div class="folder-icon">🔬</div>
+          <div><div class="folder-name">lora-reference/</div><div class="folder-desc">Scraped reference images for LoRA training review. Not tracked in git.</div></div>
         </li>
       </ul>
     </div>
@@ -770,20 +540,27 @@ body {
         </div>
       </div>
 
-      <!-- LAST SESSION -->
-      <div class="session-box">
-        <div class="session-title">Last Session — #28 · Feb 26, 2026</div>
-        <div class="session-text">
-          <ul>
-            <li><strong>App nav rewrite</strong> — app-nav.js rebuilt with self-contained styles, Facebook-style link row + More ▾ dropdown, removed orphaned topbar CSS from 7 pages</li>
-            <li><strong>Public nav redesign</strong> — (session 27) visible link row: Feed · Circles · Map · Visualizer · Estimator · Gallery + More ▾ grouped dropdown</li>
-            <li><strong>Feed sidebar improvements</strong> — Navigate card above Streams, Visualizer promoted, expanded More toggle with all site links, flex-shrink fix for profile card</li>
-            <li><strong>SVG brand system</strong> — (session 25-26) 30 SVGs deployed, ~130 emoji replaced sitewide</li>
-          </ul>
-          <div style="margin-top:0.6rem;color:rgba(242,239,230,0.5);font-size:0.76rem;">
-            Session 23: traffic monitor + analytics · Session 22: community map, 88 pins · Session 21: 7 new characters (19 total)
-          </div>
-        </div>
+      <!-- IMPORTANT PATHS -->
+      <div class="panel">
+        <div class="panel-title"><span>📍</span> Important Paths</div>
+        <ul class="folder-map" style="font-size:0.78rem;">
+          <li class="folder-item" style="padding:0.4rem 0;">
+            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🐍</div>
+            <div><div class="folder-name" style="font-size:0.72rem;">D:\AI\comfy-env\</div><div class="folder-desc" style="font-size:0.68rem;">ComfyUI Python env — pip installs go here, NOT system Python</div></div>
+          </li>
+          <li class="folder-item" style="padding:0.4rem 0;">
+            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🧠</div>
+            <div><div class="folder-name" style="font-size:0.72rem;">D:\AI\ComfyUI\models\</div><div class="folder-desc" style="font-size:0.68rem;">Flux checkpoints, LoRAs, PuLID models</div></div>
+          </li>
+          <li class="folder-item" style="padding:0.4rem 0;">
+            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🏋️</div>
+            <div><div class="folder-name" style="font-size:0.72rem;">D:\AI\kohya_ss\</div><div class="folder-desc" style="font-size:0.68rem;">Kohya SS for LoRA training (confirm path before use)</div></div>
+          </li>
+          <li class="folder-item" style="padding:0.4rem 0;">
+            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🔌</div>
+            <div><div class="folder-name" style="font-size:0.72rem;">ComfyUI/custom_nodes/ComfyUI-PuLID-Flux</div><div class="folder-desc" style="font-size:0.68rem;">PuLID node for face-locked generation</div></div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -801,7 +578,7 @@ body {
 
   <div class="cc-footer">
     <span>the Earthback Project — Command Center</span>
-    <span>Updated: Feb 26, 2026 · Session 28</span>
+    <span>Static reference — session status lives in SESSION_NOTES.md & TRACKER.md</span>
   </div>
 
 </div>
@@ -809,6 +586,12 @@ body {
 <script>
 function copyPrompt() {
   const el = document.getElementById('claude-prompt');
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1500);
+  });
+}
+function copyCred(el) {
   navigator.clipboard.writeText(el.textContent.trim()).then(() => {
     el.classList.add('copied');
     setTimeout(() => el.classList.remove('copied'), 1500);

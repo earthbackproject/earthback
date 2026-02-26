@@ -1,0 +1,23 @@
+# ─────────────────────────────────────────────────────────
+# Earthback — Reference Image Scraper URL List
+# ─────────────────────────────────────────────────────────
+#
+# Usage:
+#   python scrape-reference-images.py urls.txt
+#   python scrape-reference-images.py urls.txt --category earthships
+#   python scrape-reference-images.py urls.txt -c cob-houses --only-file
+#
+# Options:
+#   -c / --category   Folder name under lora-reference/ (default: "custom")
+#   --only-file       Skip built-in URLs, only scrape from this file
+#
+# Without --only-file, built-in hempcrete + 3d-concrete URLs also run.
+# With --only-file, ONLY the URLs below are scraped.
+#
+# Format: one URL per line. Blank lines and #comments are ignored.
+# Images < 40KB or > 25MB are skipped. Logos/icons/SVGs filtered out.
+# Output goes to: lora-reference/<category>/
+# ─────────────────────────────────────────────────────────
+
+# Paste your URLs below:
+

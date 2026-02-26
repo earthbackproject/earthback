@@ -74,9 +74,9 @@ A community platform for people doing green building — hempcrete, solar, food 
 
 **Right now:** Pre-launch. Platform app is built and mostly wired. 4 SQL migrations still pending (PROFILE_MIGRATION, V3, V4, V9b). Analytics tracking live (SCHEMA_V9 run). Next focus: LoRA training.
 
-**Navigation (as of session 28, 2026-02-26):**
+**Navigation (as of session 29, 2026-02-26):**
 - `nav.js` — public pages: Facebook-style visible link row + More ▾ grouped dropdown, self-contained CSS
-- `app-nav.js` — app pages: same pattern, self-contained CSS (pages have NO topbar CSS of their own)
+- `app-nav.js` — app pages: same pattern, self-contained CSS, `position: fixed` nav with spacer div (pages have NO topbar CSS of their own)
 - `footer.js` — shared footer on all public pages
 
 **Image generation state (as of session 23, 2026-02-25):**
@@ -110,6 +110,7 @@ All batch scripts live in `/Earthback/` root:
 | `curate-3dprinter-images.py` | Crop/resize dataset to 1024×1024 |
 | `caption-3dprinter-images.py` | Generate .txt captions for Kohya |
 | `train-3dprinter-lora.bat` | Kohya SS training command for 3D printer LoRA |
+| `scrape-reference-images.py` | Scrape hempcrete + 3D concrete images from curated URLs; supports `urls.txt` file + `--category` flag |
 
 **Characters:** 19 characters — full bibles in `docs/CHARACTERS.md`, each with fixed seed for consistency.
 **PuLID:** Node installed at `ComfyUI/custom_nodes/ComfyUI-PuLID-Flux`. Models need downloading via `setup-pulid.py`.
@@ -134,6 +135,22 @@ All batch scripts live in `/Earthback/` root:
 ## Git Lock File Issue
 
 The Cowork VM occasionally fails to unlink `.git/HEAD.lock` and `.git/index.lock` after commits (cross-filesystem permission issue). **If git errors about lock files:** Nicco deletes them manually from Windows at `C:\users\adrxi\Earthback\.git\HEAD.lock` and/or `.git\index.lock`.
+
+---
+
+## End-of-Session Update Checklist
+
+**Always update (every session):**
+1. **SESSION_NOTES.md** — What was done, what's next, handoff context for next session
+2. **TRACKER.md** — Session number in header, workstream status changes, checkbox progress
+
+**Update when relevant:**
+3. **CLAUDE.md** — Only if structural changes occurred (new scripts, new conventions, changed paths, new tools)
+4. **docs/CHARACTERS.md** — If characters were added or modified
+5. **docs/CIRCLES.md** — If circle categories changed
+
+**Static (not session-updated):**
+- **command-center.html** (in project root, gitignored) — credentials, service links, paths, startup sequence. Only update if services or paths change.
 
 ---
 

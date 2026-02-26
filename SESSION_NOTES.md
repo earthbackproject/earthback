@@ -4,7 +4,42 @@
 ---
 
 ## Last Updated
-2026-02-26 — Session 28 with Nicco via Cowork
+2026-02-26 — Session 29 with Nicco via Cowork (Opus)
+
+---
+
+## What Was Done in Session 29 (2026-02-26)
+
+### App nav — fixed positioning fix
+- **`position: sticky` → `position: fixed`** in app-nav.js — nav now stays pinned at top of viewport at all times (matching public nav.js behavior)
+- Added `.an-spacer` div (87px) after nav to push page content below the fixed header
+- Mobile menu also changed to `position: fixed` so it stays aligned under the fixed nav
+- **Root cause of sidebar cutoff**: sticky had no room to operate because `#app-nav` container was only as tall as the nav itself
+
+### Feed sidebar scroll fix
+- Sidebar `top: 95px` / `max-height: calc(100vh - 103px)` — fixed values since nav is always at viewport top
+- **Removed scroll listener entirely** — no dynamic adjustment needed with fixed nav
+- Sidebar card order unchanged: Profile → Updates → Navigate → Streams → Invite
+
+### Reference image scraper (`scrape-reference-images.py`)
+- New tool: scrapes images from curated hempcrete + 3D concrete URLs for LoRA training review
+- 24 built-in source URLs across 2 categories (11 hempcrete, 13 3D concrete)
+- Filters: skips <40KB, >25MB, logos/icons/SVGs; deduplicates by content hash; picks highest-res from srcset
+- **URL file support added**: `python scrape-reference-images.py urls.txt -c earthships --only-file`
+- `urls.txt` template created with usage instructions as comments
+- Output: `lora-reference/hempcrete/` and `lora-reference/3d-concrete/` (or custom category)
+
+### Social media research
+- Evaluated Buffer, Publer, Typefully, Later for social media scheduling
+- Buffer and Publer recommended as best fit for Earthback's visual-heavy, multi-platform needs
+- Nicco has a collaborator helping with social media launch
+
+### Immediate Next Steps
+- **LoRA training** — hempcrete + 3D printer datasets ready, switching to Sonnet for training runs
+- **Run scraper** to collect reference images, curate for LoRA training data
+- **Social media setup** — finalize platform (Buffer/Publer), start scheduling launch content
+- **Push pending commits** — nav fix + scraper script
+- **PuLID face-locked generation** after LoRAs are trained
 
 ---
 

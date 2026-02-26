@@ -3,7 +3,7 @@
 *To resume: "Read TRACKER.md and SESSION_NOTES.md and pick up where we left off."*
 *Visual version: `/tracker/index.html` — open in browser for the full dashboard.*
 
-**Last updated:** 2026-02-26 (session 28 — app nav rewrite, feed sidebar nav reorder)
+**Last updated:** 2026-02-26 (session 29 — fixed nav positioning, sidebar scroll fix, reference image scraper)
 
 ---
 
@@ -20,7 +20,7 @@
 | Branding | 🟢 SVG system live | 30 SVGs deployed · Georgia font · mixed-case brand · emoji replaced sitewide · favicon live |
 | Hosting & Launch | 🟢 Live | earthbackproject.org on Netlify · git-based deploys |
 | Documentation | 🟢 Done | CLAUDE.md (auto-loaded), QUICKSTART.md, command-center.html, session notes, tracker |
-| AI Image Generation | 🟡 In progress | Charsheets + site assets + T4 re-run overnight · PuLID next · hempcrete LoRA pending |
+| AI Image Generation | 🟡 In progress | Charsheets + site assets done · reference image scraper built · hempcrete + 3D concrete LoRA training next · PuLID after LoRAs |
 
 ---
 
@@ -429,6 +429,7 @@ All scripts in `/Earthback/` root. ComfyUI at `http://127.0.0.1:8188`. Output: `
 - [x] `collect-3dprinter-images.py` — downloads CC0 photos from Pexels + Pixabay (15 search terms)
 - [x] `curate-3dprinter-images.py` — smart center-crop to 1024×1024, quality filtering
 - [x] `caption-3dprinter-images.py` — template or BLIP-2 captions, Kohya `.txt` format
+- [x] `scrape-reference-images.py` — scrapes hempcrete + 3D concrete images from curated URLs; supports external URL file + custom categories
 - [x] `train-3dprinter-lora.bat` — Kohya SS Flux LoRA training command (rank 16, 1500 steps)
 - [x] `docs/HANDOFF-3D-PRINTER-LORA.md` — full plan, visual grammar, pipeline, eval prompts
 - [ ] **Get API keys** — Pexels (free) + Pixabay (free); add to script flags

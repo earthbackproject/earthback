@@ -34,7 +34,8 @@ site/content/cast-photos/
 site/content/social/processed/
 *.docx
 
-# Command center WIP
+# Command center (contains credentials — never commit)
+command-center.html
 tracker/
 *.psd
 *.ai
