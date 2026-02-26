@@ -58,8 +58,8 @@
     border-top: 1px solid rgba(255,255,255,0.06);
   ">
     <span style="font-weight:600;color:#C2A56C;margin-right:6px">EARLY ACCESS</span>
-    <span>You're among the first to explore Earthback. We're building in the open — things may change as we grow.</span>
-    <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:8px">Share feedback &rarr;</a>
+    <span>Claim your username and get in early &mdash; we're building this in the open.</span>
+    <a href="join.html" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:8px">Join free &rarr;</a>
   </div>
 </nav>
 <div class="mobile-nav-overlay" id="mobile-nav-overlay">
