@@ -28,7 +28,7 @@
   const navHTML = `
 <nav>
   <div class="nav-inner">
-    <a href="/" class="nav-logo"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
+    <a href="/" class="nav-logo"><img src="assets/img/icons/icon-leaf.svg" alt="" style="width:1.1em;height:1.1em;vertical-align:-0.12em;margin-right:0.3em;opacity:0.75;"><span class="brand-the">the</span> Earth<span class="brand-back">back</span><span class="brand-project"> Project</span></a>
     <ul>
       <li><a href="feed.html">The Feed</a></li>
       <li><a href="circles.html">Circles</a></li>
