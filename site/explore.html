@@ -41,7 +41,6 @@
         .nav-logo .brand-back { color: var(--clay); }
         .brand-the { font-size: 0.5em; font-weight: 300; color: rgba(242,239,230,0.52); text-transform: lowercase; letter-spacing: 0.03em; vertical-align: 0.22em; margin-right: 0.18em; }
         .brand-project { font-size: 0.46em; font-weight: 400; color: rgba(242,239,230,0.35); text-transform: uppercase; letter-spacing: 0.25em; vertical-align: 0.24em; }
-        nav ul { display: flex; gap: 1rem; list-style: none; align-items: center; }
         nav a { color: rgba(242,239,230,0.78); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s var(--ease); }
         nav a:hover { color: var(--clay); }
         .nav-join { background: var(--clay); color: var(--green) !important; padding: 0.55rem 1.35rem; border-radius: 3px; font-weight: 700 !important; transition: background 0.2s var(--ease) !important; }
@@ -49,16 +48,7 @@
         .nav-active { color: var(--clay) !important; }
 
         /* ── HAMBURGER ── */
-        .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
-        .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--parchment); border-radius: 2px; transition: all 0.3s; }
-        .mobile-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(20,38,28,0.98); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; padding: 2rem; }
-        .mobile-nav-overlay.open { display: flex; }
-        .mobile-nav-overlay a { font-size: 1.4rem; color: rgba(242,239,230,0.8); text-decoration: none; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-family: 'Cormorant Garamond', serif; font-weight: 600; width: 100%; text-align: center; transition: color 0.15s; }
-        .mobile-nav-overlay a:hover { color: var(--clay); }
-        .mobile-nav-overlay a.join-mobile { margin-top: 1.5rem; border: none; background: var(--clay); color: var(--green) !important; border-radius: 3px; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 1rem; }
         .mobile-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--parchment); font-size: 1.5rem; cursor: pointer; }
-        @media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
-
         /* ── HERO ── */
         .explore-hero {
             background: linear-gradient(158deg, #0b1a12 0%, #1F3A2E 50%, #2a4d3a 100%);

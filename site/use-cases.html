@@ -77,7 +77,6 @@
     letter-spacing: 0.25em;
     vertical-align: 0.24em;
 }
-        nav ul { display: flex; gap: 1rem; list-style: none; align-items: center; }
         nav a {
             color: rgba(242,239,230,0.78); text-decoration: none;
             font-size: 0.875rem; font-weight: 500;
@@ -283,50 +282,12 @@
             .template-grid { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 680px) {
-            nav ul { display: none; }
             .page-hero { padding: 7rem 1.25rem 4rem; }
             section { padding: 3.5rem 1.25rem; }
             .template-grid { grid-template-columns: 1fr; }
         }
 
 
-        /* ── MOBILE NAV ── */
-        .nav-hamburger {
-            display: none; flex-direction: column; gap: 5px;
-            background: none; border: none; cursor: pointer; padding: 4px;
-        }
-        .nav-hamburger span {
-            display: block; width: 22px; height: 2px;
-            background: var(--parchment); border-radius: 2px;
-            transition: all 0.25s;
-        }
-        .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-        .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-        .mobile-nav-overlay {
-            display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
-            background: rgba(9,18,13,0.98); z-index: 999;
-            flex-direction: column; padding: 2rem;
-            gap: 0;
-        }
-        .mobile-nav-overlay.open { display: flex; }
-        .mobile-nav-overlay a {
-            font-size: 1.4rem; color: rgba(242,239,230,0.8);
-            text-decoration: none; padding: 1rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-            font-family: 'Cormorant Garamond', serif; font-weight: 600;
-            transition: color 0.15s;
-        }
-        .mobile-nav-overlay a:hover { color: var(--clay); }
-        .mobile-nav-overlay a.join-mobile {
-            margin-top: 1.5rem; border: none;
-            background: var(--clay); color: var(--green) !important;
-            text-align: center; border-radius: 3px;
-            font-family: 'Inter', sans-serif; font-size: 1rem;
-            font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
-            padding: 1rem;
-        }
-        @media (max-width: 860px) { .nav-hamburger { display: flex; } nav ul { display: none !important; } }
     </style>
 </head>
 <body>
