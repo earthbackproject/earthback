@@ -19,7 +19,7 @@
   const navHTML = `
 <nav class="topbar">
   <a class="topbar-brand" href="index.html">
-    <span class="topbar-brand-mark">🌿</span>
+    <img class="topbar-brand-mark" src="assets/img/icons/icon-leaf.svg" alt="" style="width:1.3em;height:1.3em;vertical-align:-0.2em;">
     <span class="topbar-brand-name"><span class="topbar-the">the</span> Earthback <span class="brand-sub">Project</span></span>
   </a>
   <div class="topbar-nav">
@@ -31,7 +31,7 @@
     <a href="circles.html" class="topbar-nav-link${ac('circles.html')}">Circles</a>
   </div>
   <div class="topbar-right">
-    <a href="messages.html" title="Messages" style="color:rgba(255,255,255,0.7);font-size:1rem;text-decoration:none;padding:4px 8px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.background='none'">💬</a>
+    <a href="messages.html" title="Messages" style="color:rgba(255,255,255,0.7);font-size:1rem;text-decoration:none;padding:4px 8px;border-radius:8px;transition:all 0.2s;display:flex;align-items:center;" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.background='none'"><img src="assets/img/icons/icon-chat.svg" alt="Messages" style="width:1.2em;height:1.2em;"></a>
     <a href="profile.html" title="View your profile" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sage));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:none;" id="header-avatar">?</a>
     <div class="topbar-hamburger" id="app-hamburger">
       <span></span><span></span><span></span>

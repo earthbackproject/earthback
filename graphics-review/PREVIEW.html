@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earthback Graphics Review</title>
+<!-- No external fonts needed — all SVGs use Georgia (system font) -->
+<style>
+  :root {
+    --green: #1F3A2E;
+    --green-mid: #2C4F3B;
+    --green-soft: #4A7C5E;
+    --clay: #C2A56C;
+    --clay-dark: #8A5B3F;
+    --moss: #7e9b73;
+    --parchment: #F2EFE6;
+    --parchment2: #EAE3D3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: #111;
+    color: #eee;
+    padding: 2rem;
+  }
+
+  h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 2.5rem;
+    color: var(--clay);
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: #888;
+    font-size: 0.95rem;
+    margin-bottom: 3rem;
+  }
+
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.6rem;
+    color: var(--parchment);
+    margin: 3rem 0 0.5rem 0;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+  }
+
+  .section-note {
+    color: #777;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    min-width: 200px;
+  }
+
+  .card-label {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+
+  .card img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Background switcher for previewing on different surfaces */
+  .bg-dark { background: var(--green); padding: 2rem; border-radius: 10px; }
+  .bg-light { background: var(--parchment); padding: 2rem; border-radius: 10px; }
+  .bg-white { background: #fff; padding: 2rem; border-radius: 10px; }
+
+  /* Icon grid */
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .icon-cell {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 1.25rem 0.75rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .icon-cell img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .icon-cell .icon-name {
+    font-size: 0.7rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Pattern preview */
+  .pattern-preview {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 0.85rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pattern-preview img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .color-palette {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+
+  .swatch {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0.4rem;
+    font-size: 0.6rem;
+    font-family: monospace;
+    border: 1px solid #333;
+  }
+
+  .pin-row {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-end;
+    margin: 1.5rem 0;
+  }
+
+  .pin-cell {
+    text-align: center;
+  }
+
+  .pin-cell img {
+    width: 48px;
+    height: 64px;
+  }
+
+  .pin-cell .icon-name {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>Earthback Graphics Review</h1>
+<p class="subtitle">Session 24 — SVG brand assets for review before integration. All text uses Georgia (system font) — no external font loading. "Earthback" renders as one word, no space.</p>
+
+<!-- COLOR PALETTE REFERENCE -->
+<h2>Brand Color Palette</h2>
+<p class="section-note">Reference — these are the CSS variables already in use across the site.</p>
+<div class="color-palette">
+  <div class="swatch" style="background:var(--green);color:#999;">#1F3A2E<br>green</div>
+  <div class="swatch" style="background:var(--green-mid);color:#999;">#2C4F3B<br>green-mid</div>
+  <div class="swatch" style="background:var(--green-soft);color:#eee;">#4A7C5E<br>green-soft</div>
+  <div class="swatch" style="background:var(--clay);color:#333;">#C2A56C<br>clay</div>
+  <div class="swatch" style="background:var(--clay-dark);color:#eee;">#8A5B3F<br>clay-dark</div>
+  <div class="swatch" style="background:var(--moss);color:#222;">#7e9b73<br>moss</div>
+  <div class="swatch" style="background:var(--parchment);color:#555;">#F2EFE6<br>parchment</div>
+  <div class="swatch" style="background:var(--parchment2);color:#555;">#EAE3D3<br>parchment2</div>
+</div>
+
+<!-- WORDMARKS -->
+<h2>Wordmarks</h2>
+<p class="section-note">Full brand lockups. "Dark" is for light backgrounds, "Light" is for dark backgrounds. "Compact" drops the/Project.</p>
+
+<div class="row">
+  <div class="card">
+    <div class="card-label">Dark (on parchment)</div>
+    <div class="bg-light">
+      <img src="wordmarks/earthback-wordmark-dark.svg" alt="Wordmark dark">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">Light (on green)</div>
+    <div class="bg-dark">
+      <img src="wordmarks/earthback-wordmark-light.svg" alt="Wordmark light">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="card">
+    <div class="card-label">Compact (on green)</div>
+    <div class="bg-dark">
+      <img src="wordmarks/earthback-wordmark-compact.svg" alt="Wordmark compact">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">Compact (on white)</div>
+    <div class="bg-light">
+      <!-- We'll render compact on light with the dark colors too — show versatility -->
+      <img src="wordmarks/earthback-wordmark-compact.svg" alt="Wordmark compact on light" style="filter: brightness(0.3);">
+    </div>
+  </div>
+</div>
+
+<!-- LOGOMARKS -->
+<h2>Logomarks / Monograms</h2>
+<p class="section-note">Standalone symbols. Leaf = primary. Circle = social/avatar. Badge/seed shape = trust marks.</p>
+
+<div class="row">
+  <div class="card">
+    <div class="card-label">Leaf Monogram</div>
+    <img src="logomark/eb-monogram-leaf.svg" alt="Eb leaf" style="width:100px;">
+  </div>
+  <div class="card">
+    <div class="card-label">Circle (avatar)</div>
+    <img src="logomark/eb-monogram-circle.svg" alt="Eb circle" style="width:100px;">
+  </div>
+  <div class="card">
+    <div class="card-label">Seed/Shield Badge</div>
+    <img src="logomark/eb-monogram-badge.svg" alt="Eb badge" style="width:100px;">
+  </div>
+  <div class="card">
+    <div class="card-label">Current Favicon (for ref)</div>
+    <img src="../site/assets/img/favicon.svg" alt="Current favicon" style="width:64px;">
+  </div>
+</div>
+
+<!-- ICONS -->
+<h2>Icon Set</h2>
+<p class="section-note">24×24 SVG icons to replace emoji throughout the site. Each uses brand colors with subtle fills.</p>
+
+<div class="icon-grid">
+  <div class="icon-cell">
+    <img src="icons/icon-leaf.svg" alt="leaf">
+    <span class="icon-name">Leaf / Brand</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-seedling.svg" alt="seedling">
+    <span class="icon-name">Seedling</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-sun.svg" alt="sun">
+    <span class="icon-name">Sun / Solar</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-building.svg" alt="building">
+    <span class="icon-name">Building</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-hammer.svg" alt="hammer">
+    <span class="icon-name">Hammer / Build</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-handshake.svg" alt="handshake">
+    <span class="icon-name">Handshake</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-people.svg" alt="people">
+    <span class="icon-name">People</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-globe.svg" alt="globe">
+    <span class="icon-name">Globe</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-pin.svg" alt="pin">
+    <span class="icon-name">Map Pin</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-chat.svg" alt="chat">
+    <span class="icon-name">Chat / Reply</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-heart.svg" alt="heart">
+    <span class="icon-name">Heart / Like</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-chart.svg" alt="chart">
+    <span class="icon-name">Chart / Data</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-shield.svg" alt="shield">
+    <span class="icon-name">Shield / Trust</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-water.svg" alt="water">
+    <span class="icon-name">Water</span>
+  </div>
+  <div class="icon-cell">
+    <img src="icons/icon-lightning.svg" alt="lightning">
+    <span class="icon-name">Energy</span>
+  </div>
+</div>
+
+<!-- Show icons on both backgrounds -->
+<div class="row">
+  <div class="card" style="flex:1;">
+    <div class="card-label">Icons on parchment</div>
+    <div class="bg-light" style="display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;">
+      <img src="icons/icon-leaf.svg" style="width:32px;">
+      <img src="icons/icon-sun.svg" style="width:32px;">
+      <img src="icons/icon-building.svg" style="width:32px;">
+      <img src="icons/icon-handshake.svg" style="width:32px;">
+      <img src="icons/icon-globe.svg" style="width:32px;">
+      <img src="icons/icon-chat.svg" style="width:32px;">
+      <img src="icons/icon-heart.svg" style="width:32px;">
+      <img src="icons/icon-shield.svg" style="width:32px;">
+    </div>
+  </div>
+  <div class="card" style="flex:1;">
+    <div class="card-label">Icons on dark green</div>
+    <div class="bg-dark" style="display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;">
+      <img src="icons/icon-leaf.svg" style="width:32px;">
+      <img src="icons/icon-sun.svg" style="width:32px;">
+      <img src="icons/icon-building.svg" style="width:32px;">
+      <img src="icons/icon-handshake.svg" style="width:32px;">
+      <img src="icons/icon-globe.svg" style="width:32px;">
+      <img src="icons/icon-chat.svg" style="width:32px;">
+      <img src="icons/icon-heart.svg" style="width:32px;">
+      <img src="icons/icon-shield.svg" style="width:32px;">
+    </div>
+  </div>
+</div>
+
+<!-- BADGES -->
+<h2>Badges</h2>
+<p class="section-note">Trust marks for profiles, partner pages, email signatures. Horizontal pill format.</p>
+
+<div class="row">
+  <div class="card">
+    <div class="card-label">Verified Partner</div>
+    <img src="badges/badge-verified-partner.svg" alt="Verified Partner">
+  </div>
+  <div class="card">
+    <div class="card-label">Community Member</div>
+    <img src="badges/badge-community-member.svg" alt="Community Member">
+  </div>
+  <div class="card">
+    <div class="card-label">Early Access / Founding</div>
+    <img src="badges/badge-early-access.svg" alt="Early Access">
+  </div>
+</div>
+
+<!-- MAP PINS -->
+<h2>Map Pins</h2>
+<p class="section-note">Custom markers for the community map page. Color-coded by type.</p>
+
+<div class="pin-row">
+  <div class="pin-cell">
+    <img src="map-pins/map-pin-project.svg" alt="Project pin">
+    <div class="icon-name">Project<br>(forest green)</div>
+  </div>
+  <div class="pin-cell">
+    <img src="map-pins/map-pin-member.svg" alt="Member pin">
+    <div class="icon-name">Member<br>(moss green)</div>
+  </div>
+  <div class="pin-cell">
+    <img src="map-pins/map-pin-supplier.svg" alt="Supplier pin">
+    <div class="icon-name">Supplier<br>(clay brown)</div>
+  </div>
+</div>
+
+<!-- Show pins on a fake map background -->
+<div class="card" style="margin:1.5rem 0;">
+  <div class="card-label">Pins on map-like background</div>
+  <div style="background:linear-gradient(135deg,#e8e4d8,#d4d0c4);padding:3rem 2rem;border-radius:10px;display:flex;gap:3rem;justify-content:center;align-items:flex-end;">
+    <img src="map-pins/map-pin-project.svg" style="width:36px;">
+    <img src="map-pins/map-pin-member.svg" style="width:36px;">
+    <img src="map-pins/map-pin-supplier.svg" style="width:36px;">
+  </div>
+</div>
+
+<!-- PATTERNS -->
+<h2>Patterns &amp; Textures</h2>
+<p class="section-note">Tileable backgrounds for sections, cards, headers. Very subtle — designed to add depth without distraction.</p>
+
+<div class="row">
+  <div class="card" style="flex:1;">
+    <div class="card-label">Leaf Grid (on parchment)</div>
+    <div class="pattern-preview" style="background:var(--parchment);">
+      <img src="patterns/pattern-leaf-grid.svg" style="opacity:1;image-rendering:auto;">
+      <span style="position:relative;color:var(--green);font-family:'Cormorant Garamond',serif;font-size:1.3rem;">Section content goes here</span>
+    </div>
+  </div>
+  <div class="card" style="flex:1;">
+    <div class="card-label">Topography (on parchment)</div>
+    <div class="pattern-preview" style="background:var(--parchment);">
+      <img src="patterns/pattern-topography.svg" style="opacity:1;">
+      <span style="position:relative;color:var(--green);font-family:'Cormorant Garamond',serif;font-size:1.3rem;">Section content goes here</span>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="card" style="flex:1;">
+    <div class="card-label">Hemp Weave (on dark green)</div>
+    <div class="pattern-preview" style="background:var(--green);">
+      <img src="patterns/pattern-hemp-weave.svg" style="opacity:1;">
+      <span style="position:relative;color:var(--parchment);font-family:'Cormorant Garamond',serif;font-size:1.3rem;">Section content goes here</span>
+    </div>
+  </div>
+  <div class="card" style="flex:1;">
+    <div class="card-label">Topography (on dark green)</div>
+    <div class="pattern-preview" style="background:var(--green);">
+      <img src="patterns/pattern-topography.svg" style="opacity:1;">
+      <span style="position:relative;color:var(--parchment);font-family:'Cormorant Garamond',serif;font-size:1.3rem;">Section content goes here</span>
+    </div>
+  </div>
+</div>
+
+<!-- Divider -->
+<div class="card" style="margin:1.5rem 0;">
+  <div class="card-label">Section Divider — Leaf Vine</div>
+  <div class="bg-light" style="text-align:center;">
+    <img src="patterns/divider-leaf-vine.svg" alt="Divider" style="max-width:100%;">
+  </div>
+</div>
+<div class="card" style="margin:1.5rem 0;">
+  <div class="card-label">Section Divider — on dark</div>
+  <div class="bg-dark" style="text-align:center;">
+    <img src="patterns/divider-leaf-vine.svg" alt="Divider" style="max-width:100%;filter:brightness(1.5);">
+  </div>
+</div>
+
+<!-- FILE MANIFEST -->
+<h2>File Manifest</h2>
+<p class="section-note">Everything in graphics-review/, ready for your designer to review.</p>
+
+<div style="background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:1.5rem;font-family:monospace;font-size:0.8rem;color:#aaa;line-height:1.8;">
+graphics-review/<br>
+├── PREVIEW.html &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ← this file<br>
+├── wordmarks/<br>
+│&nbsp;&nbsp; ├── earthback-wordmark-dark.svg &nbsp; ← full logo for light backgrounds<br>
+│&nbsp;&nbsp; ├── earthback-wordmark-light.svg &nbsp;← full logo for dark backgrounds<br>
+│&nbsp;&nbsp; └── earthback-wordmark-compact.svg ← "Earthback" only, no the/Project<br>
+├── logomark/<br>
+│&nbsp;&nbsp; ├── eb-monogram-leaf.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ← primary mark with leaf detail<br>
+│&nbsp;&nbsp; ├── eb-monogram-circle.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ← circular, for social/avatars<br>
+│&nbsp;&nbsp; └── eb-monogram-badge.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ← seed/shield shape, for trust marks<br>
+├── icons/<br>
+│&nbsp;&nbsp; ├── icon-leaf.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (replaces 🌿🌱)<br>
+│&nbsp;&nbsp; ├── icon-seedling.svg &nbsp;&nbsp; (growth/food systems)<br>
+│&nbsp;&nbsp; ├── icon-sun.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (replaces ☀️ — solar/energy)<br>
+│&nbsp;&nbsp; ├── icon-building.svg &nbsp;&nbsp; (replaces 🏗️ — natural building)<br>
+│&nbsp;&nbsp; ├── icon-hammer.svg &nbsp;&nbsp;&nbsp;&nbsp; (replaces 🔨 — projects)<br>
+│&nbsp;&nbsp; ├── icon-handshake.svg &nbsp; (replaces 🤝 — mutual aid)<br>
+│&nbsp;&nbsp; ├── icon-people.svg &nbsp;&nbsp;&nbsp;&nbsp; (community/circles)<br>
+│&nbsp;&nbsp; ├── icon-globe.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (replaces 🌍 — global)<br>
+│&nbsp;&nbsp; ├── icon-pin.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (replaces 📍 — location)<br>
+│&nbsp;&nbsp; ├── icon-chat.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (replaces 💬 — reply)<br>
+│&nbsp;&nbsp; ├── icon-heart.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (replaces ❤ — like)<br>
+│&nbsp;&nbsp; ├── icon-chart.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (replaces 📊 — analytics)<br>
+│&nbsp;&nbsp; ├── icon-shield.svg &nbsp;&nbsp;&nbsp;&nbsp; (safety/verification)<br>
+│&nbsp;&nbsp; ├── icon-water.svg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (greywater/water systems)<br>
+│&nbsp;&nbsp; └── icon-lightning.svg &nbsp; (energy/power)<br>
+├── badges/<br>
+│&nbsp;&nbsp; ├── badge-verified-partner.svg<br>
+│&nbsp;&nbsp; ├── badge-community-member.svg<br>
+│&nbsp;&nbsp; └── badge-early-access.svg<br>
+├── map-pins/<br>
+│&nbsp;&nbsp; ├── map-pin-project.svg &nbsp; (forest green — building projects)<br>
+│&nbsp;&nbsp; ├── map-pin-member.svg &nbsp;&nbsp; (moss green — community members)<br>
+│&nbsp;&nbsp; └── map-pin-supplier.svg &nbsp;(clay brown — suppliers/partners)<br>
+└── patterns/<br>
+&nbsp;&nbsp;&nbsp; ├── pattern-leaf-grid.svg &nbsp;&nbsp;(repeatable leaf + dot texture)<br>
+&nbsp;&nbsp;&nbsp; ├── pattern-topography.svg &nbsp;(contour lines — earth/terrain)<br>
+&nbsp;&nbsp;&nbsp; ├── pattern-hemp-weave.svg &nbsp;(hemp fiber crosshatch)<br>
+&nbsp;&nbsp;&nbsp; └── divider-leaf-vine.svg &nbsp;&nbsp;(horizontal section separator)<br>
+</div>
+
+<div style="margin:3rem 0 1rem;color:#666;font-size:0.8rem;text-align:center;">
+  Earthback Session 24 · Graphics Package · February 2026
+</div>
+
+</body>
+</html>

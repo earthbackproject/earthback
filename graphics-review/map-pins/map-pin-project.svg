@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 48" width="36" height="48">
+  <!-- Custom map pin — project marker. Drop shadow + brand colors. -->
+  <!-- Shadow -->
+  <ellipse cx="18" cy="46" rx="8" ry="2" fill="#000" opacity="0.15"/>
+  <!-- Pin body -->
+  <path d="M 18 2 C 10.27 2 4 8.27 4 16 C 4 25 18 44 18 44 C 18 44 32 25 32 16 C 32 8.27 25.73 2 18 2 Z" fill="#1F3A2E"/>
+  <path d="M 18 2 C 10.27 2 4 8.27 4 16 C 4 25 18 44 18 44 C 18 44 32 25 32 16 C 32 8.27 25.73 2 18 2 Z" fill="none" stroke="#C2A56C" stroke-width="1" opacity="0.4"/>
+  <!-- Inner circle -->
+  <circle cx="18" cy="15" r="7" fill="#2C4F3B"/>
+  <circle cx="18" cy="15" r="7" fill="none" stroke="#C2A56C" stroke-width="0.8" opacity="0.5"/>
+  <!-- Hammer icon inside -->
+  <g transform="translate(12, 9)" stroke="#F2EFE6" stroke-width="1.2" fill="none" stroke-linecap="round">
+    <line x1="3" y1="9" x2="7" y2="5"/>
+    <path d="M 6 6 L 8 4 L 11 5.5 L 9.5 8 Z" fill="#F2EFE6" fill-opacity="0.3"/>
+  </g>
+</svg>

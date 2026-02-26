@@ -1101,7 +1101,7 @@
                     example: 'Post-and-beam timber frame with hempcrete infill, stone stem wall, standing seam metal roof, south-facing glazing'
                 },
                 {
-                    icon: '🌿',
+                    icon: '<img src="assets/img/icons/icon-leaf.svg" style="width:1.2em;height:1.2em;">',
                     text: '<strong>Living roofs need plant details.</strong> Say "sedum green roof" or "wildflower meadow roof" or "native grasses" — generic "green roof" often renders plain grass.',
                     example: 'An earthen workshop with a wildflower meadow roof, exposed round timber rafters, large barn doors, gravel courtyard'
                 },
@@ -1117,7 +1117,7 @@
             label: 'Systems',
             tips: [
                 {
-                    icon: '☀️',
+                    icon: '<img src="assets/img/icons/icon-sun.svg" style="width:1.2em;height:1.2em;">',
                     text: '<strong>Solar works best with specifics.</strong> Try "rooftop PV array," "solar thermal tubes on south wall," or "building-integrated PV shingles" rather than just "solar panels."',
                     example: 'An off-grid desert homestead with rooftop PV array, battery shed, solar water heater, and shaded outdoor kitchen'
                 },
@@ -1127,7 +1127,7 @@
                     example: 'A hempcrete home with corrugated metal roof feeding twin stone rainwater cisterns, greywater garden beds along south wall'
                 },
                 {
-                    icon: '🌱',
+                    icon: '<img src="assets/img/icons/icon-seedling.svg" style="width:1.2em;height:1.2em;">',
                     text: '<strong>Food systems around buildings look incredible.</strong> Try "food forest perimeter," "raised bed kitchen garden," "espalier fruit wall," or "aquaponics greenhouse attached."',
                     example: 'A community housing cluster surrounded by raised bed gardens, fruit tree guild, chicken run, and herb spiral near the kitchen'
                 },
@@ -1204,7 +1204,7 @@
                     example: 'A cozy, well-loved cob cottage overgrown with climbing roses, weathered wooden gate, herb garden path, warm smoke from chimney'
                 },
                 {
-                    icon: '📊',
+                    icon: '<img src="assets/img/icons/icon-chart.svg" style="width:1.2em;height:1.2em;">',
                     text: '<strong>Ready to estimate costs?</strong> Use the Visualizer to explore the look and feel, then jump to the <a href="designer.html" style="color:var(--green-soft);">Project Estimator</a> for real cost breakdowns, material quantities, and carbon calculations with a 3D preview.',
                     example: null
                 }
@@ -1433,7 +1433,7 @@
 
             return '<div class="vision-card" data-vision-idx="' + idx + '" data-vision-id="' + v.id + '">' +
                 (v.image_url ? '<img src="' + v.image_url + '" alt="Vision render" loading="lazy">' :
-                    '<div style="height:160px;background:linear-gradient(135deg,#2a3a2a,#3a5a3a);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🏗</div>') +
+                    '<div style="height:160px;background:linear-gradient(135deg,#2a3a2a,#3a5a3a);display:flex;align-items:center;justify-content:center;"><img src="assets/img/icons/icon-building.svg" alt="" style="width:2rem;height:2rem;opacity:0.5;"></div>') +
                 '<div class="vision-card-body">' +
                     '<div class="vision-card-prompt">' + promptSnippet + '</div>' +
                     '<div class="vision-card-meta">' +

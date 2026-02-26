@@ -345,7 +345,7 @@
       <label class="form-label">What kind of project is this?</label>
       <div class="type-grid">
         <div class="type-option selected" data-type="project" onclick="selectType(this)">
-          <div class="type-icon">🏗️</div>
+          <div class="type-icon"><img src="assets/img/icons/icon-building.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"></div>
           <div class="type-name">Project</div>
           <div class="type-desc">A build, restoration, installation, or any tangible effort</div>
         </div>
@@ -355,7 +355,7 @@
           <div class="type-desc">A business offering products or services in the green space</div>
         </div>
         <div class="type-option" data-type="organization" onclick="selectType(this)">
-          <div class="type-icon">🤝</div>
+          <div class="type-icon"><img src="assets/img/icons/icon-handshake.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"></div>
           <div class="type-name">Organization</div>
           <div class="type-desc">A co-op, nonprofit, collective, or community group</div>
         </div>
@@ -387,7 +387,7 @@
     </div>
 
     <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px;">
-      <span class="location-shortcut" id="use-profile-location" onclick="useProfileLocation()">📍 Use my profile location</span>
+      <span class="location-shortcut" id="use-profile-location" onclick="useProfileLocation()"><img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Use my profile location</span>
       <span class="location-shortcut" onclick="useGPSLocation()">🛰️ Use my current GPS</span>
     </div>
 
@@ -781,7 +781,7 @@ function addNeedRow() {
       <option value="skill">🛠 Skill</option>
       <option value="resource">📦 Resource</option>
       <option value="people">👤 People</option>
-      <option value="place">📍 Place</option>
+      <option value="place"><img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Place</option>
       <option value="funding">💰 Funding</option>
     </select>
     <div class="urgency-toggle" onclick="this.classList.toggle('urgent')" data-field="urgent">
@@ -798,7 +798,7 @@ function addNeedRow() {
 }
 
 function collectNeeds() {
-  const typeIcons = { skill: '🛠', resource: '📦', people: '👤', place: '📍', funding: '💰' };
+  const typeIcons = { skill: '🛠', resource: '📦', people: '👤', place: '<img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;">', funding: '💰' };
   const rows = document.querySelectorAll('.need-row');
   const needs = [];
   rows.forEach(row => {
@@ -840,7 +840,7 @@ function renderPreview() {
       <div class="preview-type">${typeLabels[selectedType] || selectedType}</div>
       <div class="preview-name">${escHTML(name)}</div>
       ${tagline ? `<div class="preview-tagline">${escHTML(tagline)}</div>` : ''}
-      ${location ? `<div class="preview-meta">📍 ${escHTML(location)}</div>` : ''}
+      ${location ? `<div class="preview-meta"><img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> ${escHTML(location)}</div>` : ''}
       ${needsHTML ? `<div class="preview-needs">${needsHTML}</div>` : '<div style="font-size:0.82rem;color:var(--text-muted);font-style:italic;">No needs added yet — you can add them later from your project page.</div>'}
     </div>
   `;
@@ -992,7 +992,7 @@ STEP ILLUSTRATIONS (optional decorative visuals, 400x200):
 
 <!-- Pre-launch Banner -->
 <aside id="eb-early-access" style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
-  <span style="font-weight:600">🌿 Early Access</span>
+  <span style="font-weight:600"><img src="assets/img/icons/icon-leaf.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Early Access</span>
   <span style="opacity:0.7">—</span>
   <span>You're among the first to explore Earthback. We're building in the open — things may shift as we grow.</span>
   <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Share feedback →</a>

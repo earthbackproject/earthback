@@ -1269,11 +1269,11 @@ function updateNeeds(wallVol, hurd, lime, solarArea, blockCount) {
     needs.push({ icon: '🔨', type: 'skill', name: 'Hemp Block Mason' });
   }
   if (isHemp) {
-    needs.push({ icon: '🌿', type: 'resource', name: hurd.toFixed(1) + ' tons Hemp Hurd' });
+    needs.push({ icon: '<img src="assets/img/icons/icon-leaf.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;">', type: 'resource', name: hurd.toFixed(1) + ' tons Hemp Hurd' });
     needs.push({ icon: '�ite', type: 'resource', name: lime.toFixed(1) + ' tons Lime Binder' });
   }
   if (isConcrete) {
-    needs.push({ icon: '🏗️', type: 'resource', name: Math.round(wallVol) + ' yd³ Concrete Mix' });
+    needs.push({ icon: '<img src="assets/img/icons/icon-building.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;">', type: 'resource', name: Math.round(wallVol) + ' yd³ Concrete Mix' });
     needs.push({ icon: '🔩', type: 'resource', name: 'Rebar + Reinforcement' });
   }
   if (isConventional) {

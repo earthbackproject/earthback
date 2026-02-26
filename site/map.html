@@ -313,7 +313,7 @@ function popupHTML(h) {
   return `<div class="popup-inner">
     <span class="popup-cat" style="background:${cat.color}">${cat.label}</span>
     <div class="popup-title">${h.title}</div>
-    <div class="popup-location">📍 ${h.location_name}</div>
+    <div class="popup-location"><img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> ${h.location_name}</div>
     ${h.description ? `<div class="popup-desc">${h.description}</div>` : ''}
     ${h.url ? `<a class="popup-link" href="${h.url}" target="_blank" rel="noopener">Visit site →</a>` : ''}
   </div>`;

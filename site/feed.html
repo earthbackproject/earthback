@@ -897,8 +897,8 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
       <div class="sidebar-body">
         <div class="sidebar-name" id="sidebar-name">Loading…</div>
         <div class="sidebar-tagline" id="sidebar-tagline"></div>
-        <div class="sidebar-meta">📍 <span id="sidebar-location"></span></div>
-        <div class="sidebar-meta">🌿 <span>Member</span></div>
+        <div class="sidebar-meta"><img class="ico" src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:4px;"> <span id="sidebar-location"></span></div>
+        <div class="sidebar-meta"><img class="ico" src="assets/img/icons/icon-leaf.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:4px;"> <span>Member</span></div>
         <div class="earth-score-bar">
           <div class="earth-score-label"><span>Earth Score</span> <span id="earth-score">0</span></div>
           <div class="progress-track"><div class="progress-fill" id="score-fill"></div></div>
@@ -910,7 +910,7 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
     <div class="streams-card" id="streams-card">
       <div class="streams-label">Your Streams</div>
       <div class="stream-item active" onclick="filterStream('all', this)">
-        <span class="stream-icon">🌿</span>
+        <span class="stream-icon"><img src="assets/img/icons/icon-leaf.svg" alt="" style="width:1em;height:1em;"></span>
         <span class="stream-name">All Activity</span>
         <span class="stream-count" id="stream-all-count">–</span>
       </div>
@@ -966,15 +966,15 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
             <option value="milestone">🏁 Milestone</option>
             <option value="need">🔧 Need</option>
             <option value="question">❓ Question</option>
-            <option value="coordination">🤝 Coordination</option>
+            <option value="coordination"><img src="assets/img/icons/icon-handshake.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Coordination</option>
           </select>
           <select class="compose-select" id="compose-circle">
             <option value="natural-building" data-label="Natural Building">🛠️ Natural Building</option>
-            <option value="solar-off-grid" data-label="Solar & Off-Grid">☀️ Solar & Off-Grid</option>
-            <option value="permaculture-food" data-label="Permaculture & Food">🌱 Permaculture & Food</option>
+            <option value="solar-off-grid" data-label="Solar & Off-Grid"><img src="assets/img/icons/icon-sun.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Solar & Off-Grid</option>
+            <option value="permaculture-food" data-label="Permaculture & Food"><img src="assets/img/icons/icon-seedling.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Permaculture & Food</option>
             <option value="water-systems" data-label="Water Systems">💧 Water Systems</option>
             <option value="tiny-dwellings" data-label="Tiny & Alternative Dwellings">🏡 Tiny Dwellings</option>
-            <option value="mutual-aid" data-label="Mutual Aid">🤝 Mutual Aid</option>
+            <option value="mutual-aid" data-label="Mutual Aid"><img src="assets/img/icons/icon-handshake.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Mutual Aid</option>
             <option value="land-regen-ag" data-label="Land & Regenerative Agriculture">🌾 Land & Regen Ag</option>
             <option value="materials-salvage" data-label="Materials & Salvage">♻️ Materials & Salvage</option>
             <option value="cooperative-housing" data-label="Cooperative Housing">🏘️ Cooperative Housing</option>
@@ -1004,7 +1004,7 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
       <div style="display:flex; align-items:center; gap:0; margin-bottom:4px;">
         <div class="filter-toggle">
           <button class="filter-btn on" onclick="setFilter('all', this)" id="filter-all-btn">All Posts</button>
-          <button class="filter-btn" onclick="setFilter('signal', this)" id="filter-signal-btn">🌿 Signal</button>
+          <button class="filter-btn" onclick="setFilter('signal', this)" id="filter-signal-btn"><img src="assets/img/icons/icon-leaf.svg" alt="" style="width:1em;height:1em;vertical-align:-0.1em;"> Signal</button>
         </div>
         <span class="filter-hint" id="filter-hint">Showing everything chronologically</span>
       </div>
@@ -1038,21 +1038,22 @@ let user = {
 const SHOW_DEMO_POSTS = true;
 
 // ── CIRCLE & POST TYPE STYLES ──
+const _i = (name) => `<img src="assets/img/icons/${name}.svg" alt="" style="width:1em;height:1em;vertical-align:-0.1em;">`;
 const CIRCLE_STYLES = {
   'earthback-project': { icon: '✦', color: '#6a5a8a', bg: '#f0e8f5' },
-  'natural-building':  { icon: '🛠️', color: '#2d5a27', bg: 'rgba(45,90,39,0.06)' },
-  'skills-workshops':  { icon: '📍', color: '#7a5a9a', bg: 'rgba(122,90,154,0.06)' },
-  'water-systems':     { icon: '💧', color: '#2a6a7a', bg: 'rgba(42,106,122,0.06)' },
-  'solar-off-grid':    { icon: '☀️', color: '#8a6a2a', bg: 'rgba(138,106,42,0.06)' },
-  'permaculture-food': { icon: '🌱', color: '#3a7a3a', bg: 'rgba(58,122,58,0.06)' },
-  'mutual-aid':        { icon: '🤝', color: '#7a3a5a', bg: 'rgba(122,58,90,0.06)' },
-  'tiny-dwellings':    { icon: '🏡', color: '#5a4a3a', bg: 'rgba(90,74,58,0.06)' },
-  'land-regen-ag':     { icon: '🌾', color: '#5a7a2a', bg: 'rgba(90,122,42,0.06)' },
-  'materials-salvage': { icon: '♻️', color: '#6a5a3a', bg: 'rgba(106,90,58,0.06)' },
-  'cooperative-housing': { icon: '🏘️', color: '#4a5a7a', bg: 'rgba(74,90,122,0.06)' },
-  'community-tech':    { icon: '📡', color: '#2a5a7a', bg: 'rgba(42,90,122,0.06)' },
+  'natural-building':  { icon: _i('icon-building'),   color: '#2d5a27', bg: 'rgba(45,90,39,0.06)' },
+  'skills-workshops':  { icon: _i('icon-pin'),        color: '#7a5a9a', bg: 'rgba(122,90,154,0.06)' },
+  'water-systems':     { icon: _i('icon-water'),      color: '#2a6a7a', bg: 'rgba(42,106,122,0.06)' },
+  'solar-off-grid':    { icon: _i('icon-sun'),        color: '#8a6a2a', bg: 'rgba(138,106,42,0.06)' },
+  'permaculture-food': { icon: _i('icon-seedling'),   color: '#3a7a3a', bg: 'rgba(58,122,58,0.06)' },
+  'mutual-aid':        { icon: _i('icon-handshake'),  color: '#7a3a5a', bg: 'rgba(122,58,90,0.06)' },
+  'tiny-dwellings':    { icon: _i('icon-building'),   color: '#5a4a3a', bg: 'rgba(90,74,58,0.06)' },
+  'land-regen-ag':     { icon: _i('icon-seedling'),   color: '#5a7a2a', bg: 'rgba(90,122,42,0.06)' },
+  'materials-salvage': { icon: _i('icon-hammer'),     color: '#6a5a3a', bg: 'rgba(106,90,58,0.06)' },
+  'cooperative-housing': { icon: _i('icon-people'),   color: '#4a5a7a', bg: 'rgba(74,90,122,0.06)' },
+  'community-tech':    { icon: _i('icon-lightning'),  color: '#2a5a7a', bg: 'rgba(42,90,122,0.06)' },
 };
-const DEFAULT_CIRCLE = { icon: '🌿', color: '#5a7d52', bg: 'rgba(90,125,82,0.06)' };
+const DEFAULT_CIRCLE = { icon: _i('icon-leaf'), color: '#5a7d52', bg: 'rgba(90,125,82,0.06)' };
 
 const TYPE_STYLES = {
   'resource':      { label: 'Resource',      bg: 'rgba(90,125,82,0.1)',    color: '#5a7d52' },
@@ -1182,7 +1183,7 @@ function buildStreamSidebar() {
 }
 
 function buildPostHTML(p) {
-  const signalBadge = p.signal ? `<div class="signal-badge">🌿 High signal</div>` : '';
+  const signalBadge = p.signal ? `<div class="signal-badge">${_i('icon-leaf')} High signal</div>` : '';
   const demoBadge = p.demo ? `<span class="demo-badge">Sample</span>` : '';
   return `
   <div class="post-card fade-up" data-stream="${p.stream}" data-signal="${p.signal}" data-demo="${!!p.demo}">
@@ -1208,8 +1209,8 @@ function buildPostHTML(p) {
       </div>
     </a>` : ''}
     <div class="post-footer">
-      <button class="post-action helpful" onclick="markHelpful(this, '${p.id}')">🌿 Helpful <span class="helpful-count">${p.helpful}</span></button>
-      <button class="post-action" onclick="">💬 Comment</button>
+      <button class="post-action helpful" onclick="markHelpful(this, '${p.id}')">${_i('icon-leaf')} Helpful <span class="helpful-count">${p.helpful}</span></button>
+      <button class="post-action" onclick="">${_i('icon-chat')} Comment</button>
       <button class="post-action" onclick="">↗ Share</button>
       <span class="post-time">${p.time}</span>
       ${signalBadge}
@@ -1472,7 +1473,7 @@ window.addEventListener('DOMContentLoaded', initAuth);
 
 <!-- Pre-launch Banner -->
 <aside id="eb-early-access" style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
-  <span style="font-weight:600">🌿 Early Access</span>
+  <span style="font-weight:600"><img src="assets/img/icons/icon-leaf.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Early Access</span>
   <span style="opacity:0.7">—</span>
   <span>You're among the first to explore Earthback. We're building in the open — things may change as we grow.</span>
   <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Share feedback →</a>

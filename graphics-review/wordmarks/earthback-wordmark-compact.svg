@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 48" width="380" height="48">
+  <!-- Compact: smaller version with the/Project. Georgia font, tspan for seamless Earthback. -->
+  <text x="0" y="34" font-family="Georgia, 'Times New Roman', serif" font-size="14" font-weight="400" fill="#7e9b73" letter-spacing="0.3" opacity="0.7">the</text>
+  <text x="28" y="34" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="700" letter-spacing="-0.5">
+    <tspan fill="#F2EFE6">Earth</tspan><tspan fill="#C2A56C">back</tspan>
+  </text>
+  <text x="248" y="34" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#F2EFE6" letter-spacing="2.5" opacity="0.45">PROJECT</text>
+</svg>

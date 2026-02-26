@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#8A5B3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Building / Construction — replaces 🏗️. Natural building category. -->
+  <!-- Simple house frame with natural building feel -->
+  <path d="M 3 21 L 3 10 L 12 4 L 21 10 L 21 21 Z"/>
+  <path d="M 3 21 L 21 21"/>
+  <!-- Door -->
+  <rect x="9" y="14" width="6" height="7" rx="0.5"/>
+  <!-- Window -->
+  <rect x="7" y="10" width="3" height="2.5" rx="0.3"/>
+  <rect x="14" y="10" width="3" height="2.5" rx="0.3"/>
+  <!-- Subtle hempcrete texture lines -->
+  <line x1="4" y1="16" x2="8" y2="16" opacity="0.3"/>
+  <line x1="16" y1="16" x2="20" y2="16" opacity="0.3"/>
+</svg>

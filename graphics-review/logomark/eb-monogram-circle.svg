@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Eb monogram — circular version for profile pics, social avatars. Georgia font. -->
+  <circle cx="64" cy="64" r="62" fill="#1F3A2E"/>
+  <circle cx="64" cy="64" r="62" fill="none" stroke="#C2A56C" stroke-width="1.5" opacity="0.3"/>
+
+  <text x="64" y="84" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="66" font-weight="700" fill="#F2EFE6" letter-spacing="-2">Eb</text>
+</svg>

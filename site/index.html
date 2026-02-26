@@ -43,6 +43,11 @@
             --post-resource:   #8A5B3F;
         }
 
+        /* Inline SVG icon utility */
+        .ico { display: inline-block; width: 1em; height: 1em; vertical-align: -0.125em; margin-right: 0.25em; }
+        .ico-lg { width: 1.5em; height: 1.5em; vertical-align: -0.3em; }
+        .circle-icon img { width: 2rem; height: 2rem; }
+
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body {
@@ -890,12 +895,12 @@
                     <p class="post-text">Hemp build day forming for April 12 — we have the land and the materials. Still looking for a hemp construction expert and about 6 volunteers for the weekend. Lodging covered for anyone traveling. Anyone in the Southwest want in?</p>
                     <div class="post-footer">
                         <span class="post-tag tag-project">Project forming</span>
-                        <span class="post-circle">🌾 Natural Building</span>
+                        <span class="post-circle"><img class="ico" src="assets/img/icons/icon-building.svg" alt=""> Natural Building</span>
                     </div>
                     <div class="post-actions">
                         <button class="post-btn can-help" onclick="postAction(this, 'help')">✋ I can help</button>
                         <button class="post-btn helpful" onclick="postAction(this, 'helpful')">👍 <span class="count">14</span></button>
-                        <button class="post-btn" onclick="postAction(this, 'reply')">💬 Reply</button>
+                        <button class="post-btn" onclick="postAction(this, 'reply')"><img class="ico" src="assets/img/icons/icon-chat.svg" alt=""> Reply</button>
                     </div>
                 </div>
             </div>
@@ -911,11 +916,11 @@
                     <p class="post-text">Just finished our earthen floor with linseed oil — zero VOCs, beautiful amber tone, way more durable than I expected. Third time using this method and it keeps getting better. Happy to write up the full process if people want it.</p>
                     <div class="post-footer">
                         <span class="post-tag tag-technique">Technique share</span>
-                        <span class="post-circle">🌾 Natural Building</span>
+                        <span class="post-circle"><img class="ico" src="assets/img/icons/icon-building.svg" alt=""> Natural Building</span>
                     </div>
                     <div class="post-actions">
                         <button class="post-btn helpful" onclick="postAction(this, 'helpful')">👍 <span class="count">31</span></button>
-                        <button class="post-btn" onclick="postAction(this, 'reply')">💬 Reply <span style="opacity:0.5">· 8</span></button>
+                        <button class="post-btn" onclick="postAction(this, 'reply')"><img class="ico" src="assets/img/icons/icon-chat.svg" alt=""> Reply <span style="opacity:0.5">· 8</span></button>
                         <button class="post-btn can-help" onclick="postAction(this, 'save')" style="margin-left:auto">🔖 Save</button>
                     </div>
                 </div>
@@ -932,11 +937,11 @@
                     <p class="post-text">Winter food storage project complete. 340 families got dry goods and preserved produce for the season. 22 people showed up across three Saturdays and made this real. Archiving this one and starting to plan spring. Thank you, everyone.</p>
                     <div class="post-footer">
                         <span class="post-tag tag-done">Project complete ✓</span>
-                        <span class="post-circle">🤝 Mutual Aid</span>
+                        <span class="post-circle"><img class="ico" src="assets/img/icons/icon-handshake.svg" alt=""> Mutual Aid</span>
                     </div>
                     <div class="post-actions">
                         <button class="post-btn helpful active" onclick="postAction(this, 'helpful')">👍 <span class="count">87</span></button>
-                        <button class="post-btn" onclick="postAction(this, 'reply')">💬 Reply <span style="opacity:0.5">· 23</span></button>
+                        <button class="post-btn" onclick="postAction(this, 'reply')"><img class="ico" src="assets/img/icons/icon-chat.svg" alt=""> Reply <span style="opacity:0.5">· 23</span></button>
                     </div>
                 </div>
             </div>
@@ -952,12 +957,12 @@
                     <p class="post-text">Concrete mixer + trailer available through April. Happy to haul materials within 200 miles of Santa Fe — just cover fuel. If you've got a project forming in the Southwest, reach out soon, already two people asking.</p>
                     <div class="post-footer">
                         <span class="post-tag tag-resource">Resource available</span>
-                        <span class="post-circle">🏗️ Natural Building</span>
+                        <span class="post-circle"><img class="ico" src="assets/img/icons/icon-building.svg" alt=""> Natural Building</span>
                     </div>
                     <div class="post-actions">
                         <button class="post-btn can-help" onclick="postAction(this, 'help')">🙋 I'm interested</button>
                         <button class="post-btn helpful" onclick="postAction(this, 'helpful')">👍 <span class="count">9</span></button>
-                        <button class="post-btn" onclick="postAction(this, 'reply')">💬 Reply</button>
+                        <button class="post-btn" onclick="postAction(this, 'reply')"><img class="ico" src="assets/img/icons/icon-chat.svg" alt=""> Reply</button>
                     </div>
                 </div>
             </div>
@@ -975,14 +980,14 @@
 
         <div class="circles-grid">
             <div class="circle-card" onclick="window.location='join.html'">
-                <div class="circle-icon">🌾</div>
+                <div class="circle-icon"><img src="assets/img/icons/icon-building.svg" alt="Natural Building"></div>
                 <div class="circle-name">Natural Building</div>
                 <div class="circle-tags"><span class="ctag">hempcrete</span><span class="ctag">cob</span><span class="ctag">straw bale</span><span class="ctag">timber frame</span><span class="ctag">adobe</span></div>
                 <div class="circle-desc">Building with earth, fiber, and wood. The oldest techniques, refined by people doing the actual work.</div>
                 <div class="circle-footer"><span class="circle-count">412 members · 18 projects</span><span class="circle-join">Join →</span></div>
             </div>
             <div class="circle-card" onclick="window.location='join.html'">
-                <div class="circle-icon">☀️</div>
+                <div class="circle-icon"><img src="assets/img/icons/icon-sun.svg" alt="Solar"></div>
                 <div class="circle-name">Solar &amp; Off-Grid</div>
                 <div class="circle-tags"><span class="ctag">solar</span><span class="ctag">battery storage</span><span class="ctag">micro-hydro</span><span class="ctag">off-grid</span></div>
                 <div class="circle-desc">Solar installs, battery systems, energy independence for homesteads and communities. From a panel on a shed to a full microgrid.</div>
@@ -996,14 +1001,14 @@
                 <div class="circle-footer"><span class="circle-count">187 members · 8 projects</span><span class="circle-join">Join →</span></div>
             </div>
             <div class="circle-card" onclick="window.location='join.html'">
-                <div class="circle-icon">🌱</div>
+                <div class="circle-icon"><img src="assets/img/icons/icon-seedling.svg" alt="Food Systems"></div>
                 <div class="circle-name">Permaculture &amp; Food</div>
                 <div class="circle-tags"><span class="ctag">food forest</span><span class="ctag">seed library</span><span class="ctag">market garden</span><span class="ctag">preservation</span></div>
                 <div class="circle-desc">Growing food, building soil, and creating systems that feed communities year after year. Seeds, harvests, and everything in between.</div>
                 <div class="circle-footer"><span class="circle-count">341 members · 22 projects</span><span class="circle-join">Join →</span></div>
             </div>
             <div class="circle-card" onclick="window.location='join.html'">
-                <div class="circle-icon">🤝</div>
+                <div class="circle-icon"><img src="assets/img/icons/icon-handshake.svg" alt="Mutual Aid"></div>
                 <div class="circle-name">Mutual Aid</div>
                 <div class="circle-tags"><span class="ctag">care networks</span><span class="ctag">skill share</span><span class="ctag">resource pools</span><span class="ctag">resilience</span></div>
                 <div class="circle-desc">Care networks, resource sharing, skill exchanges, and disaster response. Community resilience that doesn't wait for permission.</div>
@@ -1024,7 +1029,7 @@
                 <div class="circle-footer"><span class="circle-count">194 members · 9 projects</span><span class="circle-join">Join →</span></div>
             </div>
             <div class="circle-card" onclick="window.location='join.html'">
-                <div class="circle-icon">🌍</div>
+                <div class="circle-icon"><img src="assets/img/icons/icon-globe.svg" alt="Global"></div>
                 <div class="circle-name">Land &amp; Soil</div>
                 <div class="circle-tags"><span class="ctag">regenerative ag</span><span class="ctag">rewilding</span><span class="ctag">soil health</span><span class="ctag">restoration</span></div>
                 <div class="circle-desc">Regenerative agriculture, land restoration, rewilding, and soil building. Working with land over time — the slow, essential work.</div>
@@ -1047,7 +1052,7 @@
         </div>
 
         <div class="circles-explore-bar">
-            <span class="circles-nearby-hint">📍 Join to see what's active near you — projects, resources, and people within reach.</span>
+            <span class="circles-nearby-hint"><img class="ico" src="assets/img/icons/icon-pin.svg" alt=""> Join to see what's active near you — projects, resources, and people within reach.</span>
             <a href="circles.html" class="circles-explore-link">Explore all circles &amp; find nearby →</a>
         </div>
     </div>
@@ -1062,14 +1067,14 @@
 
         <div class="post-composer">
             <div class="post-type-tabs">
-                <button class="ptype-btn active" onclick="setPostType(this)">🏗 Project Forming</button>
+                <button class="ptype-btn active" onclick="setPostType(this)"><img class="ico" src="assets/img/icons/icon-building.svg" alt=""> Project Forming</button>
                 <button class="ptype-btn" onclick="setPostType(this)">🔧 Technique Share</button>
                 <button class="ptype-btn" onclick="setPostType(this)">📦 Resource Available</button>
                 <button class="ptype-btn" onclick="setPostType(this)">✅ Project Complete</button>
             </div>
             <textarea class="post-textarea" id="postBody" placeholder="What's happening? What do you need? What did you finish? What did you learn?"></textarea>
             <div class="post-composer-footer">
-                <input class="post-location-input" id="postLocation" type="text" placeholder="📍 Your city or region">
+                <input class="post-location-input" id="postLocation" type="text" placeholder="Your city or region">
                 <button class="post-submit-btn" onclick="handlePostDemo()">Share with the community →</button>
             </div>
         </div>

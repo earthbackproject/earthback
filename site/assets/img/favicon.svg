@@ -1,4 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <rect width="64" height="64" rx="10" fill="#1F3A2E"/>
-  <text x="32" y="46" text-anchor="middle" font-family="Georgia, 'Cormorant Garamond', serif" font-size="36" font-weight="600" fill="#F2EFE6" letter-spacing="-1">Eb</text>
+  <!-- Subtle leaf vein texture -->
+  <path d="M 10 64 Q 32 40 54 64" fill="none" stroke="#2C4F3B" stroke-width="0.6" opacity="0.4"/>
+  <path d="M 5 64 Q 27 45 49 64" fill="none" stroke="#2C4F3B" stroke-width="0.4" opacity="0.3"/>
+  <!-- Eb letterforms -->
+  <text x="32" y="46" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="36" font-weight="700" fill="#F2EFE6" letter-spacing="-1">Eb</text>
+  <!-- Tiny leaf accent -->
+  <path d="M 43 14 C 43 14 46 9 50 11 C 50 11 47 15 43 14 Z" fill="#7e9b73" opacity="0.7"/>
 </svg>

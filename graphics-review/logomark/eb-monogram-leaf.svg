@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Eb monogram with integrated leaf motif. Georgia font. -->
+  <rect width="128" height="128" rx="22" fill="#1F3A2E"/>
+
+  <!-- Subtle leaf vein texture in background -->
+  <path d="M 20 128 Q 64 80 108 128" fill="none" stroke="#2C4F3B" stroke-width="0.8" opacity="0.5"/>
+  <path d="M 10 128 Q 54 90 98 128" fill="none" stroke="#2C4F3B" stroke-width="0.5" opacity="0.35"/>
+  <path d="M 30 128 Q 74 70 118 128" fill="none" stroke="#2C4F3B" stroke-width="0.5" opacity="0.35"/>
+
+  <!-- "Eb" letterforms -->
+  <text x="64" y="88" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700" fill="#F2EFE6" letter-spacing="-2">Eb</text>
+
+  <!-- Small leaf accent above the b -->
+  <path d="M 86 28 C 86 28 92 18 100 22 C 100 22 94 30 86 28 Z" fill="#7e9b73" opacity="0.8"/>
+  <line x1="86" y1="28" x2="93" y2="20" stroke="#7e9b73" stroke-width="0.6" opacity="0.6"/>
+</svg>

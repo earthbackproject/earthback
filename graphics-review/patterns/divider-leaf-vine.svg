@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 24" width="600" height="24">
+  <!-- Section divider — horizontal vine/leaf ornament -->
+  <!-- Central stem -->
+  <line x1="100" y1="12" x2="500" y2="12" stroke="#C2A56C" stroke-width="0.8" opacity="0.3"/>
+
+  <!-- Left side leaves -->
+  <path d="M 160 12 C 156 8 148 6 144 8 C 148 10 156 12 160 12 Z" fill="#7e9b73" opacity="0.35"/>
+  <path d="M 200 12 C 204 16 212 18 216 16 C 212 14 204 12 200 12 Z" fill="#7e9b73" opacity="0.3"/>
+  <path d="M 260 12 C 256 8 248 6 244 8 C 248 10 256 12 260 12 Z" fill="#7e9b73" opacity="0.25"/>
+
+  <!-- Center ornament -->
+  <circle cx="300" cy="12" r="3" fill="#C2A56C" opacity="0.3"/>
+  <circle cx="300" cy="12" r="1.5" fill="#C2A56C" opacity="0.5"/>
+
+  <!-- Right side leaves (mirrored) -->
+  <path d="M 340 12 C 344 8 352 6 356 8 C 352 10 344 12 340 12 Z" fill="#7e9b73" opacity="0.25"/>
+  <path d="M 400 12 C 396 16 388 18 384 16 C 388 14 396 12 400 12 Z" fill="#7e9b73" opacity="0.3"/>
+  <path d="M 440 12 C 444 8 452 6 456 8 C 452 10 444 12 440 12 Z" fill="#7e9b73" opacity="0.35"/>
+
+  <!-- Fade-out endpoints -->
+  <line x1="80" y1="12" x2="100" y2="12" stroke="#C2A56C" stroke-width="0.8" opacity="0.1"/>
+  <line x1="500" y1="12" x2="520" y2="12" stroke="#C2A56C" stroke-width="0.8" opacity="0.1"/>
+</svg>

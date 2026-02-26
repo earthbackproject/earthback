@@ -113,7 +113,7 @@
   <!-- ── TABS ── -->
   <div class="circle-tabs fade-up">
     <button class="circle-tab active" onclick="filterCircles('all', this)">All Circles</button>
-    <button class="circle-tab" onclick="filterCircles('geo', this)">📍 Geographic</button>
+    <button class="circle-tab" onclick="filterCircles('geo', this)"><img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Geographic</button>
     <button class="circle-tab" onclick="filterCircles('thematic', this)">🎯 Thematic</button>
     <button class="circle-tab" onclick="filterCircles('yours', this)">Your Circles</button>
   </div>
@@ -122,7 +122,7 @@
   <!-- GEOGRAPHIC CIRCLES                                      -->
   <!-- ═══════════════════════════════════════════════════════ -->
   <div class="circle-section" id="section-geo">
-    <div class="section-label fade-up-2">📍 Geographic Circles</div>
+    <div class="section-label fade-up-2"><img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Geographic Circles</div>
     <div class="section-desc fade-up-2">Auto-suggested by member density. As more people in an area join Earthback, geographic circles form naturally.</div>
     <div class="circles-grid fade-up-2" id="geo-grid">
       <!-- JS fills -->
@@ -207,17 +207,17 @@ const thematicCircles = [
     members: 234, projects: 28, color: ['#5a4a3a','#8a7a5a']
   },
   {
-    slug: 'solar-offgrid', name: 'Solar & Off-Grid', icon: '☀️',
+    slug: 'solar-offgrid', name: 'Solar & Off-Grid', icon: '<img src="assets/img/icons/icon-sun.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;">',
     desc: 'Solar design, battery storage, microgrids, and off-grid living systems. From rooftop panels to community-scale installations.',
     members: 156, projects: 14, color: ['#6a5a1a','#9a8a3a']
   },
   {
-    slug: 'hemp-processing', name: 'Hemp Processing', icon: '🌿',
+    slug: 'hemp-processing', name: 'Hemp Processing', icon: '<img src="assets/img/icons/icon-leaf.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;">',
     desc: 'Growing, harvesting, and processing hemp for building materials. Hurd, fiber, oil, and everything between field and construction site.',
     members: 98, projects: 9, color: ['#3a6a3a','#5a9a5a']
   },
   {
-    slug: 'permaculture-food', name: 'Permaculture & Food Systems', icon: '🌱',
+    slug: 'permaculture-food', name: 'Permaculture & Food Systems', icon: '<img src="assets/img/icons/icon-seedling.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;">',
     desc: 'Food forests, companion planting, aquaponics, soil regeneration, and community food sovereignty.',
     members: 178, projects: 16, color: ['#4a7a3a','#6aaa5a']
   },
@@ -251,7 +251,7 @@ function buildCircleCard(c, type) {
   const gradient = `linear-gradient(135deg, ${c.color[0]}, ${c.color[1]})`;
   const typeClass = type === 'geo' ? 'geo' : 'thematic';
   const typeLabel = type === 'geo' ? 'Geographic' : 'Thematic';
-  const regionLine = c.region ? `<span class="circle-stat">📍 ${c.region}</span>` : '';
+  const regionLine = c.region ? `<span class="circle-stat"><img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> ${c.region}</span>` : '';
 
   return `
     <div class="circle-card" data-type="${type}" data-slug="${c.slug}">
@@ -416,7 +416,7 @@ THEMATIC:
 
 <!-- Pre-launch Banner -->
 <aside id="eb-early-access" style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
-  <span style="font-weight:600">🌿 Early Access</span>
+  <span style="font-weight:600"><img src="assets/img/icons/icon-leaf.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Early Access</span>
   <span style="opacity:0.7">—</span>
   <span>You're among the first to explore Earthback. We're building in the open — things may shift as we grow.</span>
   <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Share feedback →</a>

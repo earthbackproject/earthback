@@ -341,7 +341,7 @@
           <option value="250">250 mi</option>
           <option value="500">500 mi</option>
         </select>
-        <button class="gps-btn" onclick="useGPS()" title="Use my precise location">📍</button>
+        <button class="gps-btn" onclick="useGPS()" title="Use my precise location"><img src="assets/img/icons/icon-pin.svg" alt="" style="width:1em;height:1em;"></button>
       </div>
     </div>
 
@@ -495,7 +495,7 @@ function buildProjectCard(p, distance) {
         <div class="pc-name">${p.name}</div>
         <div class="pc-tagline">${p.tagline || ''}</div>
         <div class="pc-meta-row">
-          ${p.location ? `<span>📍 ${p.location}</span>` : ''}
+          ${p.location ? `<span><img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> ${p.location}</span>` : ''}
           ${p.member_count ? `<span>👥 ${p.member_count} members</span>` : ''}
         </div>
         ${needsHTML ? `<div class="pc-needs">${needsHTML}</div>` : ''}
@@ -860,7 +860,7 @@ HERO IMAGE for "Your Project" card (680x440):
 
 <!-- Pre-launch Banner -->
 <aside id="eb-early-access" style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1F3A2E,#2d5a27);color:rgba(255,255,255,0.9);text-align:center;padding:10px 20px;font-size:0.78rem;font-family:'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 -2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
-  <span style="font-weight:600">🌿 Early Access</span>
+  <span style="font-weight:600"><img src="assets/img/icons/icon-leaf.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Early Access</span>
   <span style="opacity:0.7">—</span>
   <span>You're among the first to explore Earthback. We're building in the open — things may shift as we grow.</span>
   <a href="mailto:earthbackproject@gmail.com" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:4px">Share feedback →</a>
