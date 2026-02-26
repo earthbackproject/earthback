@@ -3,7 +3,7 @@
 *To resume: "Read TRACKER.md and SESSION_NOTES.md and pick up where we left off."*
 *Visual version: `/tracker/index.html` — open in browser for the full dashboard.*
 
-**Last updated:** 2026-02-26 (session 27 — public nav redesign, feed sidebar improvements)
+**Last updated:** 2026-02-26 (session 28 — app nav rewrite, feed sidebar nav reorder)
 
 ---
 
@@ -14,10 +14,10 @@
 | Marketing Site (HTML) | 🟢 Live | earthbackproject.org · all pages deployed · 20+ pages |
 | Platform / App | 🟡 In progress | Auth live · feed · gallery · visualizer · estimator · training · projects · circles · messaging (demo) · **community map** · **admin portal (eb-grove)** |
 | Database Migrations | 🟡 Partial | V1-V2, V5-V9 all run ✅ · PROFILE_MIGRATION, V3 (messages), V4 (post images), V9b (IP) still pending |
-| Source Control | 🟢 Current | GitHub repo connected, git push → Netlify auto-deploy · all pushed |
+| Source Control | 🟢 Current | GitHub repo connected, git push → Netlify auto-deploy · all pushed through session 28 |
 | Folder Organization | 🟢 Done | SQL→db/, brand assets→branding/, governance→governance/, archive→reference/, QUICKSTART.md at root |
 | Org, Legal & Naming | 🟡 In progress | Trademark research still pending |
-| Branding | 🟢 SVG system live | 30 SVGs deployed (icons, wordmarks, logomarks, badges, pins, patterns) · Georgia font · mixed-case brand · emoji replaced sitewide |
+| Branding | 🟢 SVG system live | 30 SVGs deployed · Georgia font · mixed-case brand · emoji replaced sitewide · favicon live |
 | Hosting & Launch | 🟢 Live | earthbackproject.org on Netlify · git-based deploys |
 | Documentation | 🟢 Done | CLAUDE.md (auto-loaded), QUICKSTART.md, command-center.html, session notes, tracker |
 | AI Image Generation | 🟡 In progress | Charsheets + site assets + T4 re-run overnight · PuLID next · hempcrete LoRA pending |
@@ -60,6 +60,7 @@ The public-facing community site. Goal: live and functional before platform buil
 **High priority**
 - [x] **join.html — Netlify Forms wired** · Step 1 submits real data in background · Auth connection (magic link) comes when platform is built
 - [x] **Public nav** — Facebook-style visible link row: Feed · Circles · Map · Visualizer · Estimator · Gallery + More ▾ grouped dropdown · Estimator linked · orphaned CSS cleaned from 13 pages
+- [x] **App nav** — app-nav.js rewritten with self-contained styles, same Facebook-style link row + More ▾ dropdown, orphaned `.topbar*` CSS removed from 7 app pages
 - [x] **Mobile nav** — hamburger menu on all pages (all 8 files)
 - [x] **Brand typography** — "the Earthback Project" treatment across all nav + footer logos · Georgia font · mixed case · leaf icon on all brand touchpoints
 - [x] **SVG icon system** — 30 SVGs deployed; ~130 emoji replaced sitewide with proper icons
@@ -78,6 +79,7 @@ The public-facing community site. Goal: live and functional before platform buil
 **Medium priority**
 - [x] **Favicon** — Eb monogram (SVG/ICO/PNG), shows on all tabs ✓
 - [ ] **og:image** — social sharing preview card (1200×630); needed before any social sharing
+- [ ] **Site tour page** — guided walkthrough for new visitors explaining causes, tools, and possibilities
 - [x] **join.html → feed.html split** — dashboard moved to feed.html, join.html is onboarding only, /community serves feed.html ✓
 - [ ] `join.html` — "See the community" step shows fake feed; connect to real feed once platform exists
 - [ ] Add `use-cases.html` to index.html footer (currently missing from footer community column)
@@ -222,7 +224,8 @@ Nicco's main interface to the site. Auth-gated to `earthbackproject@gmail.com` a
 - [ ] Run SCHEMA_V9b_ip.sql in Supabase — enables IP capture in session trails + live feed
 
 ### Shared Components
-- [x] `assets/js/nav.js` — shared nav component for all public pages (HTML injection + auth state + mobile menu + page-view tracking) ✓
+- [x] `assets/js/nav.js` — shared nav for all public pages: Facebook-style link row + More ▾ dropdown, auth state, page-view tracking ✓
+- [x] `assets/js/app-nav.js` — shared nav for all app/authenticated pages: self-contained styles, visible link row + More ▾ dropdown, messages icon + avatar ✓
 - [x] `assets/js/footer.js` — shared footer component for all public pages ✓
 
 ### Core User Flow (v1 required)
@@ -301,8 +304,8 @@ Nicco's main interface to the site. Auth-gated to `earthbackproject@gmail.com` a
 - [x] Typography — Cormorant Garamond (serif/display) + Inter (body)
 - [x] Brand standards documented (`/reference/Earthback_Brand_Standards_v1.0_Expanded_Feb2026.pdf`)
 - [x] Brand wordmark treatment — `ᵗʰᵉ EARTHBACK PROJECT` typographic system applied to all 8 site pages (`.brand-the` / `.brand-back` / `.brand-project` CSS classes)
-- [ ] Logo — finalized vector/raster version needed for favicon, og:image, app
-- [ ] Favicon — 32×32 / 180×180 versions for browser tab + iOS home screen
+- [ ] Logo — finalized vector/raster version needed for og:image, app
+- [x] Favicon — Eb monogram SVG/ICO/PNG, shows on all tabs ✓
 - [ ] og:image / social sharing card — 1200×630, ideally generated from brand palette
 
 ---
@@ -314,11 +317,11 @@ All items below are blocked until Site and Org decisions are made.
 ### Pre-launch
 - [x] Choose hosting platform — **Netlify** (free tier, native Forms support)
 - [x] Domain decided — **earthbackproject.org** (earthback.org/.com both taken; .com has competing launch)
-- [ ] Set up Netlify deployment from folder or repo
-- [ ] Point earthbackproject.org DNS to Netlify
-- [ ] SSL active (auto via Netlify)
-- [ ] Redirect www → root (or vice versa)
-- [ ] Verify Netlify Forms capturing data from join.html
+- [x] Set up Netlify deployment from folder or repo ✓
+- [x] Point earthbackproject.org DNS to Netlify ✓
+- [x] SSL active (auto via Netlify) ✓
+- [x] Redirect www → root (or vice versa) ✓
+- [x] Verify Netlify Forms capturing data from join.html ✓
 
 ### Launch checklist (from `/docs/decision log_v1/06_launch/launch_checklist.md`)
 - [ ] Production environment deployed
@@ -394,8 +397,8 @@ Given current state, this is the recommended sequence:
 All scripts in `/Earthback/` root. ComfyUI at `http://127.0.0.1:8188`. Output: `comfyui-output/`.
 **File naming convention:** `chars-NAME-TYPE_NNNNN_.png` (character-first for Explorer curation)
 
-### Character Images (12 characters × shots)
-- [x] 12 characters defined in `docs/CHARACTERS.md` with fixed seeds
+### Character Images (19 characters × shots)
+- [x] 19 characters defined in `docs/CHARACTERS.md` with fixed seeds (12 originals + 7 new: Britta, Sofia, Owen, Callum, Joseph, Tariq, Devon)
 - [x] Face angle batches built — front / left / right / down / talk (36 images generated, keepers in `comfyui-output/`)
 - [x] T5 literal scenes built — 5 scenes × 12 characters (162 images generated, keepers in `comfyui-output/`)
 - [x] T4 scenario batches built — 5 prompts × 12 characters (T4-01 through T4-05)

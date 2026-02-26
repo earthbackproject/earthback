@@ -72,7 +72,12 @@ A community platform for people doing green building — hempcrete, solar, food 
 **GitHub:** https://github.com/earthbackproject/earthback (auto-deploys to Netlify on push)
 **Supabase project:** `yptktmzagctusbeqdaty`
 
-**Right now:** Pre-launch. Platform app is built and mostly wired. 3 SQL migrations still pending (PROFILE_MIGRATION, V3, V4). Analytics tracking live (SCHEMA_V9 run). Next focus: LoRA training.
+**Right now:** Pre-launch. Platform app is built and mostly wired. 4 SQL migrations still pending (PROFILE_MIGRATION, V3, V4, V9b). Analytics tracking live (SCHEMA_V9 run). Next focus: LoRA training.
+
+**Navigation (as of session 28, 2026-02-26):**
+- `nav.js` — public pages: Facebook-style visible link row + More ▾ grouped dropdown, self-contained CSS
+- `app-nav.js` — app pages: same pattern, self-contained CSS (pages have NO topbar CSS of their own)
+- `footer.js` — shared footer on all public pages
 
 **Image generation state (as of session 23, 2026-02-25):**
 - Roster: **19 characters** — 12 originals + 7 new (Britta, Sofia, Owen, Callum, Joseph, Tariq, Devon)
@@ -119,10 +124,16 @@ All batch scripts live in `/Earthback/` root:
 | `SESSION_NOTES.md` | What happened last session, immediate next steps |
 | `TRACKER.md` | Full project board, all workstreams, checklist |
 | `QUICKSTART.md` | Earthback orientation, services, credentials |
-| `docs/CHARACTERS.md` | Full character bibles for all 12 AI characters |
+| `docs/CHARACTERS.md` | Full character bibles for all 19 AI characters |
 | `docs/CIRCLES.md` | All 39 circle image categories with prompts |
 | `docs/HANDOFF-3D-PRINTER-LORA.md` | 3D printer LoRA plan and pipeline |
 | `maint scripts/fix-cowork-vm.ps1` | Run as Admin in PowerShell when Cowork crashes |
+
+---
+
+## Git Lock File Issue
+
+The Cowork VM occasionally fails to unlink `.git/HEAD.lock` and `.git/index.lock` after commits (cross-filesystem permission issue). **If git errors about lock files:** Nicco deletes them manually from Windows at `C:\users\adrxi\Earthback\.git\HEAD.lock` and/or `.git\index.lock`.
 
 ---
 

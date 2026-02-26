@@ -4,7 +4,24 @@
 ---
 
 ## Last Updated
-2026-02-26 — Session 27 with Nicco via Cowork
+2026-02-26 — Session 28 with Nicco via Cowork
+
+---
+
+## What Was Done in Session 28 (2026-02-26)
+
+### App nav (app-nav.js) — full rewrite
+- **Self-contained** with embedded `<style>` block scoped to `#app-nav` — pages no longer define their own topbar CSS
+- **Facebook-style visible link row**: Home · Circles · Map · Projects · Visualizer · Gallery + **More ▾** grouped dropdown (Tools / Community / Learn / Info)
+- Messages icon + avatar on right side, early access banner preserved
+- Mobile hamburger at 600px breakpoint
+- **Removed orphaned `.topbar*` and `.brand-sub` CSS** from 7 app HTML pages (feed, circles, profile, projects, messages, project, create-project)
+
+### Feed sidebar — nav card improvements
+- **Navigate card moved above Streams** (order: Profile → Navigate → Streams → Updates → Invite)
+- **AI Visualizer promoted** to visible links (above Map)
+- **More ▾ toggle** restored with expanded link set: Gallery, Estimator, Messages, How It Works, About, Training Partners, Use Cases, Safety & Trust, Terms, Privacy
+- Visible links: Home, Circles, AI Visualizer, Map, Projects
 
 ---
 
@@ -38,13 +55,13 @@
 ---
 
 ## Immediate Next Steps
-1. **Push pending commits** — delete `.git\index.lock` if present, then push; check feed sidebar at various resolutions
-2. **App nav (app-nav.js)** — still on old hamburger pattern; needs same More ▾ treatment as public nav; 7 pages affected (feed, circles, profile, projects, messages, project, create-project)
-3. **Site tour page** — new guided walkthrough page; scope before building
-4. **LoRA training** — hempcrete LoRA + 3D printer LoRA pipeline (datasets ready)
-5. **PuLID face-locked generation** — pick reference faces → `setup-pulid.py` → `queue-pulid-faces.py`
-6. **Integrate Flux assets into site** — heroes, sections, textures from `comfyui-output/`
-7. **Run V9b (IP capture)** — `SCHEMA_V9b_ip.sql` in Supabase SQL Editor when ready
+1. **Push + verify** — push commit `c0db47d`, check app nav + feed sidebar at various resolutions
+2. **Site tour page** — new guided walkthrough page; scope before building
+3. **LoRA training** — hempcrete LoRA + 3D printer LoRA pipeline (datasets ready)
+4. **PuLID face-locked generation** — pick reference faces → `setup-pulid.py` → `queue-pulid-faces.py`
+5. **Integrate Flux assets into site** — heroes, sections, textures from `comfyui-output/`
+6. **Run V9b (IP capture)** — `SCHEMA_V9b_ip.sql` in Supabase SQL Editor when ready
+7. **3 SQL migrations still pending** — PROFILE_MIGRATION, V3, V4
 
 ---
 

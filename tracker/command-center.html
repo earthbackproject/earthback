@@ -433,16 +433,16 @@ body {
     <div class="status-card">
       <div class="status-label">Database</div>
       <div class="status-value"><span class="dot g"></span>13+ Tables</div>
-      <div class="status-detail">V1-V2, V5-V9 run ✓ · 3 pending · V9b ready</div>
+      <div class="status-detail">V1-V2, V5-V9 run ✓ · 4 pending (Profile, V3, V4, V9b)</div>
     </div>
     <div class="status-card">
       <div class="status-label">Git</div>
       <div class="status-value"><span class="dot g"></span>Current</div>
-      <div class="status-detail">All session 23 changes pushed</div>
+      <div class="status-detail">All session 28 changes pushed</div>
     </div>
     <div class="status-card info">
       <div class="status-label">Sessions</div>
-      <div class="status-value">23</div>
+      <div class="status-value">28</div>
       <div class="status-detail">Since Feb 18, 2026</div>
     </div>
   </div>
@@ -469,13 +469,13 @@ body {
     </a>
     <a class="health-card" href="index.html#branding">
       <div class="health-label"><span style="font-size:1rem">🎨</span> Branding</div>
-      <div class="health-bar-bg"><div class="health-bar-fill yellow" style="width:57%"></div></div>
-      <div class="health-stats"><span>4 of 7 done</span><span style="font-weight:600;color:var(--orange)">57%</span></div>
+      <div class="health-bar-bg"><div class="health-bar-fill green" style="width:71%"></div></div>
+      <div class="health-stats"><span>5 of 7 done</span><span style="font-weight:600;color:var(--moss)">71%</span></div>
     </a>
     <a class="health-card" href="index.html#launch">
       <div class="health-label"><span style="font-size:1rem">🚀</span> Hosting & Launch</div>
-      <div class="health-bar-bg"><div class="health-bar-fill green" style="width:80%"></div></div>
-      <div class="health-stats"><span>8 of 10 done</span><span style="font-weight:600;color:var(--moss)">80%</span></div>
+      <div class="health-bar-bg"><div class="health-bar-fill green" style="width:100%"></div></div>
+      <div class="health-stats"><span>Pre-launch complete</span><span style="font-weight:600;color:var(--moss)">100%</span></div>
     </a>
     <a class="health-card" href="index.html#content">
       <div class="health-label"><span style="font-size:1rem">✍️</span> Content & Copy</div>
@@ -498,7 +498,7 @@ body {
         <li class="action-item urgent">
           <div class="action-dot urgent"></div>
           <div>
-            <div class="action-text"><strong>LoRA work</strong> — hempcrete LoRA + 3D printer LoRA pipeline</div>
+            <div class="action-text"><strong>LoRA training</strong> — hempcrete LoRA + 3D printer LoRA pipeline</div>
             <div class="action-note">Get Pexels/Pixabay API keys → collect → curate → caption → train in Kohya</div>
           </div>
           <span class="action-tag urgent-tag">Next</span>
@@ -506,16 +506,16 @@ body {
         <li class="action-item urgent">
           <div class="action-dot urgent"></div>
           <div>
-            <div class="action-text"><strong>Run SCHEMA_V9b_ip.sql</strong> in Supabase SQL Editor</div>
-            <div class="action-note">Adds IP address capture to traffic monitor session trails</div>
+            <div class="action-text"><strong>PuLID face-locked generation</strong> — pick reference faces → setup-pulid.py → queue</div>
+            <div class="action-note">Needs best charsheet panel per character in faces-reference/</div>
           </div>
-          <span class="action-tag urgent-tag">Soon</span>
+          <span class="action-tag urgent-tag">Next</span>
         </li>
         <li class="action-item urgent">
           <div class="action-dot urgent"></div>
           <div>
-            <div class="action-text"><strong>Run 3 still-pending SQL migrations</strong> in Supabase SQL Editor</div>
-            <div class="action-note">PROFILE_MIGRATION → SCHEMA_V3 (messages) → SCHEMA_V4 (post images)</div>
+            <div class="action-text"><strong>Run pending SQL migrations</strong> in Supabase SQL Editor</div>
+            <div class="action-note">PROFILE_MIGRATION, V3 (messages), V4 (post images), V9b (IP capture)</div>
           </div>
           <span class="action-tag urgent-tag">Soon</span>
         </li>
@@ -526,28 +526,23 @@ body {
         <li class="action-item">
           <div class="action-dot next"></div>
           <div>
+            <div class="action-text"><strong>Integrate Flux assets into site</strong> — heroes, sections, textures from comfyui-output/</div>
+          </div>
+          <span class="action-tag next-tag">Site</span>
+        </li>
+        <li class="action-item">
+          <div class="action-dot next"></div>
+          <div>
+            <div class="action-text"><strong>Site tour page</strong> — guided walkthrough for new visitors</div>
+          </div>
+          <span class="action-tag next-tag">Site</span>
+        </li>
+        <li class="action-item">
+          <div class="action-dot next"></div>
+          <div>
             <div class="action-text"><strong>Map — member pins</strong> — add lat/lng to profiles, show real members on map</div>
           </div>
           <span class="action-tag next-tag">Map</span>
-        </li>
-        <li class="action-item">
-          <div class="action-dot next"></div>
-          <div>
-            <div class="action-text"><strong>PuLID face-locked generation</strong> — run setup-pulid.py then queue-pulid-faces.py</div>
-          </div>
-          <span class="action-tag next-tag">AI</span>
-        </li>
-        <li class="action-item">
-          <div class="action-dot next"></div>
-          <div>
-            <div class="action-text"><strong>Integrate Flux assets into site</strong> — heroes, sections, textures</div>
-          </div>
-        </li>
-        <li class="action-item">
-          <div class="action-dot soon"></div>
-          <div>
-            <div class="action-text"><strong>Profile nav link</strong> — add link to own profile from every page</div>
-          </div>
         </li>
         <li class="action-item">
           <div class="action-dot soon"></div>
@@ -632,6 +627,14 @@ body {
           <li class="folder-item" style="padding:0.4rem 0;">
             <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🎭</div>
             <div><div class="folder-name" style="font-size:0.72rem;">queue-batches.py</div><div class="folder-desc" style="font-size:0.68rem;">12 characters × T1–T5 scenarios</div></div>
+          </li>
+          <li class="folder-item" style="padding:0.4rem 0;">
+            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">📋</div>
+            <div><div class="folder-name" style="font-size:0.72rem;">queue-charsheets.py</div><div class="folder-desc" style="font-size:0.68rem;">19 chars × 3 triptych sheets</div></div>
+          </li>
+          <li class="folder-item" style="padding:0.4rem 0;">
+            <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">🏡</div>
+            <div><div class="folder-name" style="font-size:0.72rem;">queue-site-assets.py</div><div class="folder-desc" style="font-size:0.68rem;">14 themes × ~80 prompts</div></div>
           </li>
           <li class="folder-item" style="padding:0.4rem 0;">
             <div class="folder-icon" style="width:24px;height:24px;font-size:0.7rem;">⭕</div>
@@ -758,7 +761,7 @@ body {
           </div>
           <div class="kf">
             <span>🎭</span>
-            <div><div class="kf-name">docs/CHARACTERS.md</div><div class="kf-purpose">12 AI character bibles + seeds</div></div>
+            <div><div class="kf-name">docs/CHARACTERS.md</div><div class="kf-purpose">19 AI character bibles + seeds</div></div>
           </div>
           <div class="kf">
             <span>⭕</span>
@@ -769,17 +772,16 @@ body {
 
       <!-- LAST SESSION -->
       <div class="session-box">
-        <div class="session-title">Last Session — #23 · Feb 25, 2026</div>
+        <div class="session-title">Last Session — #28 · Feb 26, 2026</div>
         <div class="session-text">
           <ul>
-            <li><strong>Live Traffic Monitor</strong> — eb-grove.html gets stat cards, session trails, live feed, top pages via Supabase Realtime</li>
-            <li><strong>Analytics tracking</strong> — nav.js now fires page-view pings to Supabase on every page load (fire-and-forget, silent)</li>
-            <li><strong>Banner bug fixed</strong> — "data may reset" traced to nav.js (not HTML files); replaced with "EARLY ACCESS" copy across all pages</li>
-            <li><strong>SCHEMA_V9_analytics.sql</strong> — page_views table ready; needs to be run in Supabase before tracking activates</li>
-            <li><strong>All pushed</strong> — 24 files, 4,211 insertions; git workflow sorted (add → commit → push)</li>
+            <li><strong>App nav rewrite</strong> — app-nav.js rebuilt with self-contained styles, Facebook-style link row + More ▾ dropdown, removed orphaned topbar CSS from 7 pages</li>
+            <li><strong>Public nav redesign</strong> — (session 27) visible link row: Feed · Circles · Map · Visualizer · Estimator · Gallery + More ▾ grouped dropdown</li>
+            <li><strong>Feed sidebar improvements</strong> — Navigate card above Streams, Visualizer promoted, expanded More toggle with all site links, flex-shrink fix for profile card</li>
+            <li><strong>SVG brand system</strong> — (session 25-26) 30 SVGs deployed, ~130 emoji replaced sitewide</li>
           </ul>
           <div style="margin-top:0.6rem;color:rgba(242,239,230,0.5);font-size:0.76rem;">
-            Session 22: community map, hemp blocks, 88 pins, SCHEMA_V8/V8b · Session 21: 7 new characters (19 total)
+            Session 23: traffic monitor + analytics · Session 22: community map, 88 pins · Session 21: 7 new characters (19 total)
           </div>
         </div>
       </div>
@@ -799,7 +801,7 @@ body {
 
   <div class="cc-footer">
     <span>the Earthback Project — Command Center</span>
-    <span>Updated: Feb 25, 2026 · Session 23</span>
+    <span>Updated: Feb 26, 2026 · Session 28</span>
   </div>
 
 </div>
