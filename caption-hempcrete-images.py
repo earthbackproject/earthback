@@ -64,6 +64,16 @@ STATES = [
     "close-up of hempcrete texture, porous pale grey-green surface",
     "mixing hempcrete — hemp hurd, lime powder, water in barrel mixer",
     "packing hempcrete around timber frame members",
+    # Loose hurd
+    "loose hemp hurd pile, golden-tan fibrous hemp shiv, raw material before mixing",
+    "hemp hurd in bulk bags, raw hemp shiv ready for mixing with lime binder",
+    # Pumpable / spray
+    "pump-applied hempcrete being sprayed onto wall framing via hose nozzle",
+    "pumpable hemp lime mix, fluid slurry consistency for pneumatic application",
+    "spray-applied hempcrete wall, continuous uniform coverage from nozzle",
+    # Blocks
+    "hemp masonry blocks stacked, pre-formed hempcrete units with visible hemp fiber texture",
+    "hemp blocks being laid with lime mortar, masonry construction with natural blocks",
 ]
 
 CONTEXTS = [
@@ -94,26 +104,57 @@ LIGHTING = [
 def guess_state_from_filename(filename):
     """Rough guess at image content from filename keywords."""
     fn = filename.lower()
-    if any(k in fn for k in ["mix", "mixing", "barrel", "wet"]):
-        return "mixing hempcrete — hemp hurd, lime powder, water combined"
-    if any(k in fn for k in ["form", "formwork", "tamp", "pack"]):
-        return "hempcrete being packed into timber formwork"
-    if any(k in fn for k in ["strip", "stripped", "bare", "raw"]):
-        return "cured hempcrete wall, formwork stripped, rough surface exposed"
-    if any(k in fn for k in ["plaster", "render", "finish", "lime"]):
-        return "lime plaster render over hempcrete wall"
-    if any(k in fn for k in ["texture", "close", "detail", "macro"]):
-        return "close-up of hempcrete wall texture, hemp fibers visible in lime matrix"
-    if any(k in fn for k in ["exterior", "outside", "facade"]):
-        return "hempcrete building exterior, lime-washed surface"
+
+    # Loose hemp hurd (the raw material before mixing)
+    if any(k in fn for k in ["hurd", "chanvre", "shiv", "shive", "beton_de", "raw_hemp"]):
+        return "loose hemp hurd, golden-tan fibrous material, hemp shiv before mixing"
+
+    # Pumpable / spray-applied hempcrete
+    if any(k in fn for k in ["pump", "spray", "projet", "projeté", "pura", "pneumatic"]):
+        return "spray-applied hempcrete, pump-mix hemp lime being applied via hose nozzle"
+
+    # Hemp blocks / pre-formed blocks
+    if any(k in fn for k in ["block", "bloc", "coexist", "preformed", "pre-formed", "masonry"]):
+        return "hemp blocks, pre-formed hempcrete masonry units being laid with lime mortar"
+
+    # Mixing / wet mix
+    if any(k in fn for k in ["mix", "mixing", "barrel", "wet", "mixed"]):
+        return "mixing hempcrete — hemp hurd, lime binder, water combined into pale grey slurry"
+
+    # Formwork / casting
+    if any(k in fn for k in ["form", "formwork", "tamp", "pack", "cast"]):
+        return "hempcrete being tamped and packed into timber formwork, construction in progress"
+
+    # Stripped / cured surface
+    if any(k in fn for k in ["strip", "stripped", "bare", "raw", "exposed"]):
+        return "cured hempcrete wall, formwork stripped, rough pale grey-green surface exposed"
+
+    # Plaster / render finish
+    if any(k in fn for k in ["plaster", "render", "finish", "trowel"]):
+        return "lime plaster render applied over hempcrete wall, smooth pale finish"
+
+    # Lime + hemp (combined material shot)
+    if any(k in fn for k in ["lime-and", "lime_and", "hemp-lime", "hemp_lime"]):
+        return "hemp hurds and lime binder, natural building materials side by side"
+
+    # Texture / close-up
+    if any(k in fn for k in ["texture", "close", "detail", "macro", "surface"]):
+        return "close-up of hempcrete wall texture, pale grey-green surface with visible hemp fibers"
+
+    # Exterior
+    if any(k in fn for k in ["exterior", "outside", "facade", "wall-house", "wall_house"]):
+        return "hempcrete building exterior wall, natural pale surface, sustainable construction"
+
+    # Interior
     if any(k in fn for k in ["interior", "inside", "room"]):
-        return "hempcrete wall interior, cured pale grey surface"
+        return "hempcrete wall interior, cured pale grey surface, natural building finish"
+
+    # Natural building adjacents
     if any(k in fn for k in ["straw", "bale"]):
         return "natural building construction, straw bale wall with lime plaster finish"
     if any(k in fn for k in ["cob", "adobe", "earth", "rammed"]):
         return "earthen wall construction, natural building process"
-    if any(k in fn for k in ["plaster", "render", "trowel"]):
-        return "lime plaster being applied, trowel marks in pale surface"
+
     # Default
     return random.choice(STATES)
 

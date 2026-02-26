@@ -40,7 +40,7 @@
 </nav>
 <div style="background:#1F3A2E;color:rgba(255,255,255,0.85);text-align:center;padding:7px 16px;font-size:0.75rem;font-family:'Inter',system-ui,sans-serif;letter-spacing:0.03em;line-height:1.4;border-top:1px solid rgba(255,255,255,0.06);">
   <span style="font-weight:600;color:#C2A56C;margin-right:6px">EARLY ACCESS</span>
-  <span>Claim your username and get in early &mdash; we're building this in the open.</span>
+  <span>Claim your username and get in early &mdash; your voice shapes what gets built.</span>
   <a href="join.html" style="color:#C2A56C;text-decoration:none;font-weight:600;margin-left:8px">Join free &rarr;</a>
 </div>
 <div class="topbar-mobile-menu" id="app-mobile-menu">

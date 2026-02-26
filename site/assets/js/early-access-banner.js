@@ -12,7 +12,7 @@
     enabled: true,
 
     label: 'Early Access',
-    message: 'Claim your username and get in early — we\'re building this in the open.',
+    message: 'Claim your username and get in early — your voice shapes what gets built.',
     cta: {
       text: 'Join free →',
       href: 'join.html'
