@@ -74,7 +74,7 @@
   /* ── APP NAV — BASE ── */\
   #app-nav * { box-sizing: border-box; }\
   #app-nav nav {\
-    position: sticky; top: 0; left: 0; right: 0; z-index: 1000;\
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;\
     background: linear-gradient(135deg, var(--green, #1F3A2E) 0%, var(--green2, #2d5a27) 100%);\
     font-family: "Inter", system-ui, sans-serif;\
     box-shadow: 0 2px 8px rgba(0,0,0,0.12);\
@@ -191,6 +191,9 @@
     border-top: 1px solid rgba(255,255,255,0.06);\
   }\
 \
+  /* ── NAV SPACER (pushes content below fixed nav) ── */\
+  #app-nav .an-spacer { height: 87px; }\
+\
   /* ── BACKDROP ── */\
   #an-backdrop {\
     position: fixed; inset: 0; z-index: 999;\
@@ -218,7 +221,7 @@
   #app-nav .an-hamburger.open span:nth-child(2) { opacity: 0; }\
   #app-nav .an-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px,-4px); }\
   #app-nav .an-mobile-menu {\
-    display: none; position: absolute; top: 56px; left: 0; right: 0;\
+    display: none; position: fixed; top: 56px; left: 0; right: 0;\
     background: linear-gradient(135deg, var(--green, #1F3A2E) 0%, var(--green2, #2d5a27) 100%);\
     padding: 8px 16px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);\
     z-index: 999; flex-direction: column; gap: 2px;\
@@ -281,7 +284,8 @@
   <a href="messages.html"' + (isActive('messages.html') ? ' class="active"' : '') + '>Messages</a>\
   <a href="profile.html"' + (isActive('profile.html') ? ' class="active"' : '') + '>Profile</a>\
 </div>\
-<div id="an-backdrop"></div>';
+<div id="an-backdrop"></div>\
+<div class="an-spacer"></div>';
 
   // ── INJECT ────────────────────────────────────────────────
   var target = document.getElementById('app-nav');
