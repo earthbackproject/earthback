@@ -46,145 +46,6 @@
 html { scroll-behavior: smooth; }
 body { font-family: var(--font-sans); background: var(--paper); color: var(--text); min-height: 100vh; }
 
-/* ── TOPBAR ── */
-.topbar {
-  background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
-  color: white;
-  padding: 0 24px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 500;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.topbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: white;
-  font-weight: 600;
-}
-
-.topbar-brand-mark {
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-}
-
-.topbar-brand-name {
-  font-family: var(--font-serif);
-  font-size: 1.1rem;
-  font-weight: 500;
-  letter-spacing: -0.5px;
-}
-
-.topbar-the {
-  font-size: 0.65em;
-  opacity: 0.85;
-  font-weight: 400;
-}
-
-.brand-sub {
-  display: block;
-  font-size: 0.65em;
-  opacity: 0.8;
-}
-
-/* ── APP NAV ── */
-.topbar-nav {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.topbar-nav-link {
-  color: rgba(255,255,255,0.7);
-  text-decoration: none;
-  font-size: 0.84rem;
-  font-weight: 500;
-  font-family: var(--font-sans);
-  padding: 6px 14px;
-  border-radius: 8px;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-.topbar-nav-link:hover {
-  color: white;
-  background: rgba(255,255,255,0.1);
-}
-.topbar-nav-link.active {
-  color: white;
-  background: rgba(255,255,255,0.15);
-  font-weight: 600;
-}
-.topbar-nav-link.coming-soon {
-  opacity: 0.45;
-  cursor: default;
-}
-.topbar-nav-link.coming-soon:hover {
-  background: none;
-  color: rgba(255,255,255,0.7);
-}
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.topbar-hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 6px;
-  transition: background 0.2s;
-}
-.topbar-hamburger:hover { background: rgba(255,255,255,0.1); }
-.topbar-hamburger span {
-  display: block;
-  width: 20px;
-  height: 2px;
-  background: white;
-  border-radius: 2px;
-  transition: all 0.25s;
-}
-.topbar-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px,4px); }
-.topbar-hamburger.open span:nth-child(2) { opacity: 0; }
-.topbar-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px,-4px); }
-.topbar-mobile-menu {
-  display: none;
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: linear-gradient(135deg, var(--green) 0%, var(--green2) 100%);
-  padding: 8px 16px 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 99;
-  flex-direction: column;
-  gap: 2px;
-}
-.topbar-mobile-menu.open { display: flex; }
-.topbar-mobile-menu a {
-  color: rgba(255,255,255,0.8);
-  text-decoration: none;
-  font-size: 0.92rem;
-  font-weight: 500;
-  padding: 10px 12px;
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-.topbar-mobile-menu a:hover,
-.topbar-mobile-menu a.active { background: rgba(255,255,255,0.12); color: white; }
-
 /* ── DASHBOARD LAYOUT ── */
 .dash-layout {
   display: grid;
@@ -955,17 +816,6 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
     flex-direction: column;
   }
 
-  .topbar {
-    padding: 0 16px;
-  }
-
-  .topbar-brand-name {
-    font-size: 0.95rem;
-  }
-
-  .topbar-nav { display: none; }
-  .topbar-hamburger { display: flex; }
-
   .search-placeholder {
     display: none;
   }
@@ -1002,6 +852,62 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
       </div>
     </a>
 
+    <!-- NAV LINKS -->
+    <div class="nav-card">
+      <div class="nav-card-label">Navigate</div>
+      <a href="feed.html" class="nav-card-link active">
+        <img src="assets/img/icons/icon-leaf.svg" alt=""> Home
+      </a>
+      <a href="circles.html" class="nav-card-link">
+        <img src="assets/img/icons/icon-people.svg" alt=""> Circles
+      </a>
+      <a href="visualizer.html" class="nav-card-link">
+        <img src="assets/img/icons/icon-sun.svg" alt=""> AI Visualizer
+      </a>
+      <a href="map.html" class="nav-card-link">
+        <img src="assets/img/icons/icon-pin.svg" alt=""> Map
+      </a>
+      <a href="projects.html" class="nav-card-link">
+        <img src="assets/img/icons/icon-building.svg" alt=""> Projects
+      </a>
+      <button class="nav-card-more-btn" id="nav-card-more-btn" onclick="toggleNavMore()">
+        More
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,4 6,8 10,4"/></svg>
+      </button>
+      <div class="nav-card-more-items" id="nav-card-more-items">
+        <a href="gallery.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-heart.svg" alt=""> Gallery
+        </a>
+        <a href="designer.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-chart.svg" alt=""> Estimator
+        </a>
+        <a href="messages.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-chat.svg" alt=""> Messages
+        </a>
+        <a href="how-it-works.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-seedling.svg" alt=""> How It Works
+        </a>
+        <a href="about.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-people.svg" alt=""> About
+        </a>
+        <a href="training.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-hammer.svg" alt=""> Training Partners
+        </a>
+        <a href="use-cases.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-building.svg" alt=""> Use Cases
+        </a>
+        <a href="safety.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-shield.svg" alt=""> Safety & Trust
+        </a>
+        <a href="terms.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-globe.svg" alt=""> Terms
+        </a>
+        <a href="privacy.html" class="nav-card-link">
+          <img src="assets/img/icons/icon-globe.svg" alt=""> Privacy
+        </a>
+      </div>
+    </div>
+
     <div class="streams-card" id="streams-card">
       <div class="streams-label">Your Streams</div>
       <div class="stream-item active" onclick="filterStream('all', this)">
@@ -1012,41 +918,6 @@ body { font-family: var(--font-sans); background: var(--paper); color: var(--tex
       <div id="stream-items-dynamic"></div>
       <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border-lt);">
         <div style="font-size:0.78rem; color:var(--sage); font-weight:500; cursor:pointer;">+ Subscribe to more streams</div>
-      </div>
-    </div>
-
-    <!-- NAV LINKS -->
-    <div class="nav-card">
-      <div class="nav-card-label">Navigate</div>
-      <a href="feed.html" class="nav-card-link active">
-        <img src="assets/img/icons/icon-leaf.svg" alt=""> Home
-      </a>
-      <a href="circles.html" class="nav-card-link">
-        <img src="assets/img/icons/icon-people.svg" alt=""> Circles
-      </a>
-      <a href="map.html" class="nav-card-link">
-        <img src="assets/img/icons/icon-pin.svg" alt=""> Map
-      </a>
-      <a href="projects.html" class="nav-card-link">
-        <img src="assets/img/icons/icon-building.svg" alt=""> Projects
-      </a>
-      <a href="gallery.html" class="nav-card-link">
-        <img src="assets/img/icons/icon-heart.svg" alt=""> Gallery
-      </a>
-      <button class="nav-card-more-btn" id="nav-card-more-btn" onclick="toggleNavMore()">
-        More
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,4 6,8 10,4"/></svg>
-      </button>
-      <div class="nav-card-more-items" id="nav-card-more-items">
-        <a href="visualizer.html" class="nav-card-link">
-          <img src="assets/img/icons/icon-sun.svg" alt=""> AI Visualizer
-        </a>
-        <a href="designer.html" class="nav-card-link">
-          <img src="assets/img/icons/icon-chart.svg" alt=""> Estimator
-        </a>
-        <a href="messages.html" class="nav-card-link">
-          <img src="assets/img/icons/icon-chat.svg" alt=""> Messages
-        </a>
       </div>
     </div>
 
@@ -1617,11 +1488,7 @@ async function submitPost() {
 window.addEventListener('DOMContentLoaded', initAuth);
 </script>
 
-
-
 <script src="assets/js/early-access-banner.js"></script>
 </body>
-
-
 
 </html>
