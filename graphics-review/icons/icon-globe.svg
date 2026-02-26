@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#1F3A2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Globe — replaces 🌍. Global community / land stewardship. -->
-  <circle cx="12" cy="12" r="9.5" fill="#1F3A2E" fill-opacity="0.06"/>
-  <circle cx="12" cy="12" r="9.5"/>
-  <ellipse cx="12" cy="12" rx="4" ry="9.5"/>
-  <line x1="2.5" y1="12" x2="21.5" y2="12"/>
-  <path d="M 4 7.5 Q 12 9 20 7.5" fill="none"/>
-  <path d="M 4 16.5 Q 12 15 20 16.5" fill="none"/>
-</svg>

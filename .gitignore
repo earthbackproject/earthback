@@ -29,6 +29,13 @@ comfyui-output/
 comfy-run.bat
 start-comfy-claude.bat
 
+# AI image working directories (local only, not source code)
+lora-reference/
+lora-training/
+dataset-hempcrete/
+faces-reference/
+graphics-review/
+
 # Large image assets (keep locally, processed versions in site/assets/img/)
 site/content/cast-photos/
 site/content/social/processed/
