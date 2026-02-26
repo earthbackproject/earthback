@@ -9,11 +9,9 @@
   <div style="max-width:1200px; margin:0 auto;">
     <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:4rem; padding-bottom:3rem; border-bottom:1px solid rgba(242,239,230,0.07); margin-bottom:2rem;">
       <div>
-        <div style="font-family:Georgia,'Times New Roman',serif; font-size:1.5rem; font-weight:700; color:#F2EFE6; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.75rem; display:flex; align-items:center; gap:0.4em;">
+        <div style="font-family:Georgia,'Times New Roman',serif; font-size:1.5rem; font-weight:700; color:#F2EFE6; margin-bottom:0.75rem; display:flex; align-items:center; gap:0.4em;">
           <img src="assets/img/icons/icon-leaf.svg" alt="" style="width:1.1em;height:1.1em;opacity:0.6;">
-          <span><span style="font-size:0.5em; font-weight:300; color:rgba(242,239,230,0.52); text-transform:lowercase; letter-spacing:0.03em; vertical-align:0.22em; margin-right:0.18em;">the</span>
-          Earth<span style="color:#C2A56C;">back</span>
-          <span style="font-size:0.46em; font-weight:400; color:rgba(242,239,230,0.35); text-transform:uppercase; letter-spacing:0.18em; margin-left:0.25em;">Project</span></span>
+          <span><span style="font-size:0.65em; font-weight:300; color:rgba(242,239,230,0.5); letter-spacing:0.02em; margin-right:0.2em;">the</span>Earth<span style="color:#C2A56C;">back</span><span style="font-size:0.55em; font-weight:400; color:rgba(242,239,230,0.35); letter-spacing:0.08em; margin-left:0.3em;">Project</span></span>
         </div>
         <p style="font-size:0.84rem; color:rgba(242,239,230,0.4); line-height:1.75; max-width:30ch; margin:0;">
           A community for people building a better world — natural materials, renewable energy, food systems, and mutual aid.
