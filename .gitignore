@@ -29,27 +29,9 @@ comfyui-output/
 comfy-run.bat
 start-comfy-claude.bat
 
-# AI image working directories (local only, not source code)
-lora-reference/
-lora-training/
-lora-output/
-dataset-hempcrete/
-dataset-3dprinter/
-faces-reference/
-graphics-review/
-
-# Local scripts — ComfyUI queue, dataset prep, training, diagnostics
-queue-*.py
-collect-*.py
-curate-*.py
-caption-*.py
-scrape-*.py
-prepare-*.py
-setup-pulid.py
-test-*.py
-train-*.bat
-urls.txt
-*.log
+# Local working directory — scripts, datasets, training output, diagnostics
+# Everything that doesn't belong in the deployed site lives here
+local/
 
 # Large image assets (keep locally, processed versions in site/assets/img/)
 site/content/cast-photos/
