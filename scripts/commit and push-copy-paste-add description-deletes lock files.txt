@@ -1,0 +1,3 @@
+g add -A
+g commit -m "describe what changed"
+g push

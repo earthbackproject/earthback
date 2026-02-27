@@ -1,0 +1,113 @@
+============================================================
+REAL FLUX TRAINING STEP TEST
+============================================================
+GPU: NVIDIA GeForce RTX 3060
+VRAM: 11.0/12.0 GB
+
+[1/6] Loading Flux model via Kohya...
+
+!!! FAILED !!!
+Error type: FileNotFoundError
+Error: No such file or directory: "dev"
+Traceback (most recent call last):
+  File "C:\users\adrxi\Earthback\test-real-step.py", line 44, in <module>
+    model = flux_utils.load_flow_model(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI\kohya_ss\sd-scripts\library\flux_utils.py", line 97, in load_flow_model
+    is_diffusers, is_schnell, (num_double_blocks, num_single_blocks), ckpt_paths = analyze_checkpoint_state(ckpt_path)
+                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI\kohya_ss\sd-scripts\library\flux_utils.py", line 54, in analyze_checkpoint_state
+    with safe_open(ckpt_path, framework="pt") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: "dev"
+
+
+Log saved to: C:\users\adrxi\Earthback\real-step-diagnostic.log
+============================================================
+REAL FLUX TRAINING STEP TEST
+============================================================
+GPU: NVIDIA GeForce RTX 3060
+VRAM: 11.0/12.0 GB
+
+[1/6] Loading Flux model via Kohya...
+  load_flow_model signature: (ckpt_path: str, dtype: Optional[torch.dtype], device: Union[str, torch.device], disable_mmap: bool = False) -> Tuple[bool, library.flux_models.Flux]
+  Loaded in 35s, VRAM: 11.0/12.0 GB
+
+[2/6] Moving model to GPU...
+
+!!! FAILED !!!
+Error type: AttributeError
+Error: 'tuple' object has no attribute 'to'
+Traceback (most recent call last):
+  File "C:\users\adrxi\Earthback\test-real-step.py", line 55, in <module>
+    model.to("cuda", dtype=torch.bfloat16)
+    ^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'to'
+
+
+Log saved to: C:\users\adrxi\Earthback\real-step-diagnostic.log
+============================================================
+REAL FLUX TRAINING STEP TEST
+============================================================
+GPU: NVIDIA GeForce RTX 3060
+VRAM: 11.0/12.0 GB
+
+[1/6] Loading Flux model via Kohya...
+  load_flow_model signature: (ckpt_path: str, dtype: Optional[torch.dtype], device: Union[str, torch.device], disable_mmap: bool = False) -> Tuple[bool, library.flux_models.Flux]
+  Got tuple with 2 elements: ['bool', 'Flux']
+  Model type: bool
+  Loaded in 34s, VRAM: 11.0/12.0 GB
+
+[2/6] Moving model to GPU...
+
+!!! FAILED !!!
+Error type: AttributeError
+Error: 'bool' object has no attribute 'to'
+Traceback (most recent call last):
+  File "C:\users\adrxi\Earthback\test-real-step.py", line 61, in <module>
+    model.to("cuda", dtype=torch.bfloat16)
+    ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'to'
+
+
+Log saved to: C:\users\adrxi\Earthback\real-step-diagnostic.log
+============================================================
+REAL FLUX TRAINING STEP TEST
+============================================================
+GPU: NVIDIA GeForce RTX 3060
+VRAM: 11.0/12.0 GB
+
+[1/6] Loading Flux model via Kohya...
+  load_flow_model signature: (ckpt_path: str, dtype: Optional[torch.dtype], device: Union[str, torch.device], disable_mmap: bool = False) -> Tuple[bool, library.flux_models.Flux]
+  Got tuple with 2 elements: ['bool', 'Flux']
+  Model type: Flux
+  Loaded in 37s, VRAM: 11.0/12.0 GB
+
+[2/6] Moving model to GPU...
+  On GPU, VRAM: 0.0/12.0 GB
+
+[3/6] Enabling gradient checkpointing...
+  Enabled, VRAM: 0.0/12.0 GB
+
+[4/6] Creating test inputs (512x512)...
+  Inputs created, VRAM: 0.0/12.0 GB
+
+[5/6] Forward pass...
+  Forward pass failed: cannot import name 'get_packed_latent_ids' from 'library.flux_models' (D:\AI\kohya_ss\sd-scripts\library\flux_models.py)
+Traceback (most recent call last):
+  File "C:\users\adrxi\Earthback\test-real-step.py", line 95, in <module>
+    from library.flux_models import get_packed_latent_ids
+ImportError: cannot import name 'get_packed_latent_ids' from 'library.flux_models' (D:\AI\kohya_ss\sd-scripts\library\flux_models.py)
+
+  VRAM at failure: 0.0/12.0 GB
+
+!!! FAILED !!!
+Error type: ImportError
+Error: cannot import name 'get_packed_latent_ids' from 'library.flux_models' (D:\AI\kohya_ss\sd-scripts\library\flux_models.py)
+Traceback (most recent call last):
+  File "C:\users\adrxi\Earthback\test-real-step.py", line 95, in <module>
+    from library.flux_models import get_packed_latent_ids
+ImportError: cannot import name 'get_packed_latent_ids' from 'library.flux_models' (D:\AI\kohya_ss\sd-scripts\library\flux_models.py)
+
+
+Log saved to: C:\users\adrxi\Earthback\real-step-diagnostic.log

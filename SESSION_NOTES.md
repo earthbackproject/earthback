@@ -29,6 +29,24 @@
 - `urls.txt` template created with usage instructions as comments
 - Output: `lora-reference/hempcrete/` and `lora-reference/3d-concrete/` (or custom category)
 
+### Command center simplification
+- **Simplified `command-center.html`** — now a static reference for things that shouldn't go online
+- Kept: reboot sequence, credentials/API keys (click-to-copy), services + Supabase deep links, deploy instructions, ComfyUI API, folder map, key files, important paths, Claude prompt copier
+- Removed: session count, health bars, "What's Next" panel, "Last Session" box (all duplicated SESSION_NOTES/TRACKER)
+- Added: credentials section, important paths section (comfy-env, models, Kohya, PuLID)
+- Moved to project root, added to `.gitignore` (contains credentials)
+
+### Git lock file fix — permanent solution
+- **Root cause**: Cowork VM accesses repo through virtiofs FUSE mount; `unlink()` fails intermittently on Windows NTFS through the bridge, leaving orphan `.lock` files
+- **Fix**: `maint scripts/eb-git.ps1` — wrapper that auto-cleans stale lock files before every git operation
+- **Alias**: `g` command in PowerShell profile (e.g., `g add -A`, `g commit -m "msg"`, `g push`)
+- **Convention going forward**: Claude edits files, Nicco commits from PowerShell with `g`
+
+### Repo cleanup
+- Removed `lora-reference/`, `dataset-hempcrete/`, `faces-reference/`, `graphics-review/`, `lora-training/` from git tracking
+- Added all five to `.gitignore` — files stay on disk, just not in the repo
+- These are local working directories for AI image generation, not source code
+
 ### Social media research
 - Evaluated Buffer, Publer, Typefully, Later for social media scheduling
 - Buffer and Publer recommended as best fit for Earthback's visual-heavy, multi-platform needs
@@ -36,9 +54,8 @@
 
 ### Immediate Next Steps
 - **LoRA training** — hempcrete + 3D printer datasets ready, switching to Sonnet for training runs
-- **Run scraper** to collect reference images, curate for LoRA training data
+- **Run scraper** to collect more reference images, curate for LoRA training data
 - **Social media setup** — finalize platform (Buffer/Publer), start scheduling launch content
-- **Push pending commits** — nav fix + scraper script
 - **PuLID face-locked generation** after LoRAs are trained
 
 ---

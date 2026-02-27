@@ -1207,7 +1207,7 @@
         try {
             const { data: views, error } = await sb
                 .from('page_views')
-                .select('id, page, referrer, session_id, created_at')
+                .select('id, page, referrer, session_id, created_at, ip_address, user_id, display_name')
                 .order('created_at', { ascending: false })
                 .limit(500);
             if (error) throw error;
@@ -1291,10 +1291,21 @@
                 ? '<span style="color:#4ade80;font-size:0.62rem;">&#9679; active now</span>'
                 : formatDate(views[views.length - 1].created_at);
 
+            // Member name or IP badge
+            const firstView = views[0];
+            const memberName = firstView.display_name;
+            const ip = firstView.ip_address;
+            const identBadge = memberName
+                ? `<span style="color:var(--clay);font-size:0.68rem;font-weight:600;">${memberName}</span>`
+                : ip
+                    ? `<span style="color:rgba(242,239,230,0.4);font-size:0.62rem;font-family:monospace;">${ip}</span>`
+                    : '';
+
             return `<div class="${trailClass}">
                 <div class="trail-meta">
                     <div class="trail-dot ${dotClass}"></div>
                     <span>${statusTxt}</span>
+                    ${identBadge}
                     <span style="margin-left:auto;">${pageCount} page${pageCount !== 1 ? 's' : ''}</span>
                 </div>
                 <div class="trail-pages">${pagesHtml}</div>
@@ -1339,9 +1350,15 @@
             const refHtml = v.referrer
                 ? `<span class="feed-view-ref">&#8592; ${v.referrer.replace('.html', '')}</span>`
                 : `<span class="feed-view-ref" style="opacity:0.4;">direct</span>`;
+            const identHtml = v.display_name
+                ? `<span style="color:var(--clay);font-size:0.65rem;font-weight:600;">${v.display_name}</span>`
+                : v.ip_address
+                    ? `<span style="color:rgba(242,239,230,0.35);font-size:0.6rem;font-family:monospace;">${v.ip_address}</span>`
+                    : '';
             return `<div class="feed-view" id="fv-${v.id}">
                 <span class="feed-view-page">${v.page}</span>
                 ${refHtml}
+                ${identHtml}
                 <span class="feed-view-time">${formatDate(v.created_at)}</span>
                 ${i === 0 ? '<span class="feed-view-new">new</span>' : ''}
             </div>`;

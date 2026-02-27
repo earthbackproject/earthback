@@ -254,6 +254,7 @@
   if (navTarget) navTarget.innerHTML = navHTML;
 
   // ── PAGE VIEW TRACKING ────────────────────────────────────
+  // Tries to include member user_id if logged in; fires without it for anon visitors.
   (function() {
     try {
       var sid = sessionStorage.getItem('eb_sid');
@@ -269,14 +270,33 @@
           if (refUrl.hostname === location.hostname) refPg = refUrl.pathname.split('/').pop() || 'index.html';
         } catch(e) {}
       }
-      fetch(SUPABASE_URL + '/rest/v1/page_views', {
-        method: 'POST',
-        headers: {
-          'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY,
-          'Content-Type': 'application/json', 'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({ page: pg, referrer: refPg, session_id: sid })
-      });
+      function firePageView(userId) {
+        var payload = { p_page: pg, p_referrer: refPg, p_session_id: sid };
+        if (userId) payload.p_user_id = userId;
+        fetch(SUPABASE_URL + '/rest/v1/rpc/insert_page_view', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY,
+            'Content-Type': 'application/json', 'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(payload)
+        });
+      }
+      // Try to get auth session for member tracking; timeout after 200ms for anon visitors
+      if (typeof supabase !== 'undefined') {
+        var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        var fired = false;
+        sb.auth.getSession().then(function(result) {
+          if (!fired) {
+            fired = true;
+            var uid = result.data.session ? result.data.session.user.id : null;
+            firePageView(uid);
+          }
+        });
+        setTimeout(function() { if (!fired) { fired = true; firePageView(null); } }, 200);
+      } else {
+        firePageView(null);
+      }
     } catch(e) {}
   })();
 

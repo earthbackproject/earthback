@@ -15,13 +15,35 @@ Or just describe what you want to work on and Claude will orient from there.
 
 **OS:** Windows (Nicco's workstation)
 **WSL:** Non-functional due to a BIOS virtualization flaw. Do not suggest WSL-based workflows.
-**ComfyUI:** Running at `http://127.0.0.1:8188` via `comfy-run.bat`
-- Python env: `D:\AI\comfy-env\Scripts\python.exe` (NOT system Python 3.14)
+**GPU:** 2x NVIDIA RTX 3060 (12 GB VRAM each)
+
+### Python Environments
+
+Three separate Python installs — they don't share packages:
+
+| Environment | Python | Location | Purpose |
+|---|---|---|---|
+| System | 3.14 | `python` / `py` | Default — too new for most AI libs |
+| comfy-env | 3.11 | `D:\AI\comfy-env\Scripts\python.exe` | ComfyUI (torch + CUDA 13.0) |
+| kohya venv | 3.11 | `D:\AI\kohya_ss\venv\Scripts\python.exe` | Kohya SS LoRA training (torch + CUDA 12.4) |
+
+**Why:** Each venv is an isolated Python install in a folder. Activating one (`.\venv\Scripts\activate`) makes `python` and `pip` point to that copy. Training .bat files call the venv python directly so activation isn't strictly required.
+
+**Rule:** Always use the right Python for the right tool:
+- ComfyUI pip installs: `D:\AI\comfy-env\Scripts\python.exe -m pip install ...`
+- Kohya pip installs: `D:\AI\kohya_ss\venv\Scripts\python.exe -m pip install ...`
+- Queue scripts (just use `requests`): system Python is fine
+
+### ComfyUI
+Running at `http://127.0.0.1:8188` via `comfy-run.bat`
 - Output: `C:\users\adrxi\Earthback\comfyui-output`
 - Models: `D:\AI\ComfyUI\models\`
-- All pip installs must target comfy-env: `D:\AI\comfy-env\Scripts\python.exe -m pip install ...`
 
-**Kohya SS:** Presumably at `D:\AI\kohya_ss\` — confirm before running training scripts.
+### Kohya SS (LoRA Training)
+Installed at `D:\AI\kohya_ss\` with own venv (Python 3.11, torch 2.6+cu124).
+- Activate: `cd D:\AI\kohya_ss; .\venv\Scripts\activate`
+- Flux training: `flux_train_network.py` (in sd-scripts submodule)
+- RTX 3060 12GB requires: `--cache_latents_to_disk`, `--cache_text_encoder_outputs_to_disk`, `--gradient_checkpointing`
 
 ---
 
@@ -132,9 +154,17 @@ All batch scripts live in `/Earthback/` root:
 
 ---
 
-## Git Lock File Issue
+## Git — Do NOT Commit From the VM
 
-The Cowork VM occasionally fails to unlink `.git/HEAD.lock` and `.git/index.lock` after commits (cross-filesystem permission issue). **If git errors about lock files:** Nicco deletes them manually from Windows at `C:\users\adrxi\Earthback\.git\HEAD.lock` and/or `.git\index.lock`.
+The Cowork VM accesses the repo through a virtiofs FUSE mount. Git's `unlink()` fails intermittently through this bridge, leaving orphan `.lock` files that block future operations.
+
+**Convention:** Claude edits files. Nicco commits from PowerShell using the `g` alias:
+```
+g add -A
+g commit -m "describe what changed"
+g push
+```
+The `g` alias runs `maint scripts/eb-git.ps1`, which auto-cleans stale lock files before every git command.
 
 ---
 
