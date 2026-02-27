@@ -297,16 +297,20 @@
         <div class="field-row">
           <div class="field">
             <label>First name</label>
-            <input type="text" id="first-name" placeholder="Maya" autocomplete="given-name" />
+            <input type="text" id="first-name" placeholder="" autocomplete="given-name" />
           </div>
           <div class="field">
             <label>Last name <span>(or nickname)</span></label>
-            <input type="text" id="last-name" placeholder="Redhawk" autocomplete="family-name" />
+            <input type="text" id="last-name" placeholder="" autocomplete="family-name" />
           </div>
         </div>
         <div class="field">
-          <label>Email address</label>
+          <label>Email address <span class="required-star" style="color:var(--clay2);font-weight:700;font-size:0.9rem;">*</span></label>
           <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div class="field">
+          <label>Password <span class="required-star" style="color:var(--clay2);font-weight:700;font-size:0.9rem;">*</span></label>
+          <input type="password" id="password" placeholder="At least 6 characters" autocomplete="new-password" minlength="6" />
         </div>
         <div class="field">
           <label>Location <span>(city, region, or general area)</span></label>
@@ -329,13 +333,10 @@
             <option value="tribal">Tribal nation or indigenous community</option>
           </select>
         </div>
-        <button class="btn-primary" id="get-started-btn" onclick="goToProfiler()">Get Started →</button>
+        <button class="btn-primary" id="get-started-btn" onclick="goToProfiler()">Create My Account →</button>
 
-        <!-- Magic link sent notice (appears after form submit) -->
-        <div id="magic-link-notice" style="display:none; margin-top:14px; padding:12px 16px; background:rgba(90,125,82,0.08); border:1px solid rgba(90,125,82,0.18); border-radius:10px; font-size:0.82rem; color:var(--text-muted); line-height:1.55; display:none; align-items:center; gap:8px;">
-          <span style="font-size:1rem; flex-shrink:0;">✉️</span>
-          <span>We sent a sign-in link to <strong id="magic-link-email" style="color:var(--ink);"></strong>. Click it anytime to unlock your account and sign in again.</span>
-        </div>
+        <!-- Signup error notice -->
+        <div id="signup-error" style="display:none; margin-top:14px; padding:12px 16px; background:rgba(184,120,74,0.08); border:1px solid rgba(184,120,74,0.15); border-radius:10px; font-size:0.82rem; color:var(--clay2); line-height:1.55;"></div>
 
         <div class="trust-row">
           <div class="trust-item"><span class="trust-icon">🔒</span><div>Your identity is never shown publicly without your consent. You choose how you're known.</div></div>
@@ -385,7 +386,9 @@
 
           <div class="divider-label">or</div>
 
-          <button class="btn-secondary" style="width:100%;" onclick="showManualPreview()">Skip — I'll fill it in myself</button>
+          <button class="btn-secondary" style="width:100%; margin-bottom:10px;" onclick="showManualPreview()">I'll fill it in myself</button>
+          <button class="btn-secondary" style="width:100%; font-weight:600; color:var(--sage);" onclick="goToDashboard()">Skip for now — take me in →</button>
+          <div style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-top:8px; line-height:1.5;">You can build your profile anytime from your settings.</div>
         </div>
       </div>
 
@@ -544,58 +547,75 @@ async function goToProfiler() {
   const fn = document.getElementById('first-name').value.trim();
   const ln = document.getElementById('last-name').value.trim();
   const em = document.getElementById('email').value.trim();
+  const pw = document.getElementById('password').value;
   const lo = document.getElementById('location').value.trim();
   const wb = document.getElementById('what-bring').value.trim();
   const ws = document.getElementById('what-seek').value.trim();
   const mt = document.getElementById('partner-type').value;
   const btn = document.getElementById('get-started-btn');
+  const errEl = document.getElementById('signup-error');
+  errEl.style.display = 'none';
 
   let valid = true;
-  if (!fn) { fieldError('first-name', 'First name is required'); valid = false; }
   if (!em || !em.includes('@')) { fieldError('email', 'A valid email is required'); valid = false; }
+  if (!pw || pw.length < 6) { fieldError('password', 'Password must be at least 6 characters'); valid = false; }
   if (!valid) return;
 
-  btn.textContent = 'Getting things ready…';
+  btn.textContent = 'Creating your account…';
   btn.disabled = true;
 
-  // 1. Save to Netlify Forms (background, non-blocking)
+  // 1. Create account with Supabase Auth (email + password)
+  const { data, error } = await sb.auth.signUp({
+    email: em,
+    password: pw,
+    options: {
+      data: {
+        first_name: fn,
+        last_name: ln,
+        display_name: (fn + ' ' + ln).trim() || em.split('@')[0],
+      }
+    }
+  });
+
+  if (error) {
+    btn.textContent = 'Create My Account →';
+    btn.disabled = false;
+    errEl.textContent = error.message || 'Something went wrong — please try again.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // 2. Save profile to Supabase profiles table
+  if (data.user) {
+    const displayName = (fn + ' ' + ln).trim() || em.split('@')[0];
+    await sb.from('profiles').upsert({
+      id: data.user.id,
+      first_name: fn,
+      last_name: ln,
+      display_name: displayName,
+      location: lo,
+      member_type: mt,
+      what_bring: wb,
+      what_seek: ws,
+    }, { onConflict: 'id' });
+  }
+
+  // 3. Save to Netlify Forms (background, non-blocking)
   submitSignup({
     'first-name': fn, 'last-name': ln, 'email': em,
     'location': lo, 'what-bring': wb, 'what-seek': ws, 'member-type': mt
   });
 
-  // 2. Save profile data to localStorage so auth-callback.html can persist it
-  localStorage.setItem('earthback_pending_profile', JSON.stringify({
-    firstName: fn, lastName: ln, email: em, location: lo,
-    displayName: (fn + ' ' + ln).trim(),
-    memberType: mt, whatBring: wb, whatSeek: ws,
-  }));
-
-  // 3. Send magic link via Supabase (non-blocking — user continues to demo)
-  sb.auth.signInWithOtp({
-    email: em,
-    options: { emailRedirectTo: 'https://earthbackproject.org/auth-callback.html' },
-  }).then(({ error }) => {
-    if (!error) {
-      // Show the "link sent" notice
-      const notice = document.getElementById('magic-link-notice');
-      document.getElementById('magic-link-email').textContent = em;
-      notice.style.display = 'flex';
-    }
-  });
-
-  // 4. Populate in-memory user object and proceed to demo flow
+  // 4. Populate in-memory user object and proceed to profiler
   user.firstName = fn;
   user.lastName = ln;
   user.email = em;
-  user.location = lo || 'Location not set';
-  user.displayName = (fn + ' ' + ln).trim();
+  user.location = lo || '';
+  user.displayName = (fn + ' ' + ln).trim() || em.split('@')[0];
 
-  setTimeout(() => {
-    btn.textContent = 'Get Started →';
-    btn.disabled = false;
-    showScreen('screen-profiler');
-  }, 600);
+  btn.textContent = 'Create My Account →';
+  btn.disabled = false;
+  showScreen('screen-profiler');
 }
 
 // ── SCAN SIMULATION ──────────────────────────────────────
