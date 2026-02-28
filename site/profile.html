@@ -1331,7 +1331,7 @@ function enableEditMode(profile, session) {
 
   // Make location editable
   const locEl = document.querySelectorAll('.pmeta-item')[0];
-  const originalLoc = locEl.textContent.replace('<img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> ', '');
+  const originalLoc = locEl.textContent.trim();
   locEl.outerHTML = `<span class="pmeta-item"><img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> <input type="text" id="edit-location" class="edit-input" value="${originalLoc}" placeholder="City, State" style="font-size:0.82rem;display:inline;width:auto;padding:4px 8px;"></span>`;
 
   // Make skills editable
@@ -1530,12 +1530,12 @@ async function loadProfile() {
 
   // Meta row
   const metaItems = document.querySelectorAll('.pmeta-item');
-  if (metaItems[0]) metaItems[0].textContent = profile.location ? '<img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> ' + profile.location : '<img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Location not set';
+  if (metaItems[0]) metaItems[0].innerHTML = profile.location ? '<img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> ' + profile.location : '<img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Location not set';
 
   const joined = profile.created_at
     ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     : '2026';
-  if (metaItems[1]) metaItems[1].textContent = '<img src="assets/img/icons/icon-leaf.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Member since ' + joined;
+  if (metaItems[1]) metaItems[1].innerHTML = '<img src="assets/img/icons/icon-leaf.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> Member since ' + joined;
 
   // Member type badge
   const typeBadge = document.querySelector('.member-type-badge');
