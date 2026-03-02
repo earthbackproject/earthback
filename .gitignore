@@ -23,6 +23,7 @@ branding/
 governance/
 imported images/
 org-test1/
+eb_research/
 
 # ComfyUI / Flux raw output (processed versions go to site/assets/img/)
 comfyui-output/

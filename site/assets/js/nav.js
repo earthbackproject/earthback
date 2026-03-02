@@ -32,6 +32,7 @@
     { href: 'map.html',        label: 'Map'        },
     { href: 'visualizer.html', label: 'Visualizer', hide: 'hide-md' },
     { href: 'designer.html',   label: 'Estimator',  hide: 'hide-md' },
+    { href: 'methods.html',    label: 'Methods',    hide: 'hide-md' },
     { href: 'gallery.html',    label: 'Gallery',    hide: 'hide-sm' },
   ];
 
@@ -40,6 +41,7 @@
     { href: 'visualizer.html', label: 'AI Visualizer',    group: 'Tools'     },
     { href: 'designer.html',   label: 'Estimator',        group: 'Tools'     },
     { href: 'gallery.html',    label: 'Gallery',          group: 'Community' },
+    { href: 'methods.html',      label: 'Building Methods', group: 'Learn'     },
     { href: 'how-it-works.html', label: 'How It Works',   group: 'Learn'     },
     { href: 'use-cases.html',  label: 'Use Cases',        group: 'Learn'     },
     { href: 'about.html',      label: 'About',            group: 'Learn'     },
