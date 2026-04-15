@@ -5,10 +5,23 @@
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:type" content="website">
+  <meta property="og:title" content="Building Methods — the Earthback Project">
+  <meta property="og:description" content="Explore 30 construction methods from ancient earth-building to modern green techniques. Claim your skills and connect with experienced builders.">
+  <meta property="og:url" content="https://earthbackproject.org/methods.html">
+  <meta property="og:site_name" content="Earthback">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@earthbackproj">
+  <meta name="twitter:title" content="Building Methods — the Earthback Project">
+  <meta name="twitter:description" content="Explore 30 construction methods from ancient earth-building to modern green techniques. Claim your skills and connect with experienced builders.">
+  <meta name="twitter:image" content="https://earthbackproject.org/assets/img/og-image.jpg">
+  <meta name="keywords" content="hempcrete, natural building, green building, off-grid, solar, permaculture, community housing, mutual aid, earth building, straw bale, timber framing, food forest, regenerative">
+  <meta name="author" content="Earthback">
+  <meta name="robots" content="index, follow">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Building Methods — the Earthback Project</title>
   <meta name="description" content="Explore 30 construction methods from ancient earth-building to modern green techniques. Claim your skills and connect with experienced builders.">
@@ -71,6 +84,47 @@
     .method-card{background:var(--card);border:1px solid var(--border-lt);border-radius:12px;overflow:hidden;transition:all 0.3s;cursor:pointer;display:flex;flex-direction:column}
     .method-card:hover{transform:translateY(-4px);box-shadow:0 8px 28px var(--shadow-d);border-color:var(--green-soft)}
     .method-card.expanded{position:relative;z-index:10;grid-column:1/-1}
+
+    /* ── HERO IMAGE ON CARD ── */
+    .method-hero{position:relative;width:100%;height:180px;overflow:hidden;background:linear-gradient(135deg,var(--pale-green),var(--parchment2))}
+    .method-hero img{width:100%;height:100%;object-fit:cover;display:block}
+    .method-hero-placeholder{display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;opacity:0.3}
+    .method-hero-credit{position:absolute;bottom:0;right:0;background:rgba(31,58,46,0.75);color:var(--parchment);font-size:0.7rem;padding:3px 10px;border-radius:8px 0 0 0;backdrop-filter:blur(4px)}
+    .method-hero-credit a{color:var(--clay);text-decoration:none}
+    .method-hero-credit a:hover{text-decoration:underline}
+
+    /* ── SUBMIT BUILD BUTTON ── */
+    .submit-build-link{display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--green-soft);cursor:pointer;margin-top:8px;padding:4px 0;transition:color 0.2s}
+    .submit-build-link:hover{color:var(--green)}
+
+    /* ── SUBMISSION FORM ── */
+    .submit-form{display:none;background:var(--card);border:2px solid var(--green-soft);border-radius:10px;padding:20px;margin-top:16px}
+    .submit-form.open{display:block;animation:slideDown 0.3s ease-out}
+    .submit-form-title{font-family:var(--font-serif);font-size:1.1rem;font-weight:600;color:var(--ink);margin-bottom:4px}
+    .submit-form-subtitle{font-size:0.82rem;color:var(--ink-soft);margin-bottom:16px;line-height:1.5}
+    .submit-preview{width:100%;max-height:240px;object-fit:contain;border-radius:8px;border:1px solid var(--border-lt);margin-bottom:12px;display:none}
+    .submit-preview.has-image{display:block}
+    .file-drop{border:2px dashed var(--border);border-radius:10px;padding:28px 16px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:12px}
+    .file-drop:hover,.file-drop.dragover{border-color:var(--green);background:rgba(31,58,46,0.03)}
+    .file-drop-text{font-size:0.9rem;color:var(--ink-soft)}
+    .file-drop-hint{font-size:0.75rem;color:var(--ink-soft);margin-top:4px;opacity:0.7}
+    .form-input{font-family:var(--font-sans);font-size:0.9rem;width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;color:var(--ink);transition:all 0.2s}
+    .form-input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(31,58,46,0.1)}
+    .form-input::placeholder{color:var(--ink-soft)}
+    .form-row{display:flex;gap:12px;margin-bottom:12px}
+    .form-row .form-group{flex:1;margin-bottom:0}
+    .logo-section{background:var(--parchment2);border:1px solid var(--border-lt);border-radius:8px;padding:14px;margin-bottom:16px}
+    .logo-section-title{font-size:0.82rem;font-weight:600;color:var(--ink);margin-bottom:4px}
+    .logo-section-hint{font-size:0.75rem;color:var(--ink-soft);margin-bottom:10px;line-height:1.5}
+    .logo-toggle{display:flex;gap:8px;margin-bottom:10px}
+    .logo-toggle-btn{font-size:0.78rem;padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--ink-soft);cursor:pointer;transition:all 0.2s;font-family:var(--font-sans)}
+    .logo-toggle-btn.active{background:var(--green);color:white;border-color:var(--green)}
+    .logo-preview{width:48px;height:48px;object-fit:contain;border-radius:6px;border:1px solid var(--border-lt);margin-top:8px;display:none}
+    .logo-preview.has-image{display:block}
+
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--green);color:white;padding:14px 28px;border-radius:12px;font-size:0.9rem;font-weight:500;z-index:9999;opacity:0;transition:all 0.4s ease;box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
     /* ── METHOD CARD HEADER ── */
     .method-header{padding:20px}
@@ -759,9 +813,29 @@ function renderGrid() {
 function renderCard(m) {
   const isExpanded = expandedMethodId === m.id;
   const skill = userSkills[m.id];
+  const heroIcon = getCategoryIcon(m.category, m.name);
 
   return `
     <div class="method-card ${isExpanded ? 'expanded' : ''}" data-method-id="${m.id}">
+
+      <div class="method-hero">
+        ${(() => {
+          // Prefer DB-provided hero, otherwise fall back to deployed AI-rendered card by slug.
+          // onerror swap to placeholder if the file doesn't exist for this method yet.
+          const heroUrl = m.hero_image_url || (m.slug ? `assets/img/methods/${m.slug}.jpg` : '');
+          if (heroUrl) {
+            return `<img src="${escapeHtml(heroUrl)}" alt="${escapeHtml(m.name)}" loading="lazy"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="method-hero-placeholder" style="display:none">${heroIcon}</div>`;
+          }
+          return `<div class="method-hero-placeholder">${heroIcon}</div>`;
+        })()}
+        ${m.hero_credit_name
+          ? `<div class="method-hero-credit">
+               <a href="profile.html?id=${m.hero_credit_user_id || ''}">${escapeHtml(m.hero_credit_name)}</a>
+             </div>`
+          : ''}
+      </div>
 
       <div class="method-header">
         <div class="method-number">Method ${m.id}</div>
@@ -1020,6 +1094,197 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+function getCategoryIcon(category, name) {
+  const icons = {
+    'Hempcrete': '🌿', 'Rammed Earth': '🏔️', 'Cob': '🏠', 'Adobe Brick': '🧱',
+    'Earthbag': '🎒', 'Straw Bale': '🌾', 'Cordwood': '🪵', 'Bamboo': '🎋',
+    'Green Roof': '🌱', 'Living Wall': '🌿', 'Earthship': '🚀', 'Papercrete': '📄',
+    'Ferrocement': '⚙️', 'Wattle and Daub': '🪹', 'Light Straw Clay': '🌾',
+    'Superadobe': '🏗️', 'Compressed Earth Block': '🧱', 'Timber Frame': '🪵',
+    'Stone Masonry': '🪨', 'Thatch': '🛖', 'Mycelium': '🍄', 'Recycled Materials': '♻️',
+    '3D-Printed Earth': '🖨️'
+  };
+  return icons[name] || (category === 'green' ? '🌿' : '🔧');
+}
+
+// ══════════════════════════════════════════════════
+// SUBMISSION SYSTEM
+// ══════════════════════════════════════════════════
+const pendingUploads = {}; // { methodId: { file, logoFile, logoMode } }
+
+function toggleSubmitForm(methodId) {
+  const form = document.getElementById(`submit-form-${methodId}`);
+  if (form) form.classList.toggle('open');
+}
+
+function toggleLogoMode(methodId, mode, btn) {
+  // Toggle active state on buttons
+  btn.parentElement.querySelectorAll('.logo-toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Show/hide sections
+  const uploadEl = document.getElementById(`logo-upload-${methodId}`);
+  const urlEl = document.getElementById(`logo-url-${methodId}`);
+  if (uploadEl) uploadEl.style.display = mode === 'upload' ? 'block' : 'none';
+  if (urlEl) urlEl.style.display = mode === 'url' ? 'block' : 'none';
+
+  if (!pendingUploads[methodId]) pendingUploads[methodId] = {};
+  pendingUploads[methodId].logoMode = mode;
+}
+
+function handleImageSelect(methodId, input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  if (!pendingUploads[methodId]) pendingUploads[methodId] = {};
+  pendingUploads[methodId].file = file;
+
+  // Show preview
+  const preview = document.getElementById(`preview-${methodId}`);
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    preview.src = e.target.result;
+    preview.classList.add('has-image');
+  };
+  reader.readAsDataURL(file);
+
+  // Hide drop zone
+  const drop = document.getElementById(`drop-${methodId}`);
+  if (drop) drop.style.display = 'none';
+}
+
+function handleLogoSelect(methodId, input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  if (!pendingUploads[methodId]) pendingUploads[methodId] = {};
+  pendingUploads[methodId].logoFile = file;
+
+  const preview = document.getElementById(`logo-preview-${methodId}`);
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    preview.src = e.target.result;
+    preview.classList.add('has-image');
+  };
+  reader.readAsDataURL(file);
+}
+
+// Drag-and-drop support
+document.addEventListener('dragover', (e) => e.preventDefault());
+document.addEventListener('drop', (e) => {
+  e.preventDefault();
+  const drop = e.target.closest('.file-drop');
+  if (!drop) return;
+  const methodId = parseInt(drop.id.replace('drop-', ''));
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const input = document.getElementById(`file-${methodId}`);
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    handleImageSelect(methodId, input);
+  }
+});
+
+async function submitBuildPhoto(methodId) {
+  if (!currentUser) return;
+
+  const upload = pendingUploads[methodId];
+  if (!upload || !upload.file) {
+    showToast('Please select a photo first');
+    return;
+  }
+
+  const btn = document.getElementById(`submit-btn-${methodId}`);
+  const origText = btn.textContent;
+  btn.textContent = 'Uploading...';
+  btn.disabled = true;
+
+  try {
+    // 1. Upload image to method-images bucket
+    const method = allMethods.find(m => m.id === methodId);
+    const slug = method ? method.slug || method.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'unknown';
+    const ext = upload.file.name.split('.').pop() || 'jpg';
+    const timestamp = Date.now();
+    const imagePath = `${currentUser.id}/${slug}/${timestamp}.${ext}`;
+
+    const { data: uploadData, error: uploadError } = await sb.storage
+      .from('method-images')
+      .upload(imagePath, upload.file, { contentType: upload.file.type, upsert: false });
+
+    if (uploadError) {
+      console.error('Upload error:', uploadError);
+      showToast('Upload failed — ' + (uploadError.message || 'try again'));
+      btn.textContent = origText;
+      btn.disabled = false;
+      return;
+    }
+
+    // Get public URL
+    const { data: urlData } = sb.storage.from('method-images').getPublicUrl(imagePath);
+    const imageUrl = urlData.publicUrl;
+
+    // 2. Handle logo
+    let logoUrl = null;
+    if (upload.logoMode === 'upload' && upload.logoFile) {
+      const logoExt = upload.logoFile.name.split('.').pop() || 'png';
+      const logoPath = `${currentUser.id}/logos/${timestamp}-logo.${logoExt}`;
+      const { error: logoErr } = await sb.storage
+        .from('method-images')
+        .upload(logoPath, upload.logoFile, { contentType: upload.logoFile.type, upsert: false });
+      if (!logoErr) {
+        const { data: logoUrlData } = sb.storage.from('method-images').getPublicUrl(logoPath);
+        logoUrl = logoUrlData.publicUrl;
+      }
+    } else if (upload.logoMode === 'url') {
+      const urlInput = document.getElementById(`logo-url-input-${methodId}`);
+      if (urlInput && urlInput.value.trim()) {
+        logoUrl = urlInput.value.trim();
+      }
+    }
+
+    // 3. Call RPC
+    const caption = document.getElementById(`caption-${methodId}`)?.value || null;
+    const { data: rpcData, error: rpcError } = await sb.rpc('submit_method_image', {
+      p_method_id: methodId,
+      p_image_url: imageUrl,
+      p_caption: caption
+    });
+
+    if (rpcError || (rpcData && rpcData.error)) {
+      const errMsg = rpcError?.message || rpcData?.error || 'Submission failed';
+      console.error('RPC error:', errMsg);
+      showToast(errMsg);
+      btn.textContent = origText;
+      btn.disabled = false;
+      return;
+    }
+
+    // Success!
+    showToast('Photo submitted! We\'ll review it soon.');
+    toggleSubmitForm(methodId);
+    delete pendingUploads[methodId];
+
+  } catch (e) {
+    console.error('Submit error:', e);
+    showToast('Something went wrong — please try again');
+    btn.textContent = origText;
+    btn.disabled = false;
+  }
+}
+
+function showToast(message) {
+  let toast = document.querySelector('.toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
 // Render claim form inline
 function renderDetail(m, skill) {
   const selectedTier = skill ? skill.tier : '';
@@ -1113,6 +1378,59 @@ function renderDetail(m, skill) {
             </div>
           </div>
         </div>
+
+        ${/* Submit Your Build — only for experienced/trainer tier */
+          skill && (skill.tier === 'experienced' || skill.tier === 'trainer') ? `
+        <div class="detail-section" style="margin-top:16px">
+          <div class="submit-build-link" onclick="toggleSubmitForm(${m.id})">
+            Submit Your Build Photo
+          </div>
+
+          <div class="submit-form" id="submit-form-${m.id}" data-method-id="${m.id}">
+            <div class="submit-form-title">Submit a Build Photo</div>
+            <div class="submit-form-subtitle">
+              Share a photo of your ${escapeHtml(m.name)} project. We'll watermark it with the Earthback mark and your logo if you include one. The best submissions get featured as the hero image for this method — with your name on it.
+            </div>
+
+            <!-- Image Upload -->
+            <div class="file-drop" id="drop-${m.id}" onclick="document.getElementById('file-${m.id}').click()">
+              <input type="file" id="file-${m.id}" accept="image/*" style="display:none" onchange="handleImageSelect(${m.id}, this)">
+              <div class="file-drop-text">Drop your photo here or click to browse</div>
+              <div class="file-drop-hint">JPG, PNG, or WebP — any size, we'll handle the rest</div>
+            </div>
+            <img class="submit-preview" id="preview-${m.id}" alt="Preview">
+
+            <!-- Caption -->
+            <div class="form-group">
+              <label class="form-label">Caption (optional)</label>
+              <input type="text" class="form-input" id="caption-${m.id}" placeholder="e.g. Our hempcrete workshop wall, spring 2025" maxlength="200">
+            </div>
+
+            <!-- Logo Section -->
+            <div class="logo-section">
+              <div class="logo-section-title">Your Logo (optional)</div>
+              <div class="logo-section-hint">Want your brand on the image? Upload a logo or paste a URL and we'll add it alongside the Earthback watermark. Encouraged — submit raw photos and we'll make them look great.</div>
+              <div class="logo-toggle">
+                <button class="logo-toggle-btn active" onclick="toggleLogoMode(${m.id}, 'none', this)">No Logo</button>
+                <button class="logo-toggle-btn" onclick="toggleLogoMode(${m.id}, 'upload', this)">Upload Logo</button>
+                <button class="logo-toggle-btn" onclick="toggleLogoMode(${m.id}, 'url', this)">Logo URL</button>
+              </div>
+              <div id="logo-upload-${m.id}" style="display:none">
+                <input type="file" id="logo-file-${m.id}" accept="image/png,image/svg+xml,image/webp" onchange="handleLogoSelect(${m.id}, this)">
+                <img class="logo-preview" id="logo-preview-${m.id}" alt="Logo preview">
+              </div>
+              <div id="logo-url-${m.id}" style="display:none">
+                <input type="url" class="form-input" id="logo-url-input-${m.id}" placeholder="https://yoursite.com/logo.png">
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="form-btn form-btn-cancel" onclick="toggleSubmitForm(${m.id})">Cancel</button>
+              <button class="form-btn form-btn-save" id="submit-btn-${m.id}" onclick="submitBuildPhoto(${m.id})">Submit Photo</button>
+            </div>
+          </div>
+        </div>
+        ` : ''}
       ` : `
         <div class="skill-section">
           <div class="detail-title">Your Skill</div>

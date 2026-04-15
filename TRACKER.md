@@ -3,7 +3,7 @@
 *To resume: "Read TRACKER.md and SESSION_NOTES.md and pick up where we left off."*
 *Visual version: `/tracker/index.html` — open in browser for the full dashboard.*
 
-**Last updated:** 2026-02-26 (session 29 — fixed nav positioning, sidebar scroll fix, reference image scraper)
+**Last updated:** 2026-04-14 (session 41 autonomous — hempcrete LoRA verified, web optimization pipeline built, 3237 web-ready JPGs processed, 3 og:image variants created, site deployment staging ready)
 
 ---
 
@@ -13,14 +13,15 @@
 |---|---|---|
 | Marketing Site (HTML) | 🟢 Live | earthbackproject.org · all pages deployed · 20+ pages |
 | Platform / App | 🟡 In progress | Auth live · feed · gallery · visualizer · estimator · training · projects · circles · messaging (demo) · **community map** · **admin portal (eb-grove)** |
-| Database Migrations | 🟡 Partial | V1-V2, V5-V9 all run ✅ · PROFILE_MIGRATION, V3 (messages), V4 (post images), V9b (IP) still pending |
+| Database Migrations | 🟡 Partial | V1-V2, V5-V9 all run ✅ · PROFILE_MIGRATION, V3 (messages), V4 (post images), V9b (IP), V9c (device), V10 (methods+skills) still pending |
 | Source Control | 🟢 Current | GitHub repo connected, git push → Netlify auto-deploy · all pushed through session 28 |
 | Folder Organization | 🟢 Done | SQL→db/, brand assets→branding/, governance→governance/, archive→reference/, QUICKSTART.md at root |
 | Org, Legal & Naming | 🟡 In progress | Trademark research still pending |
 | Branding | 🟢 SVG system live | 30 SVGs deployed · Georgia font · mixed-case brand · emoji replaced sitewide · favicon live |
 | Hosting & Launch | 🟢 Live | earthbackproject.org on Netlify · git-based deploys |
 | Documentation | 🟢 Done | CLAUDE.md (auto-loaded), QUICKSTART.md, command-center.html, session notes, tracker |
-| AI Image Generation | 🟡 In progress | Charsheets + site assets done · reference image scraper built · hempcrete + 3D concrete LoRA training next · PuLID after LoRAs |
+| AI Image Generation | 🟡 In progress | **Character Manager pipeline UI** (6-step guided flow, dual-GPU, triptych gen, **PuLID triptych from single photo**, panel gallery, **editable prompt editor with project save**, **gallery metadata viewer**) · **Dual-GPU ComfyUI** (GPU 0 :8189 triptychs, GPU 1 :8188 PuLID) · **Hempcrete Flux LoRA verified** (3 checkpoints, test script ready) · **Web optimization pipeline** (3237 web-ready JPGs from 1508 PNGs, 29× compression) · **3 og:image social cards** created · **Site deployment staging** (87 images staged, preview gallery) · PuLID v2 ready (0.60 strength, angle negatives, 3-ref rotation) · multi-project support · character LoRA training next |
+| Earthmesh / EMF Products | 🟡 In progress | **Material locked: CRS (not Galvalume)** · **V2b deck ready** (CK-series integrated, Utah de-emphasized) · CK-Series Design Brief v1 done · Design Brief v13 + Spengler Proposal v4 updated · Laser at LA port · 30+ SKUs priced · **Nomad gap analysis done, Docker stack drafted** |
 
 ---
 
@@ -53,6 +54,7 @@ The public-facing community site. Goal: live and functional before platform buil
 - [x] `training.html` — Skills & Training partner inquiry page with contact form
 - [x] `sitemap.html` — Full site map organized by section
 - [x] `map.html` — Community map (Leaflet + OpenStreetMap) with 88 curated hotspot pins, 6 categories, layer toggles, Supabase-powered
+- [x] `methods.html` — **Building Methods directory** — 30 construction methods (23 green + 7 conventional), filterable/searchable card grid, expandable detail panels, 4-tier skill claiming system (Curious/Hands-On/Experienced/Trainer), community builder counts, profile badge integration
 - [x] `eb-grove.html` — **Admin operations portal** (auth-gated, obscured URL) — real-time members, traffic monitor, system health, platform activity, visions feed
 
 ### What's still needed on the site
@@ -78,7 +80,7 @@ The public-facing community site. Goal: live and functional before platform buil
 
 **Medium priority**
 - [x] **Favicon** — Eb monogram (SVG/ICO/PNG), shows on all tabs ✓
-- [ ] **og:image** — social sharing preview card (1200×630); needed before any social sharing
+- [x] **og:image** — 3 variants created in `local/web-ready/og/` (build, homestead, timber scenes with brand overlay) — pick one and deploy to `site/assets/img/og-image.png`
 - [ ] **Site tour page** — guided walkthrough for new visitors explaining causes, tools, and possibilities
 - [x] **join.html → feed.html split** — dashboard moved to feed.html, join.html is onboarding only, /community serves feed.html ✓
 - [ ] `join.html` — "See the community" step shows fake feed; connect to real feed once platform exists
@@ -109,7 +111,7 @@ Per v1 scope freeze (2026-02-18): everything below is required for v1.
 ### Auth & Identity
 - [x] Magic link auth — Supabase OTP, real emails sending ✓
 - [x] Google OAuth sign-in — "Continue with Google" button on join.html and login.html; auth-callback pulls name/avatar from Google metadata ✓
-- [x] Signup → profile creation flow — join.html sends magic link + saves to localStorage → auth-callback.html persists to DB ✓
+- [x] Signup → profile creation flow — join.html creates account with email+password → saves profile to Supabase → proceeds to profiler or skip ✓
 - [x] Session management — getSession() on page load, auto-redirect to /community ✓
 - [x] Profile persistence — `profiles` table live in Supabase with RLS ✓
 - [ ] DID storage (AT Protocol) — future phase
@@ -306,7 +308,7 @@ Nicco's main interface to the site. Auth-gated to `earthbackproject@gmail.com` a
 - [x] Brand wordmark treatment — `ᵗʰᵉ EARTHBACK PROJECT` typographic system applied to all 8 site pages (`.brand-the` / `.brand-back` / `.brand-project` CSS classes)
 - [ ] Logo — finalized vector/raster version needed for og:image, app
 - [x] Favicon — Eb monogram SVG/ICO/PNG, shows on all tabs ✓
-- [ ] og:image / social sharing card — 1200×630, ideally generated from brand palette
+- [x] og:image / social sharing card — 3 photo-backed variants with brand overlay in `local/web-ready/og/` (session 41)
 
 ---
 
@@ -394,7 +396,7 @@ Given current state, this is the recommended sequence:
 
 ## 7 — AI Image Generation (ComfyUI / Flux)
 
-All scripts in `/Earthback/` root. ComfyUI at `http://127.0.0.1:8188`. Output: `comfyui-output/`.
+All scripts in `local/scripts/`. ComfyUI at `http://127.0.0.1:8188`. Output: `comfyui-output/`.
 **File naming convention:** `chars-NAME-TYPE_NNNNN_.png` (character-first for Explorer curation)
 
 ### Character Images (19 characters × shots)
@@ -413,13 +415,40 @@ All scripts in `/Earthback/` root. ComfyUI at `http://127.0.0.1:8188`. Output: `
 
 ### PuLID Face-Locked Generation
 - [x] PuLID node installed at `ComfyUI/custom_nodes/ComfyUI-PuLID-Flux`
-- [ ] **Download PuLID models** — `python setup-pulid.py` (pulid_flux_v0.9.1.safetensors + EVA CLIP)
-- [ ] **Place reference images** — best face-front shot per character → `faces-reference/CharacterName.png`
-- [ ] **Run PuLID generation** — `python queue-pulid-faces.py`
+- [x] PuLID models downloaded — pulid_flux_v0.9.1.safetensors + EVA CLIP
+- [x] InsightFace antelopev2 models installed at `D:\AI\ComfyUI\models\insightface\models\antelopev2\`
+- [x] Reference face images prepared — 8 characters (512×640 center crops) in `local/faces-reference/`
+- [x] **Workflow JSON fixed** — updated class_types for PuLID Flux nodes + added PulidFluxEvaClipLoader (node 44)
+- [x] **comfy-run.bat fixed** — `--cuda-device 1` for dual GPU operation
+- [x] **PuLID generation confirmed working** (test: Lena Hartmann)
+- [x] **Overnight orchestrator ready** — `run-pulid-all.py` restarts ComfyUI per character, safe alongside LoRA training
+- [x] **v2 angle fixes** — strength 0.60, per-angle negatives, 4 prompt templates/angle, 3-ref rotation from charsheet panels
+- [x] **comfyui-output organized** — 2,362 files sorted into 51 subdirs via `sort-comfyui-output.py`
+- [ ] **Run PuLID v2 batch** — `python local\scripts\run-pulid-all.py --rounds 3` (3 rounds = 1 per ref image)
+- [ ] **Review PuLID v2 quality** — if angles still flat, try strength 0.50 or `start_at: 0.2` in node 42
+- [ ] **Re-sort new output** — `python local\scripts\sort-comfyui-output.py`
+- [ ] **Caption PuLID output** — run quick-caption.py on character face images
+- [ ] **Generate character LoRA configs** — make-flux-config.py per character
+- [ ] **Train 8 character LoRAs** — ~11hrs each on cuda:0
 
-### Hempcrete LoRA (Nadia Benali character)
-- [x] Script built: `queue-hempcrete-lora.py`
-- [ ] **Run batch** — 0 images generated so far; run `python queue-hempcrete-lora.py`
+### Hempcrete LoRA Training
+- [x] Script built: `queue-hempcrete-lora.py` (Flux generation for training images)
+- [x] Dataset voice-captioned — 77 images (44 excluded), trigger word EBHEMPCRETE, via quick-caption.py + WhisperFlow
+- [x] Kohya SS installed at `D:\AI\kohya_ss\` with sd-scripts submodule
+- [x] **SDXL LoRA v1 trained** — `train-hempcrete-sdxl.bat`, 1500 steps, 83min, avg loss 0.134
+- [x] ai-toolkit installed at `D:\AI\ai-toolkit\` (torch 2.5.1+cu121, diffusers 0.36.0)
+- [x] **Flux LoRA training complete** — `hempcrete-flux-12gb.yaml`, 1200 steps @ ~36s/step, layer_offloading, cuda:0
+- [x] **Flux LoRA checkpoints verified** (session 41) — 3 valid safetensors: 400, 800, 1200 steps (165 MB each)
+- [x] `setup-hempcrete-flux-lora.bat` — copies all 3 Flux LoRA checkpoints to ComfyUI loras folder
+- [x] `test-hempcrete-lora.py` — queues 9 comparison images (3 prompts × 3 variants: final, step-800, no-lora)
+- [ ] **Run LoRA test** — `setup-hempcrete-flux-lora.bat` then `python local\scripts\test-hempcrete-lora.py`
+- [ ] **Compare LoRA outputs** — pick best checkpoint, evaluate quality
+- [x] 4 checkpoints in `local/lora-output/hempcrete-sdxl/` (steps 500, 1000, 1500 + final)
+- [x] Final LoRA copied to `D:\AI\ComfyUI\models\loras\hempcrete-sdxl-v1.safetensors`
+- [x] Voice captioning tool built (`local/scripts/voice-caption.py`) — Whisper-powered, mic-based
+- [ ] **USB mic arrives** → re-caption dataset with voice tool for better descriptions
+- [ ] **Re-train with improved captions** → hempcrete-sdxl-v2
+- [ ] **Test in context** — characters + hempcrete in Earthback scene compositions
 
 ### Circle Category Images (39 categories × 3 prompts)
 - [x] `queue-circles.py` script built
@@ -435,8 +464,77 @@ All scripts in `/Earthback/` root. ComfyUI at `http://127.0.0.1:8188`. Output: `
 - [ ] **Get API keys** — Pexels (free) + Pixabay (free); add to script flags
 - [ ] **Run collection** — `python collect-3dprinter-images.py --pexels-key KEY --pixabay-key KEY`
 - [ ] **Curate + caption dataset**
-- [ ] **Confirm Kohya SS path** — assumed at `D:\AI\kohya_ss\` — verify before training
-- [ ] **Run training**
+- [x] **Kohya SS confirmed** at `D:\AI\kohya_ss\` with venv (Python 3.11, torch+cu124)
+- [ ] **Run training** — use SDXL approach (not Flux) per session 30 findings
+
+---
+
+## 8 — Earthmesh / EMF Products & Investor Outreach
+
+Focused product line: Faraday enclosures, LoRa mesh comms kits, and solar trailer fleet. Goal: raise $250K seed round to stock radio and metal materials before supply chain disruptions.
+
+### Material Decision
+- [x] **Material locked: cold-rolled steel (CRS)** — Nicco + Erno confirmed. Not Galvalume. Higher ferrous content = dramatically better magnetic shielding for EMP. Same coil formats, same supply chain as metal roofing stock.
+
+### Laser Table
+- [x] Fiber laser ordered
+- [ ] **Laser in port of LA** (March 26, 2026) — track delivery to Spengler's shop
+- [ ] Laser installed and operational
+
+### Investor Deck
+- [x] V1a — Broad Earthback Industries deck (21 slides) → `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V1a.pptx`
+- [x] V1b — Focused EMF/comms deck with real product data (16 slides) → `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V1b.pptx` + `.pdf`
+- [x] V1c — Material updated to CRS, laser status updated → `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V1c.pptx` + `.pdf`
+- [x] V1d — GSM credential prominent on founder slide + Earthmesh node slide → `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V1d.pptx` + `.pdf`
+- [x] V1e — 30-year full circle narrative (GSM 1996 → Earthmesh 2026) woven through slides 2, 6, 14
+- [x] V1f — LoRa bandwidth accuracy pass (messaging only, no voice/streaming claims)
+- [x] V1g — Wi-Fi HaLow roadmap note on mesh radio slide → `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V1g.pptx` + `.pdf`
+- [x] V2a — 18-slide overhaul: pptxgenjs rewrite, new card layouts, full product matrix, maker platform slide → `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V2a.pptx` + `.pdf`
+- [x] V2b — CK-series comms kits integrated (5 SKUs, real verified pricing $89-$999), Utah references removed/softened across 10 slides, Go-To-Market slide rewritten → `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V2b.pptx` **(CURRENT)**
+- [ ] V2b PDF — needs conversion on Windows (LibreOffice or PowerPoint Save As)
+- [ ] V3 — Post-investor-feedback revision
+
+### Research
+- [x] `eb_research/Earthmesh/WiFi_HaLow_Research.md` + `.docx` + `.pdf` — Wi-Fi HaLow (802.11ah) comparison vs LoRa, hardware availability, integration recommendations. Phase 2 complementary layer, not LoRa replacement.
+- [x] `eb_research/offline-emp-restart/Nomad_vs_Earthback_Analysis_v1.docx` + `.pdf` — Project N.O.M.A.D. gap analysis: feature comparison table (18 capabilities), 3-phase integration plan, Docker container inventory by trailer tier, content pre-loading strategy
+
+### CK-Series Communications Kits
+- [x] Price research — browser-verified wholesale/retail for 12+ components (GMRS, SDR, LoRa, RTL-SDR, accessories) — March 26, 2026
+- [x] `eb_research/offline-emp-restart/CK_Series_Design_Brief_v1.docx` + `.pdf` — 12-page design brief with BOM tables, component price reference, revenue projections
+- [x] 5 kits defined: CK-10 ($89, 58%), CK-20 ($249, 48%), CK-30 ($169, 75%), CK-40 ($399, 73%), CK-50 ($999, 54%)
+- [ ] Source supplier quotes for volume pricing (MOQ 100+)
+- [ ] Prototype CK-10 and CK-30 packaging
+- [ ] FCC GMRS license QR code artwork
+
+### Offline Station Software Stack (Docker)
+- [x] `eb_research/offline-emp-restart/docker-compose.yml` — Tiered Docker Compose with profiles: scout, field, hub, command, dev. 13 services.
+- [x] `eb_research/offline-emp-restart/.env.example` — Environment configuration template
+- [x] `eb_research/offline-emp-restart/containers/mesh-bridge/` — Meshtastic AI bridge Dockerfile + script
+- [ ] **Test Kiwix + ProtoMaps + CyberChef on Windows** via Docker Desktop
+- [ ] **Download ZIM files** — wikipedia_en_100_mini (test), wikimed, first-aid
+- [ ] **Download Kolibri content packs** — Khan Academy math/science
+- [ ] **Download PMTiles** — test one tribal region
+- [ ] **Test llama.cpp CUDA container** — official image with RTX 3060
+- [ ] **Build Earthback Dashboard** — web UI for managing all station services
+- [ ] **Offline provisioning** — pre-built SSD images per tier
+- [ ] **Authentication layer** — role-based login (Nomad doesn't have this)
+- [ ] **Station-to-station sync** — auto-merge knowledge bases when stations are in range
+
+### Product Data Sources (current versions)
+- `eb_research/offline-emp-restart/Entry_Products_Design_Brief_v13.docx` — 6 entry SKUs, 3 config levels, maker platform (**CRS material, was v12/Galvalume**)
+- `eb_research/offline-emp-restart/Spengler_CEO_Proposal_v4.docx` — 30-SKU matrix, full pricing, margins 48-62% (**CRS material, was v3/Galvalume**)
+- `eb_research/Earthmesh/Earthmesh_Investor_Deck_v7.pptx` — node specs, trailers, market segments, financials
+
+### Partners (political notes)
+- **Spengler Industries** — 40-year credibility, present in deck but NOT as anchor/lead (Erno must not get leverage for partnership role)
+- **BFFT (Bountiful Food Truck & Trailer)** — trailer manufacturer, company name only (Jon Fletcher not mentioned per political sensitivity)
+
+### Next
+- [ ] Get investor feedback on V1g
+- [ ] Iterate to V2 based on feedback
+- [ ] **CRS coil stock pre-order** — lock in pricing on 24 ga + 20 ga, full truckload buy
+- [ ] Open 130E 1100N building (or alternate) for manufacturing
+- [ ] Begin radio and metal stock procurement
 
 ---
 

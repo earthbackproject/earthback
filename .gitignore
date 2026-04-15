@@ -34,10 +34,49 @@ start-comfy-claude.bat
 # Everything that doesn't belong in the deployed site lives here
 local/
 
+# Web-ready image masters at repo root (3GB+ of JPGs — deployed copies live in site/assets/img/)
+web-ready/
+web-ready-watermarked/
+
+# Internal admin docs — not for the public repo
+admin_docs/
+
+# Unwatermarked backup copies of deployed images (masters live in local/web-ready/)
+site/assets/img/posts/_unwatermarked-backup/
+
+# Old OG image variants superseded by current og-image.jpg
+site/assets/img/og-image-v1-old.png
+site/assets/img/og-image-v2-nowatermark.jpg
+
+# Cowork session state, worktrees, and skill caches (never commit)
+.claude/
+
+# Unrelated projects sharing the workspace folder
+FreeCAD_EMP_DVD/
+
 # Large image assets (keep locally, processed versions in site/assets/img/)
 site/content/cast-photos/
 site/content/social/processed/
 *.docx
+*.pdf
+
+# LibreOffice lock files
+.~lock.*
+
+# Spengler Industries / robot / cell docs (internal, not for the public repo)
+docs/SHINGLE-CELL.md
+docs/PRINTER-PROJECT.md
+docs/FR3-Bench-Test*
+docs/Clammy-Wiring*
+docs/Shingle-Cell-TODO*
+docs/Diamond-Cell-AI*
+docs/Hardware-Architecture*
+
+# Business documents (never commit)
+Bountiful-Acquisition-Proposal.pdf
+
+# Graphics review working files
+graphics-review/
 
 # Command center (contains credentials — never commit)
 command-center.html

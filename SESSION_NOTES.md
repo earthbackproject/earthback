@@ -4,7 +4,928 @@
 ---
 
 ## Last Updated
-2026-02-26 — Session 29 with Nicco via Cowork (Opus)
+2026-04-14 — Session 41/42 with Claude via Cowork (Opus)
+
+---
+
+## What Was Done in Session 42 — Watermarking & Site Meta Tags (2026-04-14)
+
+### og:image deployed + full social meta tags
+- New `site/assets/img/og-image.jpg` from `og-image-v2-homestead` variant (1200×630, 247 KB, EXIF/IPTC fully stripped)
+- Old `og-image.png` backed up as `site/assets/img/og-image-v1-old.png` (kept, not deleted)
+- All 26 site HTML files updated with full social meta block via `local/scripts-tmp/update_meta_tags.py`:
+  - `og:image` switched .png → .jpg
+  - Added per-page `og:title`, `og:description`, `og:url`, plus `og:site_name`, `og:locale`
+  - Added `twitter:card="summary_large_image"`, `twitter:site=@earthbackproj` (placeholder, may need real handle), `twitter:title`, `twitter:description`, `twitter:image`
+  - Added `keywords`, `author`, `robots` meta tags
+- Idempotent script — safe to re-run
+
+### Watermark module + batch
+- **New `local/scripts/watermark.py`** — reusable module exporting `apply_watermark(img)`. Final style: faint diagonal `EARTHBACK` pattern at opacity 60 + bold bottom-left wordmark `the Earthback Project.org` (small "the" top-aligned, big Earthback in cream + Project in amber + small ".org" baseline-aligned, with amber accent bar)
+- **New `local/scripts/batch_watermark_all.py`** — one-time pass over `local/web-ready/` → writes to `local/web-ready-watermarked/` (parallel folder, same structure). Originals untouched. Re-runnable, skips existing.
+- **Batched 3,232 images in 2 minutes** (0 failures). Output in `local/web-ready-watermarked/`.
+- **`optimize-for-web.py` updated** — auto-watermarks future runs into `web-ready-watermarked/`. Use `--no-watermark` to skip. og: variant skipped (already branded).
+- **`deploy-site-images.py` updated** — sources from `web-ready-watermarked/` by default (falls back to `web-ready/` if missing). Preview gallery now points at thumb files (faster page load).
+- Site staging re-built from watermarked source: 43 hero + 43 thumb in `local/site-staging/` ready for deployment
+- og:image NOT watermarked (already has full branding overlay, watermark would be redundant). Unwatermarked backup kept as `og-image-v2-nowatermark.jpg`
+
+### Watermark sample preview kept for reference
+- `local/web-ready/_watermark-samples/preview-final.html` — final style
+- `local/web-ready/_watermark-samples/preview-combo.html` — 4 combo variants explored
+- `local/web-ready/_watermark-samples/preview.html` — original 6 styles explored
+
+### Watermark size fix (after first batch was too big on thumbs)
+- First batch used ~6% width font with 36px floor — wordmark fell off the right side of all 400px thumbs
+- Tested 4 size variants on hero/card/thumb (`local/scripts-tmp/watermark_size_variants.py`) — picked **v3 (3.0% width, 14px floor)**
+- Re-batched all 3,237 images with `--force` in 2 min — thumbs now fit cleanly with ~186px wordmark on a 400px image
+- **Built `local/scripts/build-review-gallery.py`** — two-tab gallery (Deploy Candidates + All Watermarked) at `local/web-ready-watermarked/review-gallery.html` — 1,508 unique source images grouped by source/category for spot-checking
+
+### Watermarked images deployed to live site
+After review approval, copied watermarked staged images into `site/assets/img/`:
+- `hero/` (2 files) — establishing.jpg, hero-home.jpg
+- `content/` (15 files) — cohousing, community, earthen, ecology, fabrication, food, hands, hempcrete, landscape, mycology, shelter, solar, strawbale, timber, water
+- `textures/` (1 file) — texture.jpg
+- `dispatch/` (1 file) — dispatch-support.jpg
+- `posts/` (5 replaced) — food-forest, salvage-fir, solar-coop, tiny-cabin, utah-hemp-wall now watermarked. Originals backed up in `posts/_unwatermarked-backup/{name}-v1.jpg`. Three other post images (greywater-system, hempcrete-mix, lora-mesh) untouched — no watermarked replacements were staged.
+
+### Next steps for Nicco
+1. **Pick a real Twitter handle** (or remove): currently `@earthbackproj` placeholder in all pages — search-and-replace if you want a real one
+2. **Wire HTML to new image paths** — pages need `<img src="assets/img/hero/...">`, `assets/img/content/...`, etc. Audit which pages reference which images.
+3. **Push to git** so og:image + meta tags + new watermarked images go live on Netlify
+4. **Validate link previews** at developers.facebook.com/tools/debug/, cards-dev.twitter.com/validator, linkedin.com/post-inspector/
+5. **Uncategorized staged set** (19 circles/game/textures/og-social-card images) still in `local/site-staging/uncategorized/` — need destination decisions before deploying
+
+---
+
+## What Was Done in Session 41 — Autonomous Run (2026-04-14)
+
+---
+
+## What Was Done in Session 41 — Autonomous Run (2026-04-14)
+
+Nicco left to wire up the new laser cutter. Claude ran solo to advance the hempcrete LoRA pipeline and get images site-ready.
+
+### Hempcrete LoRA Verification & Testing
+- **Verified Flux hempcrete LoRA checkpoints**: 3 valid safetensors in `local/lora-output/hempcrete-flux-aitk/hempcrete-flux-v2/`:
+  - `hempcrete-flux-v2_000000400.safetensors` (165 MB, trained Apr 4)
+  - `hempcrete-flux-v2_000000800.safetensors` (165 MB, trained Apr 4)
+  - `hempcrete-flux-v2.safetensors` (165 MB, final 1200 steps, Apr 5)
+- **Config confirmed**: rank 16, Adafactor, bf16, layer_offloading, resolution 512-768, trigger EBHEMPCRETE
+- **SDXL LoRA also verified**: 4 checkpoints in `hempcrete-sdxl/` (170 MB each), final already in ComfyUI loras folder
+
+**New scripts created:**
+- `local/scripts/setup-hempcrete-flux-lora.bat` — copies all 3 Flux LoRA checkpoints to `D:\AI\ComfyUI\models\loras\` with clean names
+- `local/scripts/test-hempcrete-lora.py` — queues 9 comparison images (3 prompts × 3 variants: flux-v2-final, flux-v2-800, no-lora). Includes LoraLoader node 50 workflow, adjustable strength (default 0.85), scene prompts with EBHEMPCRETE trigger, auto-strips trigger for no-lora baseline. Run with `--dry-run` to preview.
+
+**Next steps for Nicco:**
+1. `setup-hempcrete-flux-lora.bat` (copies LoRA files to ComfyUI)
+2. `python local\scripts\test-hempcrete-lora.py` (queues comparison batch)
+3. Review output in `comfyui-output/` — files named `lora-test-{scene}-{variant}_NNNNN_.png`
+
+### Full Site Asset Audit
+Cataloged all generated images across 3 directories:
+- **site-assets/**: 221 images, 43 categories (establishing, hempcrete, community, food, solar, etc.)
+- **circles/**: 382 images, 46 categories (39 circle topics × ~9 each)
+- **methods/**: 905 images, 30 construction methods × 30 each
+- **Already deployed**: 56 files in `site/assets/img/` (SVG icons, brand assets, 8 post images, 12 avatar JPGs)
+- **og:image**: existing placeholder at 22KB (text-only on green background)
+
+### Web Image Optimization Pipeline
+Built `local/scripts/optimize-for-web.py` — complete pipeline that:
+- Strips all ComfyUI tEXt metadata from PNGs
+- Converts PNG → JPEG with quality control
+- Generates 3 size presets per image: hero (1920×1080, q82), card (800×600, q78), thumb (400×300, q72)
+- Preserves variant numbers in filenames (e.g., `site-hempcrete-03-v2-hero.jpg`)
+- Creates category subdirectories
+- Generates `inventory.json` with full metadata
+
+**Results:**
+- 1,508 source PNGs (2.3 GB) → 3,237 web-ready JPGs (~80 MB)
+- **~29× compression ratio** with no visible quality loss at web sizes
+- Site-assets: 663 JPGs (hero + card + thumb)
+- Circles: 764 JPGs (card + thumb — hero not needed)
+- Methods: 1,810 JPGs (card + thumb)
+
+### og:image Social Sharing Cards
+Created 3 variants of the og:image (1200×630) with photo backgrounds and brand overlay:
+- `og-image-v2-build.jpg` (197 KB) — community earth building scene, golden backlight (RECOMMENDED)
+- `og-image-v2-homestead.jpg` (248 KB) — aerial permaculture homestead, lush green
+- `og-image-v2-timber.jpg` (172 KB) — timber frame raising, dramatic PNW forest
+
+All use the Earthback brand treatment: dark green gradient overlay on left, amber accent bar, EARTHBACK wordmark in cream + amber, tagline, URL, Eb badge. Massive upgrade from the plain green text-only placeholder.
+
+### Site Image Deployment Helper
+Built `local/scripts/deploy-site-images.py` — staging pipeline that:
+- Picks best image per category (most detailed)
+- Creates proper `site/assets/img/` directory structure in staging
+- Generates HTML preview gallery (`local/site-staging/preview.html`)
+- Stages hero + thumb for each category
+- Optional `--og build` flag includes chosen og:image variant
+
+**Staged output**: 43 hero images + 43 thumbnails + og:image in `local/site-staging/`
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `local/scripts/setup-hempcrete-flux-lora.bat` | Copy Flux LoRA checkpoints to ComfyUI |
+| `local/scripts/test-hempcrete-lora.py` | Queue LoRA comparison batch (9 images) |
+| `local/scripts/optimize-for-web.py` | PNG → JPEG optimization pipeline |
+| `local/scripts/deploy-site-images.py` | Stage best images for site deployment |
+| `local/web-ready/` | 3,237 web-optimized JPGs across 3 source dirs |
+| `local/web-ready/og/` | 3 og:image social card variants |
+| `local/web-ready/inventory.json` | Full metadata inventory |
+| `local/site-staging/` | 87 images staged for site deployment |
+| `local/site-staging/preview.html` | Visual review gallery |
+
+### charmanager.py Updates (from Part 3)
+Also applied remaining patches from Session 40 Part 3:
+- Editable Prompt Editor (Step 6) with save-to-project
+- Gallery metadata viewer (Meta button, slide-out panel, strip metadata)
+- `/api/project/prompts` GET/POST endpoints
+- Custom prompts flow into generation endpoints
+
+---
+
+## Immediate Next Steps
+1. **Nicco reviews staged images** — open `local/site-staging/preview.html` in browser
+2. **Run LoRA setup + test** — `setup-hempcrete-flux-lora.bat` then `python local\scripts\test-hempcrete-lora.py`
+3. **Pick og:image** — choose from 3 variants in `local/web-ready/og/`, deploy to `site/assets/img/og-image.png`
+4. **Deploy approved images** — copy from `local/site-staging/` to `site/assets/img/`
+5. **Test charmanager updates** — restart charmanager, test prompt editor + metadata viewer
+6. **Social media setup** — og:image ready, need accounts + Buffer/Publer for scheduling
+
+---
+
+## What Was Done in Session 40 — Part 3 (2026-04-13)
+
+### Editable Prompt Editor (Step 6 overhaul)
+Replaced the read-only "Prompt Reference" section with a full **Prompt Editor**. Prompts are now editable textareas that save custom overrides to the project JSON.
+
+**Backend:**
+- `GET /api/project/prompts` — returns all prompt data (text triptych + PuLID per-panel) merged with any custom overrides from project JSON
+- `POST /api/project/prompts` — saves custom prompt overrides to `custom_prompts` dict in project JSON. Empty string = revert to default.
+- Generation endpoints (`queue-triptych`, `queue-pulid-triptych`) now check `active_project["custom_prompts"]` before falling back to hardcoded defaults
+- Custom prompts stored per-key: `text_A`, `text_B`, `text_C` for triptych mode; `pulid_A_0_prompt`, `pulid_A_0_negative`, etc. for PuLID per-panel
+
+**UI:**
+- Step 6 header changed to "Prompt Editor"
+- Two tabs: "Text Prompts" (Sheet A/B/C full prompts) and "PuLID Prompts" (per-panel positive + negative)
+- Editable textareas with amber highlight when modified from default
+- "Save All" button persists to project JSON; "Reset to Defaults" clears all custom overrides
+- `{desc}` placeholder still works — gets replaced with character description at generation time
+
+### Image Metadata Viewer in Gallery
+Added a **Meta** button to the full-size gallery viewer that opens a slide-out panel showing the ComfyUI workflow data embedded in each PNG.
+
+**Features:**
+- Slide-out panel (right side, 380px) with dark monospace theme
+- Shows: positive prompt, negative prompt, sampler settings (seed/steps/cfg/sampler/scheduler), resolution, PuLID weight + ref image, model name
+- "Strip Metadata for Web" button — removes ComfyUI tEXt chunks from the PNG in place
+- Auto-refreshes when navigating between images with the panel open
+- Panel closes automatically when gallery closes
+
+**Backend endpoints (built in Part 2, wired to UI in Part 3):**
+- `GET /api/image-meta?path=...` — reads PNG tEXt chunks, returns structured workflow data
+- `POST /api/image-strip` — strips all tEXt metadata from PNG
+
+### Files Changed
+- `local/scripts/charmanager.py` — editable prompt editor, metadata viewer, custom prompt storage + generation integration
+
+---
+
+## What Was Done in Session 40 — Part 2 (2026-04-13)
+
+### PuLID Face-Locked Triptych Generation
+Added the ability to upload a single photo of a real person and generate face-locked charsheet triptychs (1536x640, 3-panel) directly from the Character Manager UI.
+
+**Backend:**
+- `PULID_TRIPTYCH_WORKFLOW` — merged PuLID face injection nodes (40-44) with triptych resolution/layout. KSampler takes patched model from ApplyPulidFlux node 42.
+- `/api/character/<name>/queue-pulid-triptych` — queues PuLID-locked triptych sheets (A/B/C) with adjustable strength, auto-routes to best GPU, uploads reference to target ComfyUI instance.
+- `/api/character/<name>/upload-face-ref` — uploads a face photo, saves to `local/faces-reference/Name.png`, returns thumbnail.
+- `/api/character/<name>/face-ref` — checks if a face reference exists for a character, returns thumbnail.
+- `upload_ref_to_comfyui()` updated with optional `target_url` parameter for dual-GPU reference uploads.
+
+**UI:**
+- "Generate from Photo (PuLID)" section in Step 1 with dashed moss-green border
+- Photo preview (60x60), upload button, sheet checkboxes (A/B/C), strength slider (0.30–1.00, default 0.60), generate button
+- Auto-loads existing face reference thumbnail on character select (e.g., if `faces-reference/Blu Blubaugh.png` exists)
+- Status log shows GPU routing, reference used, sheets queued
+- Polls for completion and refreshes sheet grid when done
+
+**Context:** Nicco wanted to use a real photo of his friend Blu Blubaugh to generate face-locked triptychs. Also discussed Rena Begay (childhood friend, inspiration for Earthback). Both characters added to the project via the Character Manager GUI.
+
+### Bug Fixes (continued)
+- **Duplicate character prevention** — auto-dedup on project load, atomic JSON saves (write .tmp → verify → rename), JSONDecodeError recovery
+- **virtiofs write corruption** — earthback.json must always be written via Python script (not VM Write tool) due to ~4400 char truncation limit
+
+### Files Changed
+- `local/scripts/charmanager.py` — PuLID triptych workflow + endpoints + UI + auto-load face ref
+
+---
+
+## What Was Done in Session 40 — Part 1 (2026-04-13)
+
+### Character Manager — Pipeline UI Redesign
+Completely restructured the detail panel from flat unlabeled sections into a guided 6-step pipeline:
+1. **Triptych Source** — drop zone, browse sheets, upload, + NEW: generate triptychs directly via ComfyUI
+2. **Reference Panels** — mix-and-match slot assignment + NEW: full-size panel gallery viewer
+3. **Generate Faces (PuLID)** — strength/rounds controls, queue button
+4. **Triage New Output** — full-size gallery, select/deselect, sort/discard
+5. **Training Library** — curated images, browse full-size, weed rejects
+6. **Prompt Reference** — collapsed by default, copy prompts for ComfyUI
+
+**Pipeline status bar** at top — clickable pips with counts (Refs 3/3, Triage 12 new), completed steps auto-collapse.
+**Grid card mini-pips** — 5 numbered dots per character card showing pipeline progress at a glance.
+
+### Triptych Generation from Character Manager
+New `/api/character/<name>/queue-triptych` endpoint sends charsheet generation jobs directly to ComfyUI using the same workflow as `queue-charsheets.py`. Sheet type checkboxes (A/B/C), optional +variant toggle (seed+7). Auto-polls and refreshes when done.
+
+### Dual-GPU Support
+- **GPU 1 (:8188)** — main instance for PuLID and batch work (comfy-run.bat)
+- **GPU 0 (:8189)** — second instance for triptychs and light work (NEW: comfy-run-gpu0.bat)
+- Character Manager auto-routes triptych jobs to GPU 0 if running, falls back to GPU 1
+- Dual GPU status chips in header — green=idle, amber+pulse=busy, gray=offline
+- Smart warnings: if GPU 0 is offline and GPU 1 has a big queue (PuLID batch), warns about restart risk
+
+### Panel Gallery (Full-Size Reference Viewing)
+"Browse Panels Full Size" button + double-click on any panel thumbnail opens a full-screen gallery with arrow nav and keyboard shortcuts. Same overlay as the output gallery but without select/deselect.
+
+### Bug Fixes
+- **Corrupt earthback.json** — file was truncated at Joseph Runningwater's description. Rebuilt from queue-charsheets.py source of truth. All 19 characters validated.
+- **Duplicate triptych seed confusion** — default changed to 1 seed per sheet (not 2). "+variant" checkbox adds the seed+7 variant when desired. Clearer logging shows exactly how many images will be generated.
+- **Poller resilience** — triptych completion poller now requires seeing jobs actually running before declaring "done" (prevents false triggers on ComfyUI restart). Detects and warns if GPU goes offline (PuLID batch restart).
+
+### New Files
+| File | Purpose |
+|------|---------|
+| `local/scripts/comfy-run-gpu0.bat` | Start second ComfyUI instance on GPU 0 (CUDA 0), port 8189 |
+
+### Files Changed
+- `local/scripts/charmanager.py` — pipeline UI redesign, triptych generation, dual-GPU, panel gallery (~2933 lines)
+- `local/projects/earthback.json` — rebuilt from source of truth (was truncated/corrupt)
+
+---
+
+## Immediate Next Steps (Session 41)
+1. **Test PuLID triptych** — restart Character Manager, select Blu Blubaugh, upload his photo, generate face-locked triptych on GPU 0
+2. **Test dual-GPU** — start `comfy-run-gpu0.bat`, verify triptychs route to GPU 0 while PuLID batch runs on GPU 1
+3. **Verify PuLID workflow** — check that the merged PULID_TRIPTYCH_WORKFLOW actually generates correct 1536x640 triptychs (not 896x1152 portraits)
+4. **Test hempcrete LoRA** — load checkpoint from `local/lora-output/hempcrete-flux-aitk/`, generate with EBHEMPCRETE trigger
+5. **RunPod integration** — manual test run first, then build into Character Manager Step 5→6
+6. **Call it in the Air project** — populate characters, start blocking out screenplay/bio
+7. **Caption PuLID images** → train character LoRAs → test face consistency
+
+---
+
+## What Was Done in Session 39 — Part 2 (2026-04-04)
+
+### PuLID Image Quality — 5 Fixes for Angle Variety
+
+**Problem:** PuLID at strength 0.85 with a single reference image produced near-identical poses across all angles. Left, right, front, down — all looked the same. The reference face pose dominated everything.
+
+**Fix 1 — Taskkill safety bug:**
+`kill_comfy()` in `run-pulid-all.py` had `taskkill /f /im python.exe` that would kill ALL Python processes including LoRA training. Replaced with targeted `netstat -ano` lookup to find only the PID on port 8188.
+
+**Fix 2 — Prompt variation (4 templates per angle):**
+Each face angle now has 4 different prompt templates (documentary, cinematic, editorial, candid) with varied lighting. `--reseed` picks a random template per job.
+
+**Fix 3 — Lower PuLID strength (0.85 to 0.60):**
+Default dropped to 0.60 in both `queue-pulid-faces.py` and `run-pulid-all.py`. Keeps face identity while letting pose/angle prompts actually work. (0.75 was tested mid-session — still too strong for reliable angle control.)
+
+**Fix 4 — Per-angle negative prompts:**
+Each angle now has specific negatives. Left/right angles reject "facing forward, straight-on, symmetrical face, looking straight ahead." Down angle rejects "looking up, eyes forward, facing camera, direct eye contact."
+
+**Fix 5 — Multi-reference rotation (3 images per character):**
+Charsheet triptychs (1536x640, 3 panels) cropped into individual 512x640 references: `CharName-1.png`, `CharName-2.png`, `CharName-3.png` in `local/faces-reference/`. Orchestrator rotates per round: round 1 uses ref-1, round 2 uses ref-2, round 3 uses ref-3.
+
+**Results at 0.75 strength (mid-session test, Amara Diallo):**
+- Front: good, clearly front-facing
+- Left: good, ~30 degrees
+- Right: still defaulting to forward (reference bias)
+- Down: ~20 degrees from above, not perfect but usable
+- Talk: good, animated expression
+
+### Unicode Fix
+Windows cp1252 console crash on unicode symbols. Replaced `checkmark/cross/warning` with ASCII `OK/FAIL/WARNING:` in both scripts.
+
+### comfyui-output Organized (2,362 files sorted)
+Created `sort-comfyui-output.py` — sorts flat output dir into: `charsheets/`, `characters/[Name]/{faces,pulid,scenes-t4,scenes-t5}/`, `circles/`, `site-assets/`, `methods/`, `earthmesh/`, `hempcrete-lora/`, `misc/`. Re-runnable for new files. `--undo` to flatten.
+
+### Character LoRA Training Pipeline (train-character-pipeline.py)
+Full drop-folder-to-trained-LoRA pipeline. Drop ref images + desc.txt into `local/lora-pipeline/CharacterName/`, run the script, get a trained LoRA. 4 composition tiers (face, upper body, full body, environmental) × 30 prompts × 3 refs = 90 training images per character. Auto-captions from prompt metadata, generates ai-toolkit config, trains on cuda:0.
+
+### Reference Image Swap Process
+When a character's charsheet triptych produces bad angles (e.g. Mei Lin always facing right), swap it:
+
+1. **Find or generate a better triptych** — look for one with a more front-facing center panel. The B variant seed 2 tends to be best.
+2. **Place the new triptych** anywhere crop-charsheet-refs.py can find it:
+   - `comfyui-output/` (root)
+   - `comfyui-output/charsheets/`
+   - `comfyui-output/characters/CharName/`
+3. **Crop into 3 reference panels:**
+   ```
+   python local\scripts\crop-charsheet-refs.py --char "Character Name" --force
+   ```
+   This overwrites the existing CharName-1/2/3.png in `local/faces-reference/`.
+4. **Verify** — check the 3 new panels in `local/faces-reference/` to confirm the center panel (CharName-2.png) is front-facing.
+5. **Re-run PuLID** — the orchestrator will pick up the new refs automatically.
+
+**Example (Mei Lin):** Original B_00001 triptych had a 3/4 right-facing center panel. Swapped to B_00002 which had a more front-facing center. Cropped with `--force`, confirmed 3 new panels.
+
+### New Scripts
+| Script | Purpose |
+|--------|---------|
+| `crop-charsheet-refs.py` | Crops charsheet triptychs into 3 individual face refs per character |
+| `sort-comfyui-output.py` | Sorts comfyui-output into categorized subdirectories |
+| `train-character-pipeline.py` | Full drop-folder-to-LoRA pipeline (generate, caption, train) |
+
+### Character-LoRA-Pipeline-Guide.docx
+New reference doc in `local/docs/` — covers charsheet prompts, drop folder setup, all 30 prompt templates with resolutions, training settings, reference swap process.
+
+### Character Manager GUI (charmanager.py)
+Local Flask web app for managing character references and PuLID generation. Launch with `charmanager.bat` or `python local\scripts\charmanager.py`. Runs on http://127.0.0.1:5111.
+
+Features:
+- Card grid of all 19 characters with reference panel thumbnails
+- Browse/select charsheet triptychs, preview 3-panel crops before committing
+- Drag-and-drop upload of new triptych PNGs
+- One-click crop & save to faces-reference/
+- Queue PuLID generation per character (configurable strength and rounds)
+- ComfyUI queue status monitor (auto-refreshes)
+- Sort output button (runs sort-comfyui-output.py)
+- Recent output gallery per character
+- Lightbox for full-size image viewing
+
+Dependencies: Flask, Pillow (auto-installed by .bat). Runs on system Python.
+
+### Files Changed
+- `local/scripts/run-pulid-all.py` — kill_comfy() fix, strength 0.60, multi-ref rotation, ref discovery logging
+- `local/scripts/queue-pulid-faces.py` — 4 prompt variants/angle, ANGLE_NEGATIVES, `--ref-image` flag, strength 0.60, unicode fix
+- `site/eb-grove.html` — updated What's Next panel with PuLID/LoRA status + v2 run instructions
+
+---
+
+## Immediate Next Steps (Session 40)
+1. **Re-run PuLID with v2 fixes** — `python local\scripts\run-pulid-all.py --rounds 3` (uses 0.60 strength + negatives + 3 reference rotation)
+2. **Re-sort new PuLID output** — `python local\scripts\sort-comfyui-output.py`
+3. **Check hempcrete LoRA output** — verify checkpoints at `local/lora-output/`
+4. **Test hempcrete LoRA in ComfyUI** — load checkpoint, generate test images with EBHEMPCRETE trigger
+5. **Review PuLID quality** — if angles still flat, try strength 0.50 or `start_at: 0.2` in node 42
+6. **Caption PuLID character images** — run quick-caption.py for character LoRA training datasets
+7. **Generate character LoRA configs** — make-flux-config.py for each of 8 characters
+8. **Train character LoRAs** — 8 characters, ~11hrs each on cuda:0
+9. **Social media posts for Earthback** — mentioned but not yet started
+
+---
+
+## What Was Done in Session 39 — Part 1 (2026-04-04)
+
+### Flux LoRA Training — Hempcrete (ai-toolkit)
+- Resolved HuggingFace gated model access for FLUX.1-dev (token permissions, direct token file write to bypass old huggingface_hub CLI)
+- Fixed `from_single_file` approach failure → switched to diffusers format via `name_or_path: "black-forest-labs/FLUX.1-dev"`
+- Fixed `enable_gqa` TypeError by upgrading torch 2.4.1 → 2.5.1+cu121 in ai-toolkit venv
+- **Hempcrete Flux LoRA training running** on cuda:0 (Task Manager GPU 1) — 1200 steps @ ~36s/step, checkpoints at 400/800/1200
+- Config: `local/scripts/configs/hempcrete-flux-12gb.yaml` — rank 16, Adafactor, bf16, layer_offloading (0% transformer on GPU)
+
+### Voice Captioning Workflow
+- Created `local/scripts/quick-caption.py` — WhisperFlow-powered image captioning tool
+- Shows existing caption, user dictates replacement/append via mic, can exclude bad images (moves to `_excluded/`)
+- All 77 hempcrete training images captioned (44 excluded by user), trailing commas cleaned from 69 caption files
+
+### PuLID Face-Locked Generation — Fixed & Running (4 bugs fixed)
+- Prepared 8 PuLID reference face images (512×640 center crops from charsheets) in `local/faces-reference/`
+- Characters: Amara Diallo, Britta Svensson, Callum Reed, Joseph Runningwater, Lena Hartmann, Mei Lin, Priya Sharma, Sam Torres
+
+**Bug 1 — HTTP 400 (wrong node class_types in workflow JSON):**
+PuLID node class names changed in newer ComfyUI-PuLID-Flux. Fixed in `queue-pulid-faces.py`:
+  - `ApplyPulid` → `ApplyPulidFlux` (input `pulid` → `pulid_flux`)
+  - `PulidModelLoader` → `PulidFluxModelLoader`
+  - `InsightFaceLoader` → `PulidFluxInsightFaceLoader`
+  - Added new node 44: `PulidFluxEvaClipLoader` (eva_clip is now a separate loader node)
+
+**Bug 2 — InsightFace AssertionError (missing antelopev2 models):**
+PuLID needs InsightFace's antelopev2 face detection models. Downloaded 5 ONNX files to:
+`D:\AI\ComfyUI\models\insightface\models\antelopev2\` (1k3d68, 2d106det, genderage, glintr100, scrfd_10g_bnkps)
+
+**Bug 3 — CUDA invalid argument (GPU device conflict):**
+`--cuda-device 1` only controls ComfyUI's own device selection, but third-party libs (facexlib, insightface) default to cuda:0. Fixed by using `CUDA_VISIBLE_DEVICES=1` in comfy-run.bat instead — this hides GPU 0 entirely from the ComfyUI process.
+
+**Bug 4 — forward_orig() unexpected keyword argument 'attn_mask':**
+ComfyUI 0.11.1 passes `transformer_options` and `attn_mask` to `forward_orig()`, but PuLID's patched version didn't accept them. Patched `D:\AI\ComfyUI\custom_nodes\ComfyUI-PuLID-Flux\pulidflux.py` line 65 — added `transformer_options=None, **kwargs` to function signature.
+**WARNING:** This patch may be overwritten if ComfyUI-PuLID-Flux is updated via Manager. Re-apply if PuLID breaks after an update.
+
+- PuLID test generation confirmed working (Lena Hartmann images generating)
+
+### Dual GPU Setup Confirmed
+- CUDA device 0 = Task Manager GPU 1 (hempcrete LoRA training)
+- CUDA device 1 = Task Manager GPU 0 (ComfyUI / PuLID generation)
+- Both running in parallel successfully
+
+### Other Fixes
+- Fixed `REFERENCE_DIR` path in queue-pulid-faces.py (was pointing to wrong parent)
+- Added Britta Svensson, Callum Reed, Joseph Runningwater to CHARS list in queue-pulid-faces.py
+
+---
+
+## What Was Done in Session 38 (2026-03-26)
+
+### CK-Series Communications Kits — Price Research & Design Brief
+Researched real wholesale/retail pricing for GMRS radios, SDR radios, LoRa mesh hardware, and accessories using browser automation (Claude in Chrome) to visit manufacturer sites directly (baofengtech.com, tidradio.com, baofengradio.com, rtl-sdr.com, rokland.com, AliExpress, hi-radio.com). Compiled verified component prices into a 5-kit product line:
+
+| SKU | Name | Retail | COGS | Margin |
+|-----|------|--------|------|--------|
+| CK-10 | Basic Comms (2-radio) | $89 | $37.75 | 57.6% |
+| CK-20 | Family Comms (6-radio) | $249 | $129.75 | 47.9% |
+| CK-30 | SDR Starter (hackable) | $169 | $41.75 | 75.3% |
+| CK-40 | Cyberdeck (SDR + mesh) | $399 | $106.25 | 73.4% |
+| CK-50 | Community Network (18-unit) | $999 | $457.25 | 54.2% |
+
+Every kit includes a QR code linking to the FCC GMRS license application ($35, no exam, covers entire family for 10 years).
+
+**Files produced:**
+- `eb_research/offline-emp-restart/CK_Series_Design_Brief_v1.docx` + `.pdf` — 12-page design brief with component price reference tables, BOM per kit, revenue projections
+- `/sessions/amazing-gifted-brown/ck-series-brief.js` — DOCX generator script (~350 lines)
+
+### Investor Deck V2b — CK-Series Integration + Utah De-emphasis
+Updated the Series A investor deck to integrate CK-series comms kits and dramatically reduce Utah-specific language per Nicco's direction ("just barely mention it — the rest plays itself out in their head automatically").
+
+**Slides changed (10 of 18):**
+- Slide 2 (Opportunity): Utah stat → "4.5M active preppers in the US (FEMA est.)"
+- Slide 3 (Product Line): Tier 2 price range $550-$6,200 → $89-$999, margins updated
+- Slide 4 (Holiday Retail): Complete rewrite — Faraday bundles row + CK-series row, Utah banner removed
+- Slide 6 (SKU Table): Old CK rows replaced with 5 new CK-series rows
+- Slide 7 (Mesh Radio): CK card updated to CK-50 Network Kit with real specs/pricing
+- Slide 9 (Timeline): All Utah references → neutral language
+- Slide 10: **Complete rewrite** — "UTAH: THE PERFECT LAUNCH MARKET" → "GO-TO-MARKET" with nationally-focused messaging
+- Slide 11 (Revenue): "Utah retail" → "regional retail"
+- Slide 12 (Unit Economics): Added all 5 CK-series rows with confirmed COGS/margins
+- Output filename: V2a → V2b
+
+**File produced:**
+- `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V2b.pptx` — 18 slides, 930KB
+- PDF conversion failed (LibreOffice issue in VM) — Nicco can convert on Windows: `libreoffice --convert-to pdf` or just open in PowerPoint and Save As PDF
+
+**Source script:** `/sessions/amazing-gifted-brown/deck-v2b.js`
+
+---
+
+## Immediate Next Steps (Session 39)
+1. **Convert V2b to PDF on Windows** — LibreOffice headless or PowerPoint Save As
+2. **Visual QA the V2b deck** — open in PowerPoint, check Slide 12 table fits (17 rows, may need font adjustment)
+3. **Walkie talkie research document** — still needs formal DOCX write-up (carried over)
+4. **Test Docker stack on Windows** — Docker Desktop, pull Kiwix + ProtoMaps + CyberChef (carried over)
+5. **HuggingFace login** — test Flux LoRA training (carried over)
+6. **Laser arrival logistics** — track fiber laser delivery from LA port (carried over)
+
+---
+
+## What Was Done in Session 37 (2026-03-25)
+
+### Wi-Fi HaLow Research — DOCX + PDF Generated
+Converted the Wi-Fi HaLow research from markdown to proper document format (user preference: research docs should be .docx, not .md, because .md opens in VSCode which is too heavy for documentation).
+- `eb_research/Earthmesh/WiFi_HaLow_Research.docx` — full formatted doc with tables, headings, hyperlinks, styled callout
+- `eb_research/Earthmesh/WiFi_HaLow_Research.pdf` — PDF companion for sharing
+- Original `.md` file preserved in same folder
+
+### Project N.O.M.A.D. Analysis — Docker Stack Mirroring
+Analyzed Crosstalk Solutions' Project N.O.M.A.D. (Node for Offline Media, Archives, and Data) — an open-source Docker-based offline knowledge server. Mapped their entire stack against our existing Earthback Station software/hardware to identify gaps and integration opportunities.
+
+**Key finding:** The two systems are deeply complementary. Nomad has knowledge-layer polish we lack (Kiwix for offline Wikipedia/medical refs, Kolibri for Khan Academy education, ProtoMaps for offline maps, Qdrant for RAG/semantic search, CyberChef for data analysis). We have hardware integration, mesh communications, image generation, speech interfaces, and power infrastructure they lack entirely.
+
+**Files produced:**
+1. `eb_research/offline-emp-restart/Nomad_vs_Earthback_Analysis_v1.docx` + `.pdf` — Full gap analysis with feature-by-feature comparison table, integration recommendations (3 phases), proposed Docker architecture, container inventory by trailer tier, content pre-loading strategy, and immediate next steps
+2. `eb_research/offline-emp-restart/docker-compose.yml` — Working Docker Compose file with profiles for all 4 Earthmesh trailer tiers (scout/field/hub/command) plus a dev profile for Windows. 13 containerized services using official images where available.
+3. `eb_research/offline-emp-restart/.env.example` — Environment config template
+4. `eb_research/offline-emp-restart/containers/mesh-bridge/Dockerfile` + `meshtastic_ai_bridge.py` — Container build context for the Meshtastic AI bridge service
+
+**Integration plan (3 phases):**
+- Phase 1 (weeks 1-2): Adopt from Nomad — Kiwix, Kolibri, ProtoMaps, CyberChef, Qdrant
+- Phase 2 (weeks 2-4): Containerize our stuff — llama.cpp, mesh-bridge, whisper, piper, ComfyUI, dashboard
+- Phase 3 (weeks 4-8): Polish — installer script, offline provisioning, auth, station-to-station sync, Windows dev
+
+**Docker profiles by tier:**
+- `scout` — Pi-based: llama-pi, mesh-bridge, kiwix (mini), redis
+- `field` — Single GPU: llama-server, mesh-bridge, kiwix (full), kolibri, protomaps, redis
+- `hub` — Dual GPU: all field + qdrant, cyberchef, whisper, piper
+- `command` — Full: everything + comfyui
+- `dev` — Windows: llama-dev (CPU), kiwix, kolibri, protomaps, cyberchef, qdrant, redis
+
+### Convention Established: Research Docs Format
+Going forward, all research documents will be produced as `.docx` + `.pdf`, not `.md`. Markdown opens in VSCode which is too heavy for documentation browsing.
+
+---
+
+## Immediate Next Steps (Session 38)
+1. **Test Docker stack on Windows** — install Docker Desktop, create `C:\earthback-data\` directories, pull Kiwix + ProtoMaps + CyberChef containers and verify they run
+2. **Download Kiwix ZIM files** — start with wikipedia_en_100_mini and wikimed for testing
+3. **Download Kolibri content packs** — Khan Academy math/science
+4. **Download regional PMTiles** — test one tribal land region
+5. **Containerize llama.cpp with CUDA** — test the official ghcr.io/ggerganov/llama.cpp:server-cuda image with Nicco's RTX 3060s
+6. **Build Earthback Dashboard prototype** — service health page, links to Kiwix/Kolibri/maps
+7. **Review V1g investor deck with Nicco** — ready for investor feedback
+8. **Laser arrival logistics** — track fiber laser delivery from LA port to Spengler's shop
+9. **HuggingFace login** — see Session 34 BLOCKER section, then test Flux LoRA training
+
+---
+
+## What Was Done in Session 36 (2026-03-25)
+
+### Earthmesh EMF Investor Deck — V1b Built
+Created a focused investor deck for the EMF shielding products and LoRa/mesh radio technology side of Earthback, targeting seed funding to purchase radio and metal stock before supply chain disruptions (Taiwan/China risk, tariffs).
+
+**Files produced:**
+- `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V1b.pptx` — 16-slide deck (620 KB)
+- `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V1b.pdf` — PDF version alongside
+
+**V1a** (broad Earthback Industries deck) preserved in same folder — not overwritten.
+
+**Deck contents (16 slides):**
+1. Title — Earthmesh (tagline: "Building Resilient Communities")
+2. Why Now — macro threat landscape (supply chain, grid, comms)
+3. Product Overview — Faraday Enclosures, Comms Kits, Solar Trailers
+4. Full SKU Matrix — 30 configurations across 3 tiers with pricing
+5. Entry Product Deep Dive — 6 SKUs with Standard vs Hardened specs
+6. Earthmesh Node — LoRa mesh radio product line (EMM/EMR/EML/EMP)
+7. Solar Trailer Fleet — 4 trailer types with BFFT as manufacturer
+8. Maker Platform — welded metal cores as customization base for 3D printer community
+9. Target Markets — 6 segments with dollar values
+10. Supply Chain Urgency — semiconductor lead times, metal tariffs, Taiwan timeline
+11. Manufacturing Partners — Spengler Industries + BFFT (Bountiful Food Truck & Trailer)
+12. Financial Projections — Q3 2026 through Q4 2027
+13. Use of Funds — $250K allocation breakdown
+14. Founder — Nicco's bio with "three waves" pattern (telecom → building tech → resilience)
+15. The Ask — $250K seed round, what investor gets
+16. Contact
+
+**Political notes applied:**
+- Jon Fletcher NOT mentioned anywhere — only company name BFFT used (per Nicco's instruction re: political sensitivity)
+- Spengler present for credibility but NOT positioned as anchor or lead (per session 35 political note)
+
+**Source script:** `deck-v1b.js` (pptxgenjs, Node.js) saved locally in working dir. Color palette: dk=1A1F25, terra=B85042, sage=6B9080, cream=F5F0EB, gold=D4A574. Georgia + Calibri fonts.
+
+**Source data pulled from:**
+- `eb_research/offline-emp-restart/Entry_Products_Design_Brief_v12.docx` — 6 entry SKUs, 3 config levels, maker platform concept
+- `eb_research/offline-emp-restart/Spengler_CEO_Proposal_v3.docx` — 30-SKU matrix, pricing, margins
+- `eb_research/Earthmesh/Earthmesh_Investor_Deck_v7.pptx` — node specs, trailer types, market segments, financials
+
+### Material Change Locked In: Galvalume → Cold-Rolled Steel (CRS)
+Nicco and Erno confirmed: **all EMF/EMP products will use plain cold-rolled steel (CRS), not Galvalume.** Galvalume's aluminum-zinc coating reduces magnetic permeability, which hurts shielding effectiveness — especially for EMP protection at lower frequencies. Plain CRS has 100-1000x higher magnetic permeability at the surface. CRS comes in the same coil formats (24 ga, 20 ga), same suppliers, same logistics chain as their existing metal roofing stock. Corrosion handled by powder coat (Finished tier) and maker shells (Plain tier).
+
+**Three documents updated:**
+1. `eb_research/offline-emp-restart/Entry_Products_Design_Brief_v13.docx` — 16 Galvalume → CRS replacements, version bumped from v12
+2. `eb_research/offline-emp-restart/Spengler_CEO_Proposal_v4.docx` — 2 Galvalume → CRS replacements, version bumped from v3
+3. `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V1c.pptx` + `.pdf` — material refs updated, laser status updated to "in port of LA — arriving now"
+
+All previous versions preserved (v12, v3, V1a, V1b all untouched).
+
+### V1d — GSM Credential Made Prominent
+Updated investor deck to make the GSM milestone a headline credential:
+- **Founder slide (14):** Gold-accented callout box at top: "SIGNATORY ON THE FIRST GSM CELL PHONE CALL IN THE WESTERN HEMISPHERE" with SLC 1996 date. Name/title below it. Three waves section updated with stronger language and decade labels.
+- **Earthmesh node slide (6):** Added credential line under subtitle: "Designed by a signatory on the first GSM call in the Western Hemisphere."
+- Files: `admin_docs/Earthmesh-EMF_Investor_Deck_2026-V1d.pptx` + `.pdf`
+
+### V1e — 30-Year Full Circle Narrative
+Wove the 30-year arc (GSM launch Jan 1996 → Earthmesh 2026) through three slides:
+- **Slide 2 (Problem):** Gold italic hook: "The cellular network that launched 30 years ago was never designed to survive what's coming."
+- **Slide 6 (Nodes):** "30 years ago, our founder signed off on the first GSM cell call. Now he's building what replaces it."
+- **Slide 14 (Founder):** "30 years later, building the network that stands when that one falls." Wave 3 updated to "30 years full circle."
+
+### V1f — LoRa Bandwidth Accuracy Pass
+Corrected all slides to not overstate LoRa capabilities (text/GPS messaging only, no voice/streaming):
+- Tier 3 description: "WiFi + AI" → "LoRa mesh messaging + local WiFi for onboard AI"
+- Trailer subtitle: clarified LoRa mesh relay vs local WiFi access point
+- Trailer specs: user counts replaced with "LoRa relay only" / "Local WiFi + LoRa"
+- Slide 5 comparison table was already accurate ("~1-5 kbps messaging")
+
+### V1g — Wi-Fi HaLow Research + Deck Blurb
+Researched Wi-Fi HaLow (802.11ah) as potential complementary technology:
+- Created `eb_research/Earthmesh/WiFi_HaLow_Research.md` — full comparison vs LoRa, hardware availability, integration recommendations
+- Added roadmap note to slide 5 (Mesh Radio): "Wi-Fi HaLow (802.11ah) as Phase 2 mid-range data layer — 1+ Mbps at 1 km for firmware OTA + sensor backhaul"
+- Recommendation: Phase 2 addition after LoRa backbone is deployed. Not a LoRa replacement — complementary mid-range layer.
+
+### Laser Table Status
+**Fiber laser due in port of Los Angeles March 26, 2026.** This is the production bottleneck — everything downstream scales with labor once the laser is online. Deck V1c updated to reflect this.
+
+### File Mount Issue Resolved
+D:\Earthback mount was empty/broken this session. Switched to C:\Users\adrxi\Earthback mount which worked. LibreOffice headless conversion also working again in this session (was broken in session 35).
+
+---
+
+## Immediate Next Steps (Session 37)
+1. **Review V1g deck with Nicco** — current version has: CRS material, GSM credential, 30-year arc, LoRa bandwidth accuracy, HaLow roadmap note. Ready for investor feedback.
+2. **Laser arrival logistics** — track delivery from LA port to Spengler's shop
+3. **CRS coil stock pre-order** — lock in pricing on 24 ga + 20 ga cold-rolled steel, full truckload buy
+4. **HuggingFace login** — see Session 34 BLOCKER section, then test Flux LoRA training
+5. **Delete old `maint scripts` folder** (space version)
+6. **Update g alias** in PowerShell $PROFILE to point to maint-scripts (hyphen)
+7. **Run cache-offline-install.ps1** to build the offline cache
+8. **Monitor for GE Vernova response** — no action unless they reach out via CSRE
+
+---
+
+## What Was Done in Session 35 (2026-03-23)
+
+### 130 E 1100 North — Acquisition Proposal Submitted to CSRE Global
+Full outreach package sent to Phyllis Millhouse at CSRE Global (Phyllis.millhouse@csre-global.com, 260.373.0850). She will forward to her boss, who decides whether to pass it to GE Vernova. One-shot opportunity — no follow-up mechanism.
+
+**Three documents sent (v3 versions):**
+1. **Cover email** — `130_Owner_Outreach_Email.md` (sent from earthbackproject@gmail.com)
+2. **Acquisition Proposal** — `130_E_1100N_Acquisition_Proposal_v3.docx` / `.pdf` (4→3 pages after tightening)
+3. **Owner Presentation** — `130_E_1100N_Owner_Presentation_v3.pptx` / `.pdf` (10 slides)
+
+**Key revisions this session:**
+- Toned down Spengler involvement: "anchored by" → "including," removed "Anchor manufacturing tenant" from tenant table
+- Removed hard page break causing blank space on page 3
+- Tightened signature block spacing to fit on 3 pages (v5 source, but v3 was what shipped)
+- Added earthbackproject@gmail.com to deck slide 9 contact block (v4 source — did not ship)
+
+**Source files:** `130_acquisition_proposal.js` (currently outputs v5), `130_owner_deck.js` (currently outputs v4)
+
+**Status:** Proposal is out. Waiting on GE Vernova response via CSRE. No follow-up path exists — if GE reaches out, they do; otherwise it's in the wind.
+
+**Political note:** Spengler language was deliberately softened. Nicco wants Spengler's 40-year credibility present but does NOT want language that gives Erno (Spengler's owner) leverage to insist on a partnership role. Avoid "anchor" or any language positioning Spengler as the lead.
+
+### CLAUDE.md Updated
+Added file versioning rule prominently near top of file — NEVER overwrite generated document files, always increment version numbers. This was already documented but not prominently enough.
+
+### LibreOffice Broken in VM
+LibreOffice headless conversion (docx→pdf, pptx→pdf) failed silently in this session — exit code 1 with no output. Could not regenerate PDFs from the VM. Nicco exported PDFs manually from Windows. If this persists, the VM service may need a restart (fix-cowork-vm.ps1).
+
+---
+
+## Immediate Next Steps (Session 36)
+1. **HuggingFace login** — see Session 34 BLOCKER section, then test Flux LoRA training
+2. **Delete old `maint scripts` folder** (space version)
+3. **Update g alias** in PowerShell $PROFILE to point to maint-scripts (hyphen)
+4. **Run cache-offline-install.ps1** to build the offline cache
+5. **Test GPU reset script** under real failure conditions
+6. **Monitor for GE Vernova response** — no action unless they reach out via CSRE
+
+---
+
+## What Was Done in Session 34 (2026-03-10)
+
+### GPU Reset Script — maint-scripts/Reset-GPU.ps1 + .bat
+Created interactive GPU reset tool using nvidia-smi (NOT PnP disable/enable — that crashed the machine).
+Shows GPU load, VRAM, and running processes. Offers to kill blocking processes before reset.
+Double-click Reset-GPU.bat to run (auto-elevates to admin).
+
+### ai-toolkit Installed and Configured
+Flux LoRA training via ostris/ai-toolkit is fully set up at D:\AI\ai-toolkit:
+- Python 3.11 venv with torch 2.4.1+cu121, diffusers 0.36.0, torchaudio 2.4.1
+- LTX2 extension disabled (incompatible with pinned diffusers)
+- Install script: local/scripts/install-ai-toolkit.ps1
+- Training launcher: local/scripts/train-flux-lora.bat
+- Config generator: local/scripts/make-flux-config.py
+- Hempcrete config: local/scripts/configs/hempcrete-flux-12gb.yaml
+
+### BLOCKER: Model path format
+ai-toolkit uses diffusers to load models, which expects a HuggingFace model ID (like "black-forest-labs/FLUX.1-dev"), NOT a direct path to a .safetensors file. The config currently points to a local safetensors file which doesn't work.
+
+**To fix (5-10 minutes):**
+1. Make HuggingFace account if needed (huggingface.co)
+2. Accept FLUX.1-dev license at https://huggingface.co/black-forest-labs/FLUX.1-dev
+3. Create access token at https://huggingface.co/settings/tokens
+4. Run: `D:\AI\ai-toolkit\venv\Scripts\huggingface-cli.exe login`
+5. Update config name_or_path to: `"black-forest-labs/FLUX.1-dev"`
+6. Update make-flux-config.py template too
+7. Run: `local\scripts\train-flux-lora.bat`
+
+### Flux LoRA Training Guide
+Created comprehensive guide: local/Flux-LoRA-Training-Guide.docx
+Covers full pipeline from photo collection through evaluation, all parameters explained.
+
+### Offline Cache Scripts
+- maint-scripts/cache-offline-install.ps1 — builds full offline cache to D:\earthback-cache
+- maint-scripts/install-from-cache.ps1 — deploys from cache on new machine
+- maint-scripts/INSTALL-INSTRUCTIONS.txt — plain-text quick reference
+- maint-scripts/Earthback-Rebuild-Guide.docx — comprehensive 12-section rebuild doc
+
+### Folder Consolidation
+Copied eb-git.ps1 from "maint scripts" (space) to "maint-scripts" (hyphen).
+Still need to: delete old space folder, update g alias in $PROFILE.
+
+### CLAUDE.md Updated
+Added ai-toolkit venv, training commands, torch version warning, fixed maint-scripts paths.
+
+---
+
+## Immediate Next Steps (Session 35)
+1. **HuggingFace login** — see BLOCKER section above, then test training
+2. **Delete old `maint scripts` folder** (space version)
+3. **Update g alias** in PowerShell $PROFILE to point to maint-scripts (hyphen)
+4. **Run cache-offline-install.ps1** to build the offline cache
+5. **Test GPU reset script** under real failure conditions
+
+---
+
+## What Was Done in Session 33 (2026-03-07)
+
+### Name Fix — All Business Docs
+Replaced all instances of "Nicco MacIntyre" with "Adrian Knotts (Nicco)" in:
+- `earthmesh-deck.js` — 3 instances (title slide, founders slide, close slide)
+- `ge-proposal.js` — 3 instances (cover letter signature, founder bio, contact section)
+
+Rule going forward: legal name in all business/investor documents is **Adrian Knotts (Nicco)**.
+
+### Version Increment Rule — Strictly Enforced
+Confirmed MANDATORY rule: never overwrite existing output files. Always bump version
+number before every copy to workspace. Reason: Claude.ai canvas caches by filename —
+old versions remain in canvas until a new filename is used. Rule documented in CLAUDE.md.
+
+### Earthmesh Investor Deck — Continued Iteration (v2 → v7)
+
+**Mesh vs. Cellular comparison slide (added in v3/v4):**
+- Initial version used hub-and-spoke vs. distributed topology diagram — WRONG framing
+- Correct framing: mesh nodes are like cell towers (same concept), just low power + portable
+- Rebuilt as side-by-side spec table: CARRIES / BANDWIDTH / POWER / RANGE / COST / DEPLOY TIME
+- Headline: "Think of a mesh node as a portable cell tower — for text messages and coordinates, not streaming."
+- CARRIES row: "Text & GPS messaging — no voice, no video" (explicit for non-technical investors)
+
+**Solar deployment trailers added (v7):**
+- New product line: 4 trailer types (EMS Scout / EMF Field / EMH Hub / EMC Command)
+- Manufacturer: Jonathan Fletcher (Jon), Co-Founder / Manufacturing Operations
+- Every trailer = mesh node + WiFi hotspot + offline media server
+- Added slides: trailer lineup + margin breakdown table (56–58% GM)
+- Updated: Founder → "The Founders" (Adrian left, Jon right)
+- Updated: Business Model (5 revenue streams), Financial Projections, Use of Funds
+- Sub-headline: "Manufactured by co-founder Jonathan Fletcher in his existing fabrication shop — no facility buildout required."
+
+**Version history:** v1 (initial) → v2 (name fix) → v3 (mesh comparison) → v4 (force new cache) → v5 (AI queries wording) → v6 (no voice/video explicit) → v7 (trailers + Jon)
+
+**Files in:** `eb_research/Earthmesh/` — v1 through v7 (pptx + pdf for each)
+
+### PDF Generation
+Generated PDFs for each version via LibreOffice headless + soffice.py helper.
+
+### Earthmesh Pitch Graphics Script — queue-earthmesh-pitch.py
+Created `local/scripts/queue-earthmesh-pitch.py` — ComfyUI/Flux queue script for
+generating investor deck and proposal imagery. Same toolchain as queue-site-assets.py.
+
+**8 batch categories, 44 total prompts:**
+- `hero` (5) — Wide dramatic establishing shots for cover slide
+- `problem` (5) — Grid failure, downed towers, isolation scenes
+- `solution` (5) — Fast mesh deployment, node detail shots
+- `nodes` (5) — Hardware product shots, ruggedized devices
+- `trailers` (8) — All 4 trailer types (2 prompts each) in field settings
+- `workshop` (6) — Metal fab, welding, trailer manufacture (Jon credibility shots)
+- `deployment` (8) — Use cases: wildfire, disaster, festival, humanitarian aid
+- `network` (4) — Nodes in landscape, topographic maps, connectivity concept
+- `remediation` (6) — GE proposal: brownfield, bioremediation, environmental monitoring
+
+**Key differences from queue-site-assets.py:**
+- Default batch-size = 1 (re-run for variations, as user requested)
+- Output prefix: `em-{batch_key}-{NN}` e.g. `em-hero-01`
+- Includes `remediation` batch for GE Vernova proposal imagery
+
+**Usage:**
+```
+python local/scripts/queue-earthmesh-pitch.py              # queue all 44 prompts
+python local/scripts/queue-earthmesh-pitch.py --batch hero # just hero shots
+python local/scripts/queue-earthmesh-pitch.py --dry-run    # preview
+python local/scripts/queue-earthmesh-pitch.py --list       # see all batches
+```
+
+### Immediate Next Steps
+1. Run `queue-earthmesh-pitch.py` — queue hero/problem/solution batches first for the deck
+2. Review generated images, pull best into deck via earthmesh-deck.js
+3. **Earthmesh deck:** Fill in equity % and pre-money valuation on Slide 13 (The Ask)
+4. **GE proposal:** Fill in Adrian's email and phone; confirm auction company (CSRE?); confirm roger.martella@gevernova.com
+5. **GE proposal:** Confirm v3 is the send version (name fixes applied)
+
+---
+
+## What Was Done in Session 32 (2026-03-06)
+
+### GE Vernova Proposal — Locked as V1
+
+Built and finalized a formal binder-ready corporate proposal targeting GE Vernova for partnership on the 130 E 1100 North remediation. File location:
+`eb_research/HQ locations/GE_Remediation_Proposal_v1.docx`
+
+**Key findings this session:**
+- Davis County confirmed current owner of record is **GE Vernova** — inherited through the April 2, 2024 spinoff from General Electric Company
+- Parcel number: **060940076** (Davis County)
+- Auction company signage appearing at site is believed to be CSRE (not yet confirmed)
+- Target contact identified: **Roger Martella**, Chief Corporate & Sustainability Officer, GE Vernova Inc., 58 Charles Street, Cambridge MA 02141
+  - Former EPA General Counsel (Bush administration), former DOJ Natural Resources, co-led Sidley Austin's global environmental practice — the right person for this proposal
+  - Likely email: roger.martella@gevernova.com
+
+**Proposal structure (14 pages, 272 paragraphs):**
+1. Cover page — addressed to Roger Martella, GE Vernova Inc.
+2. Cover letter — acknowledges GE Vernova as current owner (inherited April 2024 spinoff), auction urgency, cooperative path
+3. Executive Summary — contamination profile, BFPP status, funding stack, CERCLA callout
+4. The Property and Its History — 70-year industrial arc (GM/EMD → Sperry Rand → GE → vacant)
+5. The Current Situation — active deterioration, why deals failed, auction window, what it means for GE Vernova
+6. The Earthback Project — founder credentials (first GSM call, consumer 3D printing), Spengler/Tech Asset/Earthmesh campus, vision statement
+7. The Funding Stack — EPA TBA/cleanup grants, WFBC, Utah DEQ VCP, BFPP/EWA table
+8. GE Vernova Partnership Options — 3 paths (charitable contribution, named partnership, records access)
+9. Recommended Next Steps — Earthback actions + ask to GE Vernova
+
+**Tone:** Written from position of authority — Earthback already has the plan, already knows the contamination profile, already has the funding mapped. GE Vernova is being offered a defined seat at the table before the auction closes.
+
+**Status:** Locked as V1. Nicco reviewing. Pending: fill in Nicco's email/phone, confirm auction company name (CSRE?), send.
+
+### Immediate Next Steps (HQ / GE Vernova)
+1. Nicco reads V1 thoroughly
+2. Fill in contact details: `[Nicco MacIntyre]` → real name, `[email]`, `[phone]`
+3. Confirm auction company name — update any references if not CSRE
+4. Find Roger Martella's direct email (likely roger.martella@gevernova.com — unconfirmed)
+5. Send via certified mail + email
+
+---
+
+## What Was Done in Session 31 (2026-03-02)
+
+### Construction Methods Directory — Full Feature Build
+Nicco added an `eb_research/construction_methods-01/` directory with a comprehensive HTML guide covering 30 construction methods (23 green/natural + 7 conventional), ~1,273 curated images across 24 category folders, and a vision scan report. Built a complete feature from this research:
+
+**Database (Supabase):**
+- `SCHEMA_V10_methods.sql` — `construction_methods` table (30 methods with full details: description, materials, climates, pros, cons, practitioners, image folder refs), `member_skills` table (user↔method with 4-tier experience levels), RLS policies, `method_stats` view (claim counts per method), `claim_skill` and `unclaim_skill` RPC functions
+- `SCHEMA_V10_seed.sql` — 30 INSERT statements auto-generated from the HTML guide content, with all JSONB arrays properly formatted
+
+**4-tier skill system:**
+- 🌱 Curious — "I'm learning about this method"
+- 🔨 Hands-On — "I've built or assisted with this method"
+- ⭐ Experienced — "I've completed multiple projects"
+- 🎓 Trainer/Mentor — "I can teach or mentor others"
+
+**Public methods page (`site/methods.html`):**
+- Responsive card grid with all 30 methods, filter by category/difficulty, text search
+- Expandable detail panels: full description, materials, climates, pros/cons, practitioners
+- Logged-in users can claim skills with tier selection + optional note
+- Community stats (builder counts per method) from `method_stats` view
+- Matches Earthback design system (parchment, greens, clay, Cormorant Garamond + Inter)
+
+**Profile integration (`site/profile.html`):**
+- New "Building Skills" sidebar panel showing claimed method badges
+- Skill badges are color-coded by tier, link to methods page
+- Fetches from `member_skills` joined with `construction_methods`
+
+**Navigation updates:**
+- `nav.js` — Added "Methods" to primary row + "Building Methods" to More → Learn dropdown
+- `app-nav.js` — Same additions for logged-in nav
+- `sitemap.html` — Added Building Methods entry
+
+### Immediate Next Steps
+1. **Run SQL migrations** in Supabase SQL Editor:
+   - `SCHEMA_V9b_ip.sql` (if not already run)
+   - `SCHEMA_V9c_device.sql` (visitor device/location tracking from session 30)
+   - `SCHEMA_V10_methods.sql` (construction methods + skills tables)
+   - `SCHEMA_V10_seed.sql` (seed 30 methods)
+2. **Push changes** from PowerShell
+3. **Test methods page** — browse, search, filter, claim a skill
+4. **USB mic arrives** → voice-caption.py for LoRA dataset
+5. **Consider:** LoRA images for method cards (one hero image per method from the curated dataset)
+6. **Set up Earthback SMTP** for branded auth emails (still pinned)
+
+---
+
+## What Was Done in Session 30 (2026-02-27)
+
+### SDXL Hempcrete LoRA — Trained Successfully
+- Switched from Flux to SDXL after Flux LoRA training proved unviable on 12GB VRAM (multiple sessions of troubleshooting — deadlocks, VRAM exhaustion, 286s/step)
+- Created `train-hempcrete-sdxl.bat` using `sdxl_train_network.py` with `networks.lora` module
+- Key fixes along the way: added `--network_train_unet_only` (text encoder caching assertion), fixed checkpoint path to `C:\AI\models\checkpoints\sdXL_v10VAEFix.safetensors`
+- **Training completed:** 1500 steps, 83 minutes, ~3.3s/step, avg loss 0.134
+- 4 checkpoints saved in `local\lora-output\hempcrete-sdxl\` (steps 500, 1000, 1500 + final)
+- Copied final LoRA to `D:\AI\ComfyUI\models\loras\` for testing
+- Initial results: "not bad but need to play around with it more"
+- Discussed dataset improvement strategy: caption quality, image variety, removing weak images
+
+### Signup Flow Fixed
+- **Root cause identified:** Magic-link-only auth meant users were never authenticated when they reached `/community` — feed.html bounced them back to join.html (the loop)
+- Added email + password signup (`sb.auth.signUp()`) — user is authenticated immediately
+- Removed Maya Redhawk placeholder defaults from name fields
+- Added "Skip for now — take me in" button on Screen 2 (profile builder)
+- Fixed profile.html title/meta (was hardcoded "Maya Redhawk")
+- Turned off "Confirm email" in Supabase to eliminate confirmation loop
+- **Tested and working:** Tommy and Nicco both signed up successfully
+
+### File Organization — `local/` Directory
+- Created `local/` directory for all non-deployed files (scripts, datasets, training output, diagnostics)
+- Moved all `.py` scripts, `.bat` files, datasets, lora dirs, logs into `local/`
+- Simplified `.gitignore` — one `local/` entry replaces dozens of individual patterns
+- Cleaned up mangled UTF-16 lora-output entry in .gitignore
+
+### Voice Captioning Tool
+- Built `local/scripts/voice-caption.py` — opens each image, records mic via sounddevice, transcribes with Whisper, writes `.txt` caption with trigger word prepended
+- Controls: SPACE to record/stop, ENTER to save, E to edit, R to re-record, S to skip, Q to quit
+- Flags: `--trigger EBHEMPCRETE`, `--skip-existing`, `--review`, `--model tiny/small/medium`
+- Whisper installed on system Python
+- **Blocked on USB microphone** — no audio input device available (Dell BIOS disabled onboard audio; audio runs through NVIDIA HDMI output only). USB mic ordered.
+
+### Other
+- Researched ostris/ai-toolkit as alternative to Kohya for Flux LoRA training on 12GB — has built-in `low_vram: true` mode with layer offloading. Community reports success on RTX 3060. Worth installing if Flux-quality LoRAs are needed later.
+- Pushed signup fixes and gitignore cleanup to GitHub/Netlify
+
+### Immediate Next Steps
+1. **USB mic arrives** → run voice-caption.py to re-caption hempcrete dataset with better descriptions
+2. **Re-train hempcrete LoRA** with improved captions
+3. **Untrack old file paths from git** — some files may still be tracked under old locations
+4. **Test LoRA in actual Earthback prompts** — characters + hempcrete in scene compositions
+5. **Set up Earthback SMTP** in Supabase for branded auth emails (pin from this session)
+6. **Consider ai-toolkit install** at `D:\AI\ai-toolkit\` for Flux LoRA training
+7. **Run SCHEMA_V9b_ip.sql** in Supabase if not already run (IP + user tracking for eb-grove)
 
 ---
 

@@ -5,10 +5,23 @@
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:type" content="website">
+  <meta property="og:title" content="Member Profile — the Earthback Project">
+  <meta property="og:description" content="Member profile on the Earthback Project — a community platform for regenerative builders.">
+  <meta property="og:url" content="https://earthbackproject.org/profile.html">
+  <meta property="og:site_name" content="Earthback">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@earthbackproj">
+  <meta name="twitter:title" content="Member Profile — the Earthback Project">
+  <meta name="twitter:description" content="Member profile on the Earthback Project — a community platform for regenerative builders.">
+  <meta name="twitter:image" content="https://earthbackproject.org/assets/img/og-image.jpg">
+  <meta name="keywords" content="hempcrete, natural building, green building, off-grid, solar, permaculture, community housing, mutual aid, earth building, straw bale, timber framing, food forest, regenerative">
+  <meta name="author" content="Earthback">
+  <meta name="robots" content="index, follow">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Member Profile — the Earthback Project</title>
   <meta name="description" content="Member profile on the Earthback Project — a community platform for regenerative builders.">
@@ -165,6 +178,7 @@
     .skill-badge:hover { transform: translateY(-1px); box-shadow: 0 2px 8px var(--shadow); }
     .skill-badge .skill-emoji { font-size: 0.85rem; }
     .skill-badge .skill-tier { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.7; margin-left: 2px; }
+    .skill-badge .skill-featured { font-size: 0.72rem; margin-left: 2px; }
     .skill-tier-curious { background: #e8f5e2; color: #2d6a1f; border: 1px solid #b8ddb0; }
     .skill-tier-hands_on { background: #fff3e0; color: #b35a00; border: 1px solid #ffd180; }
     .skill-tier-experienced { background: #fff8e1; color: #8a6a18; border: 1px solid #ffe082; }
@@ -1882,14 +1896,27 @@ async function loadProfileSkills(profileUserId) {
       return;
     }
 
+    // Check for featured submissions by this user
+    let featuredMethodIds = new Set();
+    try {
+      const { data: featured } = await sb
+        .from('method_submissions')
+        .select('method_id')
+        .eq('user_id', profileUserId)
+        .eq('status', 'featured');
+      if (featured) featured.forEach(f => featuredMethodIds.add(f.method_id));
+    } catch (e) { /* table may not exist yet */ }
+
     container.innerHTML = skills.map(s => {
       const m = s.construction_methods;
       const t = TIER_META[s.tier] || TIER_META.curious;
       const title = s.note ? m.name + ' — ' + s.note : m.name;
+      const isFeatured = featuredMethodIds.has(m.id);
       return `<a href="methods.html#${m.slug}" class="skill-badge ${t.cls}" title="${title}">
         <span class="skill-emoji">${t.emoji}</span>
         ${m.name}
         <span class="skill-tier">${t.label}</span>
+        ${isFeatured ? '<span class="skill-featured" title="Featured build photo">📷</span>' : ''}
       </a>`;
     }).join('');
   } catch (e) {

@@ -3,8 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Admin — Earthback</title>
+  <title>Admin — Earthback</title>
+  <meta property="og:title" content="Admin — Earthback">
+  <meta property="og:description" content="A community for natural building, off-grid living, food systems, and mutual aid.">
+  <meta property="og:url" content="https://earthbackproject.org/eb-grove.html">
+  <meta property="og:site_name" content="Earthback">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@earthbackproj">
+  <meta name="twitter:title" content="Admin — Earthback">
+  <meta name="twitter:description" content="A community for natural building, off-grid living, food systems, and mutual aid.">
+  <meta name="twitter:image" content="https://earthbackproject.org/assets/img/og-image.jpg">
+  <meta name="keywords" content="hempcrete, natural building, green building, off-grid, solar, permaculture, community housing, mutual aid, earth building, straw bale, timber framing, food forest, regenerative">
+  <meta name="author" content="Earthback">
+  <meta name="robots" content="index, follow">
     <link rel="icon" href="assets/img/favicon.ico" sizes="any">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -764,26 +776,48 @@
                     <li class="action-item urgent">
                         <div class="action-dot urgent"></div>
                         <div>
-                            <div class="action-text"><strong>LoRA training</strong> — hempcrete + 3D printer pipelines</div>
-                            <div class="action-note">Run hempcrete LoRA, collect 3D printer dataset, train both</div>
+                            <div class="action-text"><strong>Hempcrete Flux LoRA training</strong> — running on cuda:0</div>
+                            <div class="action-note">ai-toolkit, 1200 steps @ ~65s/step. Check local/lora-output/ for checkpoints at 400/800/1200. Test in ComfyUI with EBHEMPCRETE trigger.</div>
+                        </div>
+                        <span class="action-tag urgent-tag">Running</span>
+                    </li>
+                    <li class="action-item urgent">
+                        <div class="action-dot urgent"></div>
+                        <div>
+                            <div class="action-text"><strong>PuLID overnight batch</strong> — running on cuda:1</div>
+                            <div class="action-note">run-pulid-all.py with 0.75 strength, reseed, prompt variation. New run needed with v2 changes (see below). Output lands in comfyui-output/ root &mdash; re-sort with: <code>python local\scripts\sort-comfyui-output.py</code></div>
+                        </div>
+                        <span class="action-tag urgent-tag">Running</span>
+                    </li>
+                    <li class="action-item urgent">
+                        <div class="action-dot urgent"></div>
+                        <div>
+                            <div class="action-text"><strong>Re-run PuLID with v2 improvements</strong></div>
+                            <div class="action-note">
+                                Session 39 made 3 major fixes not yet in the running batch:<br>
+                                1. <strong>Strength 0.60</strong> (was 0.75/0.85) &mdash; lets prompts control pose<br>
+                                2. <strong>Per-angle negative prompts</strong> &mdash; "facing forward, straight-on" rejected for left/right/down angles<br>
+                                3. <strong>3 reference images per character</strong> &mdash; charsheet triptych panels cropped to CharName-1/2/3.png, orchestrator rotates per round<br>
+                                Run: <code>python local\scripts\run-pulid-all.py --rounds 3</code> (3 rounds = 1 per reference image)
+                            </div>
                         </div>
                         <span class="action-tag urgent-tag">Next</span>
                     </li>
                     <li class="action-item urgent">
-                        <div class="action-dot urgent"></div>
+                        <div class="action-dot next"></div>
+                        <div>
+                            <div class="action-text"><strong>Caption + train character LoRAs</strong></div>
+                            <div class="action-note">After PuLID output is good: quick-caption.py on images &rarr; make-flux-config.py per character &rarr; train-flux-lora.bat. ~11hrs each on cuda:0.</div>
+                        </div>
+                        <span class="action-tag next-tag">Next</span>
+                    </li>
+                    <li class="action-item">
+                        <div class="action-dot next"></div>
                         <div>
                             <div class="action-text"><strong>Integrate Flux assets</strong> into site heroes + sections</div>
-                            <div class="action-note">Pick best from comfyui-output/, resize, place on pages</div>
+                            <div class="action-note">Pick best from comfyui-output/ (now sorted into subdirs), resize, place on pages</div>
                         </div>
-                        <span class="action-tag urgent-tag">Next</span>
-                    </li>
-                    <li class="action-item urgent">
-                        <div class="action-dot urgent"></div>
-                        <div>
-                            <div class="action-text"><strong>PuLID face-locked generation</strong></div>
-                            <div class="action-note">Pick reference faces &rarr; setup-pulid.py &rarr; queue-pulid-faces.py</div>
-                        </div>
-                        <span class="action-tag urgent-tag">Soon</span>
+                        <span class="action-tag next-tag">Soon</span>
                     </li>
                 </ul>
 
@@ -1207,7 +1241,7 @@
         try {
             const { data: views, error } = await sb
                 .from('page_views')
-                .select('id, page, referrer, session_id, created_at, ip_address, user_id, display_name')
+                .select('id, page, referrer, session_id, created_at, ip_address, user_id, display_name, user_agent, user_location')
                 .order('created_at', { ascending: false })
                 .limit(500);
             if (error) throw error;
@@ -1222,6 +1256,27 @@
         } catch(e) {
             document.getElementById('traffic-refresh').textContent = 'Error: ' + e.message.slice(0, 40);
         }
+    }
+
+    // ── Device parser — extracts OS, browser, mobile/desktop from user_agent ──
+    function parseDevice(ua) {
+        if (!ua) return { os: '?', browser: '?', mobile: false, short: '?' };
+        const mobile = /Mobile|Android|iPhone|iPad|iPod/i.test(ua);
+        let os = '?';
+        if (/Windows/i.test(ua)) os = 'Win';
+        else if (/Mac OS/i.test(ua)) os = 'Mac';
+        else if (/Android/i.test(ua)) os = 'Android';
+        else if (/iPhone|iPad|iPod/i.test(ua)) os = 'iOS';
+        else if (/Linux/i.test(ua)) os = 'Linux';
+        else if (/CrOS/i.test(ua)) os = 'ChromeOS';
+        let browser = '?';
+        if (/Edg\//i.test(ua)) browser = 'Edge';
+        else if (/Chrome/i.test(ua)) browser = 'Chrome';
+        else if (/Firefox/i.test(ua)) browser = 'Firefox';
+        else if (/Safari/i.test(ua)) browser = 'Safari';
+        else if (/Opera|OPR/i.test(ua)) browser = 'Opera';
+        const icon = mobile ? '\u{1F4F1}' : '\u{1F5A5}';
+        return { os, browser, mobile, short: `${icon} ${os}/${browser}` };
     }
 
     function renderTrafficStats() {
@@ -1291,21 +1346,35 @@
                 ? '<span style="color:#4ade80;font-size:0.62rem;">&#9679; active now</span>'
                 : formatDate(views[views.length - 1].created_at);
 
-            // Member name or IP badge
+            // Identity: member name + IP (always show IP), device, location
             const firstView = views[0];
             const memberName = firstView.display_name;
             const ip = firstView.ip_address;
-            const identBadge = memberName
+            const device = parseDevice(firstView.user_agent);
+            const userLoc = firstView.user_location;
+
+            // Name badge (gold for members, grey IP for anon)
+            let nameBadge = memberName
                 ? `<span style="color:var(--clay);font-size:0.68rem;font-weight:600;">${memberName}</span>`
-                : ip
-                    ? `<span style="color:rgba(242,239,230,0.4);font-size:0.62rem;font-family:monospace;">${ip}</span>`
-                    : '';
+                : '';
+            // IP always shown (dimmer for members since they have a name)
+            const ipBadge = ip
+                ? `<span style="color:rgba(242,239,230,${memberName ? '0.25' : '0.4'});font-size:0.6rem;font-family:monospace;">${ip}</span>`
+                : '';
+            // Device badge
+            const deviceBadge = firstView.user_agent
+                ? `<span style="color:rgba(242,239,230,0.35);font-size:0.58rem;" title="${firstView.user_agent}">${device.short}</span>`
+                : '';
+            // Location badge
+            const locBadge = userLoc
+                ? `<span style="color:rgba(194,165,108,0.6);font-size:0.6rem;">${userLoc}</span>`
+                : '';
 
             return `<div class="${trailClass}">
                 <div class="trail-meta">
                     <div class="trail-dot ${dotClass}"></div>
                     <span>${statusTxt}</span>
-                    ${identBadge}
+                    ${nameBadge}${ipBadge}${deviceBadge}${locBadge}
                     <span style="margin-left:auto;">${pageCount} page${pageCount !== 1 ? 's' : ''}</span>
                 </div>
                 <div class="trail-pages">${pagesHtml}</div>
@@ -1350,15 +1419,23 @@
             const refHtml = v.referrer
                 ? `<span class="feed-view-ref">&#8592; ${v.referrer.replace('.html', '')}</span>`
                 : `<span class="feed-view-ref" style="opacity:0.4;">direct</span>`;
-            const identHtml = v.display_name
+            const dev = parseDevice(v.user_agent);
+            const nameHtml = v.display_name
                 ? `<span style="color:var(--clay);font-size:0.65rem;font-weight:600;">${v.display_name}</span>`
-                : v.ip_address
-                    ? `<span style="color:rgba(242,239,230,0.35);font-size:0.6rem;font-family:monospace;">${v.ip_address}</span>`
-                    : '';
+                : '';
+            const ipHtml = v.ip_address
+                ? `<span style="color:rgba(242,239,230,${v.display_name ? '0.2' : '0.35'});font-size:0.58rem;font-family:monospace;">${v.ip_address}</span>`
+                : '';
+            const devHtml = v.user_agent
+                ? `<span style="color:rgba(242,239,230,0.3);font-size:0.55rem;" title="${v.user_agent}">${dev.short}</span>`
+                : '';
+            const locHtml = v.user_location
+                ? `<span style="color:rgba(194,165,108,0.5);font-size:0.58rem;">${v.user_location}</span>`
+                : '';
             return `<div class="feed-view" id="fv-${v.id}">
                 <span class="feed-view-page">${v.page}</span>
                 ${refHtml}
-                ${identHtml}
+                ${nameHtml}${ipHtml}${devHtml}${locHtml}
                 <span class="feed-view-time">${formatDate(v.created_at)}</span>
                 ${i === 0 ? '<span class="feed-view-new">new</span>' : ''}
             </div>`;

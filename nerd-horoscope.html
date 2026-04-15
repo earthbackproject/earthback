@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Nerd Horoscope — Which Nerd Archetype Are You?</title>
+<meta property="og:title" content="The Nerd Horoscope — Which Nerd Archetype Are You?">
+<meta property="og:description" content="7 archetypes. 10 questions. Find your place in the Nerd Zodiac.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --theorist: #4F6BF6;
+  --heart: #2ECC71;
+  --realist: #F0A030;
+  --engineer: #E74C3C;
+  --romantic: #9B59B6;
+  --observer: #1ABC9C;
+  --force: #E84393;
+  --bg: #0B0E17;
+  --bg2: #141829;
+  --text: #E8E6F0;
+  --textdim: #8B8A97;
+  --card: #1A1E30;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── STARFIELD ── */
+.stars {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+.stars canvas { width: 100%; height: 100%; }
+
+/* ── SECTIONS ── */
+.section {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.section.active { display: flex; }
+
+/* ── LANDING ── */
+.landing-title {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(2rem, 6vw, 4rem);
+  text-align: center;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--theorist), var(--romantic), var(--force));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.landing-sub {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: var(--textdim);
+  text-align: center;
+  margin-bottom: 48px;
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+/* ── HOROSCOPE WHEEL ── */
+.wheel-container {
+  position: relative;
+  width: min(500px, 85vw);
+  height: min(500px, 85vw);
+  margin: 0 auto 48px;
+}
+
+.wheel-svg {
+  width: 100%; height: 100%;
+  filter: drop-shadow(0 0 40px rgba(79, 107, 246, 0.15));
+}
+
+.wheel-segment { cursor: pointer; transition: transform 0.3s ease; }
+.wheel-segment:hover { filter: brightness(1.2); }
+
+.wheel-center-text {
+  font-family: 'Space Mono', monospace;
+  fill: var(--text);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.wheel-label {
+  font-family: 'Space Grotesk', sans-serif;
+  fill: var(--text);
+  text-anchor: middle;
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: none;
+}
+.wheel-symbol {
+  font-size: 26px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+.wheel-element {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  fill: var(--textdim);
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* ── ARCHETYPE TOOLTIP ── */
+.archetype-tooltip {
+  position: fixed;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 20px 24px;
+  max-width: 320px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.archetype-tooltip.visible { opacity: 1; pointer-events: auto; }
+.archetype-tooltip h3 { font-size: 18px; margin-bottom: 4px; }
+.archetype-tooltip .element-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--textdim);
+  margin-bottom: 10px;
+}
+.archetype-tooltip p { font-size: 14px; line-height: 1.5; color: var(--textdim); }
+.archetype-tooltip .tip-chars {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--textdim);
+  line-height: 1.6;
+}
+.archetype-tooltip .tip-chars span { color: var(--text); font-weight: 500; }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 16px 48px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--theorist), var(--romantic));
+  color: white;
+  box-shadow: 0 4px 24px rgba(79, 107, 246, 0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(79, 107, 246, 0.5);
+}
+.btn-secondary {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,0.3); }
+.btn-small { font-size: 14px; padding: 10px 28px; }
+
+/* ── QUIZ ── */
+.quiz-container {
+  max-width: 640px;
+  width: 100%;
+}
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--bg2);
+  border-radius: 2px;
+  margin-bottom: 48px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--theorist), var(--romantic));
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+.question-number {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: var(--textdim);
+  margin-bottom: 12px;
+}
+.question-text {
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 36px;
+}
+.answers { display: flex; flex-direction: column; gap: 12px; }
+.answer-btn {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 18px 24px;
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  line-height: 1.4;
+}
+.answer-btn:hover {
+  border-color: var(--theorist);
+  background: rgba(79, 107, 246, 0.08);
+  transform: translateX(4px);
+}
+.answer-btn.selected {
+  border-color: var(--theorist);
+  background: rgba(79, 107, 246, 0.15);
+}
+
+/* ── RESULT ── */
+.result-container {
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+}
+.result-card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 48px 36px;
+  margin-bottom: 32px;
+  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  overflow: hidden;
+}
+.result-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--result-color, var(--theorist));
+}
+.result-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--textdim);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 16px;
+}
+.result-symbol { font-size: 64px; margin-bottom: 16px; }
+.result-name {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.result-element {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: var(--textdim);
+  margin-bottom: 24px;
+}
+.result-desc {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--textdim);
+  margin-bottom: 28px;
+}
+.result-traits {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.trait-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text);
+}
+
+/* ── FAMOUS CHARACTERS SECTION ── */
+.famous-section {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 24px;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+.famous-section h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--textdim);
+  margin-bottom: 16px;
+}
+.famous-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.famous-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--text);
+  transition: all 0.2s;
+}
+.famous-chip:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+}
+.famous-chip .chip-show {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--textdim);
+}
+
+/* ── COMPATIBILITY ── */
+.result-compat {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 20px;
+  margin-top: 8px;
+}
+.result-compat h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--textdim);
+  margin-bottom: 12px;
+}
+.compat-pair {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 8px;
+  font-size: 15px;
+}
+.compat-pair .compat-icon { font-size: 22px; }
+
+.result-axes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 24px 0;
+}
+.axis-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--textdim);
+}
+.axis-label { width: 80px; text-align: right; font-family: 'Space Mono', monospace; }
+.axis-label-r { width: 80px; text-align: left; font-family: 'Space Mono', monospace; }
+.axis-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+}
+.axis-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+
+.share-section { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 12px; }
+
+/* ── WHEEL ON RESULT ── */
+.result-wheel-wrap {
+  margin: 24px auto;
+  width: min(320px, 80vw);
+  height: min(320px, 80vw);
+}
+.result-wheel-wrap svg { filter: drop-shadow(0 0 20px rgba(79,107,246,0.1)); }
+.pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+/* ── CHALLENGE SECTION ── */
+.challenge-box {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 28px;
+  margin-top: 24px;
+  text-align: center;
+}
+.challenge-box h3 { font-size: 18px; margin-bottom: 8px; }
+.challenge-box p { font-size: 14px; color: var(--textdim); margin-bottom: 16px; line-height: 1.5; }
+.challenge-link {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  background: var(--bg);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text);
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  user-select: all;
+}
+
+/* ── EXPLORE SECTION ── */
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  max-width: 900px;
+  width: 100%;
+  margin-top: 32px;
+}
+.explore-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.explore-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.2);
+}
+.explore-card .ex-symbol { font-size: 36px; margin-bottom: 10px; }
+.explore-card .ex-name { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+.explore-card .ex-element {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--textdim);
+  margin-bottom: 12px;
+}
+.explore-card .ex-chars {
+  font-size: 13px;
+  color: var(--textdim);
+  line-height: 1.6;
+}
+.explore-card .ex-chars strong { color: var(--text); font-weight: 500; }
+
+/* ── ARCHETYPE DETAIL ── */
+.detail-container {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+.detail-chars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+  text-align: left;
+}
+.detail-char-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.detail-char-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+.detail-char-show {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--textdim);
+  margin-bottom: 6px;
+}
+.detail-char-why {
+  font-size: 12px;
+  color: var(--textdim);
+  line-height: 1.5;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeInUp 0.6s ease forwards; }
+.fade-in-delay { animation: fadeInUp 0.6s ease 0.2s forwards; opacity: 0; }
+.fade-in-delay2 { animation: fadeInUp 0.6s ease 0.4s forwards; opacity: 0; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 500px) {
+  .section { padding: 24px 16px; }
+  .result-card { padding: 32px 20px; }
+  .btn { padding: 14px 36px; font-size: 16px; }
+  .detail-chars-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Starfield background -->
+<div class="stars"><canvas id="starfield"></canvas></div>
+
+<!-- Archetype tooltip -->
+<div class="archetype-tooltip" id="tooltip"></div>
+
+<!-- ═══ LANDING ═══ -->
+<section class="section active" id="sec-landing">
+  <div class="landing-title fade-in">The Nerd Horoscope</div>
+  <div class="landing-sub fade-in-delay">7 archetypes. 10 questions. One timeless question:<br><em>Which nerd are you?</em></div>
+  <div class="wheel-container fade-in-delay" id="main-wheel"></div>
+  <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+    <button class="btn btn-primary fade-in-delay2" onclick="startQuiz()">Discover Your Archetype</button>
+    <button class="btn btn-secondary fade-in-delay2" onclick="showExplore()">Explore the Zodiac</button>
+  </div>
+</section>
+
+<!-- ═══ EXPLORE ═══ -->
+<section class="section" id="sec-explore">
+  <div class="landing-title" style="font-size:clamp(1.4rem,4vw,2.2rem);margin-bottom:8px;">The Nerd Zodiac</div>
+  <p style="color:var(--textdim);text-align:center;max-width:480px;margin-bottom:24px;">Seven archetypes that show up again and again across every show, movie, and story nerds love.</p>
+  <div class="explore-grid" id="explore-grid"></div>
+  <div style="margin-top:36px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+    <button class="btn btn-primary" onclick="startQuiz()">Take the Quiz</button>
+    <button class="btn btn-secondary btn-small" onclick="showSection('sec-landing')">Back</button>
+  </div>
+</section>
+
+<!-- ═══ ARCHETYPE DETAIL ═══ -->
+<section class="section" id="sec-detail">
+  <div class="detail-container" id="detail-container"></div>
+</section>
+
+<!-- ═══ QUIZ ═══ -->
+<section class="section" id="sec-quiz">
+  <div class="quiz-container">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="question-number" id="q-number"></div>
+    <div class="question-text" id="q-text"></div>
+    <div class="answers" id="q-answers"></div>
+  </div>
+</section>
+
+<!-- ═══ RESULT ═══ -->
+<section class="section" id="sec-result">
+  <div class="result-container" id="result-container"></div>
+</section>
+
+<script>
+// ╔═══════════════════════════════════════════╗
+// ║       THE NERD HOROSCOPE — ENGINE         ║
+// ╚═══════════════════════════════════════════╝
+
+const ARCHETYPES = {
+  theorist: {
+    name: "The Theorist",
+    symbol: "🔭",
+    element: "Logic",
+    elementIcon: "◇",
+    color: "#4F6BF6",
+    gradient: "linear-gradient(135deg, #4F6BF6, #6366F1)",
+    tagline: "You see the world with rare clarity and refuse to compromise your standards for social convenience.",
+    description: "Your mind operates on a different frequency. Where others see chaos, you see patterns. Where others follow convention, you follow evidence. You don't need approval — you need accuracy. People may call you intense, but they also come to you when they need the truth. Your uncompromising pursuit of understanding isn't a flaw — it's a gift most people can't handle.",
+    traits: ["Analytical", "Uncompromising", "Pattern-seeker", "Precise", "Independent"],
+    axes: [0.95, 0.2, 0.9, 0.15, 0.3],
+    bestMatch: "observer",
+    alsoGood: "engineer",
+    tension: "realist",
+    horoscope: "Mercury in your third house of overthinking says: that argument you rehearsed in the shower? You'll need it today.",
+    characters: [
+      { name: "Sheldon Cooper", show: "The Big Bang Theory", why: "The archetype incarnate — brilliant, rigid, zero tolerance for imprecision" },
+      { name: "Spock", show: "Star Trek", why: "Logic as a way of life, emotions as a bug to be patched" },
+      { name: "Hermione Granger", show: "Harry Potter", why: "The one who actually read the book before the test" },
+      { name: "Abed Nadir", show: "Community", why: "Sees the world through patterns and frameworks others can't perceive" },
+      { name: "Felix Unger", show: "The Odd Couple", why: "The original — fastidious, principled, impossible to live with" },
+      { name: "Spencer Reid", show: "Criminal Minds", why: "Eidetic memory, three PhDs, still can't read a room" },
+      { name: "Chidi Anagonye", show: "The Good Place", why: "Paralyzed by the weight of thinking correctly about everything" },
+      { name: "Data", show: "Star Trek: TNG", why: "Endlessly analyzing what it means to be human — from the outside" }
+    ]
+  },
+  heart: {
+    name: "The Heart",
+    symbol: "🫀",
+    element: "Empathy",
+    elementIcon: "○",
+    color: "#2ECC71",
+    gradient: "linear-gradient(135deg, #2ECC71, #27AE60)",
+    tagline: "You're the one who actually holds everything together — people underestimate how much emotional intelligence that takes.",
+    description: "You are the gravitational center of every group you're in, even if you don't realize it. Your superpower isn't being the loudest or the smartest — it's being the person everyone trusts. You absorb conflict, translate between people who don't understand each other, and quietly carry more emotional weight than anyone gives you credit for. You grow under pressure because you have to — people depend on you.",
+    traits: ["Empathetic", "Adaptive", "Peacemaker", "Loyal", "Resilient"],
+    axes: [0.55, 0.55, 0.5, 0.8, 0.4],
+    bestMatch: "realist",
+    alsoGood: "romantic",
+    tension: "theorist",
+    horoscope: "Venus is telling you to stop mediating everyone else's drama and eat lunch. You deserve lunch.",
+    characters: [
+      { name: "Leonard Hofstadter", show: "The Big Bang Theory", why: "The translator between the geniuses and the real world" },
+      { name: "Jim Halpert", show: "The Office", why: "Holds the group together with warmth disguised as sarcasm" },
+      { name: "Ted Lasso", show: "Ted Lasso", why: "Weaponized empathy — makes everyone around him better" },
+      { name: "Samwise Gamgee", show: "Lord of the Rings", why: "The real hero. Carried the ring carrier." },
+      { name: "Marshall Eriksen", show: "How I Met Your Mother", why: "Big heart, bigger loyalty, always the emotional anchor" },
+      { name: "Charles Boyle", show: "Brooklyn Nine-Nine", why: "Relentlessly supportive, emotionally available, underestimated" },
+      { name: "Iroh", show: "Avatar: TLA", why: "Wisdom wrapped in kindness, strength disguised as tea" },
+      { name: "Kaylee Frye", show: "Firefly", why: "The sunshine that keeps the crew from falling apart" }
+    ]
+  },
+  realist: {
+    name: "The Realist",
+    symbol: "⚡",
+    element: "Grit",
+    elementIcon: "△",
+    color: "#F0A030",
+    gradient: "linear-gradient(135deg, #F0A030, #E67E22)",
+    tagline: "You cut through overthinking and actually get things done. People gravitate to you because you're real.",
+    description: "While everyone else is theorizing, you've already figured it out by doing it. You have an instinct for cutting through noise and finding what actually matters. Book-smart people might underestimate you, but you consistently outperform them in the real world because you understand something they don't: insight without action is just trivia. You make things happen.",
+    traits: ["Street-smart", "Direct", "Resilient", "Practical", "Charismatic"],
+    axes: [0.3, 0.85, 0.25, 0.35, 0.9],
+    bestMatch: "heart",
+    alsoGood: "force",
+    tension: "theorist",
+    horoscope: "Mars says stop explaining yourself to people who weren't listening in the first place. Trust your gut — it's smarter than their spreadsheet.",
+    characters: [
+      { name: "Penny", show: "The Big Bang Theory", why: "Cuts through the noise, street-smart circles around the PhDs" },
+      { name: "Han Solo", show: "Star Wars", why: "Shoots first, theorizes never. Gets the job done." },
+      { name: "Oscar Madison", show: "The Odd Couple", why: "The original anti-overthinker — messy, real, effective" },
+      { name: "Rosa Diaz", show: "Brooklyn Nine-Nine", why: "Zero patience for nonsense, maximum competence" },
+      { name: "Elaine Benes", show: "Seinfeld", why: "The only one in the group with actual survival instincts" },
+      { name: "Malcolm Reynolds", show: "Firefly", why: "Pragmatism is a moral philosophy when you're on the edge" },
+      { name: "Jessica Jones", show: "Jessica Jones", why: "Raw, unfiltered, gets results by refusing to play the game" },
+      { name: "Jake Peralta", show: "Brooklyn Nine-Nine", why: "Instinct over procedure, and annoyingly right about it" }
+    ]
+  },
+  engineer: {
+    name: "The Engineer",
+    symbol: "⚙️",
+    element: "Innovation",
+    elementIcon: "⬡",
+    color: "#E74C3C",
+    gradient: "linear-gradient(135deg, #E74C3C, #C0392B)",
+    tagline: "You build things nobody else can figure out, and your people know you'd do anything for them.",
+    description: "You're the one who makes things work — not in theory, but in practice. You thrive on problems everyone else has given up on. Underneath the bravado is someone who cares deeply about belonging and being valued. Your humor isn't just humor — it's how you connect. And when you commit to people, you commit completely. You're the person who'll drive across town at 2 AM because someone needs you.",
+    traits: ["Resourceful", "Creative", "Loyal", "Witty", "Hands-on"],
+    axes: [0.7, 0.7, 0.4, 0.45, 0.7],
+    bestMatch: "force",
+    alsoGood: "theorist",
+    tension: "romantic",
+    horoscope: "Jupiter in your house of projects suggests you should finish one before starting another. (You won't, but Jupiter tried.)",
+    characters: [
+      { name: "Howard Wolowitz", show: "The Big Bang Theory", why: "Built stuff that went to space. Still gets no respect." },
+      { name: "Tony Stark", show: "MCU", why: "Builds his way out of every problem, quips through the pain" },
+      { name: "Scotty", show: "Star Trek", why: "Miracle worker. Manages expectations by sandbagging timelines." },
+      { name: "Cisco Ramon", show: "The Flash", why: "Names the villains, builds the gadgets, holds it all together" },
+      { name: "MacGyver", show: "MacGyver", why: "A paperclip, some duct tape, and an impossible problem? Perfect." },
+      { name: "Wash", show: "Firefly", why: "Keeps everything flying with skill, humor, and dinosaur toys" },
+      { name: "Q (Bond)", show: "James Bond", why: "Builds the impossible, watches someone else get the credit" },
+      { name: "Forge", show: "X-Men", why: "Mutant power is literally being an engineer. The archetype is the superpower." }
+    ]
+  },
+  romantic: {
+    name: "The Romantic",
+    symbol: "🌙",
+    element: "Passion",
+    elementIcon: "☽",
+    color: "#9B59B6",
+    gradient: "linear-gradient(135deg, #9B59B6, #8E44AD)",
+    tagline: "You feel things more deeply than most people and that's not weakness — it's your superpower.",
+    description: "The world hits you differently than it hits other people. Art moves you. Music changes your mood for hours. You fall in love with ideas before you fall in love with people. Some call that sensitive — but sensitivity is just perception cranked to max. You notice what everyone else walks past. Your inner world is vast and vivid, and the people lucky enough to be let into it are changed by the experience.",
+    traits: ["Sensitive", "Creative", "Idealistic", "Perceptive", "Devoted"],
+    axes: [0.5, 0.25, 0.35, 0.75, 0.15],
+    bestMatch: "observer",
+    alsoGood: "heart",
+    tension: "realist",
+    horoscope: "Neptune whispers: the thing you're afraid to create is the thing the world needs most from you. Also, drink water.",
+    characters: [
+      { name: "Raj Koothrappali", show: "The Big Bang Theory", why: "Feels everything at full volume, even when he can't say it out loud" },
+      { name: "Ted Mosby", show: "How I Met Your Mother", why: "Believes in The One with an intensity that borders on religion" },
+      { name: "Frasier Crane", show: "Frasier", why: "Cultured, emotionally fluent, hopelessly romantic under the sophistication" },
+      { name: "Ross Geller", show: "Friends", why: "Passionate about the things he loves to the point of being insufferable about them" },
+      { name: "Simon Tam", show: "Firefly", why: "Gave up everything for love. Would do it again." },
+      { name: "Newt Scamander", show: "Fantastic Beasts", why: "Sees beauty where others see danger, connects through gentleness" },
+      { name: "Vision", show: "MCU", why: "Trying to understand what love is by feeling it completely" },
+      { name: "Steven Universe", show: "Steven Universe", why: "Radical empathy as a weapon, feelings as a superpower" }
+    ]
+  },
+  observer: {
+    name: "The Observer",
+    symbol: "🔬",
+    element: "Insight",
+    elementIcon: "◎",
+    color: "#1ABC9C",
+    gradient: "linear-gradient(135deg, #1ABC9C, #16A085)",
+    tagline: "You see patterns others miss — in data and in people.",
+    description: "You process the world in dual channels: logic and emotion running simultaneously. Most people are good at one; you're quietly fluent in both. You observe before you act, and when you finally speak, people listen — because you've already thought it through from six angles. Your patience isn't passivity — it's strategy. You understand people better than they understand themselves, and you use that power gently.",
+    traits: ["Perceptive", "Patient", "Methodical", "Emotionally fluent", "Understated"],
+    axes: [0.8, 0.3, 0.7, 0.65, 0.25],
+    bestMatch: "theorist",
+    alsoGood: "romantic",
+    tension: "force",
+    horoscope: "Saturn rewards your patience this week. That thing you've been quietly working on? Someone important finally notices.",
+    characters: [
+      { name: "Amy Farrah Fowler", show: "The Big Bang Theory", why: "Brilliant scientist who also reads the room better than anyone" },
+      { name: "Dana Scully", show: "The X-Files", why: "Evidence first, but never dismisses what she can't explain" },
+      { name: "Lisa Simpson", show: "The Simpsons", why: "Smartest person in every room, patiently waiting for the world to catch up" },
+      { name: "Temperance Brennan", show: "Bones", why: "Reads bones like novels, learning to read people the same way" },
+      { name: "Beth Harmon", show: "The Queen's Gambit", why: "Sees patterns on the ceiling that nobody else can perceive" },
+      { name: "Wednesday Addams", show: "Wednesday", why: "Observes everything, reveals nothing, always three steps ahead" },
+      { name: "Root", show: "Person of Interest", why: "Sees the system beneath the system, hacks reality itself" },
+      { name: "Yoda", show: "Star Wars", why: "Waited 800 years. Still had the best timing in the galaxy." }
+    ]
+  },
+  force: {
+    name: "The Force",
+    symbol: "💎",
+    element: "Power",
+    elementIcon: "✦",
+    color: "#E84393",
+    gradient: "linear-gradient(135deg, #E84393, #D63384)",
+    tagline: "Nobody sees you coming, and that's their mistake.",
+    description: "You are the most underestimated person in every room you enter — and you've learned to use that. Behind the warmth is a strategic mind that's already three moves ahead. You protect your people fiercely and hold yourself to standards that would crush most people. When you want something, you don't just wish for it — you build a plan, execute it, and somehow make it look effortless. You're proof that quiet power is the most dangerous kind.",
+    traits: ["Strategic", "Fierce", "Driven", "Protective", "Precise"],
+    axes: [0.75, 0.6, 0.8, 0.25, 0.75],
+    bestMatch: "engineer",
+    alsoGood: "realist",
+    tension: "romantic",
+    horoscope: "Pluto reminds you that you don't have to carry everything alone. Delegate one thing today. The world won't collapse. (Probably.)",
+    characters: [
+      { name: "Bernadette Rostenkowski", show: "The Big Bang Theory", why: "Tiny, terrifying, and running the show while everyone looks elsewhere" },
+      { name: "Princess Leia", show: "Star Wars", why: "Organized the rebellion, rescued her own rescuers, took no days off" },
+      { name: "Leslie Knope", show: "Parks & Recreation", why: "Unstoppable force of competence with a binder for every occasion" },
+      { name: "Miranda Priestly", show: "The Devil Wears Prada", why: "Sets the standard. Doesn't explain it. You figure it out." },
+      { name: "Zoe Washburne", show: "Firefly", why: "Calm, lethal, loyal. The person you want next to you when it all goes wrong." },
+      { name: "Annalise Keating", show: "How to Get Away with Murder", why: "Plays the game at a level no one else knows exists" },
+      { name: "Captain Holt", show: "Brooklyn Nine-Nine", why: "Quiet authority, zero wasted words, devastating when underestimated" },
+      { name: "Shuri", show: "Black Panther", why: "Youngest, smartest, and holding back a smile while she proves it" }
+    ]
+  }
+};
+
+// Axis names: [analytical, extroverted, structured, diplomatic, pragmatic]
+const AXIS_LABELS = [
+  ["Analytical", "Intuitive"],
+  ["Introverted", "Extroverted"],
+  ["Spontaneous", "Structured"],
+  ["Direct", "Diplomatic"],
+  ["Idealistic", "Pragmatic"]
+];
+
+// ── QUESTIONS ──
+const QUESTIONS = [
+  {
+    text: "You walk into a party where you only know one person. What's your move?",
+    answers: [
+      { text: "Find a quiet corner and observe the room for a while before engaging", scores: [0.1, -0.2, 0.1, 0, -0.1] },
+      { text: "Beeline to my one friend and let conversations happen naturally from there", scores: [-0.05, 0.1, 0, 0.15, 0] },
+      { text: "Walk up to the most interesting-looking group and introduce myself", scores: [-0.1, 0.25, -0.1, -0.1, 0.15] },
+      { text: "Immediately start helping — fixing the playlist, organizing drinks, whatever needs doing", scores: [0.05, 0.15, 0.1, 0, 0.1] }
+    ]
+  },
+  {
+    text: "You discover a close friend has been telling people something about you that isn't true. How do you handle it?",
+    answers: [
+      { text: "Confront them directly with the facts — I need to understand their logic", scores: [0.15, 0, 0, -0.2, 0] },
+      { text: "Talk to them privately and try to understand what's going on underneath", scores: [0, 0, 0, 0.2, -0.1] },
+      { text: "Cut through the drama — address it, fix it, move on", scores: [-0.1, 0.1, -0.1, -0.1, 0.2] },
+      { text: "I'd be deeply hurt. I'd need time to process before saying anything", scores: [0, -0.15, 0, 0.1, -0.2] }
+    ]
+  },
+  {
+    text: "A friend asks for help with a project you know is flawed. What do you do?",
+    answers: [
+      { text: "Point out every flaw. They'll thank me later when it actually works", scores: [0.2, 0, 0, -0.25, 0.1] },
+      { text: "Help them improve it — guide them toward the fixes without crushing their enthusiasm", scores: [0.05, 0.05, 0, 0.2, 0] },
+      { text: "Roll up my sleeves and rebuild the broken parts myself. Faster that way", scores: [0.1, 0.05, 0.1, -0.05, 0.15] },
+      { text: "Let them try it their way first. Sometimes people need to learn from experience", scores: [0.05, -0.1, -0.05, 0.1, 0.05] }
+    ]
+  },
+  {
+    text: "It's Saturday. No obligations. What does your ideal day look like?",
+    answers: [
+      { text: "Deep-dive into something I've been wanting to learn — a new topic, a research rabbit hole", scores: [0.2, -0.2, 0.1, 0, -0.15] },
+      { text: "Something creative — writing, making art, playing music, working on a passion project", scores: [0.05, -0.1, -0.1, 0.05, -0.2] },
+      { text: "Out doing things — brunch, exploring, meeting up with people, being in the world", scores: [-0.15, 0.25, -0.1, 0.05, 0.15] },
+      { text: "Tinkering. Building something. Fixing something. Making something that didn't exist before", scores: [0.1, 0, 0.05, 0, 0.1] }
+    ]
+  },
+  {
+    text: "You're in a group debate and someone says something confidently incorrect. What's your instinct?",
+    answers: [
+      { text: "Correct them immediately. Wrong is wrong, and letting it slide helps nobody", scores: [0.2, 0.05, 0.1, -0.3, 0.05] },
+      { text: "Wait for the right moment and redirect the conversation gently", scores: [0.1, -0.05, 0.05, 0.2, 0] },
+      { text: "Depends — is it worth the energy? If it doesn't matter, I let it go", scores: [-0.1, 0, -0.1, 0.1, 0.2] },
+      { text: "I'd probably stew about it silently and then bring it up to someone later", scores: [0.05, -0.15, 0, 0.05, -0.1] }
+    ]
+  },
+  {
+    text: "What's the thing that makes you feel most alive?",
+    answers: [
+      { text: "Cracking a problem that everyone else gave up on", scores: [0.2, 0, 0.1, -0.05, 0.05] },
+      { text: "A deep, honest conversation that goes until 3 AM", scores: [0, 0.05, -0.1, 0.15, -0.2] },
+      { text: "Being in the zone — making something with my hands or mind, losing track of time", scores: [0.1, -0.1, 0.05, 0, 0] },
+      { text: "Winning. Hitting a goal I set for myself and knowing I earned it", scores: [0.05, 0.1, 0.15, -0.1, 0.2] }
+    ]
+  },
+  {
+    text: "Your team at work is stuck on a problem. What role do you naturally fall into?",
+    answers: [
+      { text: "The analyst — I break it down, find the root cause, propose the logical solution", scores: [0.2, 0, 0.15, -0.05, 0.05] },
+      { text: "The glue — I make sure everyone's heard, reduce friction, keep morale up", scores: [-0.05, 0.1, 0, 0.25, -0.05] },
+      { text: "The doer — while everyone's talking, I've already started prototyping a fix", scores: [0.05, 0.05, 0.05, -0.1, 0.2] },
+      { text: "The strategist — I'm thinking two steps ahead about how this affects the bigger picture", scores: [0.15, 0, 0.15, 0.05, 0.1] }
+    ]
+  },
+  {
+    text: "Which of these would bother you most?",
+    answers: [
+      { text: "Someone making a decision based on feelings when the data clearly says otherwise", scores: [0.25, 0, 0.1, -0.15, 0.1] },
+      { text: "Being in a group where nobody says what they actually think", scores: [0, 0.1, -0.05, -0.1, 0.05] },
+      { text: "Being underestimated or dismissed by people who don't know what I'm capable of", scores: [0.05, 0.05, 0.1, -0.05, 0.15] },
+      { text: "Watching someone I care about struggle and not being able to help", scores: [-0.05, 0, 0, 0.2, -0.2] }
+    ]
+  },
+  {
+    text: "You've just received unexpected criticism from someone you respect. First instinct?",
+    answers: [
+      { text: "Analyze it objectively — is the criticism valid? If so, fix it. If not, dismiss it", scores: [0.2, 0, 0.1, -0.1, 0.1] },
+      { text: "It hits hard. I need to sit with it before I can respond clearly", scores: [0, -0.15, 0, 0.1, -0.2] },
+      { text: "Channel it into fuel — I'll prove them wrong through results", scores: [0.05, 0.1, 0.1, -0.1, 0.2] },
+      { text: "Talk it through with someone I trust to get perspective", scores: [-0.05, 0.1, 0, 0.2, 0] }
+    ]
+  },
+  {
+    text: "What's the thing you most wish people understood about you?",
+    answers: [
+      { text: "That my directness isn't coldness — I just respect people enough to be honest", scores: [0.15, 0, 0.05, -0.25, 0] },
+      { text: "That I feel everything, even when I don't show it", scores: [0.05, -0.2, 0.05, 0.1, -0.2] },
+      { text: "That my competence didn't come easy — I worked for every bit of it", scores: [0.05, 0.05, 0.15, -0.05, 0.15] },
+      { text: "That I don't need to be the center of attention to be the most valuable person in the room", scores: [0.1, -0.1, 0.1, 0.1, 0.05] }
+    ]
+  }
+];
+
+// ── STATE ──
+let currentQ = 0;
+let scores = [0.5, 0.5, 0.5, 0.5, 0.5];
+
+// ── STARFIELD ──
+function initStars() {
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let w, h, stars = [];
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  function createStars() {
+    stars = [];
+    for (let i = 0; i < 200; i++) {
+      stars.push({
+        x: Math.random() * w, y: Math.random() * h,
+        r: Math.random() * 1.5 + 0.3,
+        a: Math.random() * 0.6 + 0.2,
+        speed: Math.random() * 0.0005 + 0.0002,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+  function draw(t) {
+    ctx.clearRect(0, 0, w, h);
+    stars.forEach(s => {
+      const twinkle = Math.sin(t * s.speed * 1000 + s.phase) * 0.3 + 0.7;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200, 200, 255, ${s.a * twinkle})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize(); createStars(); requestAnimationFrame(draw);
+  window.addEventListener('resize', () => { resize(); createStars(); });
+}
+
+// ── SVG WHEEL ──
+function buildWheel(container, size, highlightKey, interactive) {
+  const keys = Object.keys(ARCHETYPES);
+  const cx = size / 2, cy = size / 2;
+  const outerR = size * 0.42, innerR = size * 0.22, labelR = size * 0.335;
+
+  let svg = `<svg class="wheel-svg" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<defs>`;
+  keys.forEach(k => {
+    svg += `<radialGradient id="glow-${k}-${size}" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="${ARCHETYPES[k].color}" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="${ARCHETYPES[k].color}" stop-opacity="0"/>
+    </radialGradient>`;
+  });
+  svg += `</defs>`;
+
+  const segAngle = (2 * Math.PI) / keys.length;
+  const startOffset = -Math.PI / 2 - segAngle / 2;
+
+  keys.forEach((k, i) => {
+    const a = ARCHETYPES[k];
+    const a1 = startOffset + i * segAngle;
+    const a2 = a1 + segAngle;
+    const mid = (a1 + a2) / 2;
+    const isHighlighted = highlightKey === k;
+    const opacity = highlightKey ? (isHighlighted ? 0.35 : 0.12) : 0.2;
+
+    const x1o = cx + outerR * Math.cos(a1), y1o = cy + outerR * Math.sin(a1);
+    const x2o = cx + outerR * Math.cos(a2), y2o = cy + outerR * Math.sin(a2);
+    const x1i = cx + innerR * Math.cos(a2), y1i = cy + innerR * Math.sin(a2);
+    const x2i = cx + innerR * Math.cos(a1), y2i = cy + innerR * Math.sin(a1);
+
+    svg += `<path class="wheel-segment" data-key="${k}"
+      d="M${x1o},${y1o} A${outerR},${outerR} 0 0,1 ${x2o},${y2o}
+         L${x1i},${y1i} A${innerR},${innerR} 0 0,0 ${x2i},${y2i} Z"
+      fill="${a.color}" fill-opacity="${opacity}" stroke="${a.color}" stroke-opacity="0.4" stroke-width="1"/>`;
+
+    if (isHighlighted) {
+      svg += `<circle cx="${cx + labelR * Math.cos(mid)}" cy="${cy + labelR * Math.sin(mid)}"
+        r="${size * 0.08}" fill="url(#glow-${k}-${size})" class="pulse-glow"/>`;
+    }
+
+    const sx = cx + (labelR - 12) * Math.cos(mid);
+    const sy = cy + (labelR - 12) * Math.sin(mid);
+    svg += `<text class="wheel-symbol" x="${sx}" y="${sy}" dy="-2">${a.symbol}</text>`;
+
+    const lx = cx + (labelR + 14) * Math.cos(mid);
+    const ly = cy + (labelR + 14) * Math.sin(mid);
+    svg += `<text class="wheel-label" x="${lx}" y="${ly}" dy="1" fill="${isHighlighted ? a.color : '#E8E6F0'}">${a.name.replace('The ', '')}</text>`;
+
+    const ex = cx + (labelR + 28) * Math.cos(mid);
+    const ey = cy + (labelR + 28) * Math.sin(mid);
+    svg += `<text class="wheel-element" x="${ex}" y="${ey}" dy="1">${a.elementIcon} ${a.element}</text>`;
+  });
+
+  // Compatibility lines
+  if (!highlightKey) {
+    keys.forEach((k, i) => {
+      const a = ARCHETYPES[k];
+      const bestIdx = keys.indexOf(a.bestMatch);
+      if (bestIdx > i) {
+        const a1 = startOffset + i * segAngle + segAngle / 2;
+        const a2s = startOffset + bestIdx * segAngle + segAngle / 2;
+        const x1 = cx + innerR * 0.9 * Math.cos(a1), y1 = cy + innerR * 0.9 * Math.sin(a1);
+        const x2 = cx + innerR * 0.9 * Math.cos(a2s), y2 = cy + innerR * 0.9 * Math.sin(a2s);
+        svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4,4"/>`;
+      }
+    });
+  }
+
+  svg += `<circle cx="${cx}" cy="${cy}" r="${innerR - 4}" fill="${highlightKey ? ARCHETYPES[highlightKey].color : '#4F6BF6'}" fill-opacity="0.06" stroke="${highlightKey ? ARCHETYPES[highlightKey].color : '#4F6BF6'}" stroke-opacity="0.2" stroke-width="1"/>`;
+  if (highlightKey) {
+    svg += `<text class="wheel-center-text" x="${cx}" y="${cy}" font-size="32">${ARCHETYPES[highlightKey].symbol}</text>`;
+  } else {
+    svg += `<text class="wheel-center-text" x="${cx}" y="${cy - 8}" font-size="10" fill="#8B8A97" letter-spacing="2">YOUR</text>`;
+    svg += `<text class="wheel-center-text" x="${cx}" y="${cy + 10}" font-size="12" font-weight="600" letter-spacing="1">ARCHETYPE</text>`;
+  }
+
+  svg += `</svg>`;
+  container.innerHTML = svg;
+
+  if (interactive) {
+    container.querySelectorAll('.wheel-segment').forEach(seg => {
+      seg.addEventListener('mouseenter', e => showTooltip(seg.dataset.key, e));
+      seg.addEventListener('mouseleave', hideTooltip);
+      seg.addEventListener('click', e => showTooltip(seg.dataset.key, e));
+    });
+  }
+}
+
+// ── TOOLTIP ──
+function showTooltip(key, e) {
+  const a = ARCHETYPES[key];
+  const tip = document.getElementById('tooltip');
+  const charNames = a.characters.slice(0, 4).map(c => `<span>${c.name}</span>`).join(' · ');
+  tip.innerHTML = `
+    <h3 style="color:${a.color}">${a.symbol} ${a.name}</h3>
+    <div class="element-tag">${a.elementIcon} Element of ${a.element}</div>
+    <p>${a.tagline}</p>
+    <div class="tip-chars">Also known as: ${charNames}</div>
+  `;
+  let x = e.clientX + 16, y = e.clientY - 20;
+  if (x + 340 > window.innerWidth) x = e.clientX - 340;
+  if (y + 200 > window.innerHeight) y = e.clientY - 200;
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+  tip.classList.add('visible');
+}
+function hideTooltip() { document.getElementById('tooltip').classList.remove('visible'); }
+
+// ── NAVIGATION ──
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showExplore() {
+  const grid = document.getElementById('explore-grid');
+  grid.innerHTML = '';
+  Object.entries(ARCHETYPES).forEach(([k, a]) => {
+    const topChars = a.characters.slice(0, 3).map(c => `<strong>${c.name}</strong>`).join(' · ');
+    const card = document.createElement('div');
+    card.className = 'explore-card';
+    card.style.borderColor = a.color + '33';
+    card.innerHTML = `
+      <div class="ex-symbol">${a.symbol}</div>
+      <div class="ex-name" style="color:${a.color}">${a.name}</div>
+      <div class="ex-element">${a.elementIcon} ${a.element}</div>
+      <div class="ex-chars">${topChars}</div>
+    `;
+    card.addEventListener('click', () => showArchetypeDetail(k));
+    grid.appendChild(card);
+  });
+  showSection('sec-explore');
+}
+
+function showArchetypeDetail(key) {
+  const a = ARCHETYPES[key];
+  const best = ARCHETYPES[a.bestMatch];
+  const also = ARCHETYPES[a.alsoGood];
+  const tension = ARCHETYPES[a.tension];
+
+  const dc = document.getElementById('detail-container');
+  dc.innerHTML = `
+    <div class="result-card fade-in" style="--result-color:${a.color}">
+      <div class="result-badge">Archetype Profile</div>
+      <div class="result-symbol">${a.symbol}</div>
+      <div class="result-name" style="color:${a.color}">${a.name}</div>
+      <div class="result-element">${a.elementIcon} Element of ${a.element}</div>
+      <div class="result-desc">${a.description}</div>
+      <div class="result-traits">
+        ${a.traits.map(t => `<span class="trait-tag" style="border-color:${a.color}44">${t}</span>`).join('')}
+      </div>
+
+      <div class="famous-section">
+        <h4>Characters in This Archetype</h4>
+        <div class="detail-chars-grid">
+          ${a.characters.map(c => `
+            <div class="detail-char-card">
+              <div class="detail-char-name">${c.name}</div>
+              <div class="detail-char-show">${c.show}</div>
+              <div class="detail-char-why">${c.why}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="result-compat">
+        <h4>Cosmic Compatibility</h4>
+        <div style="margin-bottom:8px;">
+          <span class="compat-pair"><span class="compat-icon">${best.symbol}</span> ${best.name}</span>
+          <span style="font-size:12px;color:var(--textdim)">— best match</span>
+        </div>
+        <div style="margin-bottom:8px;">
+          <span class="compat-pair"><span class="compat-icon">${also.symbol}</span> ${also.name}</span>
+          <span style="font-size:12px;color:var(--textdim)">— great energy</span>
+        </div>
+        <div>
+          <span class="compat-pair"><span class="compat-icon">${tension.symbol}</span> ${tension.name}</span>
+          <span style="font-size:12px;color:var(--textdim)">— creative tension</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-card fade-in-delay" style="--result-color:${a.color}; padding:28px 24px;">
+      <div class="result-badge">Today's Nerd Horoscope</div>
+      <p style="font-size:15px;line-height:1.7;color:var(--textdim);margin-top:12px;">${a.horoscope}</p>
+    </div>
+
+    <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+      <button class="btn btn-primary" onclick="startQuiz()">Take the Quiz</button>
+      <button class="btn btn-secondary btn-small" onclick="showExplore()">Back to Zodiac</button>
+    </div>
+  `;
+  showSection('sec-detail');
+}
+
+// ── QUIZ ──
+function startQuiz() {
+  currentQ = 0;
+  scores = [0.5, 0.5, 0.5, 0.5, 0.5];
+  showSection('sec-quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  document.getElementById('progress-fill').style.width = ((currentQ) / QUESTIONS.length * 100) + '%';
+  document.getElementById('q-number').textContent = `Question ${currentQ + 1} of ${QUESTIONS.length}`;
+  document.getElementById('q-text').textContent = q.text;
+
+  const answersEl = document.getElementById('q-answers');
+  answersEl.innerHTML = '';
+
+  const shuffled = q.answers.map((a, i) => ({...a, origIdx: i}));
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  shuffled.forEach((ans, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.textContent = ans.text;
+    btn.style.animationDelay = (i * 0.08) + 's';
+    btn.addEventListener('click', () => selectAnswer(ans.scores));
+    answersEl.appendChild(btn);
+  });
+}
+
+function selectAnswer(ansScores) {
+  for (let i = 0; i < 5; i++) {
+    scores[i] = Math.max(0, Math.min(1, scores[i] + ansScores[i]));
+  }
+  currentQ++;
+  if (currentQ >= QUESTIONS.length) {
+    document.getElementById('progress-fill').style.width = '100%';
+    const result = calculateResult();
+    setTimeout(() => showResult(result), 400);
+  } else {
+    renderQuestion();
+  }
+}
+
+function calculateResult() {
+  let bestKey = '', bestDist = Infinity;
+  Object.entries(ARCHETYPES).forEach(([k, a]) => {
+    let dist = 0;
+    for (let i = 0; i < 5; i++) {
+      dist += Math.pow(scores[i] - a.axes[i], 2);
+    }
+    if (dist < bestDist) { bestDist = dist; bestKey = k; }
+  });
+  return bestKey;
+}
+
+// ── RESULT ──
+function showResult(key) {
+  const a = ARCHETYPES[key];
+  const best = ARCHETYPES[a.bestMatch];
+  const also = ARCHETYPES[a.alsoGood];
+  const tension = ARCHETYPES[a.tension];
+
+  // Store archetype
+  try { localStorage.setItem('nerdArchetype', key); } catch(e) {}
+
+  const rc = document.getElementById('result-container');
+  rc.innerHTML = `
+    <div class="result-card fade-in" style="--result-color:${a.color}">
+      <div class="result-badge">Your Nerd Archetype</div>
+      <div class="result-symbol">${a.symbol}</div>
+      <div class="result-name" style="color:${a.color}">${a.name}</div>
+      <div class="result-element">${a.elementIcon} Element of ${a.element}</div>
+      <div class="result-desc">${a.description}</div>
+      <div class="result-traits">
+        ${a.traits.map(t => `<span class="trait-tag" style="border-color:${a.color}44">${t}</span>`).join('')}
+      </div>
+
+      <div class="famous-section">
+        <h4>You're in Good Company</h4>
+        <div class="famous-grid">
+          ${a.characters.map(c => `
+            <div class="famous-chip">
+              <span>${c.name}</span>
+              <span class="chip-show">${c.show}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="result-axes" id="result-axes"></div>
+
+      <div class="result-compat">
+        <h4>Cosmic Compatibility</h4>
+        <div style="margin-bottom:8px;">
+          <span class="compat-pair"><span class="compat-icon">${best.symbol}</span> ${best.name}</span>
+          <span style="font-size:12px;color:var(--textdim)">— best match</span>
+        </div>
+        <div style="margin-bottom:8px;">
+          <span class="compat-pair"><span class="compat-icon">${also.symbol}</span> ${also.name}</span>
+          <span style="font-size:12px;color:var(--textdim)">— great energy</span>
+        </div>
+        <div>
+          <span class="compat-pair"><span class="compat-icon">${tension.symbol}</span> ${tension.name}</span>
+          <span style="font-size:12px;color:var(--textdim)">— creative tension</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-card fade-in-delay" style="--result-color:${a.color}; padding:28px 24px;">
+      <div class="result-badge">Today's Nerd Horoscope</div>
+      <p style="font-size:15px;line-height:1.7;color:var(--textdim);margin-top:12px;">${a.horoscope}</p>
+    </div>
+
+    <div class="result-wheel-wrap fade-in-delay" id="result-wheel"></div>
+
+    <div class="share-section fade-in-delay2">
+      <button class="btn btn-primary" onclick="shareResult('${key}')">Share My Archetype</button>
+      <button class="btn btn-secondary btn-small" onclick="startQuiz()">Retake Quiz</button>
+      <button class="btn btn-secondary btn-small" onclick="showSection('sec-landing')">Home</button>
+    </div>
+
+    <div class="challenge-box fade-in-delay2">
+      <h3>Challenge Your Friends</h3>
+      <p>I'm <strong style="color:${a.color}">${a.name}</strong> — like ${a.characters[0].name} and ${a.characters[1].name}.<br>Which nerd are you?</p>
+      <div class="challenge-link" onclick="copyLink(this)">
+        ${window.location.href.split('?')[0]} — tap to copy
+      </div>
+    </div>
+  `;
+
+  // Build axes
+  const axesEl = document.getElementById('result-axes');
+  if (axesEl) {
+    axesEl.innerHTML = AXIS_LABELS.map((labels, i) => {
+      const pct = Math.round(scores[i] * 100);
+      return `<div class="axis-row">
+        <span class="axis-label">${labels[0]}</span>
+        <div class="axis-bar">
+          <div class="axis-fill" style="width:${pct}%;background:${a.color}"></div>
+        </div>
+        <span class="axis-label-r">${labels[1]}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // Build result wheel
+  setTimeout(() => {
+    const wheelWrap = document.getElementById('result-wheel');
+    if (wheelWrap) buildWheel(wheelWrap, 320, key, false);
+  }, 100);
+
+  showSection('sec-result');
+}
+
+async function shareResult(key) {
+  const a = ARCHETYPES[key];
+  const topChars = a.characters.slice(0, 2).map(c => c.name).join(' and ');
+  const shareText = `I'm ${a.name} ${a.symbol} — like ${topChars}. Which nerd archetype are you?`;
+  const shareUrl = window.location.href.split('?')[0];
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'The Nerd Horoscope', text: shareText, url: shareUrl });
+    } catch(e) {}
+  } else {
+    try {
+      await navigator.clipboard.writeText(shareText + '\n' + shareUrl);
+      alert('Copied to clipboard!');
+    } catch(e) {
+      prompt('Copy this:', shareText + '\n' + shareUrl);
+    }
+  }
+}
+
+function copyLink(el) {
+  const url = window.location.href.split('?')[0];
+  navigator.clipboard.writeText(url).then(() => {
+    el.textContent = 'Copied!';
+    setTimeout(() => { el.textContent = url + ' — tap to copy'; }, 2000);
+  });
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  initStars();
+  buildWheel(document.getElementById('main-wheel'), 500, null, true);
+});
+</script>
+</body>
+</html>

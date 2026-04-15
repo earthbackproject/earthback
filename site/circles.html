@@ -5,9 +5,22 @@
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.png">
+  <meta property="og:image" content="https://earthbackproject.org/assets/img/og-image.jpg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Circles — the Earthback Project</title>
+  <meta property="og:title" content="Circles — the Earthback Project">
+  <meta property="og:description" content="Join geographic and thematic circles to connect with builders, growers, and makers in your area and around shared interests.">
+  <meta property="og:url" content="https://earthbackproject.org/circles.html">
+  <meta property="og:site_name" content="Earthback">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@earthbackproj">
+  <meta name="twitter:title" content="Circles — the Earthback Project">
+  <meta name="twitter:description" content="Join geographic and thematic circles to connect with builders, growers, and makers in your area and around shared interests.">
+  <meta name="twitter:image" content="https://earthbackproject.org/assets/img/og-image.jpg">
+  <meta name="keywords" content="hempcrete, natural building, green building, off-grid, solar, permaculture, community housing, mutual aid, earth building, straw bale, timber framing, food forest, regenerative">
+  <meta name="author" content="Earthback">
+  <meta name="robots" content="index, follow">
   <meta name="description" content="Join geographic and thematic circles to connect with builders, growers, and makers in your area and around shared interests.">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -40,8 +53,11 @@
     .circles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:40px}
     .circle-card{background:var(--card);border:1px solid var(--border-lt);border-radius:14px;overflow:hidden;transition:all 0.2s;cursor:pointer;text-decoration:none;color:inherit}
     .circle-card:hover{transform:translateY(-3px);box-shadow:0 6px 24px var(--shadow-d)}
-    .circle-banner{height:80px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-    .circle-banner-icon{font-size:2.2rem;position:relative;z-index:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
+    .circle-banner{height:120px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .circle-banner-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+    .circle-banner-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,0.45) 100%)}
+    .circle-banner-icon{font-size:2.4rem;position:relative;z-index:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.45))}
+    .circle-banner.has-img .circle-banner-icon{position:absolute;left:14px;bottom:8px;font-size:1.8rem}
     .circle-body{padding:16px 18px}
     .circle-type{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px}
     .circle-type.geo{color:var(--sage)}
@@ -227,9 +243,19 @@ function buildCircleCard(c, type) {
   const typeLabel = type === 'geo' ? 'Geographic' : 'Thematic';
   const regionLine = c.region ? `<span class="circle-stat"><img src="assets/img/icons/icon-pin.svg" alt="" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-right:3px;"> ${c.region}</span>` : '';
 
+  // Thematic circles get an AI-rendered banner photo (deployed at assets/img/circles/{slug}.jpg).
+  // If the file is missing, the gradient+icon fallback shows through.
+  const bannerImg = type === 'thematic'
+    ? `<img class="circle-banner-img" src="assets/img/circles/${c.slug}.jpg" alt="" loading="lazy"
+            onerror="this.remove();this.nextElementSibling.remove();this.parentElement.classList.remove('has-img')">
+       <div class="circle-banner-overlay"></div>`
+    : '';
+  const bannerClass = type === 'thematic' ? 'circle-banner has-img' : 'circle-banner';
+
   return `
     <div class="circle-card" data-type="${type}" data-slug="${c.slug}">
-      <div class="circle-banner" style="background:${gradient}">
+      <div class="${bannerClass}" style="background:${gradient}">
+        ${bannerImg}
         <span class="circle-banner-icon">${c.icon}</span>
       </div>
       <div class="circle-body">

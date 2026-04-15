@@ -1,0 +1,94 @@
+==============================================================
+  EARTHBACK WORKSTATION — REBUILD FROM CACHE
+  Quick reference. For full details: Earthback-Rebuild-Guide.docx
+==============================================================
+
+STEP 1: INSTALL BASE SOFTWARE (from installers/ folder)
+--------------------------------------------------------
+Run these in order. All installers are in the cache:
+
+  1. NVIDIA GPU drivers  — download for your specific GPU from nvidia.com
+                           (can't cache this — it's GPU-specific)
+  2. Git                 — installers\Git-2.47.1.2-64-bit.exe
+  3. Python 3.11         — installers\python-3.11.11-amd64.exe
+                           CHECK "Add Python to PATH" during install
+  4. Node.js             — installers\node-v22.14.0-x64.msi
+  5. CUDA Toolkit 12.1   — installers\cuda_12.1.0_531.14_windows.exe
+
+Reboot after NVIDIA drivers and CUDA.
+
+STEP 2: RUN THE INSTALLER SCRIPT
+---------------------------------
+Open PowerShell as Administrator. Adjust the cache path if needed:
+
+  powershell -ExecutionPolicy Bypass -File "E:\earthback-cache\project\maint-scripts\install-from-cache.ps1" -CachePath "E:\earthback-cache"
+
+This will:
+  - Clone the Earthback repo from GitHub (or skip if no internet)
+  - Deploy ComfyUI, Kohya SS, ai-toolkit from cached repos
+  - Copy all AI model files (~15-25 GB) into ComfyUI/models/
+  - Create Python venvs and install packages from cached wheels
+  - Restore local/ scripts, datasets, configs, LoRA checkpoints
+  - Set up the PowerShell "g" git alias
+  - Create comfy-run.bat
+
+STEP 3: MANUAL FINISHING TOUCHES
+---------------------------------
+  1. Install ComfyUI custom nodes:
+     - Start ComfyUI (run comfy-run.bat)
+     - Open http://127.0.0.1:8188
+     - Install ComfyUI Manager if not present
+     - Install nodes listed in repos\comfyui-custom-nodes.txt
+
+  2. Recreate command-center.html:
+     - This file contains API keys and credentials (gitignored)
+     - Get Supabase keys from: https://supabase.com/dashboard/project/yptktmzagctusbeqdaty/settings/api
+     - Create the file in C:\users\adrxi\Earthback\command-center.html
+
+  3. Verify torch versions:
+     - comfy-env: torch + CUDA 13.0
+     - kohya:     torch + CUDA 12.4
+     - ai-toolkit: torch 2.4.1+cu121 (CRITICAL — newer breaks)
+
+  4. Test ComfyUI:
+     - Run comfy-run.bat
+     - Verify http://127.0.0.1:8188 loads
+     - Try a simple generation to confirm GPU works
+
+  5. Reload PowerShell profile:
+       . $PROFILE
+     Then test:  g status
+
+DAILY STARTUP
+--------------
+  1. Open PowerShell, cd C:\users\adrxi\Earthback
+  2. Run comfy-run.bat (or local\scripts\comfy-run.bat)
+  3. Verify http://127.0.0.1:8188
+  4. Open Claude Desktop (Cowork mode)
+  5. Say: "Read SESSION_NOTES.md and TRACKER.md and pick up where we left off."
+
+IF SOMETHING BREAKS
+--------------------
+  GPU stuck:      maint-scripts\Reset-GPU.ps1 (Admin PowerShell)
+  Claude VM hung: maint-scripts\fix-cowork-vm.ps1 (Admin PowerShell)
+  Git lock files: Already handled by the "g" alias automatically
+
+KEY PATHS
+----------
+  Project:        C:\users\adrxi\Earthback
+  AI tools:       D:\AI\
+  ComfyUI:        D:\AI\ComfyUI
+  ComfyUI models: D:\AI\ComfyUI\models\
+  comfy-env:      D:\AI\comfy-env
+  Kohya SS:       D:\AI\kohya_ss
+  ai-toolkit:     D:\AI\ai-toolkit
+  Image output:   C:\users\adrxi\Earthback\comfyui-output
+  Scripts:        C:\users\adrxi\Earthback\local\scripts
+  Maint scripts:  C:\users\adrxi\Earthback\maint-scripts
+
+CLOUD SERVICES
+---------------
+  GitHub:   https://github.com/earthbackproject/earthback
+  Netlify:  https://app.netlify.com (nicco.macintyre@gmail.com)
+  Supabase: https://supabase.com/dashboard/project/yptktmzagctusbeqdaty
+  Live site: https://earthbackproject.org
